@@ -1,0 +1,3422 @@
+[
+ {
+  "id": "S100",
+  "name": "Momentum Factor (Jegadeesh-Titman)",
+  "mean_rank": 1.1666666666666667,
+  "std_rank": 0.37267799624996495,
+  "mean_score": 9.833333333333334,
+  "best": 1,
+  "worst": 2,
+  "per": {
+   "juror-1": 1,
+   "juror-2": 1,
+   "juror-3": 1,
+   "juror-4": 1,
+   "juror-5": 2,
+   "internet": 1
+  },
+  "final": 1
+ },
+ {
+  "id": "S104",
+  "name": "PEAD / SUE",
+  "mean_rank": 3.3333333333333335,
+  "std_rank": 1.5986105077709065,
+  "mean_score": 9.666666666666666,
+  "best": 2,
+  "worst": 6,
+  "per": {
+   "juror-1": 2,
+   "juror-2": 2,
+   "juror-3": 5,
+   "juror-4": 2,
+   "juror-5": 3,
+   "internet": 6
+  },
+  "final": 2
+ },
+ {
+  "id": "S174",
+  "name": "Time-Series Momentum (MOP)",
+  "mean_rank": 5.5,
+  "std_rank": 3.452052529534663,
+  "mean_score": 9.5,
+  "best": 2,
+  "worst": 12,
+  "per": {
+   "juror-1": 12,
+   "juror-2": 4,
+   "juror-3": 8,
+   "juror-4": 3,
+   "juror-5": 4,
+   "internet": 2
+  },
+  "final": 3
+ },
+ {
+  "id": "S096",
+  "name": "Gross Profitability (Novy-Marx)",
+  "mean_rank": 5.666666666666667,
+  "std_rank": 2.8087165910587863,
+  "mean_score": 9.0,
+  "best": 3,
+  "worst": 10,
+  "per": {
+   "juror-1": 3,
+   "juror-2": 10,
+   "juror-3": 3,
+   "juror-4": 7,
+   "juror-5": 8,
+   "internet": 3
+  },
+  "final": 4
+ },
+ {
+  "id": "S172",
+  "name": "Dual Momentum (Antonacci)",
+  "mean_rank": 7.5,
+  "std_rank": 2.565800719723442,
+  "mean_score": 8.833333333333334,
+  "best": 5,
+  "worst": 11,
+  "per": {
+   "juror-1": 11,
+   "juror-2": 5,
+   "juror-3": 7,
+   "juror-4": 5,
+   "juror-5": 6,
+   "internet": 11
+  },
+  "final": 5
+ },
+ {
+  "id": "S101",
+  "name": "Low-Volatility Anomaly",
+  "mean_rank": 8.666666666666666,
+  "std_rank": 5.08811250749125,
+  "mean_score": 8.833333333333334,
+  "best": 4,
+  "worst": 18,
+  "per": {
+   "juror-1": 6,
+   "juror-2": 18,
+   "juror-3": 6,
+   "juror-4": 4,
+   "juror-5": 13,
+   "internet": 5
+  },
+  "final": 6
+ },
+ {
+  "id": "S095",
+  "name": "Accruals-Based Quality",
+  "mean_rank": 10.166666666666666,
+  "std_rank": 6.039223643997813,
+  "mean_score": 8.5,
+  "best": 4,
+  "worst": 22,
+  "per": {
+   "juror-1": 4,
+   "juror-2": 11,
+   "juror-3": 11,
+   "juror-4": 22,
+   "juror-5": 9,
+   "internet": 4
+  },
+  "final": 7
+ },
+ {
+  "id": "S099",
+  "name": "Value Factor (HML)",
+  "mean_rank": 10.5,
+  "std_rank": 6.2915286960589585,
+  "mean_score": 8.5,
+  "best": 2,
+  "worst": 20,
+  "per": {
+   "juror-1": 5,
+   "juror-2": 20,
+   "juror-3": 2,
+   "juror-4": 14,
+   "juror-5": 15,
+   "internet": 7
+  },
+  "final": 8
+ },
+ {
+  "id": "S081",
+  "name": "Piotroski F-Score",
+  "mean_rank": 11.833333333333334,
+  "std_rank": 8.193832368854569,
+  "mean_score": 8.666666666666666,
+  "best": 7,
+  "worst": 30,
+  "per": {
+   "juror-1": 7,
+   "juror-2": 8,
+   "juror-3": 10,
+   "juror-4": 9,
+   "juror-5": 7,
+   "internet": 30
+  },
+  "final": 9
+ },
+ {
+  "id": "S102",
+  "name": "Quality Factor (RMW)",
+  "mean_rank": 12,
+  "std_rank": 5.507570547286102,
+  "mean_score": 8.5,
+  "best": 4,
+  "worst": 21,
+  "per": {
+   "juror-1": 10,
+   "juror-2": 21,
+   "juror-3": 4,
+   "juror-4": 13,
+   "juror-5": 16,
+   "internet": 8
+  },
+  "final": 10
+ },
+ {
+  "id": "S105",
+  "name": "Analyst Revision Drift",
+  "mean_rank": 12.5,
+  "std_rank": 5.315072906367325,
+  "mean_score": 8.166666666666666,
+  "best": 3,
+  "worst": 21,
+  "per": {
+   "juror-1": 14,
+   "juror-2": 3,
+   "juror-3": 12,
+   "juror-4": 11,
+   "juror-5": 21,
+   "internet": 14
+  },
+  "final": 11
+ },
+ {
+  "id": "S080",
+  "name": "Greenblatt Magic Formula",
+  "mean_rank": 13.833333333333334,
+  "std_rank": 9.154537429906306,
+  "mean_score": 8.833333333333334,
+  "best": 5,
+  "worst": 29,
+  "per": {
+   "juror-1": 8,
+   "juror-2": 9,
+   "juror-3": 24,
+   "juror-4": 8,
+   "juror-5": 5,
+   "internet": 29
+  },
+  "final": 12
+ },
+ {
+  "id": "S110",
+  "name": "Merger Arbitrage (Risk Arb)",
+  "mean_rank": 16.666666666666668,
+  "std_rank": 6.315765107165472,
+  "mean_score": 8.166666666666666,
+  "best": 6,
+  "worst": 27,
+  "per": {
+   "juror-1": 20,
+   "juror-2": 14,
+   "juror-3": 17,
+   "juror-4": 6,
+   "juror-5": 27,
+   "internet": 16
+  },
+  "final": 13
+ },
+ {
+  "id": "S103",
+  "name": "Investment Factor (CMA)",
+  "mean_rank": 17.166666666666668,
+  "std_rank": 7.0573051199133765,
+  "mean_score": 8.0,
+  "best": 9,
+  "worst": 30,
+  "per": {
+   "juror-1": 30,
+   "juror-2": 22,
+   "juror-3": 9,
+   "juror-4": 12,
+   "juror-5": 17,
+   "internet": 13
+  },
+  "final": 14
+ },
+ {
+  "id": "S076",
+  "name": "Graham Net-Net (NCAV)",
+  "mean_rank": 17.666666666666668,
+  "std_rank": 15.723301886761007,
+  "mean_score": 8.666666666666666,
+  "best": 1,
+  "worst": 41,
+  "per": {
+   "juror-1": 9,
+   "juror-2": 7,
+   "juror-3": 38,
+   "juror-4": 10,
+   "juror-5": 1,
+   "internet": 41
+  },
+  "final": 15
+ },
+ {
+  "id": "S173",
+  "name": "Relative Strength vs Benchmark",
+  "mean_rank": 18.333333333333332,
+  "std_rank": 8.158158833680279,
+  "mean_score": 8.0,
+  "best": 9,
+  "worst": 31,
+  "per": {
+   "juror-1": 15,
+   "juror-2": 28,
+   "juror-3": 13,
+   "juror-4": 31,
+   "juror-5": 14,
+   "internet": 9
+  },
+  "final": 16
+ },
+ {
+  "id": "S098",
+  "name": "Size Premium (SMB)",
+  "mean_rank": 20.5,
+  "std_rank": 5.649483752226097,
+  "mean_score": 7.666666666666667,
+  "best": 13,
+  "worst": 30,
+  "per": {
+   "juror-1": 13,
+   "juror-2": 19,
+   "juror-3": 23,
+   "juror-4": 23,
+   "juror-5": 30,
+   "internet": 15
+  },
+  "final": 17
+ },
+ {
+  "id": "S107",
+  "name": "Buybacks & Insider Buying",
+  "mean_rank": 23.166666666666668,
+  "std_rank": 12.019659821401861,
+  "mean_score": 7.833333333333333,
+  "best": 13,
+  "worst": 49,
+  "per": {
+   "juror-1": 18,
+   "juror-2": 13,
+   "juror-3": 49,
+   "juror-4": 15,
+   "juror-5": 22,
+   "internet": 22
+  },
+  "final": 18
+ },
+ {
+  "id": "S176",
+  "name": "Pairs Trading (Distance Method)",
+  "mean_rank": 23.333333333333332,
+  "std_rank": 13.161391348266422,
+  "mean_score": 7.833333333333333,
+  "best": 10,
+  "worst": 42,
+  "per": {
+   "juror-1": 25,
+   "juror-2": 39,
+   "juror-3": 14,
+   "juror-4": 42,
+   "juror-5": 10,
+   "internet": 10
+  },
+  "final": 19
+ },
+ {
+  "id": "S177",
+  "name": "Cointegration Pairs Trading",
+  "mean_rank": 24.666666666666668,
+  "std_rank": 11.41149517908246,
+  "mean_score": 7.833333333333333,
+  "best": 11,
+  "worst": 40,
+  "per": {
+   "juror-1": 26,
+   "juror-2": 40,
+   "juror-3": 15,
+   "juror-4": 39,
+   "juror-5": 11,
+   "internet": 17
+  },
+  "final": 20
+ },
+ {
+  "id": "S180",
+  "name": "Statistical Arbitrage (Cross-Sectional)",
+  "mean_rank": 25.333333333333332,
+  "std_rank": 10.208928554075703,
+  "mean_score": 7.666666666666667,
+  "best": 6,
+  "worst": 41,
+  "per": {
+   "juror-1": 27,
+   "juror-2": 6,
+   "juror-3": 27,
+   "juror-4": 41,
+   "juror-5": 25,
+   "internet": 26
+  },
+  "final": 21
+ },
+ {
+  "id": "S111",
+  "name": "Index Inclusion / MSCI Rebalancing",
+  "mean_rank": 25.666666666666668,
+  "std_rank": 9.480975102218594,
+  "mean_score": 7.833333333333333,
+  "best": 16,
+  "worst": 45,
+  "per": {
+   "juror-1": 21,
+   "juror-2": 45,
+   "juror-3": 16,
+   "juror-4": 19,
+   "juror-5": 28,
+   "internet": 25
+  },
+  "final": 22
+ },
+ {
+  "id": "S153",
+  "name": "Volatility Arbitrage (IV Rank)",
+  "mean_rank": 27.833333333333332,
+  "std_rank": 10.188501143718616,
+  "mean_score": 7.666666666666667,
+  "best": 17,
+  "worst": 48,
+  "per": {
+   "juror-1": 48,
+   "juror-2": 17,
+   "juror-3": 18,
+   "juror-4": 28,
+   "juror-5": 29,
+   "internet": 27
+  },
+  "final": 23
+ },
+ {
+  "id": "S091",
+  "name": "High ROE/ROIC Quality",
+  "mean_rank": 28.833333333333332,
+  "std_rank": 11.451588924201257,
+  "mean_score": 7.333333333333333,
+  "best": 12,
+  "worst": 44,
+  "per": {
+   "juror-1": 39,
+   "juror-2": 12,
+   "juror-3": 44,
+   "juror-4": 25,
+   "juror-5": 35,
+   "internet": 18
+  },
+  "final": 24
+ },
+ {
+  "id": "S122",
+  "name": "Promoter Buying Follow",
+  "mean_rank": 30,
+  "std_rank": 10.893423092245461,
+  "mean_score": 7.666666666666667,
+  "best": 19,
+  "worst": 52,
+  "per": {
+   "juror-1": 19,
+   "juror-2": 30,
+   "juror-3": 52,
+   "juror-4": 33,
+   "juror-5": 23,
+   "internet": 23
+  },
+  "final": 25
+ },
+ {
+  "id": "S085",
+  "name": "Free Cash Flow Yield",
+  "mean_rank": 30.833333333333332,
+  "std_rank": 9.616247824501105,
+  "mean_score": 7.5,
+  "best": 17,
+  "worst": 45,
+  "per": {
+   "juror-1": 38,
+   "juror-2": 23,
+   "juror-3": 45,
+   "juror-4": 17,
+   "juror-5": 26,
+   "internet": 36
+  },
+  "final": 26
+ },
+ {
+  "id": "S114",
+  "name": "Buyback Tender Arbitrage",
+  "mean_rank": 31.833333333333332,
+  "std_rank": 13.631051153728224,
+  "mean_score": 7.5,
+  "best": 15,
+  "worst": 50,
+  "per": {
+   "juror-1": 23,
+   "juror-2": 15,
+   "juror-3": 50,
+   "juror-4": 18,
+   "juror-5": 41,
+   "internet": 44
+  },
+  "final": 27
+ },
+ {
+  "id": "S077",
+  "name": "Deep Value / Low P/B",
+  "mean_rank": 32,
+  "std_rank": 15.588457268119896,
+  "mean_score": 7.5,
+  "best": 12,
+  "worst": 61,
+  "per": {
+   "juror-1": 34,
+   "juror-2": 24,
+   "juror-3": 22,
+   "juror-4": 61,
+   "juror-5": 12,
+   "internet": 39
+  },
+  "final": 28
+ },
+ {
+  "id": "S078",
+  "name": "Low P/E",
+  "mean_rank": 34.166666666666664,
+  "std_rank": 4.561310727801336,
+  "mean_score": 7.166666666666667,
+  "best": 25,
+  "worst": 39,
+  "per": {
+   "juror-1": 35,
+   "juror-2": 25,
+   "juror-3": 39,
+   "juror-4": 35,
+   "juror-5": 33,
+   "internet": 38
+  },
+  "final": 29
+ },
+ {
+  "id": "S094",
+  "name": "Buffett-Style Moat",
+  "mean_rank": 36.666666666666664,
+  "std_rank": 11.657138966697142,
+  "mean_score": 7.166666666666667,
+  "best": 25,
+  "worst": 60,
+  "per": {
+   "juror-1": 40,
+   "juror-2": 60,
+   "juror-3": 25,
+   "juror-4": 26,
+   "juror-5": 34,
+   "internet": 35
+  },
+  "final": 30
+ },
+ {
+  "id": "S181",
+  "name": "Index Arbitrage (Cash-Futures)",
+  "mean_rank": 36.666666666666664,
+  "std_rank": 16.83910792042012,
+  "mean_score": 7.166666666666667,
+  "best": 16,
+  "worst": 70,
+  "per": {
+   "juror-1": 28,
+   "juror-2": 16,
+   "juror-3": 28,
+   "juror-4": 40,
+   "juror-5": 38,
+   "internet": 70
+  },
+  "final": 31
+ },
+ {
+  "id": "S115",
+  "name": "Open-Market Buyback Announcement",
+  "mean_rank": 37.333333333333336,
+  "std_rank": 13.58512258154322,
+  "mean_score": 7.333333333333333,
+  "best": 24,
+  "worst": 60,
+  "per": {
+   "juror-1": 24,
+   "juror-2": 31,
+   "juror-3": 51,
+   "juror-4": 34,
+   "juror-5": 60,
+   "internet": 24
+  },
+  "final": 32
+ },
+ {
+  "id": "S120",
+  "name": "Demerger / Spin-off Sum-of-Parts",
+  "mean_rank": 39.166666666666664,
+  "std_rank": 20.136340834973524,
+  "mean_score": 7.333333333333333,
+  "best": 16,
+  "worst": 78,
+  "per": {
+   "juror-1": 22,
+   "juror-2": 32,
+   "juror-3": 78,
+   "juror-4": 16,
+   "juror-5": 42,
+   "internet": 45
+  },
+  "final": 33
+ },
+ {
+  "id": "S106",
+  "name": "Earnings Quality (CFO > NI)",
+  "mean_rank": 39.166666666666664,
+  "std_rank": 20.586538212034473,
+  "mean_score": 7.166666666666667,
+  "best": 19,
+  "worst": 73,
+  "per": {
+   "juror-1": 31,
+   "juror-2": 62,
+   "juror-3": 26,
+   "juror-4": 24,
+   "juror-5": 73,
+   "internet": 19
+  },
+  "final": 34
+ },
+ {
+  "id": "S178",
+  "name": "RSI(2) Reversion",
+  "mean_rank": 39.833333333333336,
+  "std_rank": 15.004628915401037,
+  "mean_score": 7.166666666666667,
+  "best": 17,
+  "worst": 58,
+  "per": {
+   "juror-1": 17,
+   "juror-2": 41,
+   "juror-3": 55,
+   "juror-4": 44,
+   "juror-5": 24,
+   "internet": 58
+  },
+  "final": 35
+ },
+ {
+  "id": "S086",
+  "name": "CANSLIM",
+  "mean_rank": 40.5,
+  "std_rank": 16.39867880857073,
+  "mean_score": 7.166666666666667,
+  "best": 18,
+  "worst": 67,
+  "per": {
+   "juror-1": 54,
+   "juror-2": 26,
+   "juror-3": 41,
+   "juror-4": 37,
+   "juror-5": 18,
+   "internet": 67
+  },
+  "final": 36
+ },
+ {
+  "id": "S083",
+  "name": "EV/EBITDA Value",
+  "mean_rank": 42.166666666666664,
+  "std_rank": 10.930334954713064,
+  "mean_score": 7.0,
+  "best": 32,
+  "worst": 64,
+  "per": {
+   "juror-1": 36,
+   "juror-2": 64,
+   "juror-3": 48,
+   "juror-4": 36,
+   "juror-5": 32,
+   "internet": 37
+  },
+  "final": 37
+ },
+ {
+  "id": "S165",
+  "name": "NLP Earnings-Call Analysis",
+  "mean_rank": 48.833333333333336,
+  "std_rank": 15.377653339252456,
+  "mean_score": 6.666666666666667,
+  "best": 29,
+  "worst": 72,
+  "per": {
+   "juror-1": 29,
+   "juror-2": 36,
+   "juror-3": 66,
+   "juror-4": 45,
+   "juror-5": 45,
+   "internet": 72
+  },
+  "final": 38
+ },
+ {
+  "id": "S079",
+  "name": "High Dividend Yield",
+  "mean_rank": 50,
+  "std_rank": 13.625955623979797,
+  "mean_score": 6.5,
+  "best": 33,
+  "worst": 74,
+  "per": {
+   "juror-1": 52,
+   "juror-2": 33,
+   "juror-3": 40,
+   "juror-4": 59,
+   "juror-5": 74,
+   "internet": 42
+  },
+  "final": 39
+ },
+ {
+  "id": "S093",
+  "name": "Low Debt / Conservative Balance Sheet",
+  "mean_rank": 51.833333333333336,
+  "std_rank": 15.97306761047761,
+  "mean_score": 6.666666666666667,
+  "best": 20,
+  "worst": 71,
+  "per": {
+   "juror-1": 58,
+   "juror-2": 59,
+   "juror-3": 46,
+   "juror-4": 57,
+   "juror-5": 71,
+   "internet": 20
+  },
+  "final": 40
+ },
+ {
+  "id": "S112",
+  "name": "Index Exclusion Exit",
+  "mean_rank": 54.333333333333336,
+  "std_rank": 23.626726862225798,
+  "mean_score": 6.666666666666667,
+  "best": 20,
+  "worst": 95,
+  "per": {
+   "juror-1": 44,
+   "juror-2": 46,
+   "juror-3": 72,
+   "juror-4": 20,
+   "juror-5": 95,
+   "internet": 49
+  },
+  "final": 41
+ },
+ {
+  "id": "S126",
+  "name": "India VIX Fear Gauge",
+  "mean_rank": 55.833333333333336,
+  "std_rank": 24.086072508586554,
+  "mean_score": 6.166666666666667,
+  "best": 27,
+  "worst": 99,
+  "per": {
+   "juror-1": 99,
+   "juror-2": 50,
+   "juror-3": 35,
+   "juror-4": 27,
+   "juror-5": 51,
+   "internet": 73
+  },
+  "final": 42
+ },
+ {
+  "id": "S074",
+  "name": "52-Week High Breakout",
+  "mean_rank": 55.833333333333336,
+  "std_rank": 34.22677639250039,
+  "mean_score": 6.666666666666667,
+  "best": 21,
+  "worst": 120,
+  "per": {
+   "juror-1": 51,
+   "juror-2": 79,
+   "juror-3": 120,
+   "juror-4": 21,
+   "juror-5": 31,
+   "internet": 33
+  },
+  "final": 43
+ },
+ {
+  "id": "S087",
+  "name": "GARP / PEG",
+  "mean_rank": 56.166666666666664,
+  "std_rank": 12.979684981625025,
+  "mean_score": 6.5,
+  "best": 39,
+  "worst": 76,
+  "per": {
+   "juror-1": 55,
+   "juror-2": 67,
+   "juror-3": 42,
+   "juror-4": 58,
+   "juror-5": 39,
+   "internet": 76
+  },
+  "final": 44
+ },
+ {
+  "id": "S010",
+  "name": "Donchian Channel Breakout (Turtle)",
+  "mean_rank": 56.166666666666664,
+  "std_rank": 21.49741586537528,
+  "mean_score": 6.333333333333333,
+  "best": 31,
+  "worst": 92,
+  "per": {
+   "juror-1": 50,
+   "juror-2": 76,
+   "juror-3": 92,
+   "juror-4": 52,
+   "juror-5": 36,
+   "internet": 31
+  },
+  "final": 45
+ },
+ {
+  "id": "S113",
+  "name": "Block/Bulk Deal Following",
+  "mean_rank": 56.5,
+  "std_rank": 14.829587542027818,
+  "mean_score": 6.5,
+  "best": 43,
+  "worst": 81,
+  "per": {
+   "juror-1": 45,
+   "juror-2": 47,
+   "juror-3": 73,
+   "juror-4": 81,
+   "juror-5": 43,
+   "internet": 50
+  },
+  "final": 46
+ },
+ {
+  "id": "S166",
+  "name": "Sector Rotation",
+  "mean_rank": 57,
+  "std_rank": 13.662601021279464,
+  "mean_score": 6.5,
+  "best": 40,
+  "worst": 80,
+  "per": {
+   "juror-1": 80,
+   "juror-2": 70,
+   "juror-3": 53,
+   "juror-4": 48,
+   "juror-5": 40,
+   "internet": 51
+  },
+  "final": 47
+ },
+ {
+  "id": "S161",
+  "name": "Kalman Filter Pairs Trading",
+  "mean_rank": 57.833333333333336,
+  "std_rank": 12.374929853897713,
+  "mean_score": 6.333333333333333,
+  "best": 38,
+  "worst": 68,
+  "per": {
+   "juror-1": 67,
+   "juror-2": 38,
+   "juror-3": 65,
+   "juror-4": 43,
+   "juror-5": 68,
+   "internet": 66
+  },
+  "final": 48
+ },
+ {
+  "id": "S175",
+  "name": "Rotational Momentum (Sector/Index)",
+  "mean_rank": 59.833333333333336,
+  "std_rank": 62.296111881525604,
+  "mean_score": 6.833333333333333,
+  "best": 12,
+  "worst": 190,
+  "per": {
+   "juror-1": 16,
+   "juror-2": 29,
+   "juror-3": 190,
+   "juror-4": 32,
+   "juror-5": 80,
+   "internet": 12
+  },
+  "final": 49
+ },
+ {
+  "id": "S082",
+  "name": "DCF Intrinsic Value",
+  "mean_rank": 60.5,
+  "std_rank": 14.20973844469583,
+  "mean_score": 6.166666666666667,
+  "best": 43,
+  "worst": 81,
+  "per": {
+   "juror-1": 53,
+   "juror-2": 63,
+   "juror-3": 47,
+   "juror-4": 76,
+   "juror-5": 81,
+   "internet": 43
+  },
+  "final": 50
+ },
+ {
+  "id": "S090",
+  "name": "Minervini Trend Template",
+  "mean_rank": 60.5,
+  "std_rank": 51.27946307571222,
+  "mean_score": 7.0,
+  "best": 19,
+  "worst": 170,
+  "per": {
+   "juror-1": 41,
+   "juror-2": 27,
+   "juror-3": 170,
+   "juror-4": 38,
+   "juror-5": 19,
+   "internet": 68
+  },
+  "final": 51
+ },
+ {
+  "id": "S127",
+  "name": "FII/DII Flow Following",
+  "mean_rank": 60.833333333333336,
+  "std_rank": 21.45084820907763,
+  "mean_score": 6.0,
+  "best": 34,
+  "worst": 87,
+  "per": {
+   "juror-1": 72,
+   "juror-2": 34,
+   "juror-3": 36,
+   "juror-4": 84,
+   "juror-5": 52,
+   "internet": 87
+  },
+  "final": 52
+ },
+ {
+  "id": "S121",
+  "name": "Promoter Pledge Release Turnaround",
+  "mean_rank": 62.166666666666664,
+  "std_rank": 19.282260125710252,
+  "mean_score": 6.333333333333333,
+  "best": 46,
+  "worst": 97,
+  "per": {
+   "juror-1": 46,
+   "juror-2": 49,
+   "juror-3": 79,
+   "juror-4": 56,
+   "juror-5": 97,
+   "internet": 46
+  },
+  "final": 53
+ },
+ {
+  "id": "S088",
+  "name": "Earnings Growth Investing",
+  "mean_rank": 63,
+  "std_rank": 10.598742063723098,
+  "mean_score": 6.333333333333333,
+  "best": 43,
+  "worst": 75,
+  "per": {
+   "juror-1": 56,
+   "juror-2": 66,
+   "juror-3": 43,
+   "juror-4": 75,
+   "juror-5": 69,
+   "internet": 69
+  },
+  "final": 54
+ },
+ {
+  "id": "S167",
+  "name": "Business Cycle Timing",
+  "mean_rank": 66,
+  "std_rank": 16.663332999933317,
+  "mean_score": 6.0,
+  "best": 46,
+  "worst": 92,
+  "per": {
+   "juror-1": 81,
+   "juror-2": 71,
+   "juror-3": 54,
+   "juror-4": 92,
+   "juror-5": 46,
+   "internet": 52
+  },
+  "final": 55
+ },
+ {
+  "id": "S092",
+  "name": "Margin Stability",
+  "mean_rank": 67.5,
+  "std_rank": 30.081832834231804,
+  "mean_score": 6.333333333333333,
+  "best": 21,
+  "worst": 122,
+  "per": {
+   "juror-1": 57,
+   "juror-2": 58,
+   "juror-3": 122,
+   "juror-4": 77,
+   "juror-5": 70,
+   "internet": 21
+  },
+  "final": 56
+ },
+ {
+  "id": "S001",
+  "name": "Moving Average Trend Filter",
+  "mean_rank": 68.83333333333333,
+  "std_rank": 33.223569277781635,
+  "mean_score": 5.833333333333333,
+  "best": 32,
+  "worst": 128,
+  "per": {
+   "juror-1": 88,
+   "juror-2": 77,
+   "juror-3": 128,
+   "juror-4": 51,
+   "juror-5": 37,
+   "internet": 32
+  },
+  "final": 57
+ },
+ {
+  "id": "S136",
+  "name": "Smallcap Momentum",
+  "mean_rank": 69,
+  "std_rank": 47.54646849837185,
+  "mean_score": 6.666666666666667,
+  "best": 20,
+  "worst": 162,
+  "per": {
+   "juror-1": 47,
+   "juror-2": 162,
+   "juror-3": 64,
+   "juror-4": 30,
+   "juror-5": 20,
+   "internet": 91
+  },
+  "final": 58
+ },
+ {
+  "id": "S164",
+  "name": "ML Factor Models",
+  "mean_rank": 69.16666666666667,
+  "std_rank": 53.399178104369945,
+  "mean_score": 6.5,
+  "best": 29,
+  "worst": 185,
+  "per": {
+   "juror-1": 49,
+   "juror-2": 37,
+   "juror-3": 185,
+   "juror-4": 29,
+   "juror-5": 44,
+   "internet": 71
+  },
+  "final": 59
+ },
+ {
+  "id": "S084",
+  "name": "Graham Number",
+  "mean_rank": 72,
+  "std_rank": 45.981880489311585,
+  "mean_score": 6.166666666666667,
+  "best": 37,
+  "worst": 169,
+  "per": {
+   "juror-1": 37,
+   "juror-2": 44,
+   "juror-3": 169,
+   "juror-4": 60,
+   "juror-5": 82,
+   "internet": 40
+  },
+  "final": 60
+ },
+ {
+  "id": "S097",
+  "name": "Altman Z-Score Filter",
+  "mean_rank": 72.83333333333333,
+  "std_rank": 26.479027340310083,
+  "mean_score": 6.0,
+  "best": 34,
+  "worst": 123,
+  "per": {
+   "juror-1": 69,
+   "juror-2": 61,
+   "juror-3": 123,
+   "juror-4": 78,
+   "juror-5": 72,
+   "internet": 34
+  },
+  "final": 61
+ },
+ {
+  "id": "S129",
+  "name": "Advance-Decline Breadth Extreme",
+  "mean_rank": 74.5,
+  "std_rank": 20.89457664881807,
+  "mean_score": 5.666666666666667,
+  "best": 51,
+  "worst": 101,
+  "per": {
+   "juror-1": 101,
+   "juror-2": 51,
+   "juror-3": 59,
+   "juror-4": 85,
+   "juror-5": 53,
+   "internet": 98
+  },
+  "final": 62
+ },
+ {
+  "id": "S190",
+  "name": "Gap Mean Reversion (Markov-based)",
+  "mean_rank": 82.83333333333333,
+  "std_rank": 51.26862805090675,
+  "mean_score": 5.833333333333333,
+  "best": 32,
+  "worst": 187,
+  "per": {
+   "juror-1": 32,
+   "juror-2": 42,
+   "juror-3": 187,
+   "juror-4": 62,
+   "juror-5": 77,
+   "internet": 97
+  },
+  "final": 63
+ },
+ {
+  "id": "S118",
+  "name": "Rights Issue Discount Capture",
+  "mean_rank": 83.16666666666667,
+  "std_rank": 39.25734184695761,
+  "mean_score": 5.833333333333333,
+  "best": 48,
+  "worst": 164,
+  "per": {
+   "juror-1": 61,
+   "juror-2": 48,
+   "juror-3": 76,
+   "juror-4": 55,
+   "juror-5": 164,
+   "internet": 95
+  },
+  "final": 64
+ },
+ {
+  "id": "S125",
+  "name": "Put-Call Ratio Contrarian",
+  "mean_rank": 84.33333333333333,
+  "std_rank": 32.417416443771224,
+  "mean_score": 5.5,
+  "best": 34,
+  "worst": 141,
+  "per": {
+   "juror-1": 98,
+   "juror-2": 69,
+   "juror-3": 34,
+   "juror-4": 141,
+   "juror-5": 90,
+   "internet": 74
+  },
+  "final": 65
+ },
+ {
+  "id": "S020",
+  "name": "Darvas Box",
+  "mean_rank": 84.5,
+  "std_rank": 26.998456746019144,
+  "mean_score": 5.5,
+  "best": 57,
+  "worst": 140,
+  "per": {
+   "juror-1": 92,
+   "juror-2": 78,
+   "juror-3": 140,
+   "juror-4": 73,
+   "juror-5": 67,
+   "internet": 57
+  },
+  "final": 66
+ },
+ {
+  "id": "S168",
+  "name": "Interest-Rate Sensitivity Trading",
+  "mean_rank": 84.66666666666667,
+  "std_rank": 21.55355088043628,
+  "mean_score": 5.666666666666667,
+  "best": 53,
+  "worst": 124,
+  "per": {
+   "juror-1": 82,
+   "juror-2": 72,
+   "juror-3": 124,
+   "juror-4": 93,
+   "juror-5": 84,
+   "internet": 53
+  },
+  "final": 67
+ },
+ {
+  "id": "S147",
+  "name": "Calendar Spread",
+  "mean_rank": 86,
+  "std_rank": 45.136829012828684,
+  "mean_score": 5.666666666666667,
+  "best": 20,
+  "worst": 146,
+  "per": {
+   "juror-1": 107,
+   "juror-2": 55,
+   "juror-3": 20,
+   "juror-4": 146,
+   "juror-5": 57,
+   "internet": 131
+  },
+  "final": 68
+ },
+ {
+  "id": "S170",
+  "name": "Commodity Correlation Trading",
+  "mean_rank": 86.5,
+  "std_rank": 21.492246664010413,
+  "mean_score": 5.666666666666667,
+  "best": 55,
+  "worst": 126,
+  "per": {
+   "juror-1": 84,
+   "juror-2": 74,
+   "juror-3": 126,
+   "juror-4": 94,
+   "juror-5": 86,
+   "internet": 55
+  },
+  "final": 69
+ },
+ {
+  "id": "S123",
+  "name": "News Sentiment Trading",
+  "mean_rank": 87.5,
+  "std_rank": 40.73389252207552,
+  "mean_score": 5.166666666666667,
+  "best": 35,
+  "worst": 170,
+  "per": {
+   "juror-1": 70,
+   "juror-2": 35,
+   "juror-3": 80,
+   "juror-4": 82,
+   "juror-5": 88,
+   "internet": 170
+  },
+  "final": 70
+ },
+ {
+  "id": "S140",
+  "name": "Covered Call",
+  "mean_rank": 88.5,
+  "std_rank": 39.491560279803245,
+  "mean_score": 5.833333333333333,
+  "best": 56,
+  "worst": 171,
+  "per": {
+   "juror-1": 65,
+   "juror-2": 56,
+   "juror-3": 171,
+   "juror-4": 89,
+   "juror-5": 58,
+   "internet": 92
+  },
+  "final": 71
+ },
+ {
+  "id": "S128",
+  "name": "Option Chain OI Analysis (Max Pain)",
+  "mean_rank": 88.66666666666667,
+  "std_rank": 31.191166840772226,
+  "mean_score": 5.0,
+  "best": 37,
+  "worst": 142,
+  "per": {
+   "juror-1": 100,
+   "juror-2": 87,
+   "juror-3": 37,
+   "juror-4": 142,
+   "juror-5": 91,
+   "internet": 75
+  },
+  "final": 72
+ },
+ {
+  "id": "S144",
+  "name": "Iron Condor",
+  "mean_rank": 89.5,
+  "std_rank": 50.168881457200804,
+  "mean_score": 5.833333333333333,
+  "best": 19,
+  "worst": 167,
+  "per": {
+   "juror-1": 66,
+   "juror-2": 167,
+   "juror-3": 19,
+   "juror-4": 90,
+   "juror-5": 56,
+   "internet": 139
+  },
+  "final": 73
+ },
+ {
+  "id": "S066",
+  "name": "Range Breakout Trading",
+  "mean_rank": 90.66666666666667,
+  "std_rank": 21.084486134491293,
+  "mean_score": 5.333333333333333,
+  "best": 64,
+  "worst": 122,
+  "per": {
+   "juror-1": 95,
+   "juror-2": 80,
+   "juror-3": 112,
+   "juror-4": 71,
+   "juror-5": 64,
+   "internet": 122
+  },
+  "final": 74
+ },
+ {
+  "id": "S117",
+  "name": "Stock Split Momentum",
+  "mean_rank": 90.66666666666667,
+  "std_rank": 45.71165667043315,
+  "mean_score": 5.166666666666667,
+  "best": 47,
+  "worst": 187,
+  "per": {
+   "juror-1": 60,
+   "juror-2": 187,
+   "juror-3": 75,
+   "juror-4": 79,
+   "juror-5": 96,
+   "internet": 47
+  },
+  "final": 75
+ },
+ {
+  "id": "S134",
+  "name": "Budget Sector Rotation",
+  "mean_rank": 91.66666666666667,
+  "std_rank": 31.78399317616058,
+  "mean_score": 5.166666666666667,
+  "best": 62,
+  "worst": 160,
+  "per": {
+   "juror-1": 74,
+   "juror-2": 160,
+   "juror-3": 62,
+   "juror-4": 86,
+   "juror-5": 79,
+   "internet": 89
+  },
+  "final": 76
+ },
+ {
+  "id": "S007",
+  "name": "Supertrend",
+  "mean_rank": 92.5,
+  "std_rank": 21.156165374030646,
+  "mean_score": 5.166666666666667,
+  "best": 63,
+  "worst": 121,
+  "per": {
+   "juror-1": 121,
+   "juror-2": 108,
+   "juror-3": 90,
+   "juror-4": 68,
+   "juror-5": 105,
+   "internet": 63
+  },
+  "final": 77
+ },
+ {
+  "id": "S151",
+  "name": "Short Strangle (Expiry-Day Theta)",
+  "mean_rank": 92.66666666666667,
+  "std_rank": 49.47951315668155,
+  "mean_score": 5.333333333333333,
+  "best": 21,
+  "worst": 172,
+  "per": {
+   "juror-1": 77,
+   "juror-2": 172,
+   "juror-3": 21,
+   "juror-4": 91,
+   "juror-5": 59,
+   "internet": 136
+  },
+  "final": 78
+ },
+ {
+  "id": "S169",
+  "name": "INR/Currency-Based Trading",
+  "mean_rank": 93.33333333333333,
+  "std_rank": 29.769484749021476,
+  "mean_score": 5.5,
+  "best": 54,
+  "worst": 140,
+  "per": {
+   "juror-1": 83,
+   "juror-2": 73,
+   "juror-3": 125,
+   "juror-4": 140,
+   "juror-5": 85,
+   "internet": 54
+  },
+  "final": 79
+ },
+ {
+  "id": "S124",
+  "name": "Social Media Buzz Fade",
+  "mean_rank": 93.83333333333333,
+  "std_rank": 35.2345316730934,
+  "mean_score": 5.166666666666667,
+  "best": 68,
+  "worst": 171,
+  "per": {
+   "juror-1": 71,
+   "juror-2": 68,
+   "juror-3": 81,
+   "juror-4": 83,
+   "juror-5": 89,
+   "internet": 171
+  },
+  "final": 80
+ },
+ {
+  "id": "S089",
+  "name": "Revenue Growth / Fisher Scuttlebutt",
+  "mean_rank": 94,
+  "std_rank": 31.069813860616115,
+  "mean_score": 5.5,
+  "best": 65,
+  "worst": 150,
+  "per": {
+   "juror-1": 68,
+   "juror-2": 65,
+   "juror-3": 121,
+   "juror-4": 150,
+   "juror-5": 83,
+   "internet": 77
+  },
+  "final": 81
+ },
+ {
+  "id": "S130",
+  "name": "GIFT Nifty Gap Trading",
+  "mean_rank": 94.33333333333333,
+  "std_rank": 31.404175235503672,
+  "mean_score": 5.166666666666667,
+  "best": 52,
+  "worst": 143,
+  "per": {
+   "juror-1": 102,
+   "juror-2": 52,
+   "juror-3": 60,
+   "juror-4": 143,
+   "juror-5": 92,
+   "internet": 117
+  },
+  "final": 82
+ },
+ {
+  "id": "S183",
+  "name": "Turn-of-Month Effect",
+  "mean_rank": 95.83333333333333,
+  "std_rank": 62.84747851390345,
+  "mean_score": 5.0,
+  "best": 30,
+  "worst": 184,
+  "per": {
+   "juror-1": 86,
+   "juror-2": 179,
+   "juror-3": 30,
+   "juror-4": 49,
+   "juror-5": 47,
+   "internet": 184
+  },
+  "final": 83
+ },
+ {
+  "id": "S139",
+  "name": "Corporate Action Calendar Trading",
+  "mean_rank": 97,
+  "std_rank": 36.8148520753966,
+  "mean_score": 5.166666666666667,
+  "best": 53,
+  "worst": 165,
+  "per": {
+   "juror-1": 64,
+   "juror-2": 165,
+   "juror-3": 86,
+   "juror-4": 53,
+   "juror-5": 98,
+   "internet": 116
+  },
+  "final": 84
+ },
+ {
+  "id": "S185",
+  "name": "Sell in May (Halloween Effect)",
+  "mean_rank": 97.5,
+  "std_rank": 62.999338620867015,
+  "mean_score": 4.666666666666667,
+  "best": 32,
+  "worst": 186,
+  "per": {
+   "juror-1": 87,
+   "juror-2": 181,
+   "juror-3": 32,
+   "juror-4": 50,
+   "juror-5": 49,
+   "internet": 186
+  },
+  "final": 85
+ },
+ {
+  "id": "S006",
+  "name": "ADX Trend Strength",
+  "mean_rank": 97.83333333333333,
+  "std_rank": 21.751755995525716,
+  "mean_score": 5.166666666666667,
+  "best": 62,
+  "worst": 134,
+  "per": {
+   "juror-1": 91,
+   "juror-2": 107,
+   "juror-3": 89,
+   "juror-4": 134,
+   "juror-5": 104,
+   "internet": 62
+  },
+  "final": 86
+ },
+ {
+  "id": "S182",
+  "name": "January Effect",
+  "mean_rank": 97.83333333333333,
+  "std_rank": 60.84246506803908,
+  "mean_score": 4.5,
+  "best": 29,
+  "worst": 183,
+  "per": {
+   "juror-1": 85,
+   "juror-2": 178,
+   "juror-3": 29,
+   "juror-4": 64,
+   "juror-5": 48,
+   "internet": 183
+  },
+  "final": 87
+ },
+ {
+  "id": "S032",
+  "name": "Bollinger Squeeze Breakout",
+  "mean_rank": 98.33333333333333,
+  "std_rank": 21.845416503747924,
+  "mean_score": 5.166666666666667,
+  "best": 61,
+  "worst": 127,
+  "per": {
+   "juror-1": 127,
+   "juror-2": 84,
+   "juror-3": 95,
+   "juror-4": 118,
+   "juror-5": 61,
+   "internet": 105
+  },
+  "final": 88
+ },
+ {
+  "id": "S038",
+  "name": "VWAP Reversion",
+  "mean_rank": 98.33333333333333,
+  "std_rank": 25.525586292102197,
+  "mean_score": 5.166666666666667,
+  "best": 55,
+  "worst": 140,
+  "per": {
+   "juror-1": 94,
+   "juror-2": 89,
+   "juror-3": 100,
+   "juror-4": 112,
+   "juror-5": 55,
+   "internet": 140
+  },
+  "final": 89
+ },
+ {
+  "id": "S035",
+  "name": "NR7/NR4 Volatility Breakout",
+  "mean_rank": 98.66666666666667,
+  "std_rank": 30.543229837214152,
+  "mean_score": 5.166666666666667,
+  "best": 66,
+  "worst": 151,
+  "per": {
+   "juror-1": 93,
+   "juror-2": 83,
+   "juror-3": 151,
+   "juror-4": 72,
+   "juror-5": 66,
+   "internet": 127
+  },
+  "final": 90
+ },
+ {
+  "id": "S179",
+  "name": "Z-Score Reversion (Single Asset)",
+  "mean_rank": 99,
+  "std_rank": 48.83646178829912,
+  "mean_score": 5.333333333333333,
+  "best": 33,
+  "worst": 187,
+  "per": {
+   "juror-1": 33,
+   "juror-2": 88,
+   "juror-3": 127,
+   "juror-4": 63,
+   "juror-5": 187,
+   "internet": 96
+  },
+  "final": 91
+ },
+ {
+  "id": "S135",
+  "name": "Monsoon / Rural Demand Play",
+  "mean_rank": 100.33333333333333,
+  "std_rank": 36.24760528488591,
+  "mean_score": 5.166666666666667,
+  "best": 63,
+  "worst": 161,
+  "per": {
+   "juror-1": 75,
+   "juror-2": 161,
+   "juror-3": 63,
+   "juror-4": 138,
+   "juror-5": 75,
+   "internet": 90
+  },
+  "final": 92
+ },
+ {
+  "id": "S004",
+  "name": "MACD Crossover",
+  "mean_rank": 100.5,
+  "std_rank": 21.692932796957937,
+  "mean_score": 5.0,
+  "best": 61,
+  "worst": 127,
+  "per": {
+   "juror-1": 119,
+   "juror-2": 106,
+   "juror-3": 87,
+   "juror-4": 127,
+   "juror-5": 103,
+   "internet": 61
+  },
+  "final": 93
+ },
+ {
+  "id": "S034",
+  "name": "Keltner-Bollinger Squeeze",
+  "mean_rank": 100.5,
+  "std_rank": 22.23173407541571,
+  "mean_score": 5.0,
+  "best": 62,
+  "worst": 128,
+  "per": {
+   "juror-1": 128,
+   "juror-2": 85,
+   "juror-3": 97,
+   "juror-4": 119,
+   "juror-5": 62,
+   "internet": 112
+  },
+  "final": 94
+ },
+ {
+  "id": "S069",
+  "name": "Gap Trading (Gap & Go / Fill)",
+  "mean_rank": 100.5,
+  "std_rank": 34.80301711058971,
+  "mean_score": 5.0,
+  "best": 63,
+  "worst": 168,
+  "per": {
+   "juror-1": 97,
+   "juror-2": 91,
+   "juror-3": 115,
+   "juror-4": 69,
+   "juror-5": 63,
+   "internet": 168
+  },
+  "final": 95
+ },
+ {
+  "id": "S154",
+  "name": "Order Flow Trading",
+  "mean_rank": 101.66666666666667,
+  "std_rank": 39.105271028625054,
+  "mean_score": 5.333333333333333,
+  "best": 47,
+  "worst": 176,
+  "per": {
+   "juror-1": 78,
+   "juror-2": 99,
+   "juror-3": 176,
+   "juror-4": 47,
+   "juror-5": 99,
+   "internet": 111
+  },
+  "final": 96
+ },
+ {
+  "id": "S133",
+  "name": "Budget Day Straddle/Strangle",
+  "mean_rank": 101.66666666666667,
+  "std_rank": 39.24991153563987,
+  "mean_score": 5.333333333333333,
+  "best": 61,
+  "worst": 159,
+  "per": {
+   "juror-1": 73,
+   "juror-2": 159,
+   "juror-3": 61,
+   "juror-4": 153,
+   "juror-5": 76,
+   "internet": 88
+  },
+  "final": 97
+ },
+ {
+  "id": "S171",
+  "name": "Global Index Correlation / Follow-the-Market",
+  "mean_rank": 102.16666666666667,
+  "std_rank": 41.47053840445715,
+  "mean_score": 5.333333333333333,
+  "best": 56,
+  "worst": 186,
+  "per": {
+   "juror-1": 114,
+   "juror-2": 75,
+   "juror-3": 186,
+   "juror-4": 95,
+   "juror-5": 87,
+   "internet": 56
+  },
+  "final": 98
+ },
+ {
+  "id": "S162",
+  "name": "GARCH Volatility Modeling",
+  "mean_rank": 102.83333333333333,
+  "std_rank": 53.12694440886114,
+  "mean_score": 5.5,
+  "best": 28,
+  "worst": 183,
+  "per": {
+   "juror-1": 113,
+   "juror-2": 43,
+   "juror-3": 183,
+   "juror-4": 136,
+   "juror-5": 114,
+   "internet": 28
+  },
+  "final": 99
+ },
+ {
+  "id": "S031",
+  "name": "Bollinger Bands Mean Reversion",
+  "mean_rank": 103,
+  "std_rank": 24.63060426921489,
+  "mean_score": 5.0,
+  "best": 67,
+  "worst": 141,
+  "per": {
+   "juror-1": 126,
+   "juror-2": 86,
+   "juror-3": 94,
+   "juror-4": 67,
+   "juror-5": 141,
+   "internet": 104
+  },
+  "final": 100
+ },
+ {
+  "id": "S002",
+  "name": "EMA Crossover (Fast/Slow)",
+  "mean_rank": 104.33333333333333,
+  "std_rank": 24.438130497691965,
+  "mean_score": 4.833333333333333,
+  "best": 59,
+  "worst": 129,
+  "per": {
+   "juror-1": 89,
+   "juror-2": 104,
+   "juror-3": 129,
+   "juror-4": 126,
+   "juror-5": 119,
+   "internet": 59
+  },
+  "final": 101
+ },
+ {
+  "id": "S003",
+  "name": "Golden Cross / Death Cross",
+  "mean_rank": 105.5,
+  "std_rank": 24.588276339209575,
+  "mean_score": 4.833333333333333,
+  "best": 60,
+  "worst": 130,
+  "per": {
+   "juror-1": 90,
+   "juror-2": 105,
+   "juror-3": 130,
+   "juror-4": 128,
+   "juror-5": 120,
+   "internet": 60
+  },
+  "final": 102
+ },
+ {
+  "id": "S187",
+  "name": "Month-End/Expiry Rebalancing Effect",
+  "mean_rank": 105.83333333333333,
+  "std_rank": 61.7776029174184,
+  "mean_score": 4.666666666666667,
+  "best": 33,
+  "worst": 188,
+  "per": {
+   "juror-1": 116,
+   "juror-2": 183,
+   "juror-3": 33,
+   "juror-4": 65,
+   "juror-5": 50,
+   "internet": 188
+  },
+  "final": 103
+ },
+ {
+  "id": "S042",
+  "name": "Volume Climax / Spikes",
+  "mean_rank": 106,
+  "std_rank": 28.930952282978865,
+  "mean_score": 4.833333333333333,
+  "best": 54,
+  "worst": 146,
+  "per": {
+   "juror-1": 129,
+   "juror-2": 93,
+   "juror-3": 104,
+   "juror-4": 110,
+   "juror-5": 54,
+   "internet": 146
+  },
+  "final": 104
+ },
+ {
+  "id": "S073",
+  "name": "Inside Bar Breakout",
+  "mean_rank": 106.66666666666667,
+  "std_rank": 24.662161750791885,
+  "mean_score": 5.0,
+  "best": 65,
+  "worst": 134,
+  "per": {
+   "juror-1": 134,
+   "juror-2": 82,
+   "juror-3": 119,
+   "juror-4": 115,
+   "juror-5": 65,
+   "internet": 125
+  },
+  "final": 105
+ },
+ {
+  "id": "S008",
+  "name": "Ichimoku Kinko Hyo",
+  "mean_rank": 107.16666666666667,
+  "std_rank": 25.699654126509603,
+  "mean_score": 4.833333333333333,
+  "best": 64,
+  "worst": 144,
+  "per": {
+   "juror-1": 144,
+   "juror-2": 109,
+   "juror-3": 91,
+   "juror-4": 129,
+   "juror-5": 106,
+   "internet": 64
+  },
+  "final": 106
+ },
+ {
+  "id": "S108",
+  "name": "IPO Listing Gains Trading",
+  "mean_rank": 107.33333333333333,
+  "std_rank": 59.659217412083294,
+  "mean_score": 5.0,
+  "best": 42,
+  "worst": 189,
+  "per": {
+   "juror-1": 42,
+   "juror-2": 189,
+   "juror-3": 188,
+   "juror-4": 54,
+   "juror-5": 93,
+   "internet": 78
+  },
+  "final": 107
+ },
+ {
+  "id": "S068",
+  "name": "Open Range Breakout (ORB)",
+  "mean_rank": 108.16666666666667,
+  "std_rank": 30.124279613332202,
+  "mean_score": 4.833333333333333,
+  "best": 70,
+  "worst": 167,
+  "per": {
+   "juror-1": 96,
+   "juror-2": 90,
+   "juror-3": 114,
+   "juror-4": 70,
+   "juror-5": 112,
+   "internet": 167
+  },
+  "final": 108
+ },
+ {
+  "id": "S116",
+  "name": "Bonus Issue Liquidity Play",
+  "mean_rank": 112.33333333333333,
+  "std_rank": 53.927935452993395,
+  "mean_score": 4.833333333333333,
+  "best": 48,
+  "worst": 186,
+  "per": {
+   "juror-1": 59,
+   "juror-2": 186,
+   "juror-3": 74,
+   "juror-4": 144,
+   "juror-5": 163,
+   "internet": 48
+  },
+  "final": 109
+ },
+ {
+  "id": "S109",
+  "name": "IPO Anchor & HNI Follow",
+  "mean_rank": 112.5,
+  "std_rank": 56.58253558593264,
+  "mean_score": 4.833333333333333,
+  "best": 43,
+  "worst": 190,
+  "per": {
+   "juror-1": 43,
+   "juror-2": 190,
+   "juror-3": 189,
+   "juror-4": 80,
+   "juror-5": 94,
+   "internet": 79
+  },
+  "final": 110
+ },
+ {
+  "id": "S157",
+  "name": "Auction-Based Trading",
+  "mean_rank": 113.66666666666667,
+  "std_rank": 48.74650984657489,
+  "mean_score": 5.0,
+  "best": 46,
+  "worst": 179,
+  "per": {
+   "juror-1": 79,
+   "juror-2": 100,
+   "juror-3": 179,
+   "juror-4": 46,
+   "juror-5": 102,
+   "internet": 176
+  },
+  "final": 111
+ },
+ {
+  "id": "S072",
+  "name": "Pullback/Retest Entry",
+  "mean_rank": 113.83333333333333,
+  "std_rank": 16.15979235290135,
+  "mean_score": 4.833333333333333,
+  "best": 81,
+  "worst": 133,
+  "per": {
+   "juror-1": 133,
+   "juror-2": 81,
+   "juror-3": 118,
+   "juror-4": 114,
+   "juror-5": 113,
+   "internet": 124
+  },
+  "final": 112
+ },
+ {
+  "id": "S009",
+  "name": "Parabolic SAR",
+  "mean_rank": 114,
+  "std_rank": 22.63478149515328,
+  "mean_score": 4.666666666666667,
+  "best": 65,
+  "worst": 131,
+  "per": {
+   "juror-1": 122,
+   "juror-2": 114,
+   "juror-3": 131,
+   "juror-4": 130,
+   "juror-5": 122,
+   "internet": 65
+  },
+  "final": 113
+ },
+ {
+  "id": "S137",
+  "name": "Circuit-Limit Momentum Trading",
+  "mean_rank": 115.83333333333333,
+  "std_rank": 43.53702128329661,
+  "mean_score": 4.5,
+  "best": 63,
+  "worst": 183,
+  "per": {
+   "juror-1": 63,
+   "juror-2": 163,
+   "juror-3": 84,
+   "juror-4": 87,
+   "juror-5": 183,
+   "internet": 115
+  },
+  "final": 114
+ },
+ {
+  "id": "S149",
+  "name": "Collar",
+  "mean_rank": 116.5,
+  "std_rank": 45.9084233374806,
+  "mean_score": 4.666666666666667,
+  "best": 57,
+  "worst": 180,
+  "per": {
+   "juror-1": 140,
+   "juror-2": 57,
+   "juror-3": 70,
+   "juror-4": 159,
+   "juror-5": 180,
+   "internet": 93
+  },
+  "final": 115
+ },
+ {
+  "id": "S037",
+  "name": "Volume Profile / POC Trading",
+  "mean_rank": 119.5,
+  "std_rank": 24.743686063317245,
+  "mean_score": 4.5,
+  "best": 94,
+  "worst": 163,
+  "per": {
+   "juror-1": 163,
+   "juror-2": 94,
+   "juror-3": 99,
+   "juror-4": 111,
+   "juror-5": 108,
+   "internet": 142
+  },
+  "final": 116
+ },
+ {
+  "id": "S019",
+  "name": "Linear Regression Channel",
+  "mean_rank": 120.5,
+  "std_rank": 12.433154601038842,
+  "mean_score": 4.666666666666667,
+  "best": 103,
+  "worst": 139,
+  "per": {
+   "juror-1": 123,
+   "juror-2": 130,
+   "juror-3": 139,
+   "juror-4": 121,
+   "juror-5": 107,
+   "internet": 103
+  },
+  "final": 117
+ },
+ {
+  "id": "S011",
+  "name": "Keltner Channel",
+  "mean_rank": 121,
+  "std_rank": 18.743887892679396,
+  "mean_score": 4.5,
+  "best": 93,
+  "worst": 145,
+  "per": {
+   "juror-1": 145,
+   "juror-2": 126,
+   "juror-3": 93,
+   "juror-4": 120,
+   "juror-5": 140,
+   "internet": 102
+  },
+  "final": 118
+ },
+ {
+  "id": "S047",
+  "name": "Triangle Breakout (Asc/Desc/Sym)",
+  "mean_rank": 121.5,
+  "std_rank": 24.19194080680589,
+  "mean_score": 4.5,
+  "best": 99,
+  "worst": 170,
+  "per": {
+   "juror-1": 170,
+   "juror-2": 134,
+   "juror-3": 108,
+   "juror-4": 99,
+   "juror-5": 110,
+   "internet": 108
+  },
+  "final": 119
+ },
+ {
+  "id": "S005",
+  "name": "MACD/RSI Divergence",
+  "mean_rank": 121.66666666666667,
+  "std_rank": 22.103292866800537,
+  "mean_score": 4.333333333333333,
+  "best": 88,
+  "worst": 163,
+  "per": {
+   "juror-1": 120,
+   "juror-2": 125,
+   "juror-3": 88,
+   "juror-4": 163,
+   "juror-5": 121,
+   "internet": 113
+  },
+  "final": 120
+ },
+ {
+  "id": "S048",
+  "name": "Flag & Pennant",
+  "mean_rank": 121.66666666666667,
+  "std_rank": 24.803673563047514,
+  "mean_score": 4.5,
+  "best": 98,
+  "worst": 171,
+  "per": {
+   "juror-1": 171,
+   "juror-2": 135,
+   "juror-3": 109,
+   "juror-4": 98,
+   "juror-5": 111,
+   "internet": 106
+  },
+  "final": 121
+ },
+ {
+  "id": "S049",
+  "name": "Cup & Handle",
+  "mean_rank": 121.83333333333333,
+  "std_rank": 25.36018313989252,
+  "mean_score": 4.5,
+  "best": 97,
+  "worst": 172,
+  "per": {
+   "juror-1": 172,
+   "juror-2": 136,
+   "juror-3": 110,
+   "juror-4": 97,
+   "juror-5": 109,
+   "internet": 107
+  },
+  "final": 122
+ },
+ {
+  "id": "S119",
+  "name": "Special Dividend Capture",
+  "mean_rank": 121.83333333333333,
+  "std_rank": 46.8024809408884,
+  "mean_score": 4.833333333333333,
+  "best": 62,
+  "worst": 188,
+  "per": {
+   "juror-1": 62,
+   "juror-2": 188,
+   "juror-3": 77,
+   "juror-4": 145,
+   "juror-5": 165,
+   "internet": 94
+  },
+  "final": 123
+ },
+ {
+  "id": "S015",
+  "name": "Heikin-Ashi Trend Riding",
+  "mean_rank": 122,
+  "std_rank": 21.6794833886788,
+  "mean_score": 4.333333333333333,
+  "best": 81,
+  "worst": 149,
+  "per": {
+   "juror-1": 149,
+   "juror-2": 110,
+   "juror-3": 135,
+   "juror-4": 131,
+   "juror-5": 126,
+   "internet": 81
+  },
+  "final": 124
+ },
+ {
+  "id": "S044",
+  "name": "Head & Shoulders",
+  "mean_rank": 122,
+  "std_rank": 22.861904265976328,
+  "mean_score": 4.333333333333333,
+  "best": 96,
+  "worst": 167,
+  "per": {
+   "juror-1": 167,
+   "juror-2": 131,
+   "juror-3": 105,
+   "juror-4": 96,
+   "juror-5": 115,
+   "internet": 118
+  },
+  "final": 125
+ },
+ {
+  "id": "S021",
+  "name": "RSI Overbought/Oversold",
+  "mean_rank": 122.33333333333333,
+  "std_rank": 12.736648783028533,
+  "mean_score": 4.5,
+  "best": 99,
+  "worst": 141,
+  "per": {
+   "juror-1": 124,
+   "juror-2": 118,
+   "juror-3": 141,
+   "juror-4": 122,
+   "juror-5": 130,
+   "internet": 99
+  },
+  "final": 126
+ },
+ {
+  "id": "S016",
+  "name": "Renko Chart Trading",
+  "mean_rank": 123,
+  "std_rank": 21.6794833886788,
+  "mean_score": 4.333333333333333,
+  "best": 82,
+  "worst": 150,
+  "per": {
+   "juror-1": 150,
+   "juror-2": 111,
+   "juror-3": 136,
+   "juror-4": 132,
+   "juror-5": 127,
+   "internet": 82
+  },
+  "final": 127
+ },
+ {
+  "id": "S017",
+  "name": "Point & Figure",
+  "mean_rank": 123.5,
+  "std_rank": 22.63294059551255,
+  "mean_score": 4.333333333333333,
+  "best": 80,
+  "worst": 151,
+  "per": {
+   "juror-1": 151,
+   "juror-2": 112,
+   "juror-3": 137,
+   "juror-4": 133,
+   "juror-5": 128,
+   "internet": 80
+  },
+  "final": 128
+ },
+ {
+  "id": "S045",
+  "name": "Double Top / Double Bottom",
+  "mean_rank": 123.66666666666667,
+  "std_rank": 22.140962540554153,
+  "mean_score": 4.333333333333333,
+  "best": 101,
+  "worst": 168,
+  "per": {
+   "juror-1": 168,
+   "juror-2": 132,
+   "juror-3": 106,
+   "juror-4": 101,
+   "juror-5": 116,
+   "internet": 119
+  },
+  "final": 129
+ },
+ {
+  "id": "S043",
+  "name": "Delivery-Based Volume",
+  "mean_rank": 123.66666666666667,
+  "std_rank": 30.00370347510824,
+  "mean_score": 4.5,
+  "best": 74,
+  "worst": 152,
+  "per": {
+   "juror-1": 130,
+   "juror-2": 92,
+   "juror-3": 152,
+   "juror-4": 74,
+   "juror-5": 147,
+   "internet": 147
+  },
+  "final": 130
+ },
+ {
+  "id": "S036",
+  "name": "On-Balance Volume (OBV)",
+  "mean_rank": 124.33333333333333,
+  "std_rank": 25.49291840666519,
+  "mean_score": 4.333333333333333,
+  "best": 95,
+  "worst": 162,
+  "per": {
+   "juror-1": 162,
+   "juror-2": 95,
+   "juror-3": 98,
+   "juror-4": 107,
+   "juror-5": 143,
+   "internet": 141
+  },
+  "final": 131
+ },
+ {
+  "id": "S046",
+  "name": "Triple Top / Triple Bottom",
+  "mean_rank": 124.5,
+  "std_rank": 22.440662497647732,
+  "mean_score": 4.333333333333333,
+  "best": 100,
+  "worst": 169,
+  "per": {
+   "juror-1": 169,
+   "juror-2": 133,
+   "juror-3": 107,
+   "juror-4": 100,
+   "juror-5": 118,
+   "internet": 120
+  },
+  "final": 132
+ },
+ {
+  "id": "S156",
+  "name": "Market Depth / Liquidity Trading",
+  "mean_rank": 125.83333333333333,
+  "std_rank": 36.457357129787795,
+  "mean_score": 4.5,
+  "best": 88,
+  "worst": 178,
+  "per": {
+   "juror-1": 111,
+   "juror-2": 102,
+   "juror-3": 178,
+   "juror-4": 88,
+   "juror-5": 101,
+   "internet": 175
+  },
+  "final": 133
+ },
+ {
+  "id": "S039",
+  "name": "Accumulation/Distribution (Chaikin)",
+  "mean_rank": 126,
+  "std_rank": 25.514701644346147,
+  "mean_score": 4.333333333333333,
+  "best": 96,
+  "worst": 164,
+  "per": {
+   "juror-1": 164,
+   "juror-2": 96,
+   "juror-3": 101,
+   "juror-4": 108,
+   "juror-5": 144,
+   "internet": 143
+  },
+  "final": 134
+ },
+ {
+  "id": "S040",
+  "name": "Chaikin Money Flow",
+  "mean_rank": 127,
+  "std_rank": 25.514701644346147,
+  "mean_score": 4.333333333333333,
+  "best": 97,
+  "worst": 165,
+  "per": {
+   "juror-1": 165,
+   "juror-2": 97,
+   "juror-3": 102,
+   "juror-4": 109,
+   "juror-5": 145,
+   "internet": 144
+  },
+  "final": 135
+ },
+ {
+  "id": "S138",
+  "name": "Lower-Circuit Contrarian Bounce",
+  "mean_rank": 127,
+  "std_rank": 39.36157178433469,
+  "mean_score": 4.333333333333333,
+  "best": 76,
+  "worst": 184,
+  "per": {
+   "juror-1": 76,
+   "juror-2": 164,
+   "juror-3": 85,
+   "juror-4": 139,
+   "juror-5": 184,
+   "internet": 114
+  },
+  "final": 136
+ },
+ {
+  "id": "S184",
+  "name": "Holiday/Pre-Holiday Effect",
+  "mean_rank": 127.16666666666667,
+  "std_rank": 61.5559817474215,
+  "mean_score": 4.0,
+  "best": 31,
+  "worst": 186,
+  "per": {
+   "juror-1": 115,
+   "juror-2": 180,
+   "juror-3": 31,
+   "juror-4": 66,
+   "juror-5": 186,
+   "internet": 185
+  },
+  "final": 137
+ },
+ {
+  "id": "S189",
+  "name": "Seasonal Sector Rotation",
+  "mean_rank": 127.66666666666667,
+  "std_rank": 49.45255863507525,
+  "mean_score": 4.333333333333333,
+  "best": 58,
+  "worst": 190,
+  "per": {
+   "juror-1": 118,
+   "juror-2": 185,
+   "juror-3": 58,
+   "juror-4": 137,
+   "juror-5": 78,
+   "internet": 190
+  },
+  "final": 138
+ },
+ {
+  "id": "S022",
+  "name": "Stochastic Oscillator",
+  "mean_rank": 128,
+  "std_rank": 16.931233465600393,
+  "mean_score": 4.333333333333333,
+  "best": 100,
+  "worst": 153,
+  "per": {
+   "juror-1": 153,
+   "juror-2": 119,
+   "juror-3": 142,
+   "juror-4": 123,
+   "juror-5": 131,
+   "internet": 100
+  },
+  "final": 139
+ },
+ {
+  "id": "S142",
+  "name": "Bull Call Spread",
+  "mean_rank": 131.83333333333334,
+  "std_rank": 41.7469227076147,
+  "mean_score": 4.666666666666667,
+  "best": 53,
+  "worst": 173,
+  "per": {
+   "juror-1": 105,
+   "juror-2": 53,
+   "juror-3": 173,
+   "juror-4": 157,
+   "juror-5": 166,
+   "internet": 137
+  },
+  "final": 140
+ },
+ {
+  "id": "S033",
+  "name": "ATR-Based Stops/Sizing",
+  "mean_rank": 132,
+  "std_rank": 25.800516790689805,
+  "mean_score": 4.166666666666667,
+  "best": 96,
+  "worst": 162,
+  "per": {
+   "juror-1": 161,
+   "juror-2": 103,
+   "juror-3": 96,
+   "juror-4": 162,
+   "juror-5": 142,
+   "internet": 128
+  },
+  "final": 141
+ },
+ {
+  "id": "S070",
+  "name": "Trendline Trading",
+  "mean_rank": 132.5,
+  "std_rank": 16.121931232537456,
+  "mean_score": 4.333333333333333,
+  "best": 116,
+  "worst": 154,
+  "per": {
+   "juror-1": 132,
+   "juror-2": 154,
+   "juror-3": 116,
+   "juror-4": 116,
+   "juror-5": 154,
+   "internet": 123
+  },
+  "final": 142
+ },
+ {
+  "id": "S012",
+  "name": "Vortex Indicator",
+  "mean_rank": 132.5,
+  "std_rank": 30.015273889582726,
+  "mean_score": 4.166666666666667,
+  "best": 83,
+  "worst": 184,
+  "per": {
+   "juror-1": 146,
+   "juror-2": 127,
+   "juror-3": 132,
+   "juror-4": 184,
+   "juror-5": 123,
+   "internet": 83
+  },
+  "final": 143
+ },
+ {
+  "id": "S143",
+  "name": "Bear Put Spread",
+  "mean_rank": 132.83333333333334,
+  "std_rank": 41.7469227076147,
+  "mean_score": 4.666666666666667,
+  "best": 54,
+  "worst": 174,
+  "per": {
+   "juror-1": 106,
+   "juror-2": 54,
+   "juror-3": 174,
+   "juror-4": 158,
+   "juror-5": 167,
+   "internet": 138
+  },
+  "final": 144
+ },
+ {
+  "id": "S013",
+  "name": "TRIX",
+  "mean_rank": 133.16666666666666,
+  "std_rank": 29.44722209120733,
+  "mean_score": 4.166666666666667,
+  "best": 84,
+  "worst": 183,
+  "per": {
+   "juror-1": 147,
+   "juror-2": 128,
+   "juror-3": 133,
+   "juror-4": 183,
+   "juror-5": 124,
+   "internet": 84
+  },
+  "final": 145
+ },
+ {
+  "id": "S018",
+  "name": "Aroon Indicator",
+  "mean_rank": 133.16666666666666,
+  "std_rank": 29.76248570861573,
+  "mean_score": 4.166666666666667,
+  "best": 86,
+  "worst": 181,
+  "per": {
+   "juror-1": 152,
+   "juror-2": 113,
+   "juror-3": 138,
+   "juror-4": 181,
+   "juror-5": 129,
+   "internet": 86
+  },
+  "final": 146
+ },
+ {
+  "id": "S014",
+  "name": "Elder Ray",
+  "mean_rank": 133.83333333333334,
+  "std_rank": 28.887232858517656,
+  "mean_score": 4.166666666666667,
+  "best": 85,
+  "worst": 182,
+  "per": {
+   "juror-1": 148,
+   "juror-2": 129,
+   "juror-3": 134,
+   "juror-4": 182,
+   "juror-5": 125,
+   "internet": 85
+  },
+  "final": 147
+ },
+ {
+  "id": "S155",
+  "name": "Bid-Ask Spread Analysis",
+  "mean_rank": 135.16666666666666,
+  "std_rank": 32.88067652723844,
+  "mean_score": 4.5,
+  "best": 100,
+  "worst": 177,
+  "per": {
+   "juror-1": 110,
+   "juror-2": 101,
+   "juror-3": 177,
+   "juror-4": 149,
+   "juror-5": 100,
+   "internet": 174
+  },
+  "final": 148
+ },
+ {
+  "id": "S145",
+  "name": "Long Straddle",
+  "mean_rank": 136.16666666666666,
+  "std_rank": 33.15829039957009,
+  "mean_score": 4.166666666666667,
+  "best": 67,
+  "worst": 168,
+  "per": {
+   "juror-1": 137,
+   "juror-2": 168,
+   "juror-3": 67,
+   "juror-4": 155,
+   "juror-5": 157,
+   "internet": 133
+  },
+  "final": 149
+ },
+ {
+  "id": "S146",
+  "name": "Long Strangle",
+  "mean_rank": 136.83333333333334,
+  "std_rank": 33.19847720737939,
+  "mean_score": 4.166666666666667,
+  "best": 68,
+  "worst": 169,
+  "per": {
+   "juror-1": 138,
+   "juror-2": 169,
+   "juror-3": 68,
+   "juror-4": 156,
+   "juror-5": 158,
+   "internet": 132
+  },
+  "final": 150
+ },
+ {
+  "id": "S051",
+  "name": "Price Channel Trading",
+  "mean_rank": 137.83333333333334,
+  "std_rank": 25.009442661167444,
+  "mean_score": 4.166666666666667,
+  "best": 102,
+  "worst": 174,
+  "per": {
+   "juror-1": 174,
+   "juror-2": 138,
+   "juror-3": 154,
+   "juror-4": 102,
+   "juror-5": 149,
+   "internet": 110
+  },
+  "final": 151
+ },
+ {
+  "id": "S023",
+  "name": "Commodity Channel Index (CCI)",
+  "mean_rank": 138.33333333333334,
+  "std_rank": 25.077657165072036,
+  "mean_score": 4.166666666666667,
+  "best": 101,
+  "worst": 180,
+  "per": {
+   "juror-1": 154,
+   "juror-2": 120,
+   "juror-3": 143,
+   "juror-4": 180,
+   "juror-5": 132,
+   "internet": 101
+  },
+  "final": 152
+ },
+ {
+  "id": "S041",
+  "name": "Force Index",
+  "mean_rank": 138.66666666666666,
+  "std_rank": 28.911743096688046,
+  "mean_score": 4.166666666666667,
+  "best": 98,
+  "worst": 174,
+  "per": {
+   "juror-1": 166,
+   "juror-2": 98,
+   "juror-3": 103,
+   "juror-4": 174,
+   "juror-5": 146,
+   "internet": 145
+  },
+  "final": 153
+ },
+ {
+  "id": "S148",
+  "name": "Butterfly Spread",
+  "mean_rank": 139.33333333333334,
+  "std_rank": 35.98456459218159,
+  "mean_score": 4.0,
+  "best": 69,
+  "worst": 181,
+  "per": {
+   "juror-1": 139,
+   "juror-2": 170,
+   "juror-3": 69,
+   "juror-4": 147,
+   "juror-5": 181,
+   "internet": 130
+  },
+  "final": 154
+ },
+ {
+  "id": "S026",
+  "name": "Rate of Change (ROC)",
+  "mean_rank": 139.83333333333334,
+  "std_rank": 16.905784677309583,
+  "mean_score": 4.0,
+  "best": 115,
+  "worst": 162,
+  "per": {
+   "juror-1": 157,
+   "juror-2": 115,
+   "juror-3": 146,
+   "juror-4": 124,
+   "juror-5": 135,
+   "internet": 162
+  },
+  "final": 155
+ },
+ {
+  "id": "S027",
+  "name": "Momentum Oscillator",
+  "mean_rank": 140.83333333333334,
+  "std_rank": 16.905784677309583,
+  "mean_score": 4.0,
+  "best": 116,
+  "worst": 163,
+  "per": {
+   "juror-1": 158,
+   "juror-2": 116,
+   "juror-3": 147,
+   "juror-4": 125,
+   "juror-5": 136,
+   "internet": 163
+  },
+  "final": 156
+ },
+ {
+  "id": "S067",
+  "name": "Support/Resistance Flip",
+  "mean_rank": 140.83333333333334,
+  "std_rank": 24.6198880762868,
+  "mean_score": 4.0,
+  "best": 113,
+  "worst": 182,
+  "per": {
+   "juror-1": 131,
+   "juror-2": 153,
+   "juror-3": 113,
+   "juror-4": 113,
+   "juror-5": 153,
+   "internet": 182
+  },
+  "final": 157
+ },
+ {
+  "id": "S131",
+  "name": "Diwali / Muhurat Session",
+  "mean_rank": 142.16666666666666,
+  "std_rank": 37.51184997955831,
+  "mean_score": 3.5,
+  "best": 82,
+  "worst": 188,
+  "per": {
+   "juror-1": 103,
+   "juror-2": 157,
+   "juror-3": 82,
+   "juror-4": 151,
+   "juror-5": 188,
+   "internet": 172
+  },
+  "final": 158
+ },
+ {
+  "id": "S150",
+  "name": "Ratio Spread",
+  "mean_rank": 142.33333333333334,
+  "std_rank": 25.150657159516836,
+  "mean_score": 4.333333333333333,
+  "best": 108,
+  "worst": 175,
+  "per": {
+   "juror-1": 108,
+   "juror-2": 171,
+   "juror-3": 175,
+   "juror-4": 148,
+   "juror-5": 117,
+   "internet": 135
+  },
+  "final": 159
+ },
+ {
+  "id": "S152",
+  "name": "Synthetic Long/Short (Risk Reversal)",
+  "mean_rank": 142.83333333333334,
+  "std_rank": 42.557477473281814,
+  "mean_score": 4.166666666666667,
+  "best": 71,
+  "worst": 188,
+  "per": {
+   "juror-1": 109,
+   "juror-2": 173,
+   "juror-3": 71,
+   "juror-4": 188,
+   "juror-5": 182,
+   "internet": 134
+  },
+  "final": 160
+ },
+ {
+  "id": "S075",
+  "name": "Central Pivot Range (CPR)",
+  "mean_rank": 143,
+  "std_rank": 18.2208671582886,
+  "mean_score": 4.0,
+  "best": 117,
+  "worst": 168,
+  "per": {
+   "juror-1": 135,
+   "juror-2": 156,
+   "juror-3": 168,
+   "juror-4": 117,
+   "juror-5": 156,
+   "internet": 126
+  },
+  "final": 161
+ },
+ {
+  "id": "S132",
+  "name": "Samvat Year Seasonality",
+  "mean_rank": 143.16666666666666,
+  "std_rank": 37.51184997955831,
+  "mean_score": 3.5,
+  "best": 83,
+  "worst": 189,
+  "per": {
+   "juror-1": 104,
+   "juror-2": 158,
+   "juror-3": 83,
+   "juror-4": 152,
+   "juror-5": 189,
+   "internet": 173
+  },
+  "final": 162
+ },
+ {
+  "id": "S030",
+  "name": "Coppock Curve",
+  "mean_rank": 145.33333333333334,
+  "std_rank": 20.75786330258702,
+  "mean_score": 3.8333333333333335,
+  "best": 117,
+  "worst": 175,
+  "per": {
+   "juror-1": 125,
+   "juror-2": 117,
+   "juror-3": 150,
+   "juror-4": 175,
+   "juror-5": 139,
+   "internet": 166
+  },
+  "final": 163
+ },
+ {
+  "id": "S188",
+  "name": "Santa Claus Rally",
+  "mean_rank": 147.66666666666666,
+  "std_rank": 47.65034685661328,
+  "mean_score": 3.3333333333333335,
+  "best": 57,
+  "worst": 189,
+  "per": {
+   "juror-1": 117,
+   "juror-2": 184,
+   "juror-3": 57,
+   "juror-4": 154,
+   "juror-5": 185,
+   "internet": 189
+  },
+  "final": 164
+ },
+ {
+  "id": "S024",
+  "name": "Williams %R",
+  "mean_rank": 148.66666666666666,
+  "std_rank": 18.803073034893938,
+  "mean_score": 3.8333333333333335,
+  "best": 121,
+  "worst": 179,
+  "per": {
+   "juror-1": 155,
+   "juror-2": 121,
+   "juror-3": 144,
+   "juror-4": 179,
+   "juror-5": 133,
+   "internet": 160
+  },
+  "final": 165
+ },
+ {
+  "id": "S050",
+  "name": "Rising/Falling Wedge",
+  "mean_rank": 148.83333333333334,
+  "std_rank": 22.033434190389436,
+  "mean_score": 4.0,
+  "best": 109,
+  "worst": 173,
+  "per": {
+   "juror-1": 173,
+   "juror-2": 137,
+   "juror-3": 153,
+   "juror-4": 173,
+   "juror-5": 148,
+   "internet": 109
+  },
+  "final": 166
+ },
+ {
+  "id": "S025",
+  "name": "Money Flow Index (MFI)",
+  "mean_rank": 149.33333333333334,
+  "std_rank": 18.27262676488766,
+  "mean_score": 3.8333333333333335,
+  "best": 122,
+  "worst": 178,
+  "per": {
+   "juror-1": 156,
+   "juror-2": 122,
+   "juror-3": 145,
+   "juror-4": 178,
+   "juror-5": 134,
+   "internet": 161
+  },
+  "final": 167
+ },
+ {
+  "id": "S056",
+  "name": "Bullish/Bearish Engulfing",
+  "mean_rank": 150.66666666666666,
+  "std_rank": 23.27134623427608,
+  "mean_score": 3.5,
+  "best": 106,
+  "worst": 179,
+  "per": {
+   "juror-1": 179,
+   "juror-2": 143,
+   "juror-3": 158,
+   "juror-4": 106,
+   "juror-5": 169,
+   "internet": 149
+  },
+  "final": 168
+ },
+ {
+  "id": "S028",
+  "name": "StochRSI",
+  "mean_rank": 151.33333333333334,
+  "std_rank": 17.78263822446552,
+  "mean_score": 3.8333333333333335,
+  "best": 123,
+  "worst": 177,
+  "per": {
+   "juror-1": 159,
+   "juror-2": 123,
+   "juror-3": 148,
+   "juror-4": 177,
+   "juror-5": 137,
+   "internet": 164
+  },
+  "final": 169
+ },
+ {
+  "id": "S029",
+  "name": "Ultimate Oscillator",
+  "mean_rank": 152,
+  "std_rank": 17.31088289679838,
+  "mean_score": 3.8333333333333335,
+  "best": 124,
+  "worst": 176,
+  "per": {
+   "juror-1": 160,
+   "juror-2": 124,
+   "juror-3": 149,
+   "juror-4": 176,
+   "juror-5": 138,
+   "internet": 165
+  },
+  "final": 170
+ },
+ {
+  "id": "S053",
+  "name": "Rounding Bottom / Saucer",
+  "mean_rank": 152.5,
+  "std_rank": 18.661457606521523,
+  "mean_score": 3.8333333333333335,
+  "best": 121,
+  "worst": 176,
+  "per": {
+   "juror-1": 176,
+   "juror-2": 140,
+   "juror-3": 155,
+   "juror-4": 172,
+   "juror-5": 151,
+   "internet": 121
+  },
+  "final": 171
+ },
+ {
+  "id": "S059",
+  "name": "Morning / Evening Star",
+  "mean_rank": 153,
+  "std_rank": 24.562844569254054,
+  "mean_score": 3.5,
+  "best": 105,
+  "worst": 182,
+  "per": {
+   "juror-1": 182,
+   "juror-2": 146,
+   "juror-3": 161,
+   "juror-4": 105,
+   "juror-5": 172,
+   "internet": 152
+  },
+  "final": 172
+ },
+ {
+  "id": "S052",
+  "name": "Harmonic Patterns (Gartley/Bat/Crab)",
+  "mean_rank": 153.33333333333334,
+  "std_rank": 24.417662095749915,
+  "mean_score": 3.6666666666666665,
+  "best": 111,
+  "worst": 186,
+  "per": {
+   "juror-1": 175,
+   "juror-2": 139,
+   "juror-3": 111,
+   "juror-4": 186,
+   "juror-5": 150,
+   "internet": 159
+  },
+  "final": 173
+ },
+ {
+  "id": "S060",
+  "name": "Three White Soldiers / Black Crows",
+  "mean_rank": 153.66666666666666,
+  "std_rank": 25.216837408542908,
+  "mean_score": 3.5,
+  "best": 104,
+  "worst": 183,
+  "per": {
+   "juror-1": 183,
+   "juror-2": 147,
+   "juror-3": 162,
+   "juror-4": 104,
+   "juror-5": 173,
+   "internet": 153
+  },
+  "final": 174
+ },
+ {
+  "id": "S159",
+  "name": "Random Forest Signal Models",
+  "mean_rank": 156.83333333333334,
+  "std_rank": 25.36018313989252,
+  "mean_score": 3.8333333333333335,
+  "best": 112,
+  "worst": 181,
+  "per": {
+   "juror-1": 112,
+   "juror-2": 175,
+   "juror-3": 181,
+   "juror-4": 135,
+   "juror-5": 160,
+   "internet": 178
+  },
+  "final": 175
+ },
+ {
+  "id": "S186",
+  "name": "Day-of-Week Effect",
+  "mean_rank": 157.16666666666666,
+  "std_rank": 47.94933668872687,
+  "mean_score": 2.8333333333333335,
+  "best": 56,
+  "worst": 190,
+  "per": {
+   "juror-1": 143,
+   "juror-2": 182,
+   "juror-3": 56,
+   "juror-4": 185,
+   "juror-5": 190,
+   "internet": 187
+  },
+  "final": 176
+ },
+ {
+  "id": "S065",
+  "name": "Rising/Falling Window (Gap Candles)",
+  "mean_rank": 157.66666666666666,
+  "std_rank": 27.207025236549146,
+  "mean_score": 3.5,
+  "best": 103,
+  "worst": 188,
+  "per": {
+   "juror-1": 188,
+   "juror-2": 152,
+   "juror-3": 167,
+   "juror-4": 103,
+   "juror-5": 178,
+   "internet": 158
+  },
+  "final": 177
+ },
+ {
+  "id": "S055",
+  "name": "Doji Reversal",
+  "mean_rank": 160.5,
+  "std_rank": 12.672147936846908,
+  "mean_score": 3.3333333333333335,
+  "best": 142,
+  "worst": 178,
+  "per": {
+   "juror-1": 178,
+   "juror-2": 142,
+   "juror-3": 157,
+   "juror-4": 170,
+   "juror-5": 168,
+   "internet": 148
+  },
+  "final": 178
+ },
+ {
+  "id": "S057",
+  "name": "Hammer & Hanging Man",
+  "mean_rank": 161.16666666666666,
+  "std_rank": 12.005785642301335,
+  "mean_score": 3.3333333333333335,
+  "best": 144,
+  "worst": 180,
+  "per": {
+   "juror-1": 180,
+   "juror-2": 144,
+   "juror-3": 159,
+   "juror-4": 164,
+   "juror-5": 170,
+   "internet": 150
+  },
+  "final": 179
+ },
+ {
+  "id": "S141",
+  "name": "Protective Put",
+  "mean_rank": 162,
+  "std_rank": 22.18858565419016,
+  "mean_score": 3.5,
+  "best": 129,
+  "worst": 190,
+  "per": {
+   "juror-1": 136,
+   "juror-2": 166,
+   "juror-3": 172,
+   "juror-4": 190,
+   "juror-5": 179,
+   "internet": 129
+  },
+  "final": 180
+ },
+ {
+  "id": "S071",
+  "name": "Fibonacci Retracement",
+  "mean_rank": 162,
+  "std_rank": 24.241837114102278,
+  "mean_score": 3.3333333333333335,
+  "best": 117,
+  "worst": 189,
+  "per": {
+   "juror-1": 189,
+   "juror-2": 155,
+   "juror-3": 117,
+   "juror-4": 187,
+   "juror-5": 155,
+   "internet": 169
+  },
+  "final": 181
+ },
+ {
+  "id": "S058",
+  "name": "Harami / Harami Cross",
+  "mean_rank": 162.33333333333334,
+  "std_rank": 12.05081832168348,
+  "mean_score": 3.3333333333333335,
+  "best": 145,
+  "worst": 181,
+  "per": {
+   "juror-1": 181,
+   "juror-2": 145,
+   "juror-3": 160,
+   "juror-4": 166,
+   "juror-5": 171,
+   "internet": 151
+  },
+  "final": 182
+ },
+ {
+  "id": "S054",
+  "name": "Island Reversal / Gap Patterns",
+  "mean_rank": 163,
+  "std_rank": 14.364307617610162,
+  "mean_score": 3.5,
+  "best": 141,
+  "worst": 181,
+  "per": {
+   "juror-1": 177,
+   "juror-2": 141,
+   "juror-3": 156,
+   "juror-4": 171,
+   "juror-5": 152,
+   "internet": 181
+  },
+  "final": 183
+ },
+ {
+  "id": "S158",
+  "name": "LSTM Price Prediction",
+  "mean_rank": 165.16666666666666,
+  "std_rank": 13.45878482214828,
+  "mean_score": 3.3333333333333335,
+  "best": 141,
+  "worst": 180,
+  "per": {
+   "juror-1": 141,
+   "juror-2": 174,
+   "juror-3": 180,
+   "juror-4": 160,
+   "juror-5": 159,
+   "internet": 177
+  },
+  "final": 184
+ },
+ {
+  "id": "S061",
+  "name": "Marubozu Continuation",
+  "mean_rank": 165.33333333333334,
+  "std_rank": 12.05081832168348,
+  "mean_score": 3.3333333333333335,
+  "best": 148,
+  "worst": 184,
+  "per": {
+   "juror-1": 184,
+   "juror-2": 148,
+   "juror-3": 163,
+   "juror-4": 169,
+   "juror-5": 174,
+   "internet": 154
+  },
+  "final": 185
+ },
+ {
+  "id": "S062",
+  "name": "Shooting Star / Inverted Hammer",
+  "mean_rank": 165.5,
+  "std_rank": 11.940826325398646,
+  "mean_score": 3.3333333333333335,
+  "best": 149,
+  "worst": 185,
+  "per": {
+   "juror-1": 185,
+   "juror-2": 149,
+   "juror-3": 164,
+   "juror-4": 165,
+   "juror-5": 175,
+   "internet": 155
+  },
+  "final": 186
+ },
+ {
+  "id": "S063",
+  "name": "Tweezer Tops/Bottoms",
+  "mean_rank": 166.83333333333334,
+  "std_rank": 11.9501278468289,
+  "mean_score": 3.3333333333333335,
+  "best": 150,
+  "worst": 186,
+  "per": {
+   "juror-1": 186,
+   "juror-2": 150,
+   "juror-3": 165,
+   "juror-4": 168,
+   "juror-5": 176,
+   "internet": 156
+  },
+  "final": 187
+ },
+ {
+  "id": "S160",
+  "name": "Reinforcement Learning Trading",
+  "mean_rank": 166.83333333333334,
+  "std_rank": 13.825298871593658,
+  "mean_score": 3.3333333333333335,
+  "best": 142,
+  "worst": 182,
+  "per": {
+   "juror-1": 142,
+   "juror-2": 176,
+   "juror-3": 182,
+   "juror-4": 161,
+   "juror-5": 161,
+   "internet": 179
+  },
+  "final": 188
+ },
+ {
+  "id": "S064",
+  "name": "Dark Cloud Cover / Piercing Line",
+  "mean_rank": 167.5,
+  "std_rank": 11.940826325398646,
+  "mean_score": 3.3333333333333335,
+  "best": 151,
+  "worst": 187,
+  "per": {
+   "juror-1": 187,
+   "juror-2": 151,
+   "juror-3": 166,
+   "juror-4": 167,
+   "juror-5": 177,
+   "internet": 157
+  },
+  "final": 189
+ },
+ {
+  "id": "S163",
+  "name": "Monte Carlo Portfolio Simulation",
+  "mean_rank": 180.33333333333334,
+  "std_rank": 9.392668535736915,
+  "mean_score": 3.0,
+  "best": 162,
+  "worst": 190,
+  "per": {
+   "juror-1": 190,
+   "juror-2": 177,
+   "juror-3": 184,
+   "juror-4": 189,
+   "juror-5": 162,
+   "internet": 180
+  },
+  "final": 190
+ }
+]
