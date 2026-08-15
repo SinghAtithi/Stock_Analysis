@@ -1,0 +1,186 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0b0b0c;
+  --color-panel: #131316;
+  --color-panel-2: #18181b;
+  --color-paper: #f4f4f1;
+  --color-muted: #7a7a75;
+  --color-faint: #4a4a46;
+  --color-hairline: rgb(255 255 255 / 0.09);
+  --color-hairline-strong: rgb(255 255 255 / 0.18);
+  --color-up: #c6f534;
+  --color-down: #ff5032;
+  --font-display: var(--font-archivo);
+  --font-mono: var(--font-jetbrains);
+}
+
+@theme inline {
+  --font-sans: var(--font-archivo);
+  --font-mono: var(--font-jetbrains);
+}
+
+* {
+  border-color: var(--color-hairline);
+}
+
+html {
+  background: var(--color-ink);
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-mono);
+}
+
+::selection {
+  background: var(--color-up);
+  color: #000;
+}
+
+/* ---------- scrollbar ---------- */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #26262a;
+  border: 3px solid var(--color-ink);
+  border-radius: 8px;
+}
+
+/* ---------- ticker tape ---------- */
+
+@keyframes tape-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.tape-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: tape-scroll var(--tape-duration, 90s) linear infinite;
+  will-change: transform;
+}
+.tape-wrap:hover .tape-track {
+  animation-play-state: paused;
+}
+
+/* ---------- odometer ---------- */
+
+.odometer-digit {
+  position: relative;
+  overflow: hidden;
+  height: 1em;
+  display: inline-block;
+  vertical-align: baseline;
+}
+.odometer-strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- misc motion ---------- */
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.cursor-blink {
+  animation: blink 1.1s steps(1) infinite;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes sweep {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.animate-sweep {
+  animation: sweep 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes chart-reveal {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(101%);
+  }
+}
+.chart-reveal {
+  animation: chart-reveal 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+.animate-dot-pulse {
+  animation: dot-pulse 1.6s ease-in-out infinite;
+}
+
+/* scanline — extremely subtle CRT texture over the chart only */
+.scanlines {
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    rgb(0 0 0 / 0.06) 3px,
+    transparent 4px
+  );
+  mix-blend-mode: overlay;
+}
+
+/* ---------- accessibility ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .tape-track {
+    animation: none;
+  }
+}

@@ -4,6 +4,28 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-16 — Session 3: NSE Data Research + React App (NIFTY//TERM)
+
+### Data source research (first principles, live-tested)
+- **Winner: Yahoo Finance** (free, no key): chart API works via curl but **429s Node's undici TLS fingerprint** → proxied through curl subprocess (execFile, no shell).
+- NSE official API: Akamai 403 from this IP — rejected. Moneycontrol priceapi: flaky Akamai — rejected.
+- **Groww public chart API**: works (daily/weekly/monthly, no intraday) → kept as fallback for equities.
+- **Upstox CDN instrument masters** (free, public): built local search index of 5,949 NSE+BSE symbols (`src/data/instruments.json`, build script `scripts/build-instruments.mjs`). Search is local → zero upstream throttle risk.
+- Ticker tape: Yahoo spark endpoint (chunked ×24) with 90s cache; tape hides when upstream throttles.
+
+### App (web/)
+- Next.js 16 + React 19 + Tailwind 4 + lightweight-charts 5 + JetBrains Mono / Archivo.
+- **Design direction (user rejected v1 "AI slop" glass/cyan look)**: stark institutional terminal — paper-on-ink, acid-lime (#c6f534) up / red-orange (#ff5032) down, no glass, no gradients, no blue.
+- Features: live NIFTY-50 ticker tape, odometer rolling price, crosshair OHLC legend, range keys 1–8, `/` focus search, keyboard nav, BSE→NSE auto-retry, reduced-motion + hydration-safe IST clock.
+- Verified: lint + tsc clean; playwright E2E (hydration 0 errors, search-select, watchlist, range keys, mobile).
+- Screenshots in `docs/inspiration/` (4 reference sites + 3 app shots).
+
+### Known issues / next
+- Yahoo throttle is IP-wide and bursts 429s; ticker tape self-heals (polls every 90s, hides when empty).
+- Ticker depends on Yahoo cooldown lifting; NSE official APIs need a residential IP or proxy for richer India data later.
+
+---
+
 ## 2026-08-16 — Session 2: Strategy Research + Model-Diverse Jury
 
 ### Final Jury Lineup (all isolated sandboxes, unaware of each other)
