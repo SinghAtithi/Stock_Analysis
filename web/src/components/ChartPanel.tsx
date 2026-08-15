@@ -84,6 +84,7 @@ export default function ChartPanel({
       wickUpColor: UP,
       wickDownColor: DOWN,
       borderVisible: false,
+      priceLineVisible: false,
     });
     const vol = chart.addSeries(HistogramSeries, {
       priceFormat: { type: "volume" },
@@ -142,9 +143,15 @@ export default function ChartPanel({
       }))
     );
 
+    /* slim candles: adapt bar spacing to candle count so bars never blob */
+    const width = containerRef.current?.clientWidth ?? 800;
+    const count = Math.max(data.candles.length, 1);
+    const spacing = Math.min(Math.max(width / count, 1.5), 9);
+
     chartRef.current.timeScale().applyOptions({
       timeVisible: isIntraday,
       secondsVisible: false,
+      barSpacing: spacing,
     });
     chartRef.current.timeScale().fitContent();
     setLegend({ o: null, h: null, l: null, c: null, v: null });
@@ -172,7 +179,9 @@ export default function ChartPanel({
           ))}
         </div>
         <span className="hidden sm:block font-mono text-[10px] tracking-widest text-faint">
-          {data ? `${data.source.toUpperCase()} · ${data.interval}` : ""}
+          {data
+            ? `${data.candles.length} BARS · ${data.source.toUpperCase()} · ${data.interval.toUpperCase()}`
+            : ""}
         </span>
       </div>
 

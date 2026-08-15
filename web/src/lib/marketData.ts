@@ -73,8 +73,8 @@ async function fetchYahooChart(
 /* ---------- Groww (fallback, equities only) ---------- */
 
 const GROWW_RESOLUTION: Record<string, string | null> = {
-  "1d": null,
-  "5d": null,
+  "1d": "daily",
+  "5d": "daily",
   "1mo": "daily",
   "3mo": "daily",
   "6mo": "daily",
@@ -82,6 +82,19 @@ const GROWW_RESOLUTION: Record<string, string | null> = {
   "2y": "weekly",
   "5y": "weekly",
   max: "monthly",
+};
+
+/* candles kept after slicing (weekly for 2y/5y, monthly for max) */
+const GROWW_WINDOW: Record<string, number> = {
+  "1d": 2,
+  "5d": 6,
+  "1mo": 25,
+  "3mo": 70,
+  "6mo": 130,
+  "1y": 260,
+  "2y": 110,
+  "5y": 260,
+  max: Infinity,
 };
 
 const GROWW_SIZE: Record<string, number> = {
@@ -109,7 +122,8 @@ async function fetchGrowwChart(
     const data = await curlJson(url, ["-H", "x-app-id: growwWeb"]);
     const candles = data["candles"];
     if (!Array.isArray(candles)) return null;
-    return candles
+    const window = GROWW_WINDOW[range] ?? Infinity;
+    const parsed = candles
       .map((c) => {
         const row = Array.isArray(c) ? c : [];
         const out: Candle = {
@@ -125,6 +139,61 @@ async function fetchGrowwChart(
       .filter((c) =>
         [c.open, c.high, c.low, c.close].every((v) => Number.isFinite(v))
       );
+    return window === Infinity ? parsed : parsed.slice(-window);
+  } catch {
+    return null;
+  }
+}
+
+/* ---------- Moneycontrol (fallback 2, equities, daily/weekly/monthly) ---------- */
+
+const MC_SPEC: Record<string, { res: string; cb: number; days: number; label: string } | null> = {
+  "1d": null,
+  "5d": null,
+  "1mo": { res: "1D", cb: 25, days: 35, label: "1d" },
+  "3mo": { res: "1D", cb: 70, days: 100, label: "1d" },
+  "6mo": { res: "1D", cb: 130, days: 190, label: "1d" },
+  "1y": { res: "1D", cb: 260, days: 380, label: "1d" },
+  "2y": { res: "1W", cb: 110, days: 760, label: "1wk" },
+  "5y": { res: "1W", cb: 260, days: 1900, label: "1wk" },
+  max: { res: "1M", cb: 300, days: 9500, label: "1mo" },
+};
+
+async function fetchMoneycontrolChart(
+  tradingSymbol: string,
+  range: string
+): Promise<{ candles: Candle[]; interval: string } | null> {
+  const spec = MC_SPEC[range];
+  if (!spec) return null;
+  const now = Math.floor(Date.now() / 1000);
+  const from = now - spec.days * 86400;
+  const url =
+    `https://priceapi.moneycontrol.com/techCharts/indianMarket/stock/history` +
+    `?symbol=${encodeURIComponent(tradingSymbol)}&resolution=${spec.res}` +
+    `&from=${from}&to=${now}&countback=${spec.cb}&currencyCode=INR`;
+  try {
+    const data = await curlJson(url);
+    if (data["s"] !== "ok") return null;
+    const t = data["t"] as number[];
+    const o = data["o"] as number[];
+    const h = data["h"] as number[];
+    const l = data["l"] as number[];
+    const c = data["c"] as number[];
+    const v = (data["v"] as number[]) ?? [];
+    if (!Array.isArray(t) || !Array.isArray(c) || !t.length) return null;
+    const candles: Candle[] = t
+      .map((time, i) => ({
+        time,
+        open: Number(o?.[i]),
+        high: Number(h?.[i]),
+        low: Number(l?.[i]),
+        close: Number(c?.[i]),
+        volume: Number(v?.[i] ?? 0),
+      }))
+      .filter((x) =>
+        [x.open, x.high, x.low, x.close].every((n) => Number.isFinite(n))
+      );
+    return candles.length ? { candles, interval: spec.label } : null;
   } catch {
     return null;
   }
@@ -171,7 +240,7 @@ export interface ChartPayload {
   range: string;
   interval: string;
   candles: Candle[];
-  source: "yahoo" | "groww";
+  source: "yahoo" | "groww" | "moneycontrol";
 }
 
 export async function getChart(
@@ -230,8 +299,35 @@ export async function getChart(
     }
   }
 
-  /* Groww fallback (equities only, both exchanges) */
+  /* fallbacks for equities: Moneycontrol (long ranges) -> Groww (short windows) */
   if (!isIndex && !symbol.includes(".")) {
+    const mc = await fetchMoneycontrolChart(symbol, range);
+    if (mc) {
+      const inst = findInstrument(symbol);
+      const closes = mc.candles.map((x) => x.close);
+      const first = closes[0];
+      const last = closes[closes.length - 1];
+      const p: ChartPayload = {
+        symbol,
+        name: inst?.n ?? symbol,
+        exchange,
+        fullExchangeName: exchange === "NSE" ? "National Stock Exchange" : "BSE",
+        currency: "INR",
+        regularMarketPrice: last,
+        regularMarketTime: mc.candles[mc.candles.length - 1].time,
+        fiftyTwoWeekHigh: Math.max(...mc.candles.map((x) => x.high)),
+        fiftyTwoWeekLow: Math.min(...mc.candles.map((x) => x.low)),
+        change: last - first,
+        changePct: first !== 0 ? ((last - first) / first) * 100 : null,
+        range,
+        interval: mc.interval,
+        candles: mc.candles,
+        source: "moneycontrol",
+      };
+      cacheSet(cacheKey, p, ttl);
+      return p;
+    }
+
     const exchanges = exchange === "NSE" ? ["NSE", "BSE"] : ["BSE", "NSE"];
     for (const ex of exchanges) {
       const candles = await fetchGrowwChart(symbol, ex, range);

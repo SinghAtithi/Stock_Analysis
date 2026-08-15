@@ -31,7 +31,7 @@ export interface ChartData {
   range: string;
   interval: string;
   candles: Candle[];
-  source: "yahoo" | "groww";
+  source: "yahoo" | "groww" | "moneycontrol";
 }
 
 export interface TickerItem {

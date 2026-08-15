@@ -66,7 +66,6 @@ export default function Home() {
               ? "symbol not found"
               : json.error ?? "upstream failure"
           );
-          setData(null);
           return;
         }
         setData(json);

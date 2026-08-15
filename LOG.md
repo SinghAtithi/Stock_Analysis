@@ -4,6 +4,40 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-16 — Session 4b: Fixes — timeframe sameness + bulky candles
+
+### Bug: all timeframes showed the same chart
+- Root cause: Yahoo IP-throttle forced everything to the Groww fallback, which hard-caps at 25 daily candles regardless of requested size/pagination (tested) — so 1M/3M/6M/1Y all rendered the same 25 bars, and 1D/5D errored leaving the stale chart.
+- Fix 1: fallback chain is now **Yahoo → Moneycontrol → Groww**. Moneycontrol `priceapi` gives up to 300 OHLCV candles (1D/1W/1M; no intraday) with per-range windows (1M=25, 3M=70, 6M=130, 1Y=260, 5Y=260w, MAX=298m). Groww serves 1D/5D degraded daily windows (2/6 bars).
+- Fix 2: failed fetches no longer wipe the existing chart — old data stays with an error banner.
+- Verified: all 8 ranges return distinct candle counts (2/6/25/70/130/260/260/298) in live E2E.
+
+### Bulky candles
+- Adaptive `barSpacing` = clamp(containerWidth / candleCount, 1.5, 9) after every data set → slim bars at all zoom levels; disabled price line overlay.
+
+### Other
+- Chart header now shows terminal-style `N BARS · SOURCE · INTERVAL` readout.
+- Data sources tested and rejected: BSE api (empty), Stooq (JS challenge), Finology (DNS dead), NSE (Akamai 403). Moneycontrol Akamai blocks are transient — chain retries next source.
+
+---
+
+## 2026-08-16 — Session 4: Scrum planning — 30-task roadmap
+
+### Decisions made (scrum master = CTO/CDO)
+- **Product thesis**: the 190-strategy jury research (RANKINGS.md) is the moat. NIFTY//TERM evolves from chart viewer → strategy-powered Indian market terminal: signals → screener → backtests → alerts → breadth → monetize (freemium).
+- **Priority**: fix data correctness + reliability before features; strategy engine implements jury top-ranked strategies first (S100 momentum #1, S104 PEAD #2, S174/S172 TSM/dual #3/#5, quality trio #4/#7/#10, value family, S081 F-Score #9).
+- **Architecture**: SQLite (better-sqlite3) + migrations, anon-first (device id) with later auth claim, Yahoo-via-curl with circuit breaker + stale-while-revalidate.
+- **Tooling**: lint + `npx tsc --noEmit` mandatory per task; Playwright E2E + axe + Lighthouse in-repo; CI + Vercel deploy.
+- Created `ROADMAP.md`: 30 tasks, 5 phases (A Stabilize 1–7, B Data platform 8–13, C Strategy engine 14–20, D Screener/Backtest/Alerts/Breadth 21–26, E Launch & growth 27–30), with acceptance criteria + dependency graph.
+- Subagents will be assigned one task each; every task ends with LOG.md entry.
+
+### Known bugs to fix first (in task 2)
+- Day change computed as first-vs-last candle instead of vs previousClose (Yahoo meta has `previousClose`).
+- 52W high/low faked from visible window on Groww/Moneycontrol fallback paths.
+- Initial-load errors swallowed (no retry UI).
+
+---
+
 ## 2026-08-16 — Session 3: NSE Data Research + React App (NIFTY//TERM)
 
 ### Data source research (first principles, live-tested)
