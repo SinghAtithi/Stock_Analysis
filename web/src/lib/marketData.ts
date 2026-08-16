@@ -10,6 +10,21 @@ const UA =
 
 type JsonObject = Record<string, unknown>;
 
+/* Yahoo index tickers differ from exchange names (NIFTY 50 != ^NSEI).
+   Kept minimal + verified; unknown names fall back to the generic caret. */
+const INDEX_MAP: Record<string, string> = {
+  "NIFTY 50": "^NSEI",
+  NIFTY: "^NSEI",
+  SENSEX: "^BSESN",
+  BANKNIFTY: "^NSEBANK",
+  "NIFTY BANK": "^NSEBANK",
+  "NIFTY FIN SERVICE": "^NIFTY_FIN_SERVICE",
+  FINNIFTY: "^NIFTY_FIN_SERVICE",
+  "INDIA VIX": "^INDIAVIX",
+  "NIFTY MIDCAP 100": "^NSEMDCP50",
+  "NIFTY NEXT 50": "^NSENEXT50",
+};
+
 /* Yahoo TLS-fingerprints Node's undici and 429s it; curl passes. execFile: no shell.
    -w appends "\n<http_code>" so callers can distinguish 429s from parse errors. */
 async function curlRaw(
@@ -377,8 +392,8 @@ export async function getChart(
   if (symbol.includes(".")) {
     yahooSymbol = symbol;
   } else if (isIndex) {
-    const code = symbol.replace(/[^A-Z0-9]/g, "_");
-    const viaCaret = await fetchYahooChart(`%5E${code}`, range, interval);
+    const caret = INDEX_MAP[symbol] ?? `^${symbol.replace(/[^A-Z0-9]/g, "_")}`;
+    const viaCaret = await fetchYahooChart(caret, range, interval);
     if (viaCaret) {
       const p = yahooToPayload(viaCaret, range, interval);
       if (p) {
@@ -386,7 +401,7 @@ export async function getChart(
         return p;
       }
     }
-    yahooSymbol = `${code}.NS`;
+    yahooSymbol = `${symbol.replace(/[^A-Z0-9]/g, "_")}.NS`;
   } else {
     yahooSymbol = `${symbol}.${exchange === "BSE" ? "BO" : "NS"}`;
   }
@@ -857,6 +872,8 @@ export async function getTicker(): Promise<TickerItem[]> {
       if (!tapeEntry) continue;
       const price = asNum(rec["regularMarketPrice"]);
       const prevClose = asNum(rec["previousClose"]);
+      const sourceSym = tapeEntry.s;
+      const isIndex = sourceSym.startsWith("^");
       items.push({
         symbol: tapeEntry.n,
         name: tapeEntry.n,
@@ -865,6 +882,8 @@ export async function getTicker(): Promise<TickerItem[]> {
           price !== null && prevClose != null && prevClose !== 0
             ? ((price - prevClose) / prevClose) * 100
             : null,
+        exchange: isIndex || sourceSym.endsWith(".NS") ? "NSE" : "BSE",
+        type: isIndex ? "Index" : "Equity",
       });
     }
   }

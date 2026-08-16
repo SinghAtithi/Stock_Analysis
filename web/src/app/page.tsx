@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import Search from "@/components/Search";
 import ChartPanel from "@/components/ChartPanel";
 import StatsRail from "@/components/StatsRail";
@@ -9,9 +15,17 @@ import Odometer from "@/components/Odometer";
 import Watchlist from "@/components/Watchlist";
 import StarToggle from "@/components/StarToggle";
 import MarketStatus from "@/components/MarketStatus";
-import type { ChartData, SearchResult, RangeKey, TickerItem } from "@/lib/types";
+import Modal from "@/components/Modal";
+import type {
+  ChartData,
+  SearchResult,
+  RangeKey,
+  TickerItem,
+} from "@/lib/types";
+import type { WatchlistEntry } from "@/lib/watchlist";
 import { RANGES } from "@/lib/types";
 import { timeAgo } from "@/lib/format";
+import { searchInstruments } from "@/lib/instruments";
 import {
   addToWatchlist,
   getServerWatchlistSnapshot,
@@ -21,16 +35,20 @@ import {
 } from "@/lib/watchlist";
 
 function useISTClock() {
-  const [time, setTime] = useState<string | null>(null);
+  const [time, setTime] = useState<{ hhmm: string; ss: string } | null>(null);
   useEffect(() => {
-    const fmt = () =>
-      new Intl.DateTimeFormat("en-IN", {
+    const fmt = () => {
+      const now = new Date();
+      const p = new Intl.DateTimeFormat("en-IN", {
         timeZone: "Asia/Kolkata",
         hour12: false,
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
-      }).format(new Date());
+      }).formatToParts(now);
+      const get = (t: string) => p.find((x) => x.type === t)?.value ?? "00";
+      return { hhmm: `${get("hour")}:${get("minute")}`, ss: get("second") };
+    };
     const t = setInterval(() => setTime(fmt()), 1000);
     return () => clearInterval(t);
   }, []);
@@ -39,21 +57,46 @@ function useISTClock() {
 
 const chartUrl = (
   r: { symbol: string; exchange: string; type: string },
-  rangeKey: RangeKey
+  rangeKey: RangeKey,
 ): string => {
   const cfg = RANGES.find((x) => x.range === rangeKey) ?? RANGES[5];
   return `/api/chart?symbol=${encodeURIComponent(r.symbol)}&exchange=${encodeURIComponent(
-    r.exchange
+    r.exchange,
   )}&type=${encodeURIComponent(r.type)}&range=${cfg.range}&interval=${cfg.interval}`;
 };
 
 const errorMessage = (res: Response, json: { error?: string }): string => {
   if (!res.ok || json.error) {
-    return json.error === "not_found"
-      ? "symbol not found"
-      : json.error ?? "upstream failure";
+    if (json.error === "not_found") return "symbol not found";
+    if (json.error === "index_unavailable")
+      return "index data unavailable — upstream throttled";
+    return json.error ?? "upstream failure";
   }
   return "";
+};
+
+/* resolve ?s=&e= against the persisted watchlist, falling back to the local
+   instrument index (deep links to non-watchlist symbols) */
+const resolveTarget = (params: URLSearchParams): WatchlistEntry | null => {
+  const s = params.get("s");
+  if (!s) return null;
+  const e = params.get("e");
+  const hit = getWatchlistSnapshot().find(
+    (x) => x.symbol === s && (!e || x.exchange === e),
+  );
+  if (hit) return hit;
+  const found = searchInstruments(s, 1)[0];
+  if (found && found.symbol.toUpperCase() === s.toUpperCase()) {
+    return {
+      symbol: found.symbol,
+      name: found.name,
+      shortName: found.symbol,
+      exchange: found.exchange,
+      type: found.isIndex ? "Index" : "Equity",
+      sector: found.sector ?? "",
+    };
+  }
+  return null;
 };
 
 export default function Home() {
@@ -61,11 +104,16 @@ export default function Home() {
   const watchlist = useSyncExternalStore(
     subscribeWatchlist,
     getWatchlistSnapshot,
-    getServerWatchlistSnapshot
+    getServerWatchlistSnapshot,
   );
   const [picked, setPicked] = useState<SearchResult | null>(null);
   const selected = picked ?? watchlist[0] ?? null;
+  const selectedRef = useRef(selected);
+  useEffect(() => {
+    selectedRef.current = selected;
+  });
   const [wlOpen, setWlOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const [data, setData] = useState<ChartData | null>(null);
   const [range, setRange] = useState<RangeKey>("1y");
   const [loading, setLoading] = useState(true);
@@ -76,7 +124,10 @@ export default function Home() {
   const clock = useISTClock();
 
   const load = useCallback(
-    async (r: { symbol: string; exchange: string; type: string }, rangeKey: RangeKey) => {
+    async (
+      r: { symbol: string; exchange: string; type: string },
+      rangeKey: RangeKey,
+    ) => {
       const id = ++reqId.current;
       setLoading(true);
       setError(null);
@@ -96,7 +147,7 @@ export default function Home() {
         if (id === reqId.current) setLoading(false);
       }
     },
-    []
+    [],
   );
 
   const retry = useCallback(() => {
@@ -104,15 +155,24 @@ export default function Home() {
     if (selected) load(selected, range);
   }, [selected, range, load]);
 
-  /* initial load — first persisted watchlist entry; errors surface in the badge */
+  /* initial load — deep-link (URL ?s=&e=&r=) takes priority, else first
+     persisted watchlist entry; errors surface in the badge */
   useEffect(() => {
-    const first = getWatchlistSnapshot()[0];
-    if (!first) return;
+    const params = new URLSearchParams(location.search);
+    const target = resolveTarget(params) ?? getWatchlistSnapshot()[0] ?? null;
+    if (!target) return;
+    const rangeParam = params.get("r") as RangeKey | null;
+    const startRange: RangeKey =
+      rangeParam && RANGES.some((x) => x.range === rangeParam)
+        ? rangeParam
+        : "1y";
     let cancelled = false;
     const id = ++reqId.current;
     (async () => {
+      setPicked(target);
+      setRange(startRange);
       try {
-        const res = await fetch(chartUrl(first, "1y"));
+        const res = await fetch(chartUrl(target, startRange));
         const json = await res.json();
         if (cancelled || id !== reqId.current) return;
         const err = errorMessage(res, json);
@@ -152,13 +212,60 @@ export default function Home() {
     };
   }, [tickerNonce]);
 
-  /* number keys switch ranges, r retries */
+  const pick = useCallback(
+    (r: SearchResult) => {
+      setPicked(r);
+      setRange("1y");
+      load(r, "1y");
+    },
+    [load],
+  );
+
+  /* number keys switch ranges, r retries, ? help, j/k step the watchlist */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const tag = (document.activeElement?.tagName ?? "").toLowerCase();
       if (tag === "input" || tag === "textarea") return;
-      if ((e.key === "r" || e.key === "R") && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      if (e.key === "?" || (e.key === "/" && e.shiftKey)) {
+        setHelpOpen((v) => !v);
+        return;
+      }
+      if (e.key === "Escape") {
+        setHelpOpen(false);
+        return;
+      }
+      if (
+        (e.key === "r" || e.key === "R") &&
+        !e.ctrlKey &&
+        !e.metaKey &&
+        !e.altKey
+      ) {
         retry();
+        return;
+      }
+      if (
+        watchlist.length > 0 &&
+        (e.key === "j" || e.key === "k" || e.key === "J" || e.key === "K")
+      ) {
+        const idx = watchlist.findIndex(
+          (w) =>
+            selected != null &&
+            w.symbol === selected.symbol &&
+            w.exchange === selected.exchange,
+        );
+        const step = e.key === "j" || e.key === "J" ? 1 : -1;
+        const nextIdx = (idx + step + watchlist.length) % watchlist.length;
+        const next = watchlist[nextIdx];
+        if (
+          next &&
+          !(
+            selected &&
+            next.symbol === selected.symbol &&
+            next.exchange === selected.exchange
+          )
+        ) {
+          pick(next);
+        }
         return;
       }
       const n = Number(e.key);
@@ -169,13 +276,7 @@ export default function Home() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [selected, load, retry]);
-
-  const pick = (r: SearchResult) => {
-    setPicked(r);
-    setRange("1y");
-    load(r, "1y");
-  };
+  }, [selected, load, retry, watchlist, pick]);
 
   const removeEntry = (e: { symbol: string; exchange: string }) => {
     /* if the derived selection was the removed entry, advance to the new head */
@@ -187,21 +288,24 @@ export default function Home() {
     removeFromWatchlist(e.symbol, e.exchange);
     if (wasDerivedHead) {
       const next = getWatchlistSnapshot().find(
-        (x) => !(x.symbol === e.symbol && x.exchange === e.exchange)
+        (x) => !(x.symbol === e.symbol && x.exchange === e.exchange),
       );
       if (next) load(next, "1y");
     }
   };
 
-  const changeRange = (r: RangeKey) => {
-    setRange(r);
-    if (selected) load(selected, r);
-  };
+  const changeRange = useCallback(
+    (r: RangeKey) => {
+      setRange(r);
+      if (selectedRef.current) load(selectedRef.current, r);
+    },
+    [load],
+  );
 
   const starred =
     selected != null &&
     watchlist.some(
-      (e) => e.symbol === selected.symbol && e.exchange === selected.exchange
+      (e) => e.symbol === selected.symbol && e.exchange === selected.exchange,
     );
 
   const toggleStar = () => {
@@ -244,8 +348,77 @@ export default function Home() {
     pick(r);
   };
 
+  /* document title tracks the active instrument.
+     React's metadata manager re-applies the layout <title> after hydration,
+     so re-assert a few ticks to converge on the symbol title. */
+  useEffect(() => {
+    const apply = () => {
+      document.title = selected
+        ? `${selected.symbol} · ${range.toUpperCase()} — NIFTY//TERM`
+        : "NIFTY//TERM — Indian Stock Terminal";
+    };
+    const timers = [0, 120, 400].map((d) => window.setTimeout(apply, d));
+    return () => timers.forEach((t) => window.clearTimeout(t));
+  }, [selected, range]);
+
+  /* keep URL in sync — user-driven changes only. Never on mount: the initial
+     URL already carries the deep link, and a mount-time replaceState would
+     race StrictMode's double effect pass and clobber it. */
+  const urlInited = useRef(false);
+  useEffect(() => {
+    if (!urlInited.current) {
+      urlInited.current = true;
+      return;
+    }
+    if (!selected) return;
+    const q = new URLSearchParams({
+      s: selected.symbol,
+      e: selected.exchange,
+      r: range,
+    });
+    history.pushState(null, "", `?${q}`);
+  }, [selected, range]);
+
+  /* history back/forward restores symbol + range (stable refs — pick and
+     changeRange are useCallback with [load], effectively constant) */
+  const popPick = useRef(pick);
+  const popRange = useRef(changeRange);
+  useEffect(() => {
+    popPick.current = pick;
+    popRange.current = changeRange;
+  });
+  useEffect(() => {
+    const onPop = () => {
+      const params = new URLSearchParams(location.search);
+      const s = params.get("s");
+      if (!s) return;
+      const entry = resolveTarget(params);
+      if (!entry) return;
+      const targetRange =
+        (params.get("r") as RangeKey | null) &&
+        RANGES.some((x) => x.range === params.get("r"))
+          ? (params.get("r") as RangeKey)
+          : "1y";
+      const current = selectedRef.current;
+      const symbolChanged =
+        !current ||
+        current.symbol !== entry.symbol ||
+        current.exchange !== entry.exchange;
+      if (symbolChanged) popPick.current(entry);
+      else if (targetRange !== range) popRange.current(targetRange);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [range]);
+
   return (
     <div className="flex min-h-screen flex-col bg-ink">
+      <a
+        href="#chart"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:border focus:border-up/40 focus:bg-ink focus:px-3 focus:py-2 focus:font-mono focus:text-[11px] focus:tracking-widest focus:text-up"
+      >
+        SKIP TO CHART
+      </a>
       {/* ---------- top bar ---------- */}
       <header className="flex items-center justify-between border-b border-hairline px-4 sm:px-6 py-3">
         <div className="flex items-center gap-3">
@@ -256,7 +429,17 @@ export default function Home() {
           </span>
         </div>
         <div className="flex items-center gap-4 sm:gap-6 font-mono text-[11px] tracking-widest text-muted">
-          <span className="tabular-nums text-faint">{clock ? `${clock} IST` : "—:—:— IST"}</span>
+          <span className="tabular-nums text-faint">
+            {clock ? (
+              <>
+                {clock.hhmm}
+                <span className="hidden min-[420px]:inline">:{clock.ss}</span>
+                <span className="hidden min-[540px]:inline"> IST</span>
+              </>
+            ) : (
+              "—:—"
+            )}
+          </span>
           <MarketStatus />
           <span className="hidden sm:flex items-center gap-2 text-paper">
             NSE·BSE
@@ -265,7 +448,7 @@ export default function Home() {
       </header>
 
       {/* ---------- ticker tape ---------- */}
-      <TickerTape items={ticker} />
+      <TickerTape items={ticker} onSelect={pick} />
 
       {/* ---------- body ---------- */}
       <main className="flex min-h-0 flex-1 flex-col lg:flex-row">
@@ -293,7 +476,10 @@ export default function Home() {
                 aria-haspopup="dialog"
                 className="shrink-0 border border-hairline-strong bg-panel px-3 font-mono text-[11px] tracking-widest text-muted transition-colors duration-100 hover:text-paper"
               >
-                WL<span className="text-up">·{String(watchlist.length).padStart(2, "0")}</span>
+                WL
+                <span className="text-up">
+                  ·{String(watchlist.length).padStart(2, "0")}
+                </span>
               </button>
             </div>
           </div>
@@ -319,8 +505,10 @@ export default function Home() {
                   <span
                     className="border border-hairline px-2 py-1 text-faint"
                     title={`Quoted ${new Date(
-                      data.regularMarketTime * 1000
-                    ).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} IST`}
+                      data.regularMarketTime * 1000,
+                    ).toLocaleString("en-IN", {
+                      timeZone: "Asia/Kolkata",
+                    })} IST`}
                   >
                     {timeAgo(data.regularMarketTime)}
                   </span>
@@ -336,6 +524,11 @@ export default function Home() {
               <span className="font-mono text-[44px] font-bold leading-none tracking-tight text-paper sm:text-[64px]">
                 {data?.regularMarketPrice != null ? (
                   <Odometer value={data.regularMarketPrice} />
+                ) : loading ? (
+                  <span
+                    aria-hidden
+                    className="inline-block h-[0.9em] w-[5.5em] animate-pulse bg-panel-2 align-baseline"
+                  />
                 ) : (
                   "—"
                 )}
@@ -356,7 +549,7 @@ export default function Home() {
                   className="mb-2 flex flex-wrap items-center gap-3 font-mono text-[11px] tracking-widest text-down"
                   aria-live="polite"
                 >
-                  <span>⚠ {error.toUpperCase()}</span>
+                  <span className="text-up">[!]</span> {error.toUpperCase()}
                   <button
                     onClick={retry}
                     className="border border-hairline px-2 py-1 font-mono text-[11px] tracking-widest text-paper transition-colors duration-100 hover:bg-panel"
@@ -372,50 +565,94 @@ export default function Home() {
           {data && <StatsRail data={data} />}
 
           {/* chart */}
-          <ChartPanel data={data} range={range} onRange={changeRange} loading={busy} />
+          <ChartPanel
+            data={data}
+            range={range}
+            onRange={changeRange}
+            loading={busy}
+          />
 
           <footer className="flex items-center justify-between font-mono text-[10px] tracking-[0.2em] text-faint">
-            <span>RANGE KEYS 1–8 · R RETRY · CROSSHAIR FOR OHLC · / SEARCH</span>
-            <span className="hidden sm:block">NIFTY//TERM · {new Date().getFullYear()}</span>
+            <span>RANGE 1–8 · R RETRY · J/K STEP · L LOG · / SEARCH</span>
+            <span className="hidden sm:block">
+              NIFTY//TERM · {new Date().getFullYear()}
+            </span>
           </footer>
         </section>
       </main>
 
-      {/* ---------- mobile watchlist sheet ---------- */}
-      {wlOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+      {/* ---------- keyboard help modal ---------- */}
+      <Modal
+        open={helpOpen}
+        onClose={() => setHelpOpen(false)}
+        label="Keyboard shortcuts"
+      >
+        <div className="mb-5 flex items-center justify-between">
+          <span className="font-mono text-[10px] tracking-[0.3em] text-faint">
+            NIFTY//TERM <span className="text-up">?</span> HELP
+          </span>
           <button
-            aria-label="Close watchlist"
-            className="absolute inset-0 w-full h-full bg-ink/70"
-            onClick={() => setWlOpen(false)}
-          />
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Watchlist"
-            className="animate-sheet-up absolute inset-x-0 bottom-0 max-h-[75vh] overflow-y-auto border-t border-hairline-strong bg-ink p-5 shadow-[0_-24px_48px_-12px_rgba(0,0,0,0.8)]"
+            onClick={() => setHelpOpen(false)}
+            aria-label="Close help"
+            className="px-2 py-1 font-mono text-[12px] text-faint transition-colors duration-100 hover:text-paper"
           >
-            <div className="mb-4 flex items-center justify-between border-b border-hairline pb-3">
-              <span className="font-mono text-[10px] tracking-[0.3em] text-faint">
-                WATCHLIST
-              </span>
-              <button
-                onClick={() => setWlOpen(false)}
-                aria-label="Close watchlist"
-                className="px-2 py-1 font-mono text-[12px] text-faint transition-colors duration-100 hover:text-paper"
-              >
-                ✕
-              </button>
-            </div>
-            <Watchlist
-              items={watchlist}
-              selected={selected}
-              onPick={pickFromSheet}
-              onRemove={removeEntry}
-            />
-          </div>
+            ✕
+          </button>
         </div>
-      )}
+        <ul className="flex flex-col gap-2.5 font-mono text-[12px] tracking-wider">
+          {[
+            ["/", "focus symbol search"],
+            ["1–8", "switch timeframe"],
+            ["J / K", "step watchlist"],
+            ["R", "retry data"],
+            ["L", "log / linear scale"],
+            ["?", "toggle this panel"],
+            ["ESC", "close panel / sheet"],
+            ["TAPE", "click a ticker to open"],
+          ].map(([k, label]) => (
+            <li key={k} className="flex items-center justify-between gap-4">
+              <span className="text-muted">{label}</span>
+              <kbd className="border border-hairline-strong bg-panel px-2 py-0.5 text-[11px] text-paper">
+                {k}
+              </kbd>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-5 border-t border-hairline pt-3 font-mono text-[9px] leading-relaxed tracking-widest text-faint">
+          CROSSHAIR OVER CHART FOR OHLC ·
+          <br />
+          ALL DATA LIVE FROM NSE · BSE
+        </p>
+      </Modal>
+
+      {/* ---------- mobile watchlist sheet ---------- */}
+      <Modal
+        open={wlOpen}
+        onClose={() => setWlOpen(false)}
+        label="Watchlist"
+        sheet
+        panelClassName="lg:hidden"
+      >
+        <div className="mb-4 flex items-center justify-between border-b border-hairline pb-3">
+          <span className="font-mono text-[10px] tracking-[0.3em] text-faint">
+            WATCHLIST
+          </span>
+          <button
+            onClick={() => setWlOpen(false)}
+            aria-label="Close watchlist"
+            className="px-2 py-1 font-mono text-[12px] text-faint transition-colors duration-100 hover:text-paper"
+          >
+            ✕
+          </button>
+        </div>
+        <Watchlist
+          items={watchlist}
+          selected={selected}
+          onPick={pickFromSheet}
+          onRemove={removeEntry}
+          bare
+        />
+      </Modal>
     </div>
   );
 }

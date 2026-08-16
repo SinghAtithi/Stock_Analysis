@@ -108,6 +108,13 @@ export default function Search({ onSelect }: Props) {
           autoComplete="off"
           spellCheck={false}
           aria-label="Search Indian stocks"
+          role="combobox"
+          aria-expanded={open}
+          aria-controls="search-results"
+          aria-activedescendant={
+            open && results.length > 0 ? `search-opt-${active}` : undefined
+          }
+          aria-autocomplete="list"
         />
         <kbd className="hidden sm:block select-none border border-hairline px-1.5 py-0.5 font-mono text-[10px] text-faint">
           /
@@ -115,9 +122,17 @@ export default function Search({ onSelect }: Props) {
       </div>
 
       {open && (
-        <div className="absolute inset-x-0 top-full z-50 border border-t-0 border-hairline-strong bg-ink shadow-[0_24px_48px_-12px_rgba(0,0,0,0.8)] animate-fade-up">
+        <div
+          id="search-results"
+          role="listbox"
+          aria-label="Search results"
+          className="absolute inset-x-0 top-full z-50 border border-t-0 border-hairline-strong bg-ink shadow-[0_24px_48px_-12px_rgba(0,0,0,0.8)] animate-fade-up"
+        >
           {searching && results.length === 0 && (
-            <div className="px-4 py-3 font-mono text-[12px] text-faint animate-dot-pulse">
+            <div
+              role="status"
+              className="px-4 py-3 font-mono text-[12px] text-faint animate-dot-pulse"
+            >
               scanning NSE · BSE…
             </div>
           )}
@@ -127,39 +142,65 @@ export default function Search({ onSelect }: Props) {
             </div>
           )}
           <ul className="max-h-72 overflow-y-auto">
-            {results.map((r, i) => (
-              <li key={`${r.exchange}-${r.symbol}`}>
-                <button
-                  onMouseEnter={() => setActive(i)}
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => pick(r)}
-                  className={`flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left font-mono transition-colors duration-75 ${
-                    i === active ? "bg-up text-ink" : "text-paper"
-                  }`}
-                >
-                  <span className="truncate text-[12px] tracking-wider">
-                    {r.symbol}
-                    <span className={i === active ? "text-ink/60" : "text-faint"}>
-                      {"  "}{r.name}
-                    </span>
-                  </span>
-                  <span
-                    className={`shrink-0 text-right font-mono ${
-                      i === active ? "text-ink/60" : "text-faint"
+            {results.map((r, i) => {
+              const hint = [r.sector, r.indices?.[0]]
+                .filter(Boolean)
+                .join(" · ");
+              const q = query.trim().toUpperCase();
+              const at = r.symbol.toUpperCase().indexOf(q);
+              return (
+                <li key={`${r.exchange}-${r.symbol}`} role="none">
+                  <button
+                    id={`search-opt-${i}`}
+                    role="option"
+                    aria-selected={i === active}
+                    onMouseEnter={() => setActive(i)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => pick(r)}
+                    className={`flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left font-mono transition-colors duration-75 ${
+                      i === active ? "bg-up text-ink" : "text-paper"
                     }`}
                   >
-                    <span className="block text-[10px] tracking-widest">
+                    <span className="min-w-0 truncate text-[12px] tracking-wider">
+                      {at >= 0 ? (
+                        <>
+                          {r.symbol.slice(0, at)}
+                          <b className="font-bold underline decoration-1 underline-offset-2">
+                            {r.symbol.slice(at, at + q.length)}
+                          </b>
+                          {r.symbol.slice(at + q.length)}
+                        </>
+                      ) : (
+                        r.symbol
+                      )}
+                      <span
+                        className={i === active ? "text-ink/60" : "text-faint"}
+                      >
+                        {"  "}
+                        {r.name}
+                      </span>
+                      {hint && (
+                        <span
+                          className={
+                            i === active ? "text-ink/50" : "text-faint/70"
+                          }
+                        >
+                          {" · "}
+                          {hint}
+                        </span>
+                      )}
+                    </span>
+                    <span
+                      className={`shrink-0 text-[10px] tracking-widest ${
+                        i === active ? "text-ink/60" : "text-faint"
+                      }`}
+                    >
                       {r.exchange}
                     </span>
-                    {r.sector && (
-                      <span className="block truncate text-[10px] tracking-widest opacity-70">
-                        {r.sector.toUpperCase()}
-                      </span>
-                    )}
-                  </span>
-                </button>
-              </li>
-            ))}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

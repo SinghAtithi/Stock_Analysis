@@ -50,10 +50,13 @@ export default function Odometer({ value }: { value: number }) {
   }, [text]);
 
   return (
-    <span className="tabular-nums inline-flex items-baseline" role="text" aria-label={text}>
-      {text.split("").map((ch, i) => (
-        <Digit key={i} ch={ch} animate={animate} />
-      ))}
+    <span className="tabular-nums inline-flex items-baseline">
+      <span aria-hidden className="inline-flex items-baseline">
+        {text.split("").map((ch, i) => (
+          <Digit key={i} ch={ch} animate={animate} />
+        ))}
+      </span>
+      <span className="sr-only">{text}</span>
     </span>
   );
 }

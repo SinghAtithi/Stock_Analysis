@@ -5,6 +5,7 @@ export interface SearchResult {
   exchange: string;
   type: string;
   sector: string;
+  indices?: string[];
 }
 
 export interface Candle {
@@ -42,6 +43,8 @@ export interface TickerItem {
   name: string;
   price: number | null;
   changePct: number | null;
+  exchange: string;
+  type: string;
 }
 
 export const RANGES = [

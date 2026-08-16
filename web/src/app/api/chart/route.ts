@@ -37,8 +37,9 @@ export async function GET(request: NextRequest) {
   if (!payload) {
     return NextResponse.json(
       {
-        error:
-          interval.endsWith("m") || interval.endsWith("h")
+        error: isIndex
+          ? "index_unavailable"
+          : interval.endsWith("m") || interval.endsWith("h")
             ? "Intraday data temporarily unavailable — try 1M or longer"
             : "not_found",
       },

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0b0b0c"/>
+  <rect x="0" y="0" width="1200" height="3" fill="#c6f534"/>
+  <text x="80" y="150" font-family="monospace" font-size="44" font-weight="700" letter-spacing="14" fill="#f4f4f1">NIFTY<span fill="#70706a">//</span>TERM</text>
+  <rect x="588" y="104" width="22" height="22" fill="#c6f534"/>
+  <text x="80" y="300" font-family="monospace" font-size="64" font-weight="700" fill="#f4f4f1">NSE · BSE</text>
+  <text x="80" y="370" font-family="monospace" font-size="28" letter-spacing="6" fill="#8b8b84">A SHARP TERMINAL FOR INDIAN MARKETS</text>
+  <line x1="80" y1="430" x2="1120" y2="430" stroke="#26262a" stroke-width="2"/>
+  <text x="80" y="500" font-family="monospace" font-size="24" letter-spacing="4" fill="#70706a">CANDLES · VOLUME · 8 TIMEFRAMES · LIVE</text>
+  <rect x="80" y="540" width="180" height="4" fill="#c6f534"/>
+  <rect x="280" y="540" width="120" height="4" fill="#26262a"/>
+  <rect x="420" y="540" width="60" height="4" fill="#ff5032"/>
+  <rect x="500" y="540" width="200" height="4" fill="#c6f534"/>
+</svg>

@@ -10,11 +10,20 @@ interface Props {
   selected: WatchlistEntry | null;
   onPick: (e: WatchlistEntry) => void;
   onRemove: (e: WatchlistEntry) => void;
+  bare?: boolean;
 }
 
-export default function Watchlist({ items, selected, onPick, onRemove }: Props) {
+export default function Watchlist({
+  items,
+  selected,
+  onPick,
+  onRemove,
+  bare,
+}: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
-  const [notice, setNotice] = useState<{ ok: boolean; text: string } | null>(null);
+  const [notice, setNotice] = useState<{ ok: boolean; text: string } | null>(
+    null,
+  );
 
   const flash = (ok: boolean, text: string) => {
     setNotice({ ok, text });
@@ -70,7 +79,7 @@ export default function Watchlist({ items, selected, onPick, onRemove }: Props) 
                 <span
                   aria-hidden
                   className={`w-6 shrink-0 pl-2 font-mono text-[9px] tracking-widest ${
-                    isSel ? "text-ink/50" : "text-faint"
+                    isSel ? "text-ink/70" : "text-faint"
                   }`}
                 >
                   {String(i + 1).padStart(2, "0")}
@@ -85,7 +94,9 @@ export default function Watchlist({ items, selected, onPick, onRemove }: Props) 
                   <span className="truncate tracking-wider">{q.symbol}</span>
                   <span
                     className={`shrink-0 pl-2 text-[9px] tracking-[0.2em] ${
-                      isSel ? "text-ink/60" : "text-faint group-hover:text-muted"
+                      isSel
+                        ? "text-ink/70"
+                        : "text-faint group-hover:text-muted"
                     }`}
                   >
                     {q.type === "Index" ? "IDX" : q.exchange}
@@ -97,8 +108,8 @@ export default function Watchlist({ items, selected, onPick, onRemove }: Props) 
                   title={`Remove ${q.symbol}`}
                   className={`px-2 py-2 font-mono text-[10px] leading-none transition-colors duration-100 ${
                     isSel
-                      ? "text-ink/50 hover:text-ink"
-                      : "text-faint hover:text-down lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
+                      ? "text-ink/70 hover:text-ink"
+                      : "text-faint hover:text-down"
                   }`}
                 >
                   ✕
@@ -142,13 +153,15 @@ export default function Watchlist({ items, selected, onPick, onRemove }: Props) 
             aria-label="Import watchlist JSON"
           />
         </div>
-        <p className="pt-4 font-mono text-[9px] leading-relaxed tracking-wider text-faint">
-          DATA · YAHOO FINANCE / NSE / BSE
-          <br />
-          KEYS · 1–8 RANGE · R RETRY · / SEARCH
-          <br />
-          NOT INVESTMENT ADVICE
-        </p>
+        {!bare && (
+          <p className="pt-4 font-mono text-[9px] leading-relaxed tracking-wider text-faint">
+            DATA · YAHOO / GOOGLE / NSE / BSE
+            <br />
+            KEYS · 1–8 · R · J/K · L · ? · /
+            <br />
+            NOT INVESTMENT ADVICE
+          </p>
+        )}
       </div>
     </>
   );

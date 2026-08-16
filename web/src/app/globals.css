@@ -5,8 +5,8 @@
   --color-panel: #131316;
   --color-panel-2: #18181b;
   --color-paper: #f4f4f1;
-  --color-muted: #7a7a75;
-  --color-faint: #4a4a46;
+  --color-muted: #94948d;
+  --color-faint: #80807b;
   --color-hairline: rgb(255 255 255 / 0.09);
   --color-hairline-strong: rgb(255 255 255 / 0.18);
   --color-up: #c6f534;
@@ -37,6 +37,20 @@ body {
 ::selection {
   background: var(--color-up);
   color: #000;
+}
+
+/* ---------- keyboard focus — terminal ring ---------- */
+
+:focus-visible {
+  outline: 2px solid var(--color-up);
+  outline-offset: 2px;
+}
+.bg-up:focus-visible {
+  outline-color: var(--color-ink);
+}
+
+input {
+  caret-color: var(--color-up);
 }
 
 /* ---------- scrollbar ---------- */
@@ -130,6 +144,18 @@ body {
 }
 .animate-sweep {
   animation: sweep 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.animate-sheet-up {
+  animation: sheet-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes chart-reveal {
