@@ -196,11 +196,11 @@ export function flattenMetrics(result) {
 
 /* ---------------- ingest ---------------- */
 
-export function cachePath(yahooSymbol) {
-  return join(CACHE_DIR, `${yahooSymbol.replace(/[^A-Za-z0-9._-]/g, "_")}.json`);
+export function cachePath(yahooSymbol, dir = CACHE_DIR) {
+  return join(dir, `${yahooSymbol.replace(/[^A-Za-z0-9._-]/g, "_")}.json`);
 }
 
-export async function ingestFundamentals(db, { symbols, fetchFn, force = false, now = Date.now(), onSymbol = null } = {}) {
+export async function ingestFundamentals(db, { symbols, fetchFn, force = false, now = Date.now(), onSymbol = null, cacheDir = CACHE_DIR } = {}) {
   const upsert = db.prepare(
     `INSERT INTO fundamentals (symbol, module_json, metrics_json, fetched_at)
      VALUES (?, ?, ?, ?)
@@ -211,7 +211,7 @@ export async function ingestFundamentals(db, { symbols, fetchFn, force = false, 
   );
   const getFetched = db.prepare("SELECT fetched_at FROM fundamentals WHERE symbol = ?");
 
-  mkdirSync(CACHE_DIR, { recursive: true });
+  mkdirSync(cacheDir, { recursive: true });
   const summary = { total: symbols.length, fetched: 0, skipped: 0, cached: 0, failed: [], breakerOpened: false };
   let consecutiveFailures = 0;
 
@@ -233,7 +233,7 @@ export async function ingestFundamentals(db, { symbols, fetchFn, force = false, 
       try {
         data = await fetchFn(yahoo);
       } catch (e) {
-        const cache = cachePath(yahoo);
+        const cache = cachePath(yahoo, cacheDir);
         if (existsSync(cache)) {
           data = JSON.parse(readFileSync(cache, "utf8"));
           degraded = true;
@@ -246,7 +246,7 @@ export async function ingestFundamentals(db, { symbols, fetchFn, force = false, 
       const metrics = { ...flattenMetrics(result), degraded };
       const fetchedAt = Math.floor(now / 1000);
       upsert.run(symbol, JSON.stringify(result), JSON.stringify(metrics), fetchedAt);
-      if (!degraded) writeFileSync(cachePath(yahoo), JSON.stringify(data));
+      if (!degraded) writeFileSync(cachePath(yahoo, cacheDir), JSON.stringify(data));
       consecutiveFailures = 0;
       summary.fetched += 1;
       if (onSymbol) onSymbol({ symbol, status: degraded ? "cached" : "fetched", degraded });

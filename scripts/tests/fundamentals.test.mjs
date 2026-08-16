@@ -201,6 +201,7 @@ test("ingest: upsert + freshness — stale refetched, fresh skipped, force overr
 
 test("ingest: fetch failure without cache -> failed, with cache -> degraded cached row", async (t) => {
   const { dir, db } = tempDb(t);
+  const cacheDir = path.join(dir, "cache");
   const symbols = [
     { symbol: "ALPHA", name: "ALPHA", yahoo: "ALPHA.NS" },
     { symbol: "BETA", name: "BETA", yahoo: "BETA.NS" },
@@ -209,14 +210,14 @@ test("ingest: fetch failure without cache -> failed, with cache -> degraded cach
     throw new Error("429 Too Many Requests");
   };
 
-  const fail = await ingestFundamentals(db, { symbols, fetchFn: boom, now: NOW });
+  const fail = await ingestFundamentals(db, { symbols, fetchFn: boom, now: NOW, cacheDir });
   assert.deepEqual([fail.fetched, fail.cached, fail.failed.length], [0, 0, 2]);
 
-  const cachedPath = cachePath("ALPHA.NS");
+  const cachedPath = cachePath("ALPHA.NS", cacheDir);
   const { writeFileSync } = await import("node:fs");
   writeFileSync(cachedPath, JSON.stringify(wrap(fixtureResult())));
 
-  const degraded = await ingestFundamentals(db, { symbols, fetchFn: boom, now: NOW + DAY });
+  const degraded = await ingestFundamentals(db, { symbols, fetchFn: boom, now: NOW + DAY, cacheDir });
   assert.deepEqual([degraded.fetched, degraded.cached], [1, 0], "cache-hit row still counts as fetched");
   const row = db.prepare("SELECT metrics_json FROM fundamentals WHERE symbol = ?").get("ALPHA");
   assert.equal(JSON.parse(row.metrics_json).degraded, true, "degraded flag set on cache fallback");

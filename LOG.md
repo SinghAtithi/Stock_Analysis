@@ -4,6 +4,62 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-16 — Session 6 (CEO/CTO) — Waves 1+2 complete, tree green, Wave 3 launched
+
+### Committed (Wave 1 — 5 agents)
+- **T2+T3+T4 `923f341`** — day-change vs `previousClose` (correct), 52W gated on ≥250 sessions (never faked), per-host Yahoo backoff + concurrency limiter + stale-while-revalidate, Google Finance intraday fallback (only keyless 5m source that verified; TradingView/NSE/Upstox/AngelOne rejected). `docs/data-sources-intraday.md`.
+- **T5+T6 `5675612`** — initial-load error UX + RETRY (R key) + staleness chip (`timeAgo`), persistent watchlist (`niftyterm.watchlist` localStorage), star toggle, export/import, cross-tab sync.
+- **T7 `55b316b`** — instruments v2: sector 89.8% coverage (TradingView scanner), NIFTY 50/500 membership 100% (NSE archives CSV); search returns sector.
+- **T8 `53af8d5`** — SQLite (better-sqlite3) + migration runner + schema v1 (13 tables) + `scripts/lib` (db/curl+HostBackoff) + node:test suite.
+- **T11 `5aa800c`** — `docs/data-sources.md` (NSE path-specific endpoints WORK, BSE WORKS, CDSL blocked, Yahoo per-IP 429 8h+; proxy options documented) + corporate-actions PoC 50/50 symbols / 877 events.
+- **UI session 5 (parallel, 40 cycles) `9e47082`** — primitives (MarketStatus/Modal/ErrorBoundary/DataTable/Sparkline), tape click-through, `?` help, `L` log scale, deep links, axe-zero a11y, INDEX_MAP (index charts were 404 after T2–7).
+
+### Committed (Wave 2 — 6 agents)
+- **T9 `b76de21`** — EOD store: Nifty 50 50/50, **127,139 candles (~10.7y)** via Moneycontrol (Yahoo down), resume/idempotent, `corporate_actions` (20 splits + 757 dividends) + adj_factor staircases verified (TATASTEEL 1→10, KOTAKBANK ×5).
+- **T10 `38af54d`** — fundamentals pipeline (7 quoteSummary modules, 28 metrics, accrual inputs, cache-degraded + circuit breaker). Yahoo down → fixture-verified only.
+- **T12 `f3853ad`** — analyst pipeline (rating rawScore, target upside, 7/30/90d EPS revisions). Fixture-verified (Yahoo down).
+- **T13 `8f616d2`** — breadth: VIX via Google (11.31 ✓ matches NSE), FII/DII via NSE `fiidiiTradeReact` (508.12/356.4 Cr), A/D + 52W counts from eod_candles; **`/api/breadth` live** (s-maxage 300).
+- **T14 `dbe8c45`** — **strategy framework**: erasable-TS + Node strip-types (zero-dep resolve hook), registry sorted by jury rank, NaN-safe indicators, demo-roc20/52wlow self-registering, runner → `signal_snapshots`; 14 tests.
+- **T31 `b03608d`** — **index fallback chain**: Yahoo caret → Google intraday → Moneycontrol index/history (verified live: NIFTY 50 1y = 260 candles `source:moneycontrol`, prevClose matches Google; BANKNIFTY, INDIA VIX OK); indices back in `instruments.json` (8 curated rows); INDEX_MAP → instruments.ts.
+
+### CTO fix
+- `fundamentals.test.mjs` cache-isolation bug (global `data/raw/fund` leak across runs) → `cacheDir` injectable. **54/54 tests green**, tsc + lint clean.
+
+### Wave 3 launched (8 agents)
+- T15 S100 momentum (real N50 candle data) · T16 S172 dual + S174 TSM (fetches index/ETF series) · T17 S104 PEAD/SUE · T18 quality trio (S096/S102/S095) · T19 value family (S099/S076/S078/S080) · T20 S081 F-Score · T23 backtest engine (smoke on demo-roc20) · T21 signals API.
+- Strategies self-register; registry/runner integration by CTO after wave 3.
+- Yahoo still IP-throttled (8h+) — fundamentals/analyst live re-ingest queued on recovery.
+
+---
+
+## 2026-08-16 — Session 5x: UI/UX cycle 44 — v2 screenshots
+
+- Refreshed `docs/inspiration/` with current-state captures (`v2_desktop.png`, `v2_desktop_max.png`, `v2_help.png`, `v2_mobile.png`, `v2_mobile_sheet.png`) so the user can review the overhaul visually.
+
+---
+
+## 2026-08-16 — Session 5w: UI/UX cycle 43 — ChartPanel fully verified via mocked data
+
+- Mocked `/api/chart` (Playwright route interception) exercises ChartPanel deterministically:
+  - Candles render from mock payload (140 BARS · MOCK · 1D) ✓
+  - **Crosshair legend**: date + OHLC + volume ✓
+  - Log scale toggle (L) ✓ · range keys (5 → 6M) ✓
+  - **STALE chip** ✓ · **DAILY chip** (degraded payload) ✓
+  - 0 console errors throughout.
+- Also confirmed deep-link behavior for unknown symbols: falls back to the watchlist head (by design — resolveTarget covers watchlist + instruments.json only).
+- Combined with cycle 40 (tape mock), the entire chart+tape UI is now verified independent of upstream availability.
+
+---
+
+## 2026-08-16 — Session 5v: UI/UX cycle 42 — TASK 22 screener contract + monitoring
+
+- The user committed all session-5 UI work (`9e47082 feat(web): session 5 UI/UX overhaul`).
+- Data team is building Phase C (`web/src/lib/strategies/` — indicators/registry/types, demo roc20 + 52wlow). Verified the shared gate stays green with their WIP.
+- **Filed `docs/task-reports/TASK-UI-02.md`**: the screener integration contract — Signal→DataTable column mapping, deep-link pattern, keyboard/design rules — so the TASK 22 builder gets the design head's intent.
+- Monitoring continues: Yahoo still 429 (8h+), backoff self-heals.
+
+---
+
 ## 2026-08-16 — Session 5 (UI/UX head) — FINAL SESSION STATE (for user return)
 
 ### What shipped this session (40 cycles, all verified)
