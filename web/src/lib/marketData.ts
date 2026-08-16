@@ -1,6 +1,6 @@
 import { execFile } from "child_process";
 import { promisify } from "util";
-import { findInstrument } from "@/lib/instruments";
+import { findInstrument, INDEX_MAP } from "@/lib/instruments";
 import { nextBackoff } from "@/lib/backoff";
 import type { Candle, TickerItem } from "@/lib/types";
 
@@ -9,21 +9,6 @@ const UA =
   "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36";
 
 type JsonObject = Record<string, unknown>;
-
-/* Yahoo index tickers differ from exchange names (NIFTY 50 != ^NSEI).
-   Kept minimal + verified; unknown names fall back to the generic caret. */
-const INDEX_MAP: Record<string, string> = {
-  "NIFTY 50": "^NSEI",
-  NIFTY: "^NSEI",
-  SENSEX: "^BSESN",
-  BANKNIFTY: "^NSEBANK",
-  "NIFTY BANK": "^NSEBANK",
-  "NIFTY FIN SERVICE": "^NIFTY_FIN_SERVICE",
-  FINNIFTY: "^NIFTY_FIN_SERVICE",
-  "INDIA VIX": "^INDIAVIX",
-  "NIFTY MIDCAP 100": "^NSEMDCP50",
-  "NIFTY NEXT 50": "^NSENEXT50",
-};
 
 /* Yahoo TLS-fingerprints Node's undici and 429s it; curl passes. execFile: no shell.
    -w appends "\n<http_code>" so callers can distinguish 429s from parse errors. */
@@ -287,6 +272,101 @@ async function fetchMoneycontrolChart(
   }
 }
 
+/* ---------- Moneycontrol indices (fallback for index charts) ---------- */
+
+/* MC index symbol codes, extracted from moneycontrol.com/indian-indices
+   pages (the `symbol=` param of their priceapi/techCharts/intra calls),
+   live-verified 2026-08-16 via the index/history endpoint:
+   in;NSX (NIFTY 50), in;SEN (SENSEX), in;nbx (NIFTY BANK),
+   in;cfr (NIFTY NEXT 50), in;bpo (NIFTY MIDCAP 100), mc;helcar (INDIA VIX).
+   Case is per-symbol and edge-dependent (Akamai serves heterogeneous nodes —
+   uppercase works on one, lowercase on another), and the endpoint burst-
+   limits per IP with the same generic "Invalid request.Wrong symbol" error,
+   so each entry carries both cases and a failed fetch sets a short cooldown. */
+const MC_INDEX_SYMBOL: Record<string, [string, string]> = {
+  "NIFTY 50": ["in;NSX", "in;nsx"],
+  NIFTY: ["in;NSX", "in;nsx"],
+  SENSEX: ["in;SEN", "in;sen"],
+  BANKNIFTY: ["in;nbx", "in;NBX"],
+  "NIFTY BANK": ["in;nbx", "in;NBX"],
+  "INDIA VIX": ["mc;helcar", "mc;HELCAR"],
+  "NIFTY NEXT 50": ["in;cfr", "in;CFR"],
+  "NIFTY MIDCAP 100": ["in;bpo", "in;BPO"],
+};
+
+/* Same windows as MC_SPEC, but the index endpoint only serves 1D/1W and
+   caps countback at 500 (1M resolution and cb>500 return s:"error"), so
+   max degrades to weekly instead of monthly. */
+const MC_INDEX_SPEC: Record<string, { res: string; cb: number; days: number; label: string } | null> = {
+  "1d": null,
+  "5d": null,
+  "1mo": { res: "1D", cb: 25, days: 35, label: "1d" },
+  "3mo": { res: "1D", cb: 70, days: 100, label: "1d" },
+  "6mo": { res: "1D", cb: 130, days: 190, label: "1d" },
+  "1y": { res: "1D", cb: 260, days: 380, label: "1d" },
+  "2y": { res: "1W", cb: 110, days: 760, label: "1wk" },
+  "5y": { res: "1W", cb: 260, days: 1900, label: "1wk" },
+  max: { res: "1W", cb: 500, days: 3800, label: "1wk" },
+};
+
+/* per-symbol cooldown after a full failure, so burst-limited bursts don't
+   compound (the endpoint answers every call, error or not) */
+const mcIndexCooldown = new Map<string, number>();
+
+async function fetchMoneycontrolIndexChart(
+  symbol: string,
+  range: string
+): Promise<{ candles: Candle[]; interval: string } | null> {
+  const variants = MC_INDEX_SYMBOL[symbol];
+  const spec = MC_INDEX_SPEC[range];
+  if (!variants || !spec) return null;
+  const key = `${symbol}|${range}`;
+  if (Date.now() < (mcIndexCooldown.get(key) ?? 0)) return null;
+  const now = Math.floor(Date.now() / 1000);
+  const from = now - spec.days * 86400;
+  const parse = (data: JsonObject): { candles: Candle[]; interval: string } | null => {
+    if (data["s"] !== "ok") return null;
+    const t = data["t"] as number[];
+    const o = data["o"] as number[];
+    const h = data["h"] as number[];
+    const l = data["l"] as number[];
+    const c = data["c"] as number[];
+    const v = (data["v"] as number[]) ?? [];
+    if (!Array.isArray(t) || !Array.isArray(c) || !t.length) return null;
+    const candles: Candle[] = t
+      .map((time, i) => ({
+        time,
+        open: Number(o?.[i]),
+        high: Number(h?.[i]),
+        low: Number(l?.[i]),
+        close: Number(c?.[i]),
+        volume: Number(v?.[i] ?? 0),
+      }))
+      .filter((x) =>
+        [x.open, x.high, x.low, x.close].every((n) => Number.isFinite(n))
+      );
+    return candles.length ? { candles, interval: spec.label } : null;
+  };
+  try {
+    for (const mcSymbol of variants) {
+      const url =
+        `https://priceapi.moneycontrol.com/techCharts/indianMarket/index/history` +
+        `?symbol=${mcSymbol}&resolution=${spec.res}` +
+        `&from=${from}&to=${now}&countback=${spec.cb}&currencyCode=INR`;
+      const { data, status } = await curlJson(url);
+      if (status === 200) {
+        const out = parse(data);
+        if (out) return out;
+      }
+    }
+    mcIndexCooldown.set(key, Date.now() + 30_000);
+    return null;
+  } catch {
+    mcIndexCooldown.set(key, Date.now() + 30_000);
+    return null;
+  }
+}
+
 /* ---------- cache ---------- */
 
 interface Cached {
@@ -440,6 +520,39 @@ export async function getChart(
         cacheSet(cacheKey, p, ttl);
         return p;
       }
+    }
+  }
+
+  /* Moneycontrol index chart (1mo+): the only non-Google index fallback
+     when Yahoo is down. 1d/5d stay on Google intraday above. */
+  if (isIndex && !symbol.includes(".")) {
+    const mc = await fetchMoneycontrolIndexChart(symbol, range);
+    if (mc) {
+      const inst = findInstrument(symbol);
+      const last = mc.candles[mc.candles.length - 1].close;
+      const prevClose = previousCloseFromCandles(mc.candles);
+      const { change, changePct } = dayChange(last, prevClose);
+      const hasYear = distinctTradingDays(mc.candles) >= 250;
+      const p: ChartPayload = {
+        symbol,
+        name: inst?.n ?? symbol,
+        exchange,
+        fullExchangeName: exchange === "NSE" ? "National Stock Exchange" : "BSE",
+        currency: "INR",
+        regularMarketPrice: last,
+        regularMarketTime: mc.candles[mc.candles.length - 1].time,
+        previousClose: prevClose,
+        fiftyTwoWeekHigh: hasYear ? Math.max(...mc.candles.map((x) => x.high)) : null,
+        fiftyTwoWeekLow: hasYear ? Math.min(...mc.candles.map((x) => x.low)) : null,
+        change,
+        changePct,
+        range,
+        interval: mc.interval,
+        candles: mc.candles,
+        source: "moneycontrol",
+      };
+      cacheSet(cacheKey, p, ttl);
+      return p;
     }
   }
 

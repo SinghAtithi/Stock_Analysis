@@ -203,6 +203,30 @@ async function tvScanBatches(batches) {
   return cache;
 }
 
+/* ---------- 4. Curated indices (always merged, never wiped) ----------
+
+   Canonical index symbols the terminal actually resolves (watchlist rows,
+   deep links `?s=NIFTY 50`, Yahoo INDEX_MAP keys). The Upstox INDEX rows
+   use exchange-raw names (NIFTY, BANKNIFTY, NIFTYNXT50, ...) that do not
+   match the app-facing symbols, which broke `resolveTarget`/search for
+   "NIFTY 50". Keep this list minimal + curated; documented verdicts:
+   - Yahoo caret tickers (^NSEI, ^BSESN, ...): TASK-UI-01
+   - Moneycontrol index priceapi codes (in;nsx, in;sen, in;nbx, in;cfr,
+     in;bpo, mc;helcar): live-verified 2026-08-16 for T31
+   - Google Finance spot tickers (NIFTY_50:INDEXNSE, SENSEX:INDEXBOM, ...)
+   Unknown names fall back to the generic caret in marketData.ts, so
+   unverified indices can be added later without a code change. */
+const CURATED_INDICES = [
+  { s: "NIFTY 50", n: "NIFTY 50", e: "NSE" },
+  { s: "SENSEX", n: "SENSEX", e: "BSE" },
+  { s: "BANKNIFTY", n: "NIFTY BANK", e: "NSE" },
+  { s: "NIFTY BANK", n: "NIFTY BANK", e: "NSE" },
+  { s: "INDIA VIX", n: "INDIA VIX", e: "NSE" },
+  { s: "NIFTY NEXT 50", n: "NIFTY NEXT 50", e: "NSE" },
+  { s: "NIFTY MIDCAP 100", n: "NIFTY MIDCAP 100", e: "NSE" },
+  { s: "NIFTY FIN SERVICE", n: "NIFTY FIN SERVICE", e: "NSE" },
+];
+
 /* ---------- merge ---------- */
 
 function buildBase() {
@@ -309,6 +333,19 @@ async function main() {
   }
 
   merged.sort((a, b) => a.s.localeCompare(b.s));
+
+  /* curated indices override Upstox rows with the same symbol+exchange
+     (e.g. BANKNIFTY keeps its Upstox sector metadata when present) */
+  const curatedKeys = new Set(CURATED_INDICES.map((i) => `${i.s}|${i.e}`));
+  for (const c of CURATED_INDICES) {
+    const key = `${c.s}|${c.e}`;
+    const existing = merged.find((m) => `${m.s}|${m.e}` === key);
+    if (existing) Object.assign(existing, c);
+    else merged.push(c);
+  }
+  merged.sort((a, b) => a.s.localeCompare(b.s));
+  console.log(`curated indices: ${CURATED_INDICES.length} entries (${[...curatedKeys].length} unique)`);
+
   const outFile = path.join(webRoot, "src", "data", "instruments.json");
   writeFileSync(outFile, JSON.stringify(merged));
   const kb = (readFileSync(outFile).length / 1024).toFixed(0);

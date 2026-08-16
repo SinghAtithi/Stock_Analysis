@@ -1,5 +1,22 @@
 import instruments from "@/data/instruments.json";
 
+/* Yahoo index tickers differ from exchange names (NIFTY 50 != ^NSEI).
+   Shared by the chart layer (marketData.ts) and anything resolving index
+   symbols; unknown names fall back to the generic caret. Verified tickers
+   only (see docs/task-reports/TASK-UI-01.md). */
+export const INDEX_MAP: Record<string, string> = {
+  "NIFTY 50": "^NSEI",
+  NIFTY: "^NSEI",
+  SENSEX: "^BSESN",
+  BANKNIFTY: "^NSEBANK",
+  "NIFTY BANK": "^NSEBANK",
+  "NIFTY FIN SERVICE": "^NIFTY_FIN_SERVICE",
+  FINNIFTY: "^NIFTY_FIN_SERVICE",
+  "INDIA VIX": "^INDIAVIX",
+  "NIFTY MIDCAP 100": "^NSEMDCP50",
+  "NIFTY NEXT 50": "^NSENEXT50",
+};
+
 export interface Instrument {
   s: string;
   n: string;
