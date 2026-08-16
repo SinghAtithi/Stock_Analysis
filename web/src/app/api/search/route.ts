@@ -12,7 +12,8 @@ export async function GET(request: NextRequest) {
       shortName: r.symbol,
       exchange: r.exchange,
       type: r.isIndex ? "Index" : "Equity",
-      sector: "",
+      sector: r.sector ?? "",
+      ...(r.indices?.length ? { indices: r.indices } : {}),
     })),
   });
 }

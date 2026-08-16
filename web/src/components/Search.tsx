@@ -144,11 +144,18 @@ export default function Search({ onSelect }: Props) {
                     </span>
                   </span>
                   <span
-                    className={`shrink-0 text-[10px] tracking-widest ${
+                    className={`shrink-0 text-right font-mono ${
                       i === active ? "text-ink/60" : "text-faint"
                     }`}
                   >
-                    {r.exchange}
+                    <span className="block text-[10px] tracking-widest">
+                      {r.exchange}
+                    </span>
+                    {r.sector && (
+                      <span className="block truncate text-[10px] tracking-widest opacity-70">
+                        {r.sector.toUpperCase()}
+                      </span>
+                    )}
                   </span>
                 </button>
               </li>

@@ -4,6 +4,9 @@ export interface Instrument {
   s: string;
   n: string;
   e: string;
+  sec?: string;
+  ind?: string;
+  idx?: string[];
 }
 
 const LIST = instruments as Instrument[];
@@ -13,6 +16,9 @@ export interface SearchHit {
   name: string;
   exchange: string;
   isIndex: boolean;
+  sector?: string;
+  industry?: string;
+  indices?: string[];
 }
 
 export function searchInstruments(q: string, limit = 8): SearchHit[] {
@@ -36,17 +42,18 @@ export function searchInstruments(q: string, limit = 8): SearchHit[] {
     else if (name.includes(needle) && needle.length >= 3) score = 5;
 
     if (score >= 0) {
-      scored.push({
-        hit: {
-          symbol: sym,
-          name: inst.n,
-          exchange: inst.e,
-          isIndex: /(NIFTY|SENSEX|INDIA VIX|BANKNIFTY|FINNIFTY|MIDCAP|SME|INDIA 10)/.test(
-            sym
-          ),
-        },
-        score,
-      });
+      const hit: SearchHit = {
+        symbol: sym,
+        name: inst.n,
+        exchange: inst.e,
+        isIndex: /(NIFTY|SENSEX|INDIA VIX|BANKNIFTY|FINNIFTY|MIDCAP|SME|INDIA 10)/.test(
+          sym
+        ),
+      };
+      if (inst.sec) hit.sector = inst.sec;
+      if (inst.ind) hit.industry = inst.ind;
+      if (inst.idx?.length) hit.indices = inst.idx;
+      scored.push({ hit, score });
       if (scored.length >= max) break;
     }
   }
