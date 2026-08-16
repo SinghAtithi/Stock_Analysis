@@ -178,11 +178,16 @@ export default function ChartPanel({
             </button>
           ))}
         </div>
-        <span className="hidden sm:block font-mono text-[10px] tracking-widest text-faint">
-          {data
-            ? `${data.candles.length} BARS · ${data.source.toUpperCase()} · ${data.interval.toUpperCase()}`
-            : ""}
-        </span>
+        {data && (
+          <span className="hidden items-center gap-2 font-mono text-[10px] tracking-widest text-faint sm:flex">
+            <span>
+              {data.candles.length} BARS · {data.source.toUpperCase()} · {data.interval.toUpperCase()}
+            </span>
+            {data.degraded === "daily" && (
+              <span className="border border-hairline px-1.5 py-px text-faint">DAILY</span>
+            )}
+          </span>
+        )}
       </div>
 
       <div className="relative min-h-[320px] flex-1 overflow-hidden border border-hairline bg-panel">

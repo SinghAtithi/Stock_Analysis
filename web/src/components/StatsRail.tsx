@@ -6,7 +6,8 @@ import { volumeCompact } from "@/lib/format";
 export default function StatsRail({ data }: { data: ChartData }) {
   const candles = data.candles;
   const last = candles[candles.length - 1];
-  const prev = candles[candles.length - 2];
+  const prevClose =
+    data.previousClose ?? (candles.length >= 2 ? candles[candles.length - 2].close : null);
 
   const cells: { label: string; value: string; tone?: "up" | "down" }[] = [
     { label: "OPEN", value: last ? last.open.toFixed(2) : "—" },
@@ -14,10 +15,10 @@ export default function StatsRail({ data }: { data: ChartData }) {
     { label: "LOW", value: last ? last.low.toFixed(2) : "—" },
     {
       label: "PREV CLOSE",
-      value: prev ? prev.close.toFixed(2) : "—",
+      value: prevClose != null ? prevClose.toFixed(2) : "—",
       tone:
-        prev && last
-          ? last.close >= prev.close
+        prevClose != null && last
+          ? last.close >= prevClose
             ? "up"
             : "down"
           : undefined,
@@ -26,8 +27,8 @@ export default function StatsRail({ data }: { data: ChartData }) {
     {
       label: "52W RANGE",
       value:
-        data.fiftyTwoWeekLow != null
-          ? `${data.fiftyTwoWeekLow.toFixed(0)} – ${data.fiftyTwoWeekHigh?.toFixed(0) ?? "—"}`
+        data.fiftyTwoWeekLow != null && data.fiftyTwoWeekHigh != null
+          ? `${data.fiftyTwoWeekLow.toFixed(0)} – ${data.fiftyTwoWeekHigh.toFixed(0)}`
           : "—",
     },
   ];

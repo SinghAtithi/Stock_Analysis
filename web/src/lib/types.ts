@@ -24,6 +24,7 @@ export interface ChartData {
   name: string;
   regularMarketPrice: number | null;
   regularMarketTime: number | null;
+  previousClose: number | null;
   fiftyTwoWeekHigh: number | null;
   fiftyTwoWeekLow: number | null;
   change: number | null;
@@ -31,7 +32,9 @@ export interface ChartData {
   range: string;
   interval: string;
   candles: Candle[];
-  source: "yahoo" | "groww" | "moneycontrol";
+  source: "yahoo" | "groww" | "moneycontrol" | "google";
+  stale?: boolean;
+  degraded?: string;
 }
 
 export interface TickerItem {

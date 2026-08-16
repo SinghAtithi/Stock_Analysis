@@ -1,6 +1,7 @@
 import { execFile } from "child_process";
 import { promisify } from "util";
 import { findInstrument } from "@/lib/instruments";
+import { nextBackoff } from "@/lib/backoff";
 import type { Candle, TickerItem } from "@/lib/types";
 
 const execFileAsync = promisify(execFile);
@@ -9,25 +10,40 @@ const UA =
 
 type JsonObject = Record<string, unknown>;
 
-/* Yahoo TLS-fingerprints Node's undici and 429s it; curl passes. execFile: no shell. */
-async function curlJson(url: string, extra: string[] = []): Promise<JsonObject> {
+/* Yahoo TLS-fingerprints Node's undici and 429s it; curl passes. execFile: no shell.
+   -w appends "\n<http_code>" so callers can distinguish 429s from parse errors. */
+async function curlRaw(
+  url: string,
+  extra: string[] = [],
+  accept = "application/json, text/plain, */*"
+): Promise<{ body: string; status: number }> {
   const { stdout } = await execFileAsync(
     "curl",
     [
-      "-sS",
+      "-sSL",
       "-m",
       "20",
       "--compressed",
       "-H",
       `User-Agent: ${UA}`,
       "-H",
-      "Accept: application/json, text/plain, */*",
+      `Accept: ${accept}`,
       ...extra,
+      "-w",
+      "\n%{http_code}",
       url,
     ],
     { maxBuffer: 64 * 1024 * 1024, encoding: "utf8" }
   );
-  return JSON.parse(stdout) as JsonObject;
+  const cut = stdout.lastIndexOf("\n");
+  const body = cut >= 0 ? stdout.slice(0, cut) : "";
+  const status = cut >= 0 ? Number(stdout.slice(cut + 1).trim()) : 0;
+  return { body, status };
+}
+
+async function curlJson(url: string, extra: string[] = []): Promise<{ data: JsonObject; status: number }> {
+  const { body, status } = await curlRaw(url, extra);
+  return { data: JSON.parse(body) as JsonObject, status };
 }
 
 function asRecord(v: unknown): Record<string, unknown> | null {
@@ -40,19 +56,74 @@ function asNum(v: unknown): number | null {
 
 /* ---------- Yahoo ---------- */
 
-let yahooCooldownUntil = 0;
+interface YahooHost {
+  cooldownUntil: number;
+  failures: number;
+  inflight: number;
+  queue: Array<() => void>;
+}
 
-async function yahooGet(url: string): Promise<JsonObject | null> {
-  if (Date.now() < yahooCooldownUntil) return null;
-  try {
-    return await curlJson(url);
-  } catch (e) {
-    const msg = String(e instanceof Error ? e.message : e);
-    if (/429|Too Many Requests/.test(msg)) {
-      yahooCooldownUntil = Date.now() + 60_000;
-    }
-    return null;
+const yahooHosts = new Map<string, YahooHost>();
+
+function yahooHost(host: string): YahooHost {
+  let st = yahooHosts.get(host);
+  if (!st) {
+    st = { cooldownUntil: 0, failures: 0, inflight: 0, queue: [] };
+    yahooHosts.set(host, st);
   }
+  return st;
+}
+
+/* at most 2 in-flight curl calls per Yahoo host */
+async function yahooSlot<T>(host: string, fn: () => Promise<T>): Promise<T> {
+  const st = yahooHost(host);
+  if (st.inflight >= 2) {
+    await new Promise<void>((resolve) => st.queue.push(resolve));
+  }
+  st.inflight++;
+  try {
+    return await fn();
+  } finally {
+    st.inflight--;
+    const next = st.queue.shift();
+    if (next) next();
+  }
+}
+
+async function yahooGet(url: string, host: string): Promise<JsonObject | null> {
+  const st = yahooHost(host);
+  if (Date.now() < st.cooldownUntil) return null;
+  return yahooSlot(host, async () => {
+    let body: string;
+    let status: number;
+    try {
+      ({ body, status } = await curlRaw(url));
+    } catch (e) {
+      const msg = String(e instanceof Error ? e.message : e);
+      if (/429|Too Many Requests/.test(msg)) {
+        st.failures++;
+        const backoffMs = nextBackoff(st.failures - 1);
+        st.cooldownUntil = Date.now() + backoffMs;
+        console.log(`[yahoo] 429 host=${host} backoff=${Math.round(backoffMs / 1000)}s`);
+      }
+      return null;
+    }
+    if (status === 429 || /too many requests/i.test(body.slice(0, 512))) {
+      st.failures++;
+      const backoffMs = nextBackoff(st.failures - 1);
+      st.cooldownUntil = Date.now() + backoffMs;
+      console.log(`[yahoo] 429 host=${host} backoff=${Math.round(backoffMs / 1000)}s`);
+      return null;
+    }
+    if (status >= 400) return null;
+    try {
+      const data = JSON.parse(body) as JsonObject;
+      st.failures = 0;
+      return data;
+    } catch {
+      return null;
+    }
+  });
 }
 
 async function fetchYahooChart(
@@ -64,7 +135,7 @@ async function fetchYahooChart(
     const url = `https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
       symbol
     )}?range=${range}&interval=${interval}&includePrePost=false&events=div%2Csplit`;
-    const data = await yahooGet(url);
+    const data = await yahooGet(url, host);
     if (data) return data;
   }
   return null;
@@ -119,7 +190,8 @@ async function fetchGrowwChart(
     `${encodeURIComponent(tradingSymbol)}/${resolution}` +
     `?endTimeInMillis=${Date.now()}&size=${GROWW_SIZE[range] ?? 300}`;
   try {
-    const data = await curlJson(url, ["-H", "x-app-id: growwWeb"]);
+    const { data, status } = await curlJson(url, ["-H", "x-app-id: growwWeb"]);
+    if (status !== 200) return null;
     const candles = data["candles"];
     if (!Array.isArray(candles)) return null;
     const window = GROWW_WINDOW[range] ?? Infinity;
@@ -172,7 +244,8 @@ async function fetchMoneycontrolChart(
     `?symbol=${encodeURIComponent(tradingSymbol)}&resolution=${spec.res}` +
     `&from=${from}&to=${now}&countback=${spec.cb}&currencyCode=INR`;
   try {
-    const data = await curlJson(url);
+    const { data, status } = await curlJson(url);
+    if (status !== 200) return null;
     if (data["s"] !== "ok") return null;
     const t = data["t"] as number[];
     const o = data["o"] as number[];
@@ -211,7 +284,13 @@ const cache = new Map<string, Cached>();
 function cacheGet<T>(key: string): T | null {
   const hit = cache.get(key);
   if (hit && hit.expires > Date.now()) return hit.data as T;
-  cache.delete(key);
+  return null;
+}
+
+/* expired-but-recent entries survive for stale-while-revalidate */
+function cacheGetStale<T>(key: string, withinMs: number): T | null {
+  const hit = cache.get(key);
+  if (hit && Date.now() - hit.expires < withinMs) return hit.data as T;
   return null;
 }
 
@@ -221,6 +300,41 @@ function cacheSet(key: string, data: unknown, ttlMs: number) {
     if (oldest) cache.delete(oldest);
   }
   cache.set(key, { data, expires: Date.now() + ttlMs });
+}
+
+/* ---------- day-change / 52W helpers ---------- */
+
+function istDay(tsSec: number): number {
+  const d = new Date((tsSec + 5.5 * 3600) * 1000);
+  return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+}
+
+/* close of the last candle whose calendar day (IST) is strictly before the
+   last candle's day; null if undeterminable */
+function previousCloseFromCandles(candles: Candle[]): number | null {
+  if (candles.length < 2) return null;
+  const lastDay = istDay(candles[candles.length - 1].time);
+  for (let i = candles.length - 2; i >= 0; i--) {
+    if (istDay(candles[i].time) < lastDay) return candles[i].close;
+  }
+  return null;
+}
+
+function distinctTradingDays(candles: Candle[]): number {
+  const days = new Set<number>();
+  for (const c of candles) days.add(istDay(c.time));
+  return days.size;
+}
+
+function dayChange(
+  price: number | null,
+  prevClose: number | null
+): { change: number | null; changePct: number | null } {
+  if (price === null || prevClose === null || prevClose === 0) {
+    return { change: null, changePct: null };
+  }
+  const change = price - prevClose;
+  return { change, changePct: (change / prevClose) * 100 };
 }
 
 /* ---------- payload ---------- */
@@ -233,6 +347,7 @@ export interface ChartPayload {
   currency: string;
   regularMarketPrice: number | null;
   regularMarketTime: number | null;
+  previousClose: number | null;
   fiftyTwoWeekHigh: number | null;
   fiftyTwoWeekLow: number | null;
   change: number | null;
@@ -240,7 +355,9 @@ export interface ChartPayload {
   range: string;
   interval: string;
   candles: Candle[];
-  source: "yahoo" | "groww" | "moneycontrol";
+  source: "yahoo" | "groww" | "moneycontrol" | "google";
+  stale?: boolean;
+  degraded?: string;
 }
 
 export async function getChart(
@@ -299,14 +416,27 @@ export async function getChart(
     }
   }
 
+  /* Google Finance intraday (1d/5d): NSE equities + indices. BSE equities unsupported. */
+  if ((range === "1d" || range === "5d") && !symbol.includes(".")) {
+    const g = await fetchGoogleChart(symbol, exchange, isIndex);
+    if (g) {
+      const p = googleToPayload(g, symbol, exchange, isIndex, range, interval);
+      if (p) {
+        cacheSet(cacheKey, p, ttl);
+        return p;
+      }
+    }
+  }
+
   /* fallbacks for equities: Moneycontrol (long ranges) -> Groww (short windows) */
   if (!isIndex && !symbol.includes(".")) {
     const mc = await fetchMoneycontrolChart(symbol, range);
     if (mc) {
       const inst = findInstrument(symbol);
-      const closes = mc.candles.map((x) => x.close);
-      const first = closes[0];
-      const last = closes[closes.length - 1];
+      const last = mc.candles[mc.candles.length - 1].close;
+      const prevClose = previousCloseFromCandles(mc.candles);
+      const { change, changePct } = dayChange(last, prevClose);
+      const hasYear = distinctTradingDays(mc.candles) >= 250;
       const p: ChartPayload = {
         symbol,
         name: inst?.n ?? symbol,
@@ -315,10 +445,11 @@ export async function getChart(
         currency: "INR",
         regularMarketPrice: last,
         regularMarketTime: mc.candles[mc.candles.length - 1].time,
-        fiftyTwoWeekHigh: Math.max(...mc.candles.map((x) => x.high)),
-        fiftyTwoWeekLow: Math.min(...mc.candles.map((x) => x.low)),
-        change: last - first,
-        changePct: first !== 0 ? ((last - first) / first) * 100 : null,
+        previousClose: prevClose,
+        fiftyTwoWeekHigh: hasYear ? Math.max(...mc.candles.map((x) => x.high)) : null,
+        fiftyTwoWeekLow: hasYear ? Math.min(...mc.candles.map((x) => x.low)) : null,
+        change,
+        changePct,
         range,
         interval: mc.interval,
         candles: mc.candles,
@@ -333,11 +464,10 @@ export async function getChart(
       const candles = await fetchGrowwChart(symbol, ex, range);
       if (candles && candles.length) {
         const inst = findInstrument(symbol);
-        const closes = candles.map((c) => c.close);
-        const first = closes[0];
-        const last = closes[closes.length - 1];
-        const hi = Math.max(...candles.map((c) => c.high));
-        const lo = Math.min(...candles.map((c) => c.low));
+        const last = candles[candles.length - 1].close;
+        const prevClose = previousCloseFromCandles(candles);
+        const { change, changePct } = dayChange(last, prevClose);
+        const hasYear = distinctTradingDays(candles) >= 250;
         const p: ChartPayload = {
           symbol,
           name: inst?.n ?? symbol,
@@ -346,20 +476,26 @@ export async function getChart(
           currency: "INR",
           regularMarketPrice: last,
           regularMarketTime: candles[candles.length - 1].time,
-          fiftyTwoWeekHigh: hi,
-          fiftyTwoWeekLow: lo,
-          change: last - first,
-          changePct: ((last - first) / first) * 100,
+          previousClose: prevClose,
+          fiftyTwoWeekHigh: hasYear ? Math.max(...candles.map((c) => c.high)) : null,
+          fiftyTwoWeekLow: hasYear ? Math.min(...candles.map((c) => c.low)) : null,
+          change,
+          changePct,
           range,
           interval: GROWW_RESOLUTION[range] ?? interval,
           candles,
           source: "groww",
+          ...(range === "1d" || range === "5d" ? { degraded: "daily" } : {}),
         };
         cacheSet(cacheKey, p, ttl);
         return p;
       }
     }
   }
+
+  /* stale-while-revalidate: serve a recently-expired entry instead of failing */
+  const stale = cacheGetStale<ChartPayload>(cacheKey, 6 * 60 * 60_000);
+  if (stale) return { ...stale, stale: true };
 
   return null;
 }
@@ -391,9 +527,11 @@ function yahooToPayload(
 
   if (!candles.length) return null;
 
-  const first = candles[0].close;
   const last = candles[candles.length - 1].close;
   const symbol = String(meta["symbol"] ?? "?");
+  const metaPrice = asNum(meta["regularMarketPrice"]);
+  const prevClose = asNum(meta["previousClose"]);
+  const { change, changePct } = dayChange(metaPrice, prevClose);
 
   return {
     symbol,
@@ -401,16 +539,237 @@ function yahooToPayload(
     exchange: String(meta["exchangeName"] ?? ""),
     fullExchangeName: String(meta["fullExchangeName"] ?? ""),
     currency: String(meta["currency"] ?? "INR"),
-    regularMarketPrice: asNum(meta["regularMarketPrice"]) ?? last,
+    regularMarketPrice: metaPrice ?? last,
     regularMarketTime: asNum(meta["regularMarketTime"]) ?? candles[candles.length - 1].time,
+    previousClose: prevClose,
     fiftyTwoWeekHigh: asNum(meta["fiftyTwoWeekHigh"]),
     fiftyTwoWeekLow: asNum(meta["fiftyTwoWeekLow"]),
-    change: last - first,
-    changePct: first !== 0 ? ((last - first) / first) * 100 : null,
+    change,
+    changePct,
     range,
     interval,
     candles,
     source: "yahoo",
+  };
+}
+
+/* ---------- Google Finance (intraday fallback: NSE equities + indices) ---------- */
+
+interface GoogleSeries {
+  candles: Candle[];
+  intervalSec: number | null;
+}
+
+interface GoogleQuote {
+  name: string | null;
+  prevClose: number | null;
+}
+
+const GOOGLE_INDEX: Record<string, string> = {
+  NIFTY: "NIFTY_50:INDEXNSE",
+  BANKNIFTY: "NIFTY_BANK:INDEXNSE",
+  SENSEX: "SENSEX:INDEXBOM",
+  NIFTYNXT50: "NIFTY_NEXT_50:INDEXNSE",
+  FINNIFTY: "NIFTY_FIN_SERVICE:INDEXNSE",
+};
+
+function googleFinanceSymbol(
+  symbol: string,
+  exchange: string,
+  isIndex: boolean
+): string | null {
+  if (isIndex) {
+    const mapped = GOOGLE_INDEX[symbol];
+    if (mapped) return mapped;
+    const code = symbol.replace(/ /g, "_");
+    return exchange === "BSE" ? `${code}:INDEXBOM` : `${code}:INDEXNSE`;
+  }
+  if (exchange === "BSE") return null; /* Google Finance dropped BSE equities */
+  return `${symbol}:NSE`;
+}
+
+function googlePairMatches(rec0: unknown, ticker: string, exch: string): boolean {
+  if (!Array.isArray(rec0)) return false;
+  if (rec0.length === 2 && rec0[0] === ticker && rec0[1] === exch) return true;
+  for (const part of [rec0[0], rec0[1]]) {
+    if (Array.isArray(part) && part[0] === ticker && part[1] === exch) return true;
+  }
+  return false;
+}
+
+function parseGoogleFinance(
+  html: string,
+  ticker: string,
+  exch: string
+): { quote: GoogleQuote; series: GoogleSeries[] } | null {
+  const quote: GoogleQuote = { name: null, prevClose: null };
+  const series: GoogleSeries[] = [];
+
+  const blocks = html.matchAll(
+    /AF_initDataCallback\((\{key: 'ds:\d+'[\s\S]*?\})\);(?:, ?(?:true|false))?(?=<\/script>)/g
+  );
+
+  for (const block of blocks) {
+    const dm = /data:([\s\S]*?), sideChannel/.exec(block[1]);
+    if (!dm) continue;
+    let data: unknown;
+    try {
+      data = JSON.parse(dm[1]);
+    } catch {
+      continue;
+    }
+    if (!Array.isArray(data) || !Array.isArray(data[0])) continue;
+    for (const rec of data[0] as unknown[]) {
+      if (!Array.isArray(rec)) continue;
+      if (!googlePairMatches(rec[0], ticker, exch)) continue;
+      if (Array.isArray(rec[3])) {
+        /* series record: prevClose/name/intervalSec at fixed offsets */
+        const prevClose = asNum(rec[6]);
+        if (prevClose !== null) quote.prevClose = prevClose;
+        if (typeof rec[7] === "string" && rec[7]) quote.name = rec[7];
+        const intervalSec = asNum(rec[8]);
+        for (const s of rec[3] as unknown[]) {
+          if (!Array.isArray(s)) continue;
+          const rows = s[s.length - 1];
+          if (!Array.isArray(rows) || !rows.length || !Array.isArray(rows[0])) continue;
+          if (typeof rows[0][4] !== "string" || !String(rows[0][4]).includes("T")) continue;
+          const candles: Candle[] = [];
+          for (const r of rows as unknown[]) {
+            if (!Array.isArray(r)) continue;
+            const iso = r[4];
+            if (typeof iso !== "string" || !iso.includes("T")) continue;
+            const o = asNum(r[0]);
+            const c = asNum(r[1]);
+            const h = asNum(r[2]);
+            const l = asNum(r[3]);
+            if (o === null || c === null || h === null || l === null) continue;
+            const t = Math.floor(Date.parse(iso) / 1000);
+            if (!Number.isFinite(t)) continue;
+            candles.push({
+              time: t,
+              open: o,
+              high: h,
+              low: l,
+              close: c,
+              volume: asNum(r[5]) ?? 0,
+            });
+          }
+          if (candles.length) series.push({ candles, intervalSec });
+        }
+      } else if (quote.prevClose === null) {
+        /* quote record: prevClose derivable from change / changePct (layout varies) */
+        const change = asNum(rec[9]);
+        const changePct = asNum(rec[11]);
+        if (change !== null && changePct !== null && changePct !== 0) {
+          const derived = change / (changePct / 100);
+          if (Number.isFinite(derived) && derived > 0) quote.prevClose = derived;
+        }
+      }
+    }
+  }
+
+  if (!series.length) return null;
+  return { quote, series };
+}
+
+async function fetchGoogleChart(
+  symbol: string,
+  exchange: string,
+  isIndex: boolean
+): Promise<{ quote: GoogleQuote; series: GoogleSeries[] } | null> {
+  const gf = googleFinanceSymbol(symbol, exchange, isIndex);
+  if (!gf) return null;
+  const url = `https://www.google.com/finance/quote/${encodeURIComponent(gf)}?hl=en`;
+  try {
+    const { body, status } = await curlRaw(
+      url,
+      [],
+      "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8"
+    );
+    if (status !== 200) return null;
+    const [ticker, exch] = gf.split(":");
+    return parseGoogleFinance(body, ticker, exch);
+  } catch {
+    return null;
+  }
+}
+
+function googleToPayload(
+  parsed: { quote: GoogleQuote; series: GoogleSeries[] },
+  symbol: string,
+  exchange: string,
+  isIndex: boolean,
+  range: string,
+  interval: string
+): ChartPayload | null {
+  let candles: Candle[] = [];
+  let outInterval = interval;
+  let degraded: string | undefined;
+
+  const daily = parsed.series
+    .filter((s) => s.intervalSec === null || s.intervalSec >= 3600)
+    .sort((a, b) => b.candles.length - a.candles.length);
+
+  if (range === "1d") {
+    const intraday = parsed.series
+      .filter((s) => s.intervalSec !== null && s.intervalSec > 60 && s.intervalSec < 3600)
+      .sort((a, b) => b.candles.length - a.candles.length);
+    const fiveMin = intraday.find((s) => s.intervalSec === 300);
+    const pick = fiveMin ?? intraday[0];
+    if (pick) {
+      candles = pick.candles;
+      outInterval =
+        pick.intervalSec === 60 ? "1m" : pick.intervalSec === 900 ? "15m" : "5m";
+    } else if (daily.length) {
+      candles = daily[0].candles.slice(-2);
+      outInterval = "1d";
+      degraded = "daily";
+    }
+  } else {
+    /* 5d: no multi-day intraday on the quote page — degrade to daily */
+    const fifteen = parsed.series.find((s) => s.intervalSec === 900);
+    if (fifteen) {
+      candles = fifteen.candles;
+      outInterval = "15m";
+    } else if (daily.length) {
+      candles = daily[0].candles.slice(-6);
+      outInterval = "1d";
+      degraded = "daily";
+    }
+  }
+
+  if (!candles.length) return null;
+
+  const last = candles[candles.length - 1].close;
+  const prevClose = parsed.quote.prevClose ?? previousCloseFromCandles(candles);
+  const price = last;
+  const { change, changePct } = dayChange(price, prevClose);
+  const inst = findInstrument(symbol);
+
+  return {
+    symbol,
+    name: parsed.quote.name ?? inst?.n ?? symbol,
+    exchange,
+    fullExchangeName: isIndex
+      ? exchange === "BSE"
+        ? "BSE"
+        : "National Stock Exchange"
+      : exchange === "NSE"
+        ? "National Stock Exchange"
+        : "BSE",
+    currency: "INR",
+    regularMarketPrice: price,
+    regularMarketTime: candles[candles.length - 1].time,
+    previousClose: prevClose,
+    fiftyTwoWeekHigh: null,
+    fiftyTwoWeekLow: null,
+    change,
+    changePct,
+    range,
+    interval: outInterval,
+    candles,
+    source: "google",
+    ...(degraded ? { degraded } : {}),
   };
 }
 
@@ -485,7 +844,7 @@ export async function getTicker(): Promise<TickerItem[]> {
     const url = `https://query1.finance.yahoo.com/v7/finance/spark?symbols=${encodeURIComponent(
       symbols
     )}&range=1d&interval=5m`;
-    const data = await yahooGet(url);
+    const data = await yahooGet(url, "query1");
     const results = (data?.["spark"] as JsonObject | null)?.["result"];
     if (!Array.isArray(results)) continue;
     for (const entry of results) {
@@ -511,5 +870,10 @@ export async function getTicker(): Promise<TickerItem[]> {
   }
 
   if (items.length) cacheSet(key, items, 90_000);
+  /* stale-while-revalidate: last good tape survives up to 30min past expiry */
+  if (!items.length) {
+    const stale = cacheGetStale<TickerItem[]>(key, 30 * 60_000);
+    if (stale && stale.length) return stale;
+  }
   return items;
 }
