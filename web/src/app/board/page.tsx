@@ -9,7 +9,6 @@ import DataTable from "@/components/DataTable";
 import type { Column as DTCol } from "@/components/DataTable";
 import { COLUMNS, PHASE_META, PRIORITY_META, type ColumnId, type Task, type Priority, type PhaseId } from "@/lib/kanban/types";
 import { CALLSIGNS, AGENT_BY_ID } from "@/lib/kanban/agents";
-import { INITIAL_TASKS } from "@/lib/kanban/data";
 import {
   Search,
   Plus,
@@ -104,9 +103,9 @@ function PriorityDot({ p }: { p: Priority }) {
 
 export default function BoardPage() {
   const clock = useClock();
-  const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
+  const [tasks, setTasks] = useState<Task[]>([]);
   // false until first /api/board hydration settles; gates the persist effect so
-  // the INITIAL_TASKS seed never races the GET and resurrects a wiped board
+  // pre-hydration state (empty) never races the GET and clobbers the server board
   const hydratedRef = useRef(false);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [agentId, setAgentId] = useState<string | null>(null);

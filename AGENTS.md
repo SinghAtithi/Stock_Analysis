@@ -6,7 +6,7 @@ Working conventions for any agent (human or AI) operating in this repo.
 - `web/` — Next.js 16 (Turbopack) app: `src/app` routes, `src/components`, `src/lib` (data layer), `src/data/instruments.json` (search index, built by `scripts/build-instruments.mjs`).
 - `scripts/` — build + data ingest tools. `db/` — SQLite (better-sqlite3) schema/migrations.
 - `ROADMAP.md` — 30-task plan (phases A–E). `RANKINGS.md` — 190-strategy jury research (product moat). `LOG.md` — append every session/change (newest at top, `## YYYY-MM-DD` headings). `docs/task-reports/` — per-task reports.
-- `data/board.json` — Kanban source of truth (30 tasks) · `web/src/lib/kanban/` types/agents/data · `web/src/app/board` UI · `web/src/app/api/board` sync · `scripts/board.mjs` CLI.
+- `data/board.json` — Kanban source of truth · `web/src/lib/kanban/` types/agents/data · `web/src/app/board` UI · `web/src/app/api/board` sync · `scripts/board.mjs` CLI.
 - Multiple agents may edit concurrently. Check `git status` + `git log` before touching shared files (`web/src/lib/marketData.ts` is owned by the data agent).
 
 ## Board — NIFTY//BOARD (Kanban, Jira-like)

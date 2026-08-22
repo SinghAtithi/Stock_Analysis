@@ -16,7 +16,7 @@ export const CALLSIGNS = ["ghost","viper","phantom","nova","axiom","blade","ciph
 
 export function load() {
   if (!fs.existsSync(BOARD_FILE)) {
-    console.error(`No board file at ${BOARD_FILE}. Start the dev server once or run: node --experimental-strip-types -e "import {INITIAL_TASKS} from './web/src/lib/kanban/data.ts'; import fs from 'fs'; fs.writeFileSync('${BOARD_FILE.replace(/\\/g,"\\\\")}', JSON.stringify({tasks:INITIAL_TASKS,activities:[]},null,2))"`);
+    console.error(`No board file at ${BOARD_FILE}. Start the dev server once (UI creates it) or add tasks via: node scripts/board.mjs new --title "..."`);
     process.exit(1);
   }
   const j = JSON.parse(fs.readFileSync(BOARD_FILE, "utf-8"));

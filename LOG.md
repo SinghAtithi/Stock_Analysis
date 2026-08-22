@@ -4,6 +4,25 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-22 (3) — Dummy tasks purged everywhere (board + bundle seed)
+
+### Summary
+Owner: delete everything in BACKLOG/TODO/IN PROGRESS/REVIEW/DONE — all dummy. First wipe (`3a2f4b5`) resurrected: a stale tab on old compiled code fell back to localStorage and POSTed 32 tasks back. Root cause: a 30-task dummy seed (`INITIAL_TASKS`) shipped in the bundle as fallback. Purged at every layer:
+
+### Changes
+- `web/src/lib/kanban/data.ts` — 557→8 lines: `INITIAL_TASKS = []`, `INITIAL_TASKS_BY_ID = {}` (empty exports kept for compile compat). No dummy definitions remain anywhere.
+- `web/src/app/board/page.tsx` — initial state `[]` (was seed); hydration comment updated.
+- `scripts/board.mjs` — "no board file" hint no longer suggests reseeding from data.ts.
+- `data/board.json` — wiped again (RESET2 marker), 0 tasks.
+- Docs: docs/BOARD.md seed line, AGENTS.md repo-map line.
+
+### Verification
+- `node scripts/workflow.mjs verify` — ✓ tsc 6.9s · ✓ eslint 12.3s · ✓ node:test 4.6s (145/145).
+- Resurrection paths closed: no bundle seed → pre-hydration state is empty; server empty-array wins over localStorage; persist gated until hydrated.
+
+---
+
+
 ## 2026-08-22 (2) — Board wipe + anti-resurrection fix
 
 ### Summary

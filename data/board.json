@@ -2,12 +2,12 @@
   "tasks": [],
   "activities": [
     {
-      "id": "RESET1",
+      "id": "RESET2",
       "taskId": "—",
-      "text": "board reset — fresh start (32 dummy tasks cleared)",
+      "text": "board wiped — dummy tasks + seed removed from bundle; empty is authoritative",
       "agent": "SYSTEM",
-      "at": 1787395828015
+      "at": 1787397022379
     }
   ],
-  "updatedAt": 1787395828015
+  "updatedAt": 1787397022379
 }

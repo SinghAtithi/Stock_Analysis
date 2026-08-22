@@ -114,7 +114,7 @@ Ship rules: status must be REVIEW (`--force` overrides) · `--files` scopes stag
 
 - Types: `web/src/lib/kanban/types.ts`
 - Callsigns: `web/src/lib/kanban/agents.ts` (24)
-- Seed: `web/src/lib/kanban/data.ts` (30 tasks)
+- Seed: none — board starts empty (`web/src/lib/kanban/data.ts` exports `[]` for compile compat)
 - Page: `web/src/app/board/page.tsx`
 - API: `web/src/app/api/board/route.ts`
 - CLI: `scripts/board.mjs` · pipeline: `scripts/workflow.mjs`
