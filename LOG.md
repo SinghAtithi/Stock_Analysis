@@ -4,6 +4,25 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-22 (2) — Board wipe + anti-resurrection fix
+
+### Summary
+Owner: "remove all tasks, start from scratch — those were dummy." Wiped all 32 tasks from `data/board.json` and fixed the two bugs that would have silently resurrected them:
+
+1. `/board` load treated an empty remote board as missing (`json.tasks.length` guard) → fell back to localStorage/INITIAL_TASKS seed.
+2. Persist effect POSTed state 600ms after mount, before the GET resolved → the INITIAL_TASKS seed could overwrite a wiped server file.
+
+### Changes
+- `data/board.json` → `{tasks:[], activities:[RESET1 marker]}`. Next task IDs restart at TASK-01.
+- `web/src/app/board/page.tsx` — empty array now authoritative from server; new `hydratedRef` gates the persist effect until first hydration settles (`loadRemote().finally`). Fixes latent seed-race bug generally.
+
+### Verification
+- `node scripts/workflow.mjs verify` — ✓ tsc 7.9s · ✓ eslint 14.0s (0 errors) · ✓ node:test 7.4s (145/145).
+- Note: any browser tab that had the old board open pre-wipe should hard-refresh; a stale open tab could still POST old state back.
+
+---
+
+
 ## 2026-08-22 — Board-first dev pipeline (TASK-32) — workflow.mjs + board.mjs exports/tick
 
 ### Summary
