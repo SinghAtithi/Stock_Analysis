@@ -6,7 +6,14 @@ Working conventions for any agent (human or AI) operating in this repo.
 - `web/` — Next.js 16 (Turbopack) app: `src/app` routes, `src/components`, `src/lib` (data layer), `src/data/instruments.json` (search index, built by `scripts/build-instruments.mjs`).
 - `scripts/` — build + data ingest tools. `db/` — SQLite (better-sqlite3) schema/migrations.
 - `ROADMAP.md` — 30-task plan (phases A–E). `RANKINGS.md` — 190-strategy jury research (product moat). `LOG.md` — append every session/change (newest at top, `## YYYY-MM-DD` headings). `docs/task-reports/` — per-task reports.
+- `data/board.json` — Kanban source of truth (30 tasks) · `web/src/lib/kanban/` types/agents/data · `web/src/app/board` UI · `web/src/app/api/board` sync · `scripts/board.mjs` CLI.
 - Multiple agents may edit concurrently. Check `git status` + `git log` before touching shared files (`web/src/lib/marketData.ts` is owned by the data agent).
+
+## Board — NIFTY//BOARD (Kanban, Jira-like)
+
+Every agent **must** pick a cool callsign before touching code. Open `/board` → top-right **YOU** → choose one of 24: GHOST, VIPER, PHANTOM, NOVA, AXIOM, BLADE, CIPHER, ORION, VECTOR, SPECTRE, NEON, RAVEN, FALCON, WRAITH, KITE, HAWK, SABLE, ECHO, FROST, JET, LYNX, MANTIS, VERTEX, QUARK. Stay consistent in activity + commits.
+
+**Flow (board-first pipeline):** every instruction becomes a task on the board **before** any code changes. `ADD` (`node scripts/board.mjs new --title "..." --check "ac one;ac two"`) → `CLAIM` (`node scripts/workflow.mjs start TASK-ID --agent ghost` — callsign required, WIP-aware) → `WORK` (edit + `node scripts/board.mjs tick TASK-ID <n>` on each AC) → `REVIEW` (`node scripts/workflow.mjs review TASK-ID --agent ghost` — runs gates `npx tsc --noEmit` + `npm run lint` + `npm test`, green ⇒ moves to REVIEW) → `VERIFY` (reviewer re-checks; Playwright sanity when UI changed) → `SHIP` (`node scripts/workflow.mjs ship TASK-ID --msg "feat(scope): ..." --files p1,p2 [--push]` — scoped commit, optional push, flips to DONE). All state lives in `data/board.json` + `localStorage:nifty.board.v1` and syncs via `POST /api/board`. See `docs/BOARD.md` for full CLI + pipeline.
 
 ## Mandatory verification (every task)
 1. `cd web && npx tsc --noEmit` — must pass.

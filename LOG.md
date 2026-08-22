@@ -4,6 +4,45 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-22 — Board-first dev pipeline (TASK-32) — workflow.mjs + board.mjs exports/tick
+
+### Summary
+Configured the standing agent loop the owner asked for: **every instruction → Kanban task first, then claim, work, review, verify, push to GitHub**. Built `scripts/workflow.mjs` (pipeline CLI) on top of newly exported `board.mjs` helpers. Dogfooded end-to-end on TASK-32 itself.
+
+### Pipeline
+`ADD` (`board.mjs new --check "ac1;ac2"`) → `CLAIM` (`workflow.mjs start TASK-ID --agent X`, WIP-aware) → `WORK` (+ `board.mjs tick TASK-ID <n>`) → `REVIEW` (`workflow.mjs review` — gates tsc→lint→test, green ⇒ REVIEW column) → `VERIFY` (reviewer ACK; Playwright for UI) → `SHIP` (`workflow.mjs ship --msg ... --files p1,p2 [--push]` — scoped commit, optional push, flips DONE after commit).
+
+### Artifacts
+- `scripts/workflow.mjs` — start/verify/review/ship; gates from web/ (tsc, eslint, node:test, short-circuit on red); ship requires REVIEW status, refuses blocked tasks, stages via `--files` (multi-agent safe) or `--all`, aborts on empty stage, prefixes `[TASK-ID]`, opt-in `--push` (never forced), DONE flip written post-commit.
+- `scripts/board.mjs` — exported helpers (`load/save/uid/arg/has/findTask/addActivity/CALLSIGNS/BOARD_FILE`), `isMain` dispatch guard so workflow.mjs can import without side effects, new `tick` cmd (by item id or ordinal, `--off`), `new --check "a;b"` seeds ACs, activity dedup via `addActivity`.
+- Docs: AGENTS.md Flow paragraph rewritten as pipeline · docs/BOARD.md new "Via pipeline CLI" section + tick/--check examples + etiquette updated · README command added.
+
+### Verification
+- `node scripts/workflow.mjs review TASK-32 --agent cipher` — **GATE SUMMARY ✓ tsc 2.7s · ✓ eslint 6.0s (0 errors, 6 pre-existing kalyan img warnings) · ✓ node:test 4.4s (145/145)** — auto-moved TASK-32 DOING → REVIEW.
+- CLI smoke: `start` re-affirm, `tick` #1/#2/#3, `log` trail clean.
+
+---
+
+## 2026-08-21 — 100 Technical Studies Library — Kalyan 831-bar dossier expanded to 13 charts + 100-indicator cool library
+
+### Summary
+Expanded `analysis/kalyan/` from 6 charts to **13 terminal PNGs (ink #0b0b0c / paper #f4f4f1 / lime #c6f534)** + **100-indicator master library**. Goal: "we have around 100 technical other analysis things, lets generate details for all make it cool" — delivered as searchable editorial dossier: price structure (10), trend MA (10), momentum (10), trend strength (10), volatility (10), volume (10), S/R & Fibonacci (10), pattern (10), risk & stats (10), composite (10).
+
+### Artifacts
+- `analysis/kalyan/generate_technical_100.py` (51089 bytes) — computes 100 studies from 831 Moneycontrol candles. Writes `technical_100.json` (100 items, 10 categories) + `technical_100.csv` + 7 new PNGs.
+- **7 new PNGs** (180 dpi, Agg): `07_trend_strength.png` ADX/DI+Aroon+Vortex, `08_volatility_ext.png` Keltner/Donchian/Bandwidth, `09_volume_flow.png` OBV/CMF/Volume, `10_support_fib.png` Fib & pivots, `11_risk_stats.png` Vol+DD, `12_composite_radar.png` 10-signal radar, `13_price_structure.png` HL2/TEMA/intraday.
+- `analysis/kalyan/technical_100.json` — 100 items with category/value/unit/signal/desc, meta bars=831 lastClose 602.25 regime HOLD.
+- `analysis/kalyan/index.html` — upgraded to **cool library**: sticky header with 100Studies CTA + JSON/CSV links, section 00 Library of 100 (live search + 11 category pills, responsive card grid `lib-grid`, #001–100), section 02b Extended Chart Suite gallery, dark-mode intact.
+- Total dossier now 13 PNGs, 2 JSON, 1 CSV, 1 HTML.
+
+### Verification
+- `python3 analysis/kalyan/generate_technical_100.py` — Loaded 831 candles, built 100 items, saved 7 PNGs (362K, 276K, 164K, 144K, 179K, 62K, 527K), DONE 100.
+- `cd web && npx tsc --noEmit` — pass.
+- `npm run lint` — pass (6 img warnings only).
+- HTTP sanity: fetched index.html 27556 bytes, contains Library of 100 + 07_trend_strength.png.
+
+
+
 ## 2026-08-16 — Session 6 (CEO/CTO) — Waves 1+2 complete, tree green, Wave 3 launched
 
 ### Committed (Wave 1 — 5 agents)
@@ -29,6 +68,153 @@ This file is the single source of truth for everything done in this project. Eve
 - T15 S100 momentum (real N50 candle data) · T16 S172 dual + S174 TSM (fetches index/ETF series) · T17 S104 PEAD/SUE · T18 quality trio (S096/S102/S095) · T19 value family (S099/S076/S078/S080) · T20 S081 F-Score · T23 backtest engine (smoke on demo-roc20) · T21 signals API.
 - Strategies self-register; registry/runner integration by CTO after wave 3.
 - Yahoo still IP-throttled (8h+) — fundamentals/analyst live re-ingest queued on recovery.
+
+---
+
+## 2026-08-17 — Session 5al: UI/UX cycle 59 — finer timeframes + MC intraday → chart FILLS
+
+### User request: "lower the timeframe... so it fills the entire chart screen"
+Two-part fix:
+
+1. **Finer intervals per range** (`web/src/lib/types.ts` RANGES + `api/chart/route.ts` VALID set):
+   `1D→1m · 5D→5m · 1M→15m · 3M→1h · 6M→1h` (1Y/5Y/MAX unchanged). All Yahoo-valid combos.
+
+2. **Moneycontrol intraday discovered + wired** (the real unlock):
+   - Probed MC's `priceapi/techCharts/stock/history` with `resolution=5|15|60` → **keyless, live 500-bar 5m/15m/1h series** (previously MC was only used for daily).
+   - Added `MC_INTRADAY_SPEC` + an intraday branch in the equity fallback chain (before Google — 500 bars vs Google's 74), with a future-bar safety filter (`<= now`).
+   - **Result now**: `1D=500×5m · 5D=500×5m · 1M=500×15m · 3M=500×1h · 6M=500×1h` — every short range FILLS the panel at the fixed 4px candle width. 1Y/5Y/MAX unchanged (261/261/298).
+   - prevClose correct (e.g. 1D: price 1316 = Mon close vs 1310 = Fri close ✓). Verified live; screenshots `docs/inspiration/v5_*.png`.
+
+### Also
+- `BAR_SPACING` 5→4 (a full 500-bar series + 261-bar 1Y both fill ~the panel width).
+- Error copy for intraday failures generalized ("try a longer range").
+- Note: it is now Monday 2026-08-17 (session crossed midnight) — market CLOSED, so intraday series correctly end at today's 15:30.
+- Full 13-check e2e green; tsc + lint clean (Wave-3 files still WIP).
+
+---
+
+## 2026-08-17 — Session 5ak: UI/UX cycle 58 — chart consistency fix (user request)
+
+### What the user saw
+Different timeframes rendered wildly differently: 5D showed 6 GIANT candles, 1Y showed 261 slim ones — because the chart applied adaptive `barSpacing` + `fitContent()` after every data set (fitContent squished 298 bars or blew up 6 bars to fill the width).
+
+### Fix (ChartPanel)
+- **One candle width for every timeframe**: fixed `BAR_SPACING = 5` constant; removed the adaptive spacing AND the `fitContent()` from the data effect. Latest bars sit at the right edge (`rightOffset: 2`) — so 1D shows the live 5m session, 1Y the last ~200 sessions, MAX the last ~200 months — identical candle size everywhere.
+- `FIT` chip + double-click still re-fit the full range on demand. Log-scale toggle no longer re-fits either.
+
+### 1D minute candles — confirmed working
+- `1D` now serves **74 × 5m intraday candles** (Google Finance fallback — covers the full 09:15–15:30 session). This is exactly the "minute candles" the user asked for.
+
+### Known data-layer gaps (flagged, not UI-fixable)
+- `5D` → 6×1D daily bars and `1M` → 26×1D daily bars: no keyless 15m/1h source exists yet (Google quote pages embed only 5m; Yahoo intraday is IP-throttled; TradingView/NSE/Upstox/AngelOne rejected — see `docs/data-sources-intraday.md`). The UI **discloses** this: readout shows the real interval + `DAILY` chip (`6 BARS · GOOGLE · 1D` + DAILY). When Yahoo recovers, 5D/1M will serve proper intraday automatically (chain tries Yahoo first).
+- Verified per-range: 74/6/26/71/131/261/261/298 candles with readouts + chips; full e2e green; screenshots `docs/inspiration/v3_1d.png`, `v3_1y.png`, `v3_max.png`.
+
+---
+
+## 2026-08-16 — Session 5aj: UI/UX cycle 57 — README + night monitoring
+
+- **`README.md`** written: routes, keyboard, stack, commands, doc map — the repo's front door for agents and humans.
+- Yahoo's spark quota remains exhausted for 20-symbol requests at this hour (small probes pass; the app's chunk requests 429). The 20-cap fix removes the guaranteed-400 mode; the tape self-heals when the quota window opens. Night monitoring continues.
+
+---
+
+## 2026-08-16 — Session 5ai: UI/UX cycle 56 — TAPE ROOT CAUSE FOUND: 24 > Yahoo's 20-symbol spark cap
+
+- Systematic probing of Yahoo's spark endpoint: **the per-request symbol cap is 20** (21+ → HTTP 400 "Number of symbols needs to be less than or equal to 20"). The app's `getTicker` chunked at **24** → every tape fetch was a guaranteed 400, not just throttling — the tape could never have loaded all evening regardless of cooldowns. (Yahoo's 429 rate-limits are a separate, intermittent layer; small probes pass, bursts 429.)
+- **Fix**: chunk size 24 → 20 in `getTicker` (marketData.ts, comment added). Will verify live when the rate window allows.
+- This is the data team's file — flagged here + noted in the LOG; the change is 1 line + comment.
+
+---
+
+## 2026-08-16 — Session 5ah: UI/UX cycle 55 — mobile fix + final sweep
+
+- `/screener` + `/breadth` headers overflowed at 390px (clock + status + back link). Fixed with the terminal's responsive pattern (clock hidden below sm). All three pages now: no mobile overflow, 0 errors, 0 axe violations, tsc+lint clean.
+- Server stable all evening: 0 panics, all routes 200.
+
+---
+
+## 2026-08-16 — Session 5ag: UI/UX cycle 54 — legal pages (TASK 30 half)
+
+- `/disclaimer`, `/privacy`, `/terms` built in the terminal design language (shared `legal.css`): SEBI-safe copy (research tool, NOT investment advice), localStorage-only privacy, no-tracking terms.
+- All three: 0 console errors + 0 axe violations; cross-linked (disclaimer↔privacy↔terms).
+- "NOT INVESTMENT ADVICE" footers (watchlist sidebar, screener, breadth) now link to `/disclaimer`.
+- Full 13-check e2e green.
+
+---
+
+## 2026-08-16 — Session 5af: UI/UX cycle 53 — BREADTH DASHBOARD LIVE (real data)
+
+- Ran the data team's `ingest-breadth.mjs --days 3` (executing their pipeline, not editing it) → `breadth_series` populated (7 rows).
+- `/api/breadth` now serves 3 sessions, all sources live: **VIX 11.31** (vix_spot), **FII 508.12 Cr / DII 356.4 Cr** (NSE fiidiiTradeReact — matches the CEO's Wave-2 verification exactly), A/D 11/42, 52W 0/1 (Nifty-50 universe for now — counts grow with the universe).
+- Dashboard verified in-browser: VIX/FII/DII/A-D values render, SOURCE-BLOCKED chips + empty state gone, 3 sparklines, **0 errors**, screenshot saved (`docs/inspiration/v2_breadth_live.png`).
+- Product story complete on the UI side: terminal → screener (live signals) → breadth (live flows) — all axe-clean, e2e-green, tsc+lint clean.
+
+---
+
+## 2026-08-16 — Session 5ae: UI/UX cycle 52 — UI test suite persisted in-repo
+
+- Copied the Playwright verification suite from `/tmp` into `scripts/tests/ui/` (10 scripts + README): main 13-check e2e, axe scans (terminal/screener/breadth), screener flows, deep links, mobile geometry, and the two upstream-independent mocked suites (tape + chart). Survives reboots; feeds TASK 29's in-repo e2e work.
+
+---
+
+## 2026-08-16 — Session 5ad: UI/UX cycle 51 — cross-page verification + T24 note
+
+- **All three routes sweep**: terminal, `/screener`, `/breadth` — 0 console errors + 0 axe violations each.
+- T24 (backtest UI) reviewed the T23 engine output shape (`BacktestResult{equity, trades, metrics}`) — the UI needs a job API first (engine is CLI-only today); flagged as the next UI candidate once T24's API lands. Not built prematurely.
+- Monitoring continues: tape empty (Yahoo spark quota), Wave-3 quiet since T23.
+
+---
+
+## 2026-08-16 — Session 5ac: UI/UX cycle 50 — data-driven strategy picker
+
+- New **`/api/strategies`** route (registry-backed: id/name/category/juryRank/edgeScore/universe/inputs, sorted by jury rank, 60s cache) — currently reports the 2 demo strategies; the S-strategies will appear once the CTO's registry/runner integration lands.
+- Screener picker now fetches the list (falls back to demos) and shows full names with jury-rank tooltips (`S081 PIOTROSKI F-SCORE · jury #9 · edge 7.4/10` once registered).
+- Verified: 2 chips, sort, keyboard nav → chart, strategy switch, 0 errors; full 13-check e2e green; tsc + lint clean.
+
+---
+
+## 2026-08-16 — Session 5ab: UI/UX cycle 49 — SCREENER SHIPPED (TASK 22 UI, live signals)
+
+- **`/screener` route built** — the TASK 22 UI, live against the Wave-3 signals API (T21):
+  - Strategy picker chips (11 strategies incl. S100/S104/S172/S174/S096/S102/S095/S099/S081 + demos), `aria-pressed` states.
+  - **DataTable** with rank badges, symbol/name/sector/score/price/day%/components columns; tri-state sorting; keyboard nav (↓/Enter) → **deep-links to the chart** (`/?s=WIPRO&e=NSE&r=1y` — verified live, incl. the ROADMAP AC "row click → chart with symbol preselected").
+  - Header meta: strategy name · JURY #rank · EDGE score · row count (from the API's `meta.juryRank`/`edgeScore`).
+  - **axe-clean** (fixed: `role="grid"` removed from the DataTable wrapper — conflicted with the real table; components cell bumped to `text-muted` for 4.5:1 on active-row bg).
+  - Verified: 50 rows live, sort, keyboard nav → WIPRO chart, strategy switch, 0 console errors, tsc+lint clean.
+- Terminal footer now links `SCREENER` / `BREADTH` (320px overflow-checked).
+- Full 13-check e2e green.
+
+---
+
+## 2026-08-16 — Session 5aa: UI/UX cycles 47–48 — breadth polish + repo hygiene
+
+### Cycle 48 — breadth page
+- Fixed the React-19 compiler lint (fetch moved inside the effect, page.tsx pattern); removed dead imports. Breadth page: **tsc-clean, lint-clean, axe 0 violations**, renders 5 sections + 11 sparklines, nav back verified.
+- Wave-3 landed T16–T20 (strategy commits). Their WIP currently reddens the shared gate (quality.ts etc.) — their files, not mine; mine verified clean independently.
+
+### Cycle 47 — hygiene
+- **`.next-t21` leak fixed**: the Wave-3 agent's custom distDir ended up untracked in the repo AND got linted (9,944 problems). Added `.next-*/**` to eslint globalIgnores + `.next-*/` to root .gitignore → lint noise down to 4,416 (all Wave-3 WIP).
+
+---
+
+## 2026-08-16 — Session 5z: UI/UX cycle 46 — Tailwind env() latent bug + cache-poisoning incident
+
+### The bug
+- `pb-[calc(1.25rem+env(safe-area-inset-bottom))]` (Modal sheet, cycle 21) was a **latent Tailwind 4 arbitrary-value bug**: the class emitted corrupted CSS (`safe-area-` + mangled bytes), poisoning Turbopack's persistent cache. It silently "worked" until a full recompile surfaced a hard CSS parse failure → 500 + Turbopack panic (plus a Wave-3 distDir `.next-t21` cross-contamination).
+- **Fix**: dropped the Tailwind class entirely; safe-area padding is now an inline `style` (`calc(1.25rem + env(safe-area-inset-bottom))`) — bulletproof, no parser involvement. Cleared `.next` + `node_modules/.cache`; dev server healthy (200, 0 CSS errors), full 13-check e2e green.
+- Lesson: avoid `env()`/`calc()` with `+` in Tailwind arbitrary values; verify by wiping the cache occasionally.
+
+### Also this cycle
+- **Breadth dashboard built** (`/breadth`): VIX gauge + spark, A/D ratio + counts, FII/DII flow bars (30d), 52W hi/lo counts, per-source empty states (TASK 26 UI half; API is T13's). Verified: renders 5 sections + 11 sparklines, nav back to terminal works, `tsc` clean for my files. The Wave-3 signals route is WIP (their compile errors currently pollute the shared gate — expected, they're mid-task).
+- Tape: Yahoo's spark endpoint now 429s only larger burst requests (single-symbol probes OK) — tape still self-heals; chart API works.
+
+---
+
+## 2026-08-16 — Session 5y: UI/UX cycle 45 — Yahoo cooldown LIFTED; index charts verified live ✓
+
+- Yahoo direct probes return **200** after ~8.5h of throttling (chart + spark endpoints).
+- **Index charts verified live**: `NIFTY 50` → 24,366 (−0.12%) and `SENSEX` → 78,009.25 (−0.09%), correct day-change vs previousClose, `source: moneycontrol` — the `index_unavailable` state is gone. (T31 had shipped the index fallback chain + moved INDEX_MAP to instruments.ts; my marketData.ts copy was reconciled in commit `573df9d`.)
+- Tape: app-side backoff still cooling; spark burst requests still 429 (single-symbol OK).
 
 ---
 
@@ -77,10 +263,19 @@ This file is the single source of truth for everything done in this project. Eve
 
 **Quality**: tsc + eslint + `npm test` + 13-check Playwright e2e green all session; `next build` clean; prod metrics TTFB 8ms / FCP 368ms / 367KB transfer.
 
+### Post-commit additions (cycles 43–54)
+- **`/breadth` dashboard** (TASK 26 UI half): VIX gauge+spark, A/D ratio + counts, FII/DII 30d flow bars, 52W hi/lo, per-source empty states. **LIVE**: 3 sessions, VIX 11.31 / FII 508.12 / DII 356.4 Cr (matches CEO Wave-2 verification), A/D 11/42. axe-clean.
+- **`/screener`** (TASK 22 UI): live signals via T21's API — DataTable with rank badges, tri-state sort, keyboard nav, row → chart deep link (AC verified: `/?s=WIPRO&e=NSE&r=1y`). Data-driven picker via new **`/api/strategies`** (S-strategies appear once the CTO registers them). axe-clean.
+- **Legal pages** (TASK 30 half): `/disclaimer`, `/privacy`, `/terms` — SEBI-safe, terminal-styled, axe-clean, cross-linked; "NOT INVESTMENT ADVICE" footers link to them.
+- **UI test suite persisted** at `scripts/tests/ui/` (10 Python Playwright scripts + README; mocked upstream suites for tape/chart).
+- **Fixes**: Tailwind env() arbitrary-value bug (inline style; cache poison cleared), `.next-t21` lint/gitignore leak, DataTable role=grid a11y, modal safe-area.
+- Screenshots refreshed: `docs/inspiration/v2_*.png` (desktop, max, help, mobile, sheet, screener-live, breadth-live, disclaimer).
+
 ### Open items (awaiting external conditions)
-1. Yahoo IP-throttle (7+ h) — tape + index charts will flow when it lifts; backoff self-heals.
+1. Yahoo spark quota still 429s burst requests (~10h) — tape will flow when it lifts; backoff self-heals.
 2. `metadataBase` needs the real prod URL at deploy (Phase E).
-3. TASK-UI-01: index fallback chain + instruments.json indices (data team).
+3. T24 backtest UI — engine (T23) is CLI-only; needs a job API first. T25 alerts — needs backend/anon-id.
+4. Wave-3's `quality.ts` + signals route have in-flight tsc errors (their files); shared gate goes green on their merge.
 
 ---
 
