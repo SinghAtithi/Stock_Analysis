@@ -23,6 +23,8 @@ jobs:
   gates:
     runs-on: ubuntu-latest
     timeout-minutes: 6 # AC: full runtime under 5min; headroom for cold caches
+    permissions:
+      contents: write # TASK-1479: auto-file/auto-close CI RED board cards
     steps:
       - uses: actions/checkout@v4
 
@@ -55,3 +57,52 @@ jobs:
       - name: node:test
         working-directory: web
         run: npm test
+
+  # TASK-1374: dependency + secrets hygiene, blocking like the gates above.
+  # npm audit: prod deps only (--omit=dev matches the local gate); high+ fails.
+  # gitleaks: full-history scan so a secret that ever lands is caught even if
+  # a later commit removed it. Pinned to v2 tag per repo convention (SHA
+  # pinning tracked separately in TASK-1478).
+  security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # gitleaks needs full history
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: npm audit (prod deps, fail on high+)
+        working-directory: web
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: gitleaks (full history)
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf429fb1bf3f0bce29 # v2.3.2
+        # NOTE: intentionally NO board-sync step here — the main gates job owns
+        # the `ci` card; two writers for one suite would race. A failed security
+        # job is still a red required run (blocks merges by convention).
+
+      # TASK-1479: red runs file (or update) a `CI RED: ci` board card; 3
+      # consecutive greens auto-close it. Only pushes data/board.json.
+      - name: sync result to board
+        if: always() && github.event_name != 'pull_request'
+        env:
+          SUITE_STATUS: ${{ job.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          SHA: ${{ github.sha }}
+        run: |
+          node scripts/ci-board-sync.mjs --status "$SUITE_STATUS" \
+            --suite ci --run-url "$RUN_URL" --sha "$SHA"
+          if ! git diff --quiet data/board.json; then
+            git config user.name "niftyterm-ci"
+            git config user.email "ci@users.noreply.github.com"
+            git add data/board.json
+            git commit -m "chore(board): ci status sync — ci ${SUITE_STATUS} ${GITHUB_SHA::7}"
+            git pull --rebase -q origin master || true
+            git push
+          fi
