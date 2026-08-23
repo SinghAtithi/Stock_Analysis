@@ -11,6 +11,9 @@ on:
     branches: [master]
   pull_request:
     branches: [master, main]
+  schedule:
+    - cron: "0 */6 * * *" # self-test every 6h — catches dep drift + flake between pushes
+  workflow_dispatch: {} # manual one-shot test
 
 concurrency:
   group: ci-${{ github.ref }}

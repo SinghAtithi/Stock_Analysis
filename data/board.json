@@ -1903,7 +1903,7 @@
         {
           "id": "1",
           "text": "SiteHeader nav reachable under sm breakpoint (menu or scrollable row)",
-          "done": true
+          "done": false
         },
         {
           "id": "2",
@@ -1922,7 +1922,7 @@
         }
       ],
       "createdAt": 1787485797533,
-      "updatedAt": 1787491940950,
+      "updatedAt": 1787501790630,
       "blocked": false
     },
     {
@@ -2049,7 +2049,7 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "nova",
       "labels": [],
       "estimate": 3,
@@ -2091,7 +2091,7 @@
         }
       ],
       "createdAt": 1787485823449,
-      "updatedAt": 1787498388908,
+      "updatedAt": 1787499540248,
       "blocked": false
     },
     {
@@ -2392,44 +2392,44 @@
       "desc": "",
       "phase": "E",
       "priority": "P3",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "/pricing page (free: charts/search",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "pro: full screener/backtests/alerts)",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "per-device caps on backtest runs + active alerts enforced in API layer with 429/402 semantics",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "limits documented",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "gates tested",
-          "done": false
+          "done": true
         },
         {
           "id": "6",
           "text": "no billing integration required yet",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787485890061,
-      "updatedAt": 1787485890061,
+      "updatedAt": 1787500925499,
       "blocked": false
     },
     {
@@ -2568,570 +2568,3638 @@
       "createdAt": 1787496267866,
       "updatedAt": 1787499284511,
       "blocked": false
+    },
+    {
+      "id": "TASK-69",
+      "title": "ui-smoke: /api/watchlist mirror 503s in DB-less CI trip screener console gate (TASK-65 class, instance 3)",
+      "desc": "",
+      "phase": "E",
+      "priority": "P1",
+      "status": "doing",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ci"
+      ],
+      "estimate": 1,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "screener.py mocks /api/watchlist** empty entries",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "ui-smoke green on master",
+          "done": true
+        }
+      ],
+      "createdAt": 1787499648504,
+      "updatedAt": 1787501744037,
+      "blocked": false
+    },
+    {
+      "id": "TASK-70",
+      "title": "Company profile quote header 404s: /api/analysis gets suffixed symbol RELIANCE.NS, API only resolves bare RELIANCE — name+price render as raw symbol/em-dash on every NSE equity",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "spectre",
+      "labels": [
+        "ui",
+        "api"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Normalize symbol before fetch (strip .NS/.BO) or teach /api/analysis suffixed input",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "/company/RELIANCE.NS shows display name + live price + change%",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "zero console errors on /company/[symbol]",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "failed quote state gets a retry affordance per TASK-55 pattern",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "ui harness smoke for /company route",
+          "done": false
+        }
+      ],
+      "createdAt": 1787500375837,
+      "updatedAt": 1787500375837,
+      "blocked": false
+    },
+    {
+      "id": "TASK-71",
+      "title": "Backtest form clips 90px past viewport on mobile (390px) — selects/date inputs unreachable, no horizontal-scroll recovery",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "spectre",
+      "labels": [
+        "ui",
+        "mobile"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "scrollWidth==clientWidth at 390px on /backtest",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "form card + all controls fit viewport",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "verified via ui harness mobile check",
+          "done": false
+        }
+      ],
+      "createdAt": 1787500386788,
+      "updatedAt": 1787500386788,
+      "blocked": false
+    },
+    {
+      "id": "TASK-72",
+      "title": "Backtest recent-runs list is unusable noise: 12 near-duplicate S100 rows, missing CAGR renders bare em-dash, no dedupe/clear/labels",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "spectre",
+      "labels": [
+        "ui",
+        "ux"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Duplicate consecutive runs collapsed or labeled distinctly",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "missing metrics render 'n/a' chip not bare —",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "cap visible rows with show-all",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "deep-link ?id= still works (TASK-38)",
+          "done": false
+        }
+      ],
+      "createdAt": 1787500387017,
+      "updatedAt": 1787500387017,
+      "blocked": false
+    },
+    {
+      "id": "TASK-73",
+      "title": "Breadth FII/DII flow bars are 6px-wide interactive buttons — untappable, no visible focus; EQ/DEBT missing values render bare em-dashes",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "spectre",
+      "labels": [
+        "ui",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Each bar button has >=44px hit area (overlay/padding) with visible focus ring",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "aria-label replaces title-only tooltip",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "missing EQ/DEBT series render 'n/a' state",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations on /breadth light+dark",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "verified at 390px",
+          "done": false
+        }
+      ],
+      "createdAt": 1787500401141,
+      "updatedAt": 1787500401141,
+      "blocked": false
+    },
+    {
+      "id": "TASK-74",
+      "title": "/board fails axe: color-contrast x49 serious, select-name critical, scrollable-region-focusable — page is linked from main site nav",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "doing",
+      "assignee": "nova",
+      "labels": [
+        "a11y",
+        "ui"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "axe 0 violations on /board light+dark desktop+mobile",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "assignee select gets accessible name",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "kanban scroller keyboard-focusable (tabindex+label) without breaking intended horizontal scroll",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "filter controls >=44px at 390px",
+          "done": false
+        }
+      ],
+      "createdAt": 1787500401322,
+      "updatedAt": 1787500819148,
+      "blocked": false
+    },
+    {
+      "id": "TASK-75",
+      "title": "AppShell header page-title jams against brand on mobile (NIFTYBreadth / NIFTYBacktest, raw RELIANCE.NS on company) — no separator, no display name",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "spectre",
+      "labels": [
+        "ui"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Visible gap/separator between brand and page-title slot at 390px",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "company pages show display name in header once TASK-70 lands",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "verified on /breadth /backtest /company at 390px",
+          "done": false
+        }
+      ],
+      "createdAt": 1787500412775,
+      "updatedAt": 1787500412775,
+      "blocked": false
+    },
+    {
+      "id": "TASK-76",
+      "title": "Site-wide touch-target debt outside TASK-52 scope: footer links 15-16px tall (Screener/Breadth/Not-investment-advice), home search input 20px tall with truncated placeholder",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "spectre",
+      "labels": [
+        "a11y",
+        "mobile"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Footer/utility links >=44px hit area via padding (visual size may stay compact)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "search input >=36px tall at 390px, placeholder not truncated",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "coordinate with vector TASK-52 for header nav row",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 site-wide",
+          "done": false
+        }
+      ],
+      "createdAt": 1787500413064,
+      "updatedAt": 1787500413064,
+      "blocked": false
+    },
+    {
+      "id": "TASK-77",
+      "title": "First-visit cold start: empty terminal on / when watchlist is empty — no default symbol, no chart, no guidance",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "doing",
+      "assignee": "ghost",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "fresh browser (no localStorage, no ?s= deep link) lands on / and shows a real chart (default NIFTY 50 or SENSEX) instead of 'Choose a symbol' with no data",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "deep links (?s=&e=&r=) still win over the default",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "header never renders 'Choose a symbol' with an empty price row for a first-time visitor",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "onboarding hint (press / to search, star to save) visible until first symbol is added",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501665250,
+      "updatedAt": 1787501903973,
+      "blocked": false
+    },
+    {
+      "id": "TASK-78",
+      "title": "AlertCenter bell is unreachable outside home: /screener /breadth /company show no alerts bell, and home hides the bell until a symbol is picked",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "bell (AlertCenter) renders in the shared AppShell header on every route, not gated on home's selected symbol",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "device-scoped active alerts are visible from any page",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "new-alert dialog allows choosing a symbol when none is selected (currently disabled with no symbol)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501670443,
+      "updatedAt": 1787501670443,
+      "blocked": false
+    },
+    {
+      "id": "TASK-79",
+      "title": "Search UX: 2-char minimum + no recent/popular shortcuts — typing 'N' or 'R' shows nothing, first-time users don't know what to type",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "empty query opens a helpful state (recently viewed + popular symbols NIFTY 50 / SENSEX / RELIANCE / TCS quick picks) instead of nothing",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "1-char prefix queries return top matches instead of requiring 2 chars",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "keyboard '/' focus flow unchanged",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501690544,
+      "updatedAt": 1787501690544,
+      "blocked": false
+    },
+    {
+      "id": "TASK-80",
+      "title": "Company page dead-ends: /company/[symbol] has no link back to the chart, no watchlist star, no 'open in terminal' — cross-navigation gap",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "company page header gains an 'Open chart →' / 'Open in terminal' link that routes to /?s=SYMBOL&e=EXCHANGE (resolves via instruments index, not bare symbol)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "star/watchlist toggle available on company page",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "alert create CTA available",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "existing per-section empty-state resilience preserved",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501693919,
+      "updatedAt": 1787501693919,
+      "blocked": false
+    },
+    {
+      "id": "TASK-81",
+      "title": "Screener: 190+ strategy registry will overrun the pill row — no search/filter, pills wrap endlessly on mobile, no grouping",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "strategy selector degrades to a searchable dropdown/combobox once registry exceeds ~8 entries (or on mobile width)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "pills remain for short lists",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "active strategy stays visible/deep-linkable (?strategy=)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "keyboard accessible (aria-expanded/selected) + axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501697389,
+      "updatedAt": 1787501697389,
+      "blocked": false
+    },
+    {
+      "id": "TASK-82",
+      "title": "Mobile chart interaction: dblclick re-fit is desktop-only — no touch re-fit affordance, no visible FIT button when zoomed on touch",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "on touch devices a FIT control (chip/button or double-tap) re-fits the visible range after pinch-zoom",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "desktop dblclick behavior unchanged",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "control respects prefers-reduced-motion",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501701084,
+      "updatedAt": 1787501701084,
+      "blocked": false
+    },
+    {
+      "id": "TASK-83",
+      "title": "Watchlist removal is destructive with no undo — accidental × tap permanently loses curated list (import/export is the only recovery)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "removing a watchlist entry offers an undo affordance (inline undo chip/toast, ~5s) that restores the entry + its position",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "undo announces via sr-only live region",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "behavior identical on desktop + mobile sheet",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "existing keyboard J/K step and export/import unaffected",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501704704,
+      "updatedAt": 1787501704705,
+      "blocked": false
+    },
+    {
+      "id": "TASK-84",
+      "title": "Help modal only reachable via ? on home — subpages have no shortcut help, no consistent '?' affordance, no first-visit onboarding",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "every route (home/screener/breadth/backtest/company/board) exposes a discoverable help affordance (header ? or footer hint) showing that page's shortcuts",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "home keyboard shortcuts listed match actual bindings",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "first-visit users see a one-time hint on / (dismissible, respects reduced motion)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501708287,
+      "updatedAt": 1787501708287,
+      "blocked": false
+    },
+    {
+      "id": "TASK-85",
+      "title": "Breadth/screener loading states: cards render live '—' placeholders before data arrives — no skeleton, users read them as missing data",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "breadth stat cards and screener table show skeleton/loading treatment while the first fetch is in flight (matches home's pulse pattern)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "after load, real values replace skeletons without layout shift",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "error/empty states unchanged",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "respects prefers-reduced-motion",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501713128,
+      "updatedAt": 1787501713128,
+      "blocked": false
+    },
+    {
+      "id": "TASK-86",
+      "title": "CI self-test schedules + hardening: cron ci.yml every 6h, ui-smoke nightly, concurrency guards",
+      "desc": "",
+      "phase": "E",
+      "priority": "P1",
+      "status": "review",
+      "assignee": "cipher",
+      "labels": [],
+      "estimate": 1,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "ci.yml gains schedule cron every 6h with concurrency group cancel-in-progress",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "ui-smoke.yml gains nightly cron off-peak vs pipelines cadences",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "YAML valid (parsed)",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "no overlap storm with pipelines.yml data crons",
+          "done": true
+        },
+        {
+          "id": "5",
+          "text": "LOG entry",
+          "done": true
+        }
+      ],
+      "createdAt": 1787501713821,
+      "updatedAt": 1787502122268,
+      "blocked": false
+    },
+    {
+      "id": "TASK-87",
+      "title": "Home page data freshness: 'Cached data'/'Daily' chips exist but no last-updated time or source label on the chart — users can't judge staleness",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "chart header shows the last data timestamp (already computed as regularMarketTime) formatted IST next to the existing chips",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "source label (Yahoo/Moneycontrol/Google/Groww) is visible in the chart footer or a title tooltip",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "STALE/DAILY chips remain",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no layout shift",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501716157,
+      "updatedAt": 1787501716157,
+      "blocked": false
+    },
+    {
+      "id": "TASK-88",
+      "title": "Backtest page: no empty/loading guidance for strategies list, no keyboard flow from history to re-run, run button affordance is text-only",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "when strategies fail to load, backtest form shows a retry + explainer instead of silent empty select",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "recent-runs rows deep-link to ?id= and offer 're-run' action",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "form is keyboard-focusable end-to-end (labels, presets, submit)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501719796,
+      "updatedAt": 1787501719796,
+      "blocked": false
+    },
+    {
+      "id": "TASK-89",
+      "title": "Pricing page is a dead end: no CTA to start Pro/Free, no way to see what 'pro preview' means, no FAQ — conversion surface wasted",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "pricing page has a primary CTA (e.g. 'Continue free' + 'Request Pro access' mailto/board link) wired to existing flows",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "a short FAQ or explainer answers 'what is pro preview / billing not wired'",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "page renders TIER_LIMITS numbers as today (no drift)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations, dark mode clean",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501723248,
+      "updatedAt": 1787501723248,
+      "blocked": false
+    },
+    {
+      "id": "TASK-90",
+      "title": "Alert cap error (402) links to 'see Pricing' in text but there is no hyperlink — and cap errors should link to /pricing directly",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "the 'Free plan allows 5 active alerts' message links to /pricing",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "429 backtest cap error also offers a Pricing link",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "links are keyboard-accessible and distinct (underline/focus ring)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501726512,
+      "updatedAt": 1787501726512,
+      "blocked": false
+    },
+    {
+      "id": "TASK-91",
+      "title": "ChartPanel shows 'Search a symbol to start' empty state when a symbol IS selected but chart fetch fails — error state conflated with no-symbol state; change chip renders green '—' pill with no data",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "spectre",
+      "labels": [
+        "ui",
+        "ux"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Chart fetch failure with selected symbol renders distinct error state (message + retry) not the search prompt",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "no-symbol state only when symbol absent",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "price-change placeholder renders neutral (no direction tint) when data missing",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "reproduce by aborting /api/chart on /",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501749692,
+      "updatedAt": 1787501749692,
+      "blocked": false
+    },
+    {
+      "id": "TASK-92",
+      "title": "Company page fires N+1 network requests: Memberships fetches /api/strategies then ONE /api/signals?limit=200 per strategy in parallel — 190 requests on one page load",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "company page loads strategy memberships via a single round-trip (server-side aggregation or one membership endpoint) — no per-strategy client fan-out",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "page load network waterfall on /company/[symbol] is O(1) requests, not O(strategies)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "existing empty/failed/skeleton states preserved",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "screener/board unaffected",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501820176,
+      "updatedAt": 1787501820176,
+      "blocked": false
+    },
+    {
+      "id": "TASK-93",
+      "title": "Generic Modal does not lock body scroll — help, alert-center and create-alert dialogs let the page scroll behind them on mobile",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "opening any Modal (help, alert center, create alert, watchlist sheet) locks background scroll while open and restores it on close (watchlist already does this ad hoc in page.tsx — move it into Modal)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "no scroll position jump on open/close",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "Escape + focus trap unchanged",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501823947,
+      "updatedAt": 1787501823947,
+      "blocked": false
+    },
+    {
+      "id": "TASK-94",
+      "title": "Backtest result panel omits headline metrics — after a run completes the user sees only turnover/rebalances/equity, no CAGR/Sharpe/maxDD (history rows show CAGR but the fresh result does not)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "completed run result panel shows CAGR/Sharpe/maxDD computed from the returned equity series (metrics live in the payload or server adds them), matching the metric names used in the evidence strip on /screener",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "metric labels + formatting consistent with BacktestEvidence",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "deep-link ?id= run shows the same headline metrics",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no regression to equity chart",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501827905,
+      "updatedAt": 1787501827905,
+      "blocked": false
+    },
+    {
+      "id": "TASK-95",
+      "title": "Backtest history rows don't expose per-run summary beyond CAGR — strategy name shown as raw id (S100), no sharpe/maxDD, no 'view in screener' cross-link",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "recent-runs rows show human strategy name (from registry) not raw id, plus available sharpe/maxDD metrics",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "each row offers a cross-link to /screener?strategy=ID",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "dedupe/clear affordance for noisy runs (see TASK-72)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "deep-link ?id= still works",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501831487,
+      "updatedAt": 1787501831487,
+      "blocked": false
+    },
+    {
+      "id": "TASK-96",
+      "title": "Legal pages (disclaimer/privacy/terms/pricing) drift from the design system — separate legal.css with all-caps headers, no shared SiteHeader, no dark-mode token verification",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "legal/pricing pages adopt the shared AppShell header + sentence-case headings (retiring the retired all-caps terminal style per AGENTS.md)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "they run through the axe harness in both themes with 0 violations",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "nav to/from terminal + pricing links intact",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "content (copy) unchanged",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501835424,
+      "updatedAt": 1787501835424,
+      "blocked": false
+    },
+    {
+      "id": "TASK-97",
+      "title": "Search result listbox has no keyboard scroll-into-view — active option can be scrolled out of the max-h-72 dropdown while arrow-navigating (aria-activedescendant mismatch)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "when arrow keys move the active option, the listbox scrolls the active item into view (scrollIntoView block nearest on active change)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "Enter still selects the active option",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "mouse hover and keyboard paths don't fight",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "Escape/close behavior unchanged",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501838321,
+      "updatedAt": 1787501838321,
+      "blocked": false
+    },
+    {
+      "id": "TASK-98",
+      "title": "Home tape/watchlist J/K stepping wraps around silently (modulo) — stepping past the last symbol wraps to the first with no visual or audio cue; users think the list is broken",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "J/K stepping past either end of the watchlist gives feedback (wrap announced via sr-only live region, or stop-at-edge instead of wrap)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "selected highlight moves",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "no change to mouse/scroll behavior",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501841318,
+      "updatedAt": 1787501841318,
+      "blocked": false
+    },
+    {
+      "id": "TASK-99",
+      "title": "Odometer price roll + chart reveal are the signature moments but there's no loading-to-loaded transition on range switch — switching 1-8 ranges hard-clips to skeleton instead of reusing the reveal sweep",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "switching ranges re-uses the existing reveal sweep / odometer roll instead of a hard cut to the pulse skeleton when data is already cached",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "prefers-reduced-motion respected (no sweep)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "no new animation on first load",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501844822,
+      "updatedAt": 1787501844822,
+      "blocked": false
+    },
+    {
+      "id": "TASK-100",
+      "title": "Watchlist has no reorder — curated lists can't be dragged/sorted, and J/K order is fixed to insertion order; power users hit a wall",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "watchlist rows are reorderable (drag on desktop, long-press/move affordance on mobile) with persistence (localStorage order preserved across reloads and mirrored to server watchlist)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "keyboard reorder (e.g. Alt+Arrow) available",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "existing pick/remove/undo flows unaffected",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501848286,
+      "updatedAt": 1787501848286,
+      "blocked": false
+    },
+    {
+      "id": "TASK-101",
+      "title": "AlertCenter has no 'alert triggered' browser notification / in-app toast — fired alerts only surface as a silent badge count; the 'notification delivery (email/log digest)' from TASK-59 is backend-only",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "when an alert fires while the tab is visible, a dismissible in-app toast announces it (sr-only + visual, respects reduced motion)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "on first successful create the user is offered an opt-in Notification permission flow",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "existing badge/polling unchanged",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501851634,
+      "updatedAt": 1787501851634,
+      "blocked": false
+    },
+    {
+      "id": "TASK-102",
+      "title": "Ticker tape has no keyboard focus for horizontal scroll and no pause on hover — long tapes trap mouse users, keyboard users can't reach off-screen symbols",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "tape container is keyboard-scrollable (focusable with tabindex=0 + arrow scroll, or symbols remain reachable via search)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "tape pauses on hover for legibility",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "hidden symbols reachable through the search box without losing context",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501855269,
+      "updatedAt": 1787501855269,
+      "blocked": false
+    },
+    {
+      "id": "TASK-103",
+      "title": "IA: global navigation hides Backtest / Pricing / Company — consumer cannot discover core jobs",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "nav",
+        "ia"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Audit every route (/, /screener, /breadth, /backtest, /pricing, /company, /board) and map them into a single SiteHeader + mobile drawer",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: header shows 5+ primary destinations with active state and keeps Board as secondary",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: mobile drawer reachable via hamburger, traps focus, has 44px touch targets, aria-expanded",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "AC: no hard-coded hex — tokens only, dark mode verified, axe 0",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501942558,
+      "updatedAt": 1787501942558,
+      "blocked": false
+    },
+    {
+      "id": "TASK-104",
+      "title": "Search: no command palette (cmd-K) — power consumers cannot jump between symbol / strategy / page",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Spec palette as universal entry (Linear/Stripe pattern) aggregating /api/search + strategies + routes",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: cmd-K / ctrl-K opens, ESC closes, focus traps, arrow nav + scroll-into-view",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: respects reduced motion and no setState-in-effect",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "tsc+lint+ axe 0",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501977809,
+      "updatedAt": 1787501977809,
+      "blocked": false
+    },
+    {
+      "id": "TASK-105",
+      "title": "Watchlist rows lack price / change / sparkline — consumer cannot triage without clicking each row",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add inline price, day % pill, 20-pt sparkline per row (same tokens as TickerTape) with loading skeleton",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: selected state keeps 4.5:1 contrast in light+dark",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: J/K stepping still works, reorder not required (TASK-100 separate)",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501977966,
+      "updatedAt": 1787501977966,
+      "blocked": false
+    },
+    {
+      "id": "TASK-106",
+      "title": "TickerTape looks static — no scroll affordance, pause-on-hover, or freshness signal",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add edge fade gradients, pause-on-hover/focus, pulsing Live dot, and last-updated sr-live region",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: overflow remains keyboard-accessible, no layout shift on hover",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: dark mode tokens verified",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501978095,
+      "updatedAt": 1787501978095,
+      "blocked": false
+    },
+    {
+      "id": "TASK-107",
+      "title": "Search cold start shows nothing — no trending / recent / popular one-tap shortcuts",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "activation"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Pre-input panel shows Trending (NIFTY50 top 6), Recent (last 5 picked), Popular by sector when query <2 chars",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-79 fix, does not regress 2-char debounce",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: each chip is 44px, keyboard navigable, aria-selected",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501978211,
+      "updatedAt": 1787501978211,
+      "blocked": false
+    },
+    {
+      "id": "TASK-108",
+      "title": "Empty watchlist has no one-tap presets — 0→1 activation drops, consumer abandons",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "activation"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Empty state offers 3 pills: NIFTY 50 top 8, Bank leaders, IT leaders",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "one tap seeds watchlist via existing addToWatchlist",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: copy is human (not terminal jargon), CTA is 44px primary, import/export preserved",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "AC: complements TASK-77 default-symbol work",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501985411,
+      "updatedAt": 1787501985411,
+      "blocked": false
+    },
+    {
+      "id": "TASK-109",
+      "title": "No breadcrumb / page context — consumer loses orientation across Home / Screener / Breadth / Company",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ia",
+        "nav"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add lightweight breadcrumb + active page label in AppShell header on all routes (Home shows selected symbol as breadcrumb)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: SiteHeader subtitle unified, no jam on mobile (TASK-75 complementary)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: semantic nav + aria-current",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501985661,
+      "updatedAt": 1787501985661,
+      "blocked": false
+    },
+    {
+      "id": "TASK-110",
+      "title": "Chart legend is hostile to novices — OHLC/volume labels lack ₹ framing and plain-English tooltips",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add ₹ on price axis, OHLC legend with hover tooltips (Open/High/Low/Close/Volume) and current-price halo annotation",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: values remain JetBrains Mono tabular, up/down tokens only",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: respects reduced motion",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501985951,
+      "updatedAt": 1787501985951,
+      "blocked": false
+    },
+    {
+      "id": "TASK-111",
+      "title": "Screener score + jury rank are opaque black boxes — consumer cannot trust what Score 7.3 means",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "screener",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add info affordance per score cell (hover disclosure showing component breakdown + jury rank source link) and strategy header explainner",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: DataTable render stays pure, no hardcoded hex",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: keyboard reachable, escape closes",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501986096,
+      "updatedAt": 1787501986096,
+      "blocked": false
+    },
+    {
+      "id": "TASK-112",
+      "title": "Breadth page time-axis inconsistency: VIX/AD sparklines render oldest→newest (reverse of newest-first days) but FII/DII FlowBars render newest→oldest — two time directions on one screen, tooltip dates mislabeled",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "all four breadth series (VIX, A/D, FII, DII) render on the SAME chronological axis (oldest on the left, newest on the right)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "FlowBars values are reversed to match the sparklines",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "hover tooltips show ascending dates left-to-right",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "sr-only summary still correct",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501987070,
+      "updatedAt": 1787501987070,
+      "blocked": false
+    },
+    {
+      "id": "TASK-113",
+      "title": "No global search on subpages — Search lives only on the home terminal; screener/breadth/backtest/company users must navigate home to look up a symbol",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "a search affordance is reachable from every route (shared AppShell header or per-page), returning the same combobox result set",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "selecting a result on a subpage routes to the terminal with that symbol loaded (?s=&e=&r=)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "no regression to home keyboard '/' flow",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501990817,
+      "updatedAt": 1787501990817,
+      "blocked": false
+    },
+    {
+      "id": "TASK-114",
+      "title": "Breadth page shows numbers without meaning — VIX / A:D / FII lack plain-English interpretation",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "breadth",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add contextual microcopy + thresholds (e.g., VIX <15 calm, A:D <40% oversold) and one-line health banner",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: values remain source-truth, interpretation is secondary muted text",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: sr-only summary already present — augment visually",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501993468,
+      "updatedAt": 1787501993468,
+      "blocked": false
+    },
+    {
+      "id": "TASK-115",
+      "title": "Backtest result requires scrolling to judge — no glanceable headline metrics rail",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "backtest"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add sticky headline rail above equity curve: CAGR, total return, max DD, Sharpe, win-rate with vs-benchmark delta",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-94 (omitted metrics) but keeps metrics always above fold",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: values use JetBrains Mono, up/down tokens",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501993708,
+      "updatedAt": 1787501993708,
+      "blocked": false
+    },
+    {
+      "id": "TASK-116",
+      "title": "Empty / loading / error states are arid copy — no illustration, next step, or ETA",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ux",
+        "empty-states"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Audit every route empty/loading/error: replace arid '—' / 'No sessions' with illustrated empty state + one primary CTA + ETA/retry",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: breadth/screener loading placeholders no longer show live dashes (TASK-85 follow-up)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: consistent card radius+shadow tokens",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501993828,
+      "updatedAt": 1787501993828,
+      "blocked": false
+    },
+    {
+      "id": "TASK-117",
+      "title": "Errors are generic and inconsistent — no offline detection or degraded-data banner",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "error",
+        "reliability"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Unify error contract: offline detector, per-panel Retry, degraded/stale banner (source+degraded chips already exist — make consistent)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: Home chart retry via R still works, breadth retry preserved, no duplicate toasts",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: a11y role=alert + focus management",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501993972,
+      "updatedAt": 1787501993972,
+      "blocked": false
+    },
+    {
+      "id": "TASK-118",
+      "title": "Screener strategy pills show raw demo ids (demo-52wlow) and empty backtest evidence strip until /api/strategies resolves — first paint shows 'Unranked · Edge —/10' with no loading state",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "strategy pill labels show human names while registry loads (fallback metas already carry names — render them consistently)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "the meta chip row (jury/edge/rows/as-of) shows a skeleton or is hidden until the first fetch resolves instead of 'Unranked · Edge —/10'",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "no layout shift",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501994165,
+      "updatedAt": 1787501994165,
+      "blocked": false
+    },
+    {
+      "id": "TASK-119",
+      "title": "404 page uses cursor-blink class not defined in globals.css — the blinking underscore is dead CSS (archived by TASK-44 purge); also no search/recovery links on 404",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "cursor-blink animation restored (a defined keyframe in globals.css honoring prefers-reduced-motion) or the underscore removed",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "404 offers a search box or popular-symbol links so lost visitors can recover instead of only 'Return to terminal'",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787501997822,
+      "updatedAt": 1787501997822,
+      "blocked": false
+    },
+    {
+      "id": "TASK-120",
+      "title": "Fundamentals panel hides provenance after failure — stale data looks authoritative",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "trust",
+        "fundamentals"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Always show as-of + source line (even on failure/empty), add degraded chip when cache older than 24h, link to source docs",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-87 freshness work but scoped to /company fundamentals",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: dark+light token verified",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502000541,
+      "updatedAt": 1787502000541,
+      "blocked": false
+    },
+    {
+      "id": "TASK-121",
+      "title": "Pricing page is a dead end — no CTA into starting research or understanding Pro preview",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "activation"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add primary CTA: Start screening / Run a backtest (with gate copy) and secondary CTA: See what Pro preview unlocks",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "plus footer nav consistency (TASK-96 follow-up)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: copy is human not all-caps",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "CTA uses bg-paper text-ink token",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "no hardcoded hex",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502000720,
+      "updatedAt": 1787502000720,
+      "blocked": false
+    },
+    {
+      "id": "TASK-122",
+      "title": "Mobile chart has no touch affordance — pinch/drag/long-press/double-tap re-fit are undiscoverable",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "mobile"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add touch affordance: bottom-sheet legend on long-press, pinch hint on first visit, visible re-fit FAB on mobile",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-82 dblclick — does not regress desktop",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: respects prefers-reduced-motion, does not trap scroll",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502000947,
+      "updatedAt": 1787502000947,
+      "blocked": false
+    },
+    {
+      "id": "TASK-123",
+      "title": "No 'Continue where you left off' — research loop Home↔Screener↔Company has no history or breadcrumb back-link",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "nav",
+        "retention"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add lightweight recent trail (last 5 viewed symbols/strategies) persisted in localStorage, surfaced in header overflow and Company back-link",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-80 dead-end but adds cross-route continuity",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: no tracking, local only, clear button",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502001233,
+      "updatedAt": 1787502001233,
+      "blocked": false
+    },
+    {
+      "id": "TASK-124",
+      "title": "Chart range switch hard-clips with no transition — switch 1D↔1Y feels jarring despite reveal-sweep signature",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "motion"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Reuse chart reveal sweep on range change (instead of skeleton hard-clip), keep skeleton only on first load",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: respects prefers-reduced-motion — fallback is cross-fade 120ms",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: complements TASK-99 but ensures loading→loaded reuse",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502008618,
+      "updatedAt": 1787502008618,
+      "blocked": false
+    },
+    {
+      "id": "TASK-125",
+      "title": "Copy is specialist-only — P/E, ROE, jury rank, breadth have no plain-English glossary or hover explainer",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "copy",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add glossary affordance: dotted-underline + tooltip for specialist terms (P/E, ROE, VIX, A/D, etc.) pulling from single glossary source",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: tooltip is hover+focus reachable, esc closable, no layout shift",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: works in light+dark",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502008929,
+      "updatedAt": 1787502008929,
+      "blocked": false
+    },
+    {
+      "id": "TASK-126",
+      "title": "Focus-visible ring is token-driven but board of controls lacks logical tab order and skip-to-content on subpages",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Audit tab order on /, /screener, /breadth, /company, /backtest: ensure skip-link on every page, logical header→main→aside order, no tabIndex -1 on interactive bars (TASK-73 follow-up)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: axe 0 serious on all routes in both themes",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502009198,
+      "updatedAt": 1787502009198,
+      "blocked": false
+    },
+    {
+      "id": "TASK-127",
+      "title": "No perceived-performance budget — heavy chart + instruments hit first paint before consumer sees price",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "perf"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Measure TTI + LCP on 3G MotoG4: chart chunk preloaded only after search/watchlist paint, instruments deferred, skeleton reserves height to avoid CLS",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: no FOUC on theme toggle (existing inline script preserved)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: lighthouse best-practice 95+",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502009451,
+      "updatedAt": 1787502009451,
+      "blocked": false
+    },
+    {
+      "id": "TASK-128",
+      "title": "Sitemap lists /s/[symbol] URLs which 301-redirect to /company/[symbol] — crawlers index redirect hops; sitemap should point at the canonical company URLs",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "sitemap.xml emits canonical /company/[symbol] URLs (or /s/ entries are removed from the sitemap while the redirect stays for share links)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "og:image still resolves for shared /s/ links",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "robots/sitemap self-consistent",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no crawl warning for redirect chains",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502026659,
+      "updatedAt": 1787502026659,
+      "blocked": false
+    },
+    {
+      "id": "TASK-129",
+      "title": "Design drift: globals.css still ships light+dark dual tokens, DESIGN.md v2 is dark-only violet midnight — consumer sees two visual languages",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "design-system"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Migrate @theme to DESIGN.md §2 midnight tokens (canvas #0A0B0D, accent #8B7CFF) and delete html.dark split",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: no hard-coded hex outside tokens — WCAG AA 7.1:1 on canvas",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: viewport themeColor + inline theme script updated, Figma 1:1 styles",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502100743,
+      "updatedAt": 1787502100743,
+      "blocked": false
+    },
+    {
+      "id": "TASK-130",
+      "title": "Chart range chips hide interval — 1D=5m vs 1Y=daily with session gaps, consumer misreads candles",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add interval disclosure under range strip (e.g. 1D · 5m · NSE hours) + gap note for holidays",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: range is segmented control per DESIGN.md §3.3 — active uses accent, not paper",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: monospace tabular, 11px min",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502101038,
+      "updatedAt": 1787502101038,
+      "blocked": false
+    },
+    {
+      "id": "TASK-131",
+      "title": "StatsRail and Fundamentals show dashes before load — no skeleton parity, consumer perceives broken data",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "skeleton",
+        "loading"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Replace '—' placeholders with shimmer skeleton on panel-2 per DESIGN.md §3.1",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: loading→loaded uses fade-up 200ms, respects prefers-reduced-motion",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: complements TASK-85 breadth parity",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502101209,
+      "updatedAt": 1787502101209,
+      "blocked": false
+    },
+    {
+      "id": "TASK-132",
+      "title": "Odometer live region spams SR on every tick — price updates without throttling overwhelm screen readers",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "a11y",
+        "odometer"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Throttle sr-only live region to polite + 2s debounce, aria-live polite on price container",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: visual roll 180ms kept, motion-reduce collapses to opacity only",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: axe 0, no duplicate announcements",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502101366,
+      "updatedAt": 1787502101366,
+      "blocked": false
+    },
+    {
+      "id": "TASK-133",
+      "title": "Legal/pricing/kalyan pages use bespoke .legal-* header not SiteHeader — navigation and trust feel inconsistent",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "nav",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Unify all chrome under SiteHeader with subtitle (Pricing/Disclaimer/Privacy/Terms) — delete separate legal.css header",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: breadcrumb + active nav preserved, mobile hamburger works",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: axe 0 on all legal routes",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502107500,
+      "updatedAt": 1787502107500,
+      "blocked": false
+    },
+    {
+      "id": "TASK-134",
+      "title": "Share affordance missing — chart deep-link ?s=&e=&r= has no Copy link, consumer cannot share idea in 1 tap",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "share",
+        "activation"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Copy link button next to FIT chip — copies deep-link with toast 'Link copied' (2s)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: includes s, e, r",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "uses navigator.clipboard with fallback",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "AC: keyboard reachable, 44px, no layout shift",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502107682,
+      "updatedAt": 1787502107682,
+      "blocked": false
+    },
+    {
+      "id": "TASK-135",
+      "title": "Breadth freshness has no countdown — 5m poll without 'Updated 2m ago · next in 3m' makes stale feel live",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "breadth",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add relative time + progress bar to next poll, paused when document.hidden or market closed",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-87 chip but adds next-tick transparency",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: IST clock reused, tabular mono",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502107821,
+      "updatedAt": 1787502107821,
+      "blocked": false
+    },
+    {
+      "id": "TASK-136",
+      "title": "Screener zero-result and error states are dead ends — no suggestion to try another strategy",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "screener",
+        "empty-states"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "When items=0 or upstream error, show illustrated empty with 2 suggested strategies + Retry + link to breadth",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: keeps juryRank/edge context, not bare 'No data'",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: matches TASK-116 empty-state system",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502108074,
+      "updatedAt": 1787502108074,
+      "blocked": false
+    },
+    {
+      "id": "TASK-137",
+      "title": "Pricing comparison missing — no feature matrix, no 'what stays free forever' guarantee, consumer hesitates at paywall",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add comparison matrix Free vs Pro preview with check/X plus 'Charts/Search/Breadth always free' banner",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: numbers sourced from TIER_LIMITS — never drift from API gates",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: CTA pair: Continue free + Unlock pro (disabled with preview copy)",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502114411,
+      "updatedAt": 1787502114411,
+      "blocked": false
+    },
+    {
+      "id": "TASK-138",
+      "title": "Mobile watchlist drawer (wlOpen) has no sheet semantics — no backdrop, focus trap, or swipe-to-close",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "mobile",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Promote wlOpen to bottom-sheet: backdrop, focus-trap (Modal primitive), ESC + swipe-down to close, body scroll lock per TASK-93",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: 44px targets, respects reduced motion",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: J/K still works when drawer closed",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502114743,
+      "updatedAt": 1787502114743,
+      "blocked": false
+    },
+    {
+      "id": "TASK-139",
+      "title": "Board columns are drag-only — keyboard users cannot move cards, violates WCAG 2.1.1",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add keyboard move: focused card Ctrl+Arrow or Move menu (Backlog/Todo/Doing/Review/Done)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: aria-grabbed/keyboard instructions, focus stays on card",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: axe serious 0 on /board",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502114981,
+      "updatedAt": 1787502114981,
+      "blocked": false
+    },
+    {
+      "id": "TASK-140",
+      "title": "TickerTape violates WCAG 2.2.2 Pause — auto-scrolling or rapidly updating tape has no Pause/Stop/Hide control",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Pause button (visible on hover/focus) that freezes tape + Live dot, persists in localStorage",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: prefers-reduced-motion freezes by default",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: complements TASK-102 keyboard + TASK-106 affordance",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502115154,
+      "updatedAt": 1787502115154,
+      "blocked": false
+    },
+    {
+      "id": "TASK-141",
+      "title": "First-run tour missing — shortcuts J/K, 1-8, /, ?, cmd-K only in help modal, consumer never discovers them",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "onboarding",
+        "activation"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add one-time spotlight tour (3 steps: Search → Watchlist J/K → Ranges 1-8) with Skip + Never show again, stored in localStorage",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: appears only when watchlist empty, 150ms base motion, esc dismissible",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: tours complement TASK-84 help modal",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502122887,
+      "updatedAt": 1787502122887,
+      "blocked": false
+    },
+    {
+      "id": "TASK-142",
+      "title": "Search debounce has no pending affordance under 300ms — keystrokes feel lost before results appear",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "perf"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show subtle pending state (input spinner + 'Searching NSE · BSE…' sr-live) within 100ms of typing, debounce 150ms stays",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: abort stale fetch, no flicker on fast cache",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: complements TASK-79 2-char rule",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502123065,
+      "updatedAt": 1787502123065,
+      "blocked": false
+    },
+    {
+      "id": "TASK-143",
+      "title": "Watchlist import/export is buried in rail footer — low discoverability, no undo, short toast",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Move Export/Import to header overflow + toast 4s with Undo (TASK-83 complementary)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: download filename nifty-watchlist-YYYY-MM-DD.json",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: import validates schema + shows count",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502123298,
+      "updatedAt": 1787502123298,
+      "blocked": false
+    },
+    {
+      "id": "TASK-144",
+      "title": "No global empty-illustration system — each page invents its own 'No data' copy, breaks brand voice per DESIGN.md §4",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "empty-states",
+        "design-system"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Create EmptyState primitive (icon + headline + body + primary CTA) per DESIGN.md voice 'numbers before words'",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: used by screener/breadth/backtest/fundamentals — replaces ad-hoc '—'",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: violet accent only on primary CTA glow",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502123458,
+      "updatedAt": 1787502123458,
+      "blocked": false
+    },
+    {
+      "id": "TASK-145",
+      "title": "Screener silently truncates at 50 rows — page fetches limit=50 with no pagination/load-more, and meta.count returns page.length (50) not the real total, so consumers never know there are 190+ ranked names they can't see",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "screener shows total available rows (server returns real count) and offers pagination or load-more when a strategy exceeds the page size",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "meta.count reflects the full universe count not the page length",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "deep-link ?sort=&dir= still works across pages",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "keyboard/axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502129672,
+      "updatedAt": 1787502129672,
+      "blocked": false
+    },
+    {
+      "id": "TASK-146",
+      "title": "DataTable rank badge shows i+1 (sorted position) not row.rank — sorting screener by score/symbol/price makes the Rank column show table position, discarding the strategy's real rank (badge should come from row.rank)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "rank badge renders the stored row.rank (server already returns rank per row) instead of the sorted array index",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "rank column stays meaningful under any sort",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "ascending-rank is the default order so default view unchanged",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502134616,
+      "updatedAt": 1787502134616,
+      "blocked": false
+    },
+    {
+      "id": "TASK-147",
+      "title": "AlertCenter polls every 30s only while the dialog is open — fired alerts can lag up to 30s after a cross; no instant push/webhook, no re-fetch on refocus if the poll was skipped",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "alert list re-polls immediately on tab refocus (visibilitychange) and after create/delete/toggle without waiting for the next 30s tick",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "a fired-alert event can surface within a bounded delay",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "existing 30s cadence stays for idle",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no extra upstream load",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502139424,
+      "updatedAt": 1787502144430,
+      "blocked": true
+    },
+    {
+      "id": "TASK-148",
+      "title": "Legal pages use undefined --font-archivo (legal.css:40) — variable is never declared (layout defines only --font-inter/--font-jetbrains), so legal/pricing headings silently fall back to mono; intended display font never loads",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "legal/pricing headings use a defined font token (declare --font-archivo or swap to --font-display)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "no undefined-var fallback in legal.css/pricing.css",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "typography reads as intended in both themes",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502161764,
+      "updatedAt": 1787502161764,
+      "blocked": false
+    },
+    {
+      "id": "TASK-149",
+      "title": "Home chart has no benchmark comparison — consumer cannot answer 'vs NIFTY?' without leaving to backtest",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "comparison"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add toggle to overlay NIFTY 50 / SENSEX as dotted benchmark on home ChartPanel (reuses lightweight-charts LineSeries)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: toggle is segmented control, default off, persists in URL ?bench=NSEI",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: legend shows both series, up/down wash unchanged",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502164974,
+      "updatedAt": 1787502164974,
+      "blocked": false
+    },
+    {
+      "id": "TASK-150",
+      "title": "Watchlist sync has no pending/conflict feedback — mirror writes fail silently, consumer fears lost picks",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "reliability"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show sync pill: Saved · Saving… · Retry (with queue length) via useWatchlistMirror status",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: offline queues to localStorage, reconciles on reconnect",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: no toast spam — inline pill only",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502165288,
+      "updatedAt": 1787502165288,
+      "blocked": false
+    },
+    {
+      "id": "TASK-151",
+      "title": "No inline 'Create alert' from chart/company — AlertCenter is hidden behind bell, creation friction is high",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "alerts",
+        "activation"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Create alert CTA on ChartPanel header + Company header (pre-fills symbol/price)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: opens same Modal with focus-trap + body lock (TASK-93)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: unreachable bell on subpages fixed by relocating entry to SiteHeader (TASK-78)",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502165682,
+      "updatedAt": 1787502165682,
+      "blocked": false
+    },
+    {
+      "id": "TASK-152",
+      "title": "Company page has no peer/sector comparison — consumer cannot contextualize RELIANCE vs sector without manual search",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "comparison"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Peers strip: 4-6 sector peers with sparkline + day % pill, links to /company/[peer]",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: data from /api/signals or cached universe, fallback hides strip",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "AC: respects dark tokens, 44px touch targets",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502166202,
+      "updatedAt": 1787502166202,
+      "blocked": false
+    },
+    {
+      "id": "TASK-153",
+      "title": "Search swallows genuine network failures — Search.tsx catch is tagged '/* aborted */' but a fetch error (offline/500) also lands there, leaving 'Searching…' spinner with zero results and no error/retry; users think search is broken",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "fetch failures (non-abort) surface a distinct 'couldn't search — retry' state with a retry affordance",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "aborted requests stay silent",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "spinner never spins forever on error",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787502169829,
+      "updatedAt": 1787502169829,
+      "blocked": false
     }
   ],
   "activities": [
     {
-      "id": "DJVN",
-      "taskId": "TASK-68",
-      "text": "shipped f8bcc2e → origin/master · fix(data): funnel NSE single-symbol and asset ingest through storeCandlesReconciled — cliff regressions closed at the write path (TASK-68) · gates tsc=11.1s·lint=37.0s·test=7.3s",
-      "agent": "RAVEN",
-      "at": 1787499284511
+      "id": "DQAM",
+      "taskId": "TASK-153",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787502169830
     },
     {
-      "id": "R074",
-      "taskId": "TASK-68",
-      "text": "review · gates green tsc=11.5s·lint=34.6s·test=7.1s",
-      "agent": "RAVEN",
-      "at": 1787499226194
-    },
-    {
-      "id": "PTRU",
-      "taskId": "TASK-62",
-      "text": "shipped 16a1018 (local) · feat(screener): saved views + optional cloud watchlist mirror w/ merge-on-read (TASK-62) · gates tsc=12.3s·lint=37.7s·test=7.1s · e2e✓",
-      "agent": "CIPHER",
-      "at": 1787499046447
-    },
-    {
-      "id": "6K0I",
-      "taskId": "TASK-62",
-      "text": "review · gates green tsc=30.7s·lint=39.5s·test=7.5s",
-      "agent": "CIPHER",
-      "at": 1787498906268
-    },
-    {
-      "id": "G7I1",
-      "taskId": "TASK-62",
-      "text": "✓ checked tests green",
-      "agent": "CIPHER",
-      "at": 1787498726863
-    },
-    {
-      "id": "1H5M",
-      "taskId": "TASK-62",
-      "text": "✓ checked migration path documented toward auth claim",
-      "agent": "CIPHER",
-      "at": 1787498726630
-    },
-    {
-      "id": "GT2Z",
-      "taskId": "TASK-62",
-      "text": "✓ checked merge-on-read with localStorage",
-      "agent": "CIPHER",
-      "at": 1787498726363
-    },
-    {
-      "id": "WEXA",
-      "taskId": "TASK-62",
-      "text": "✓ checked watchlists table wired as optional cloud mirror ",
-      "agent": "CIPHER",
-      "at": 1787498726035
-    },
-    {
-      "id": "MYIO",
-      "taskId": "TASK-62",
-      "text": "✓ checked named screener configs (strategy/filters/sort) p",
-      "agent": "CIPHER",
-      "at": 1787498725542
-    },
-    {
-      "id": "R5RJ",
-      "taskId": "TASK-56",
-      "text": "review · gates green tsc=13.2s·lint=37.0s·test=6.7s",
-      "agent": "NOVA",
-      "at": 1787498388908
-    },
-    {
-      "id": "S4QN",
-      "taskId": "TASK-56",
-      "text": "review ✗ gates RED (tsc=13.3s·lint=40.0s) — fix and re-run",
-      "agent": "NOVA",
-      "at": 1787497762740
-    },
-    {
-      "id": "ZANN",
-      "taskId": "TASK-68",
-      "text": "review ✗ gates RED (tsc=15.8s·lint=37.1s) — fix and re-run",
-      "agent": "RAVEN",
-      "at": 1787497737493
-    },
-    {
-      "id": "PXYQ",
-      "taskId": "TASK-68",
-      "text": "review ✗ gates RED (tsc=12.6s) — fix and re-run",
-      "agent": "RAVEN",
-      "at": 1787497626693
-    },
-    {
-      "id": "NWXO",
-      "taskId": "TASK-68",
-      "text": "✓ checked repair tool no longer needed for regressions",
-      "agent": "RAVEN",
-      "at": 1787497515666
-    },
-    {
-      "id": "2PVJ",
-      "taskId": "TASK-68",
-      "text": "✓ checked cliff sweep green across full local DB",
-      "agent": "RAVEN",
-      "at": 1787497515390
-    },
-    {
-      "id": "AOFX",
-      "taskId": "TASK-68",
-      "text": "✓ checked every eod write path funnels through scripts/lib",
-      "agent": "RAVEN",
-      "at": 1787497515192
-    },
-    {
-      "id": "DTOO",
-      "taskId": "TASK-56",
-      "text": "review · gates green tsc=22.4s·lint=35.9s·test=8.8s",
-      "agent": "NOVA",
-      "at": 1787497502034
-    },
-    {
-      "id": "0C5D",
-      "taskId": "TASK-62",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787496991339
-    },
-    {
-      "id": "W98X",
-      "taskId": "TASK-58",
-      "text": "shipped cddcd8d (local) · feat(company): /company/[symbol] profile — metrics, memberships, corp actions, SEO + share-card (TASK-58) · gates tsc=8.7s·lint=26.6s · e2e✓",
-      "agent": "CIPHER",
-      "at": 1787496802999
-    },
-    {
-      "id": "PME9",
-      "taskId": "TASK-68",
-      "text": "claimed by RAVEN · → doing",
-      "agent": "RAVEN",
-      "at": 1787496777326
-    },
-    {
-      "id": "BWP8",
-      "taskId": "TASK-58",
-      "text": "review · gates green tsc=11.3s·lint=31.6s",
-      "agent": "CIPHER",
-      "at": 1787496669266
-    },
-    {
-      "id": "R49J",
-      "taskId": "TASK-58",
-      "text": "✓ checked e2e green",
-      "agent": "CIPHER",
-      "at": 1787496578252
-    },
-    {
-      "id": "UIIC",
-      "taskId": "TASK-58",
-      "text": "✓ checked empty states for missing data",
-      "agent": "CIPHER",
-      "at": 1787496578133
-    },
-    {
-      "id": "18JX",
-      "taskId": "TASK-58",
-      "text": "✓ checked /s/[symbol] redirects into it",
-      "agent": "CIPHER",
-      "at": 1787496578035
-    },
-    {
-      "id": "FAW5",
-      "taskId": "TASK-58",
-      "text": "✓ checked SEO metadata + share-card destination",
-      "agent": "CIPHER",
-      "at": 1787496577918
-    },
-    {
-      "id": "CTBE",
-      "taskId": "TASK-58",
-      "text": "✓ checked dedicated per-symbol route rendering metrics pan",
-      "agent": "CIPHER",
-      "at": 1787496577823
-    },
-    {
-      "id": "8SIX",
-      "taskId": "TASK-54",
-      "text": "shipped 3e0b2f4 → origin/master · [TASK-54] feat(ui): DataTable sticky identity columns + ARIA grid model — roving row focus, keyboard parity, axe-clean; screener pins rank+symbol · gates tsc=8.3s·lint=29.2s · e2e✓",
-      "agent": "RAVEN",
-      "at": 1787496382183
-    },
-    {
-      "id": "GBYQ",
-      "taskId": "TASK-54",
-      "text": "review · gates green tsc=12.4s·lint=26.0s · e2e✓",
-      "agent": "RAVEN",
-      "at": 1787496341791
-    },
-    {
-      "id": "17UK",
-      "taskId": "TASK-68",
+      "id": "ZVB9",
+      "taskId": "TASK-152",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787496267866
+      "at": 1787502166202
     },
     {
-      "id": "77YK",
-      "taskId": "TASK-56",
-      "text": "✓ checked before/after bundle+timing evidence",
-      "agent": "NOVA",
-      "at": 1787496078161
-    },
-    {
-      "id": "QAFQ",
-      "taskId": "TASK-56",
-      "text": "✓ checked fundamentals/breadth routes reuse singleton sqli",
-      "agent": "NOVA",
-      "at": 1787496048366
-    },
-    {
-      "id": "41P8",
-      "taskId": "TASK-56",
-      "text": "✓ checked breadth client drops no-store",
-      "agent": "NOVA",
-      "at": 1787496048214
-    },
-    {
-      "id": "FDVF",
-      "taskId": "TASK-56",
-      "text": "✓ checked ticker+analysis routes get Cache-Control matchin",
-      "agent": "NOVA",
-      "at": 1787496048082
-    },
-    {
-      "id": "3F9Y",
-      "taskId": "TASK-56",
-      "text": "✓ checked backtest loads filter WHERE symbol IN universe +",
-      "agent": "NOVA",
-      "at": 1787496047877
-    },
-    {
-      "id": "PO3F",
-      "taskId": "TASK-56",
-      "text": "✓ checked /api/signals omits components/indices unless ?in",
-      "agent": "NOVA",
-      "at": 1787496047742
-    },
-    {
-      "id": "P9YT",
-      "taskId": "TASK-56",
-      "text": "✓ checked ChartPanel dynamic-imported ssr:false out of ini",
-      "agent": "NOVA",
-      "at": 1787496047493
-    },
-    {
-      "id": "ZUMZ",
-      "taskId": "TASK-54",
-      "text": "review ✗ gates RED (tsc=13.9s·lint=35.3s·test=7.1s) — fix and re-run",
+      "id": "6UAQ",
+      "taskId": "TASK-151",
+      "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787495860674
+      "at": 1787502165682
     },
     {
-      "id": "WMEI",
-      "taskId": "TASK-54",
-      "text": "review ✗ gates RED (tsc=13.1s) — fix and re-run",
+      "id": "FAN5",
+      "taskId": "TASK-150",
+      "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787495736699
+      "at": 1787502165288
     },
     {
-      "id": "0V6Y",
-      "taskId": "TASK-54",
-      "text": "✓ checked e2e green",
+      "id": "ZNTB",
+      "taskId": "TASK-149",
+      "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787495632806
+      "at": 1787502164974
     },
     {
-      "id": "TFA1",
-      "taskId": "TASK-54",
-      "text": "✓ checked axe clean on screener page",
+      "id": "ZYJK",
+      "taskId": "TASK-148",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787502161764
+    },
+    {
+      "id": "4Z51",
+      "taskId": "TASK-147",
+      "text": "blocked",
+      "agent": "RAVAN",
+      "at": 1787502144430
+    },
+    {
+      "id": "IXVB",
+      "taskId": "TASK-147",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787502139425
+    },
+    {
+      "id": "6NPM",
+      "taskId": "TASK-146",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787502134616
+    },
+    {
+      "id": "BZSR",
+      "taskId": "TASK-145",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787502129672
+    },
+    {
+      "id": "YOHG",
+      "taskId": "TASK-144",
+      "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787495632677
+      "at": 1787502123458
     },
     {
-      "id": "TSJN",
-      "taskId": "TASK-54",
-      "text": "✓ checked keyboard operable",
+      "id": "VIXA",
+      "taskId": "TASK-143",
+      "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787495632540
+      "at": 1787502123298
     },
     {
-      "id": "8V8S",
-      "taskId": "TASK-54",
-      "text": "✓ checked row selection uses valid ARIA (grid model with f",
+      "id": "6BIC",
+      "taskId": "TASK-142",
+      "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787495632399
+      "at": 1787502123065
     },
     {
-      "id": "SB8C",
-      "taskId": "TASK-54",
-      "text": "✓ checked rank/symbol column stays visible on horizontal s",
+      "id": "2YXS",
+      "taskId": "TASK-141",
+      "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787495632249
+      "at": 1787502122887
     },
     {
-      "id": "30AI",
-      "taskId": "TASK-58",
+      "id": "IUJV",
+      "taskId": "TASK-86",
+      "text": "review · gates green tsc=12.4s·lint=38.1s·test=7.2s",
+      "agent": "CIPHER",
+      "at": 1787502122268
+    },
+    {
+      "id": "KG8H",
+      "taskId": "TASK-140",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502115155
+    },
+    {
+      "id": "P1LS",
+      "taskId": "TASK-139",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502114981
+    },
+    {
+      "id": "V4F8",
+      "taskId": "TASK-138",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502114743
+    },
+    {
+      "id": "O8U2",
+      "taskId": "TASK-137",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502114411
+    },
+    {
+      "id": "W5DW",
+      "taskId": "TASK-136",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502108074
+    },
+    {
+      "id": "0VC7",
+      "taskId": "TASK-135",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502107821
+    },
+    {
+      "id": "Z8LR",
+      "taskId": "TASK-134",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502107682
+    },
+    {
+      "id": "7CAQ",
+      "taskId": "TASK-133",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502107500
+    },
+    {
+      "id": "RZBL",
+      "taskId": "TASK-132",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502101366
+    },
+    {
+      "id": "QGYK",
+      "taskId": "TASK-131",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502101209
+    },
+    {
+      "id": "DVKC",
+      "taskId": "TASK-130",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502101038
+    },
+    {
+      "id": "29C4",
+      "taskId": "TASK-129",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502100744
+    },
+    {
+      "id": "GUFZ",
+      "taskId": "TASK-128",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787502026659
+    },
+    {
+      "id": "C3SP",
+      "taskId": "TASK-127",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502009451
+    },
+    {
+      "id": "1VJ5",
+      "taskId": "TASK-126",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502009198
+    },
+    {
+      "id": "XZ0Y",
+      "taskId": "TASK-125",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502008929
+    },
+    {
+      "id": "N2SG",
+      "taskId": "TASK-124",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502008618
+    },
+    {
+      "id": "SNYL",
+      "taskId": "TASK-123",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502001233
+    },
+    {
+      "id": "8DQU",
+      "taskId": "TASK-122",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502000947
+    },
+    {
+      "id": "ZHVQ",
+      "taskId": "TASK-121",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502000720
+    },
+    {
+      "id": "DSWE",
+      "taskId": "TASK-120",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787502000542
+    },
+    {
+      "id": "1MC1",
+      "taskId": "TASK-119",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501997822
+    },
+    {
+      "id": "YNWJ",
+      "taskId": "TASK-118",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501994165
+    },
+    {
+      "id": "TJFS",
+      "taskId": "TASK-117",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787501993972
+    },
+    {
+      "id": "H41X",
+      "taskId": "TASK-116",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787501993828
+    },
+    {
+      "id": "VIE1",
+      "taskId": "TASK-115",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787501993708
+    },
+    {
+      "id": "V4MO",
+      "taskId": "TASK-114",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787501993468
+    },
+    {
+      "id": "TZA7",
+      "taskId": "TASK-113",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501990817
+    },
+    {
+      "id": "PMLY",
+      "taskId": "TASK-112",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501987071
+    },
+    {
+      "id": "KQEP",
+      "taskId": "TASK-111",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787501986097
+    },
+    {
+      "id": "MXHN",
+      "taskId": "TASK-110",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787501985952
+    },
+    {
+      "id": "ALJM",
+      "taskId": "TASK-109",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787501985662
+    },
+    {
+      "id": "H8FU",
+      "taskId": "TASK-108",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787501985411
+    },
+    {
+      "id": "41KT",
+      "taskId": "TASK-107",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787501978211
+    },
+    {
+      "id": "BQQ2",
+      "taskId": "TASK-106",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787501978095
+    },
+    {
+      "id": "CAZJ",
+      "taskId": "TASK-105",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787501977966
+    },
+    {
+      "id": "34BA",
+      "taskId": "TASK-104",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787501977809
+    },
+    {
+      "id": "P9Y8",
+      "taskId": "TASK-103",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787501942558
+    },
+    {
+      "id": "WFOZ",
+      "taskId": "TASK-77",
+      "text": "claimed by GHOST · → doing",
+      "agent": "GHOST",
+      "at": 1787501903973
+    },
+    {
+      "id": "L4I7",
+      "taskId": "TASK-86",
+      "text": "review ✗ gates RED (tsc=10.3s) — fix and re-run",
+      "agent": "CIPHER",
+      "at": 1787501889670
+    },
+    {
+      "id": "4N74",
+      "taskId": "TASK-102",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501855269
+    },
+    {
+      "id": "BVEX",
+      "taskId": "TASK-101",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501851634
+    },
+    {
+      "id": "ZJAS",
+      "taskId": "TASK-100",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501848286
+    },
+    {
+      "id": "4HRU",
+      "taskId": "TASK-99",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501844822
+    },
+    {
+      "id": "5EDT",
+      "taskId": "TASK-98",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501841318
+    },
+    {
+      "id": "BZPA",
+      "taskId": "TASK-97",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501838321
+    },
+    {
+      "id": "KMXW",
+      "taskId": "TASK-96",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501835424
+    },
+    {
+      "id": "85BE",
+      "taskId": "TASK-95",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501831487
+    },
+    {
+      "id": "EZCE",
+      "taskId": "TASK-94",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501827905
+    },
+    {
+      "id": "K1ZB",
+      "taskId": "TASK-93",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501823947
+    },
+    {
+      "id": "1KS2",
+      "taskId": "TASK-92",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501820176
+    },
+    {
+      "id": "SJOX",
+      "taskId": "TASK-86",
+      "text": "✓ checked LOG entry",
+      "agent": "CIPHER",
+      "at": 1787501772236
+    },
+    {
+      "id": "8C6Z",
+      "taskId": "TASK-86",
+      "text": "✓ checked no overlap storm with pipelines.yml data crons",
+      "agent": "CIPHER",
+      "at": 1787501771793
+    },
+    {
+      "id": "TM0W",
+      "taskId": "TASK-86",
+      "text": "✓ checked YAML valid (parsed)",
+      "agent": "CIPHER",
+      "at": 1787501771439
+    },
+    {
+      "id": "0BQY",
+      "taskId": "TASK-86",
+      "text": "✓ checked ui-smoke.yml gains nightly cron off-peak vs pipe",
+      "agent": "CIPHER",
+      "at": 1787501771136
+    },
+    {
+      "id": "0ZXJ",
+      "taskId": "TASK-86",
+      "text": "✓ checked ci.yml gains schedule cron every 6h with concurr",
+      "agent": "CIPHER",
+      "at": 1787501770848
+    },
+    {
+      "id": "IM6G",
+      "taskId": "TASK-91",
+      "text": "created in todo",
+      "agent": "SPECTRE",
+      "at": 1787501749692
+    },
+    {
+      "id": "PW6G",
+      "taskId": "TASK-69",
+      "text": "✓ checked ui-smoke green on master",
+      "agent": "RAVEN",
+      "at": 1787501744037
+    },
+    {
+      "id": "P888",
+      "taskId": "TASK-69",
+      "text": "✓ checked screener.py mocks /api/watchlist** empty entries",
+      "agent": "RAVEN",
+      "at": 1787501743906
+    },
+    {
+      "id": "WVZW",
+      "taskId": "TASK-86",
       "text": "claimed by CIPHER · → doing",
       "agent": "CIPHER",
-      "at": 1787495238457
+      "at": 1787501733712
     },
     {
-      "id": "3DLL",
-      "taskId": "TASK-57",
-      "text": "✓ checked eod_candles expands 54 -> nifty500 symbols via T",
-      "agent": "NOVA",
-      "at": 1787495218316
+      "id": "3750",
+      "taskId": "TASK-90",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501726512
     },
     {
-      "id": "7UWM",
-      "taskId": "TASK-55",
-      "text": "shipped 4b9a48d (local) · polish(ux): inline retries, 44px hit targets, FlowBars SR summary, sentence-case error skins (TASK-55) · gates tsc=9.1s·lint=27.4s · e2e✓",
+      "id": "F977",
+      "taskId": "TASK-89",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501723248
+    },
+    {
+      "id": "I1L0",
+      "taskId": "TASK-88",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501719796
+    },
+    {
+      "id": "5YTR",
+      "taskId": "TASK-87",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787501716157
+    },
+    {
+      "id": "RBBI",
+      "taskId": "TASK-86",
+      "text": "created in todo",
       "agent": "CIPHER",
-      "at": 1787494926925
-    },
-    {
-      "id": "HM0H",
-      "taskId": "TASK-55",
-      "text": "review · gates green tsc=11.5s·lint=31.6s",
-      "agent": "CIPHER",
-      "at": 1787494889919
-    },
-    {
-      "id": "V0VQ",
-      "taskId": "TASK-55",
-      "text": "review ✗ gates RED (tsc=14.5s·lint=26.3s·test=6.7s) — fix and re-run",
-      "agent": "CIPHER",
-      "at": 1787494717632
-    },
-    {
-      "id": "UEZU",
-      "taskId": "TASK-55",
-      "text": "✓ checked axe+e2e green",
-      "agent": "CIPHER",
-      "at": 1787494602220
-    },
-    {
-      "id": "Y7B7",
-      "taskId": "TASK-55",
-      "text": "✓ checked sentence-case reskin for ErrorBoundary/not-found",
-      "agent": "CIPHER",
-      "at": 1787494602012
-    },
-    {
-      "id": "IOLX",
-      "taskId": "TASK-55",
-      "text": "✓ checked breadth FlowBars gains visually-hidden series su",
-      "agent": "CIPHER",
-      "at": 1787494601861
-    },
-    {
-      "id": "7J69",
-      "taskId": "TASK-55",
-      "text": "✓ checked icon buttons (watchlist x, theme, star, bell, he",
-      "agent": "CIPHER",
-      "at": 1787494601653
-    },
-    {
-      "id": "SOPC",
-      "taskId": "TASK-55",
-      "text": "✓ checked screener/breadth/backtest error states include i",
-      "agent": "CIPHER",
-      "at": 1787494601461
-    },
-    {
-      "id": "8655",
-      "taskId": "TASK-54",
-      "text": "claimed by RAVEN · → doing",
-      "agent": "RAVEN",
-      "at": 1787494396260
-    },
-    {
-      "id": "J8UK",
-      "taskId": "TASK-52",
-      "text": "✓ checked Playwright mobile-viewport check green",
-      "agent": "RAVAN",
-      "at": 1787491940950
-    },
-    {
-      "id": "GRVM",
-      "taskId": "TASK-52",
-      "text": "✓ checked help control not mobile-hidden",
-      "agent": "RAVAN",
-      "at": 1787491940791
-    },
-    {
-      "id": "FNSK",
-      "taskId": "TASK-52",
-      "text": "✓ checked skip-to-content link on every page via SiteHeade",
-      "agent": "RAVAN",
-      "at": 1787491940608
-    },
-    {
-      "id": "WL7H",
-      "taskId": "TASK-52",
-      "text": "✓ checked SiteHeader nav reachable under sm breakpoint (me",
-      "agent": "RAVAN",
-      "at": 1787491940404
-    },
-    {
-      "id": "OODI",
-      "taskId": "TASK-59",
-      "text": "shipped fd0a826 (local) · [TASK-59] feat(alerts): strategy-membership alerts — top-N enter/exit diffing, CLI evaluator in pipelines, digest delivery, AlertCenter toggle · gates tsc=10.7s·lint=32.6s·test=7.3s · e2e✓",
-      "agent": "SABLE",
-      "at": 1787491862315
-    },
-    {
-      "id": "MSCU",
-      "taskId": "TASK-53",
-      "text": "shipped b260c99 → origin/master · [TASK-53] perf(session): market-hours-aware polling + TTLs — shared istSessionOpen(), client polls pause off-session/hidden, server+CDN caches widen overnight · gates tsc=9.6s·lint=31.4s · e2e✓",
-      "agent": "RAVEN",
-      "at": 1787491835070
-    },
-    {
-      "id": "YRSD",
-      "taskId": "TASK-59",
-      "text": "review · gates green tsc=11.6s·lint=27.9s·test=7.0s",
-      "agent": "SABLE",
-      "at": 1787491811259
-    },
-    {
-      "id": "IC3A",
-      "taskId": "TASK-53",
-      "text": "review · gates green tsc=13.5s·lint=35.9s · e2e✓",
-      "agent": "RAVEN",
-      "at": 1787491755744
-    },
-    {
-      "id": "SUY3",
-      "taskId": "TASK-53",
-      "text": "✓ checked evidence: request counts during closed hours dro",
-      "agent": "RAVEN",
-      "at": 1787491622026
-    },
-    {
-      "id": "YJ03",
-      "taskId": "TASK-53",
-      "text": "✓ checked shared istSessionOpen() helper reused client+ser",
-      "agent": "RAVEN",
-      "at": 1787491621818
-    },
-    {
-      "id": "1BHI",
-      "taskId": "TASK-53",
-      "text": "✓ checked server intraday TTLs widen outside 09:15-15:30 I",
-      "agent": "RAVEN",
-      "at": 1787491621474
-    },
-    {
-      "id": "73JP",
-      "taskId": "TASK-53",
-      "text": "✓ checked client polls (ticker 90s, breadth 5min) pause wh",
-      "agent": "RAVEN",
-      "at": 1787491621212
-    },
-    {
-      "id": "ZEUV",
-      "taskId": "TASK-59",
-      "text": "review ✗ gates RED (tsc=13.8s·lint=43.9s) — fix and re-run",
-      "agent": "SABLE",
-      "at": 1787491012648
-    },
-    {
-      "id": "IXUZ",
-      "taskId": "TASK-55",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787490297914
-    },
-    {
-      "id": "WIZJ",
-      "taskId": "TASK-59",
-      "text": "review ✗ gates RED (tsc=10.1s) — fix and re-run",
-      "agent": "SABLE",
-      "at": 1787490202622
-    },
-    {
-      "id": "8YKG",
-      "taskId": "TASK-49",
-      "text": "shipped 14e8ff8 (local) · feat(terminal): fundamentals panel with freshness stamp + empty state (TASK-49) · gates tsc=11.5s·lint=42.2s·test=8.0s · e2e✓",
-      "agent": "CIPHER",
-      "at": 1787490119864
-    },
-    {
-      "id": "NDJ1",
-      "taskId": "TASK-53",
-      "text": "claimed by RAVEN · → doing",
-      "agent": "RAVEN",
-      "at": 1787490068654
-    },
-    {
-      "id": "B9UG",
-      "taskId": "TASK-49",
-      "text": "review · gates green tsc=10.9s·lint=36.8s·test=6.9s",
-      "agent": "CIPHER",
-      "at": 1787489936113
-    },
-    {
-      "id": "UYN6",
-      "taskId": "TASK-56",
-      "text": "claimed by NOVA · → doing",
-      "agent": "NOVA",
-      "at": 1787489909770
-    },
-    {
-      "id": "SHJ7",
-      "taskId": "TASK-67",
-      "text": "shipped 76e12f2 (local) · perf(ingest): NSE sweeper starts at listing year via getHistoricalPeriodicDataYears — young listings skip empty pre-IPO windows (ETERNAL 290s→88s) (TASK-67) · gates tsc=14.3s·lint=40.8s·test=7.5s",
-      "agent": "CIPHER",
-      "at": 1787489836319
-    },
-    {
-      "id": "PS2J",
-      "taskId": "TASK-67",
-      "text": "review · gates green tsc=14.5s·lint=38.3s·test=7.8s",
-      "agent": "CIPHER",
-      "at": 1787489773330
-    },
-    {
-      "id": "EQ5I",
-      "taskId": "TASK-59",
-      "text": "review · gates green tsc=10.7s·lint=34.9s·test=8.0s",
-      "agent": "SABLE",
-      "at": 1787489732858
-    },
-    {
-      "id": "KK0U",
-      "taskId": "TASK-66",
-      "text": "shipped efbaf77 → origin/master · [TASK-66] docs(adr): ADR-0003 fundamentals source — keyless paths empirically dead, paid vendor recommendation; probe tool kept · gates tsc=10.7s·lint=31.8s·test=7.3s",
-      "agent": "NOVA",
-      "at": 1787489723206
-    },
-    {
-      "id": "HA8H",
-      "taskId": "TASK-67",
-      "text": "✓ checked gates green",
-      "agent": "RAVAN",
-      "at": 1787489688322
-    },
-    {
-      "id": "EOSU",
-      "taskId": "TASK-67",
-      "text": "✓ checked node:test coverage",
-      "agent": "RAVAN",
-      "at": 1787489688194
-    },
-    {
-      "id": "X1N2",
-      "taskId": "TASK-67",
-      "text": "✓ checked tail-fill sweep starts at max(floor, firstYear)",
-      "agent": "RAVAN",
-      "at": 1787489688013
+      "at": 1787501713821
     }
   ],
   "deletions": [],
-  "updatedAt": 1787499284516
+  "updatedAt": 1787502169835
 }

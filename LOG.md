@@ -4,7 +4,101 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
-## 2026-08-23 (122) — CIPHER: TASK-62 — saved screener views + optional cloud watchlist mirror w/ merge-on-read
+## 2026-08-23 (127) — UI head audit pass 3: verified data-integrity + navigation findings logged to board (no code changes)
+
+Third pass — code-verified findings (server was down, so verified statically against source, not live DOM). Tracker-only via `board.mjs new`. Two concurrent UI agents (raven + spectre) filed overlapping product-level tasks (103–111, 114–117, 120–127, 91); my additions are distinct, code-verified items.
+
+- **TASK-112 (P1)** — Breadth page time-axis inconsistency: `/api/breadth` returns `days` newest-first; the page `.reverse()`s it for `vixSeries`/`adSeries` (oldest→newest) but NOT for `fiiSeries`/`diSeries`/`sessionDates` — so VIX/AD sparklines read left-to-right chronologically while FII/DII FlowBars read right-to-left (newest on the left, tooltip dates descending). Two time directions on one screen. Verified in `breadth/page.tsx:133-144` + `route.ts:112`.
+- **TASK-113 (P2)** — Search is mounted only on the home page (desktop sidebar + mobile panel in `page.tsx`); screener/breadth/backtest/company have no search affordance — consumers must navigate home to look up a symbol.
+- **TASK-118 (P3)** — Screener first paint: pills render fallback demo ids (`demo-52wlow`), meta chip shows `Unranked · Edge —/10`, evidence strip absent until `/api/strategies` resolves — no loading state between.
+- **TASK-119 (P3)** — `cursor-blink` used in `not-found.tsx:15` is undefined anywhere in globals.css (TASK-44 purged legacy keyframes) — the 404 underscore never blinks; 404 also lacks search/recovery links.
+- **TASK-128 (P3)** — `sitemap.ts` emits `/s/[symbol]` URLs which now 301-redirect to `/company/[symbol]` (TASK-58 moved the profile) — crawlers chase redirect hops; sitemap should emit canonical company URLs.
+
+Also verified TASK-77's premise is **partly wrong**: `getWatchlistSnapshot()`/`getServerWatchlistSnapshot()` return a 7-symbol `DEFAULT_WATCHLIST` (RELIANCE, TCS, HDFCBANK, INFY, TATAMOTORS, NIFTY 50, SENSEX) on a fresh browser, so first visits DO load RELIANCE. The real cold-start gap is (a) after the user deletes all symbols the terminal dead-ends at "Choose a symbol" with no restore-defaults path, and (b) no onboarding hint. Ghost is already doing TASK-77 — noted here so they can redirect scope from "blank first visit" to "restore-defaults + onboarding after wipe".
+
+Priorities: P1 for cross-card data integrity (112), P2 for reachability (113), P3 for polish/SEO (118/119/128). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (126) — UI head audit pass 2: deeper component-level findings logged to board (no code changes)
+
+Second pass, this time at component level (ChartPanel, DataTable, Modal, Search, AlertCenter, SiteHeader, ScreenerPresets, backtest/company/breadth/legal routes, ErrorBoundary, ThemeToggle, globals). All findings tracker-only via `board.mjs new`, no code touched. Complements TASK-77–90 (route/UX gaps) + TASK-52/70–76 (in-flight UI debt).
+
+- **TASK-92 (P1)** — Company page N+1: `Memberships` fetches `/api/strategies` then fires one `/api/signals?limit=200` per strategy in parallel — with the full 190-strategy registry that's ~190 requests per company-page view. Must become O(1) server-side (aggregation or membership endpoint).
+- **TASK-93 (P1)** — Generic `Modal` doesn't lock body scroll; only the watchlist sheet does (ad hoc in page.tsx). Help/alert-center/create-alert dialogs let the page scroll behind them on mobile.
+- **TASK-94 (P2)** — Backtest fresh-result panel shows turnover/rebalances/invested-days/equity but no CAGR/Sharpe/maxDD, while history rows (and the screener evidence strip) show them — headline metrics missing exactly when the user just waited for a run.
+- **TASK-95 (P2)** — Backtest recent-runs show raw strategy id (S100) instead of human name, no sharpe/maxDD, no cross-link to the screener.
+- **TASK-96 (P2)** — Legal pages (disclaimer/privacy/terms/pricing) carry their own `legal.css` with all-caps headers and no shared SiteHeader — they drift from the retired all-caps design rule and untested dark-mode tokens.
+- **TASK-97 (P2)** — Search listbox has no `scrollIntoView` on active change — arrow-navigating can push the active option out of the `max-h-72` dropdown (aria-activedescendant points at an invisible row).
+- **TASK-98 (P3)** — J/K stepping wraps modulo with no cue; stepping off either end silently jumps to the far end.
+- **TASK-99 (P3)** — Range switch hard-clips to the pulse skeleton instead of reusing the reveal sweep / odometer roll on cached data.
+- **TASK-100 (P3)** — Watchlist has no reorder; J/K order is fixed to insertion order.
+- **TASK-101 (P3)** — Fired alerts surface only as a silent badge; no in-app toast or opt-in browser notification (TASK-59 delivery is backend digest only).
+- **TASK-102 (P3)** — Ticker tape: no keyboard scroll, no hover pause; off-screen symbols are mouse-only territory.
+
+All tasks Phase D, priorities as marked, no callsign (audit-only), assignees open for the board flow. Sources cited at file level (CompanyProfile.tsx Memberships, Modal.tsx, backtest page result section, Search.tsx listbox, SiteHeader/legal.css) so agents can claim directly.
+
+---
+
+## 2026-08-23 (125) — UI head audit pass: consumer-first UX issues logged to board (no code changes)
+
+Reviewed the shipped UI at :3000 (home, screener, breadth, board, backtest, pricing, company, alert flows) against consumer-first best practice. Findings below are **tracker-only** — logged via `board.mjs new`, no code touched. Distinct from in-flight UI debt (TASK-52/70–76 owned by vector/spectre); these are product/experience gaps, not bugs.
+
+- **TASK-77 (P1)** — First-visit cold start: empty watchlist + no deep link ⇒ `selected = picked ?? watchlist[0] ?? null` is null ⇒ page renders "Choose a symbol" with no chart, no data, no guidance. First-time visitor sees a blank tool. Should default to a marquee symbol (NIFTY 50 / SENSEX) + onboarding hint until the first star.
+- **TASK-78 (P1)** — AlertCenter bell is wired only into home (`alerts={selected ? … : null}` in `page.tsx`); screener/breadth/company have no bell, and home hides it until a symbol is picked — yet alerts are device-scoped, so the bell should live in the shared AppShell header on every route.
+- **TASK-79 (P1)** — Search requires ≥2 chars and shows nothing on empty query: typing "N" or "R" yields nothing and first-timers get no quick picks. Add popular/recent shortcuts (NIFTY 50, SENSEX, RELIANCE, TCS) + 1-char prefix matching.
+- **TASK-80 (P2)** — /company/[symbol] is a dead end: no "open in terminal" link back to `/?s=`, no watchlist star, no alert CTA. Cross-navigation gap between the profile and the chart that sells it.
+- **TASK-81 (P2)** — Screener pill row doesn't scale: 190-strategy registry ⇒ endless pill wrap on mobile, no search/filter/grouping. Needs dropdown/combobox degradation.
+- **TASK-82 (P2)** — dblclick re-fit is desktop-only; touch users have no FIT affordance after pinch-zoom.
+- **TASK-83 (P2)** — Watchlist × removal is instant and destructive with no undo — a stray tap loses the curated list (import/export is the only recovery).
+- **TASK-84 (P3)** — Help modal reachable only via `?` on home; subpages have no shortcut help or onboarding.
+- **TASK-85 (P2)** — Breadth cards + screener render live "—" before first fetch — reads as missing data; needs skeletons matching home's pulse pattern.
+- **TASK-87 (P3)** — Home has STALE/DAILY chips but no last-updated IST time or data-source label on the chart — staleness can't be judged.
+- **TASK-88 (P3)** — Backtest: silent empty strategies select on failure, no re-run flow from history rows.
+- **TASK-89 (P2)** — Pricing page is a conversion dead end: no CTA, no explainer for "pro preview", no FAQ.
+- **TASK-90 (P3)** — Cap errors say "see Pricing" as plain text; should hyperlink /pricing (402 + 429 paths).
+
+Prioritization logic: P1 = blocks first-time activation or core flow reachability (77/78/79); P2 = material friction on existing users (80–83, 85, 89); P3 = polish/SEO-grade (84, 87, 88, 90). Phase D (product UI) throughout. No callsign claimed (audit-only, no code touched); assignees left open for the board flow.
+
+---
+
+## 2026-08-23 (124) — CIPHER: TASK-86 — CI self-test schedules + manual dispatch
+
+Owner ask: "fix github action again failing, also add we need to once test the github action in every after sometime."
+
+- **Failing runs triaged:** last two red waves were (a) `@/lib/tiers` untracked-module tsc break — already fixed on master by another session ("commit missing lib/tiers.ts", both workflows green at triage time); (b) ui-smoke `no console errors` vs 503 `/api/watchlist` on DB-less runners — degrade-to-empty-payload fix landed; HEAD green. Nothing left broken to patch; this task adds the resilience half.
+- **ci.yml**: + `schedule: cron "0 */6 * * *"` (every 6h self-test: catches dependency drift, runner/env drift, flaky suites between pushes) + `workflow_dispatch` for one-shot manual runs. Concurrency group unchanged (scheduled ref = master; cancel-in-progress dedupes lagging 6-hourly runs).
+- **ui-smoke.yml**: + nightly `cron "0 4 * * *"` (09:30 IST, off-peak vs pipelines data crons at 02:30/13:30 UTC) + `workflow_dispatch`.
+- YAML validity asserted via PyYAML parse (trigger keys verified). Cadence collision check against pipelines.yml documented here rather than in-file.
+
+---
+
+## 2026-08-23 (124) — SPECTRE: UI/UX audit sweeps → filed TASK-70…76, TASK-91 (no code changes)
+
+- **Pass 1** (routes × viewports × themes, axe + console/network + overflow + touch-target scan): product pages axe-clean light+dark desktop. Filed TASK-70 (P1: /company QuoteHeader fetches `/api/analysis?symbol=RELIANCE.NS`, API only resolves bare `RELIANCE` → raw-symbol h1, "—" price, console 404 on every NSE equity; `CompanyProfile.tsx:81`), TASK-71 (/backtest clips 90px past 390px), TASK-72 (backtest run-list noise + bare "—" CAGR), TASK-73 (/breadth FII/DII bars 6px wide, untappable), TASK-74 (/board axe contrast ×49 + select-name + scroller), TASK-75 (header title jams: "NIFTYBreadth"), TASK-76 (footer/utility touch targets 15–16px, 20px search input).
+- **Pass 2** (keyboard flows, modal traps, states): combobox `/`→type→arrows→Enter ✓ with aria-activedescendant; help `?` modal opens, traps 8 tabs, ESC ✓; range `2`→`?r=5d` ✓; `J` watchlist step ✓; `L`→LOG aria-pressed ✓; home degrades inline on API failure ("Network error · Retry") ✓; screener 0-rows renders "No snapshots for this strategy yet" ✓. One real bug: **TASK-91** — chart fetch failure with a selected symbol renders the "Search a symbol to start" no-symbol empty state (error conflated with empty) + green-tinted "—" change pill with no data.
+- Ops note: an earlier SPECTRE LOG entry was lost to a concurrent LOG.md write (lost-update; board.json is merge-protected, LOG.md is not — worth a task). Screenshots: /tmp/opencode/audit_*, err_home.png, empty_screener.png (ephemeral). Coordination: header-nav targets → vector TASK-52; /pricing 404 → cipher TASK-64.
+
+---
+
+## 2026-08-23 (123) — RAVEN: TASK-69 — screener harness mocks the whole /api surface (503-noise class closed)
+
+### Summary
+Third instance of the TASK-65 class: TASK-62's cloud watchlist mirror fetches
+`/api/watchlist?deviceId=` on mount; DB-less CI 503s it and the browser logs a console error
+that tripped screener.py's strict gate. Instead of a third one-off mock, the script now
+registers a catch-all `**/api/**` fallback FIRST (lowest priority — Playwright matches
+latest-first, verified empirically) so any future DB-backed endpoint this page grows returns
+an empty object in CI instead of erroring. Specific mocks (strategies/signals/alerts/
+watchlist) always win.
+
+### Verification
+py_compile clean; local prod-server verification was blocked by concurrent `next build` runs
+trampling `.next` (chunks 500ing under a live server — multi-agent ops hazard, not app code),
+so validation rides the isolated CI runner: ui-smoke on this push is the source of truth.
+
+---
+
 
 - **Saved views (AC1)**: `lib/screenerPresets.ts` (device-scoped localStorage `niftyterm.screener-presets.v1`, cap 20, name-dedupe) + `components/ScreenerPresets.tsx` ("Save view" → inline name input, picker with apply/delete, Escape/outside-click close). Screener page now lifts sort state into controlled DataTable props; view changes sync `?strategy=&sort=&dir=` via `history.replaceState` and deep-links are consumed on load (sort keys validated against sortable columns).
 - **Cloud mirror (AC2)**: new `api/watchlist/route.ts` over the existing `watchlists` table (`id="device:<deviceId>"`, `scope='device'`). GET → `{entries, updatedAt}`; PUT replace-set validated against the instruments index via new `findInstrumentListing` (exact symbol+exchange pair first), unknown symbols dropped, cap 100.
@@ -14,9 +108,12 @@ This file is the single source of truth for everything done in this project. Eve
 - **Gates**: `tsc --noEmit` clean; lint 0 errors (6 pre-existing warnings in foreign kalyan/page.tsx); `npm test` 262/262 pass incl. new `scripts/tests/screener-presets.test.mjs` (preset sanitization, save dedupe/cap, merge rules).
 - **Sanity** (:3017 dev server): preset save→reload→apply flips strategy + URL ✓; sort click syncs `?sort=score&dir=asc` ✓; delete preset ✓; axe 0 violations on /screener ✓; curl PUT/GET round-trip with bogus-symbol drop ✓; star toggle → row in mirror after debounce ✓; seeded mirror merged into localStorage as union (INFY+RELIANCE added alongside local TCS) ✓.
 
-## 2026-08-23 (121) — RAVEN: TASK-68 — every eod write path reconciled; cliff-sweep regressions closed at the root
+---
+
+## 2026-08-23 (122) — CIPHER: TASK-62 — saved screener views + optional cloud watchlist mirror w/ merge-on-read
 
 ### Summary
+- **Client wiring**: extracted `lib/device.ts` from AlertCenter's deviceId logic (AlertCenter refactored to import it — behavior unchanged). New `lib/watchlistMirror.ts` `useWatchlistMirror()` hook on the home page: debounced 1.5 s fire-and-forget PUT on watchlist change; all failures silent; localStorage stays source of truth.
 Root cause of the recurring cliff-sweep reds: two production write paths bypassed
 `storeCandlesReconciled`. (1) `ingest-eod.mjs` NSE single-symbol branch did delete-then-raw-
 upsert — fixing MC's stamp interleave but writing raw vendor closes whose real

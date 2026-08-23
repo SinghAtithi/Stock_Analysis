@@ -18,6 +18,9 @@ on:
     branches: [master]
   pull_request:
     branches: [master, main]
+  schedule:
+    - cron: "0 4 * * *" # nightly self-test 09:30 IST — off-peak vs pipelines (02:30/13:30 UTC)
+  workflow_dispatch: {} # manual one-shot test
 
 concurrency:
   group: ui-smoke-${{ github.ref }}
