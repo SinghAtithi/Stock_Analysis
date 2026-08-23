@@ -1,9 +1,10 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
+import { computeSeriesMetrics } from "@/lib/backtest/metrics";
 import { getDeviceId } from "@/lib/device";
 import {
   createChart,
@@ -284,6 +285,19 @@ function BacktestInner() {
     return `${(v * 100).toFixed(2)}%`;
   }
 
+  /* TASK-94 headline metrics — computed from the returned equity series so a
+     fresh POST run and a deep-linked ?id= run render identical stats
+     (labels match the BacktestEvidence strip on /screener). */
+  const headline = useMemo(
+    () =>
+      result
+        ? computeSeriesMetrics(result.equity.map((p) => ({ date: p.date, value: p.strat })))
+        : null,
+    [result]
+  );
+  const fmtPct1 = (v: number | null): string =>
+    v === null || !Number.isFinite(v) ? "—" : `${(v * 100).toFixed(1)}%`;
+
   return (
     <div className="min-h-dvh">
       <SiteHeader subtitle="Backtest" subtitleClassName="font-normal text-muted" />
@@ -397,6 +411,9 @@ function BacktestInner() {
         {result && (
           <section className="mt-6 grid gap-4">
             <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 rounded-2xl border border-line bg-surface p-5 shadow-sm">
+              <Metric label="CAGR" value={headline ? fmtPct1(headline.cagr) : "—"} />
+              <Metric label="Sharpe" value={headline?.sharpe != null && Number.isFinite(headline.sharpe) ? headline.sharpe.toFixed(2) : "—"} />
+              <Metric label="maxDD" value={headline ? fmtPct1(headline.maxDrawdown) : "—"} />
               <Metric label="Turnover total" value={fmtPct(result.totalTurnover)} />
               <Metric label="Rebalances" value={String(result.rebalanceDates)} />
               <Metric label="Invested days" value={String(result.investedDays)} />
