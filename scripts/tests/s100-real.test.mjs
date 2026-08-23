@@ -1,7 +1,7 @@
 import { registerHooks } from "node:module";
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync, statSync } from "node:fs";
 import path from "node:path";
 
 registerHooks({
@@ -22,6 +22,11 @@ const { s100MomentumStrategy } = await import(
 
 const INSTRUMENTS_PATH = path.join(REPO_ROOT, "web", "src", "data", "instruments.json");
 const LOOKBACK_DAYS = 400;
+
+// Real-data suite: needs the local ingest DB (gitignored). Skip on fresh
+// checkouts / CI where no eod data exists — same contract as the cliff sweep.
+const DB_PATH = (await import("node:path")).default.join(REPO_ROOT, "db", "data", "app.db");
+const HAS_DB = existsSync(DB_PATH) && statSync(DB_PATH).size > 64_000;
 
 /**
  * Nifty 50 members as eod_candles symbols. instruments.json stores bare
@@ -73,7 +78,7 @@ function makeContext(symbols) {
   };
 }
 
-test("S100 real-data run over Nifty 50 eod_candles", async () => {
+test("S100 real-data run over Nifty 50 eod_candles", { skip: !HAS_DB && "requires local eod ingest (db/data/app.db)" }, async () => {
   const symbols = resolveUniverse();
   assert.ok(symbols.length >= 30, `expected a populated Nifty 50 universe, got ${symbols.length}`);
 

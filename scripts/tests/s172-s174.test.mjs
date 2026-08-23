@@ -1,6 +1,8 @@
 import { registerHooks } from "node:module";
 import test from "node:test";
 import assert from "node:assert/strict";
+import { existsSync, statSync } from "node:fs";
+import path from "node:path";
 
 registerHooks({
   resolve(specifier, context, nextResolve) {
@@ -241,6 +243,15 @@ test("ret12 skips the last month and is NaN-safe", () => {
 // --- REAL RUN: live asset series from eod_candles (read-only) ---------------
 
 test("REAL RUN: S172/S174 regime on live asset data", async () => {
+  // needs the local ingest DB (gitignored) — skip on fresh checkouts/CI.
+  // Size floor (same contract as eod-cliff-sweep): an empty/thin app.db can
+  // be manufactured mid-run by another suite calling openDb() — existsSync
+  // alone is not enough to prove real data.
+  const dbPath = path.join(process.cwd(), "..", "db", "data", "app.db");
+  if (!existsSync(dbPath) || statSync(dbPath).size < 64_000) {
+    console.log("  [real-run] no local ingest DB — skipping (CI/fresh checkout)");
+    return;
+  }
   let db;
   try {
     const { openDb } = await import("../lib/db.mjs");
