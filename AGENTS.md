@@ -18,21 +18,22 @@ Every agent **must** pick a cool callsign before touching code. Open `/board` �
 ## Mandatory verification (every task)
 1. `cd web && npx tsc --noEmit` — must pass.
 2. `npm run lint` — must pass (React 19 compiler rules are strict: no setState-in-effect, no render-phase ref writes, no `aria-sort` on buttons).
-3. UI changes: Playwright sanity (dev server on :3000). Reference scripts live in `/tmp/opencode/*.py` (Python playwright) — re-run the 13-check e2e after UI work.
+3. UI changes: Playwright sanity (dev server on :3000). Reference scripts live in `scripts/tests/ui/*.py` (Python playwright) — re-run the 13-check e2e after UI work.
 
 ## Design system (do not drift)
-- **Identity**: stark institutional terminal. Paper-on-ink, acid-lime up `#c6f534`, red-orange down `#ff5032`. NO glass, NO gradients, NO blue, NO rounded UI. NO emoji (terminal glyphs only).
-- **Tokens** (`web/src/app/globals.css`): `ink #0b0b0c`, `panel #131316`, `panel-2 #18181b`, `paper #f4f4f1`, `muted #94948d`, `faint #80807b` (axe-core verified: 0 contrast violations, WCAG AA), `hairline`/`hairline-strong`. `up`/`down` for direction. Don't introduce new colors without a contrast check (see LOG session 5).
-- **Type**: JetBrains Mono everywhere; Archivo only for the big symbol title. `tracking-*` for terminal feel. Uppercase labels.
-- **Motion**: cubic-bezier(0.22,1,0.36,1); respect `prefers-reduced-motion` (global CSS already handles it); odometer roll, chart reveal sweep, skeleton pulses are the signature moments.
-- **Accessibility**: focus-visible lime ring (global), `aria-pressed/selected/current` on interactive state, combobox semantics in Search, sr-only chart summary + live price region, modals (`src/components/Modal.tsx`) trap focus, skip-to-content link.
+- **Identity**: quiet financial paper. Light default (`canvas #fcfcf9`, white panels, ink accent `#111214`) with an opt-in true-dark theme (`html.dark`: canvas `#0a0a0b`, panels `#141518`/`#1c1e21`). Direction colors are calm data, not decoration: light up `#0e7a3a` / down `#c4362b`; dark up `#8ec9a8` / down `#e8a09a`. NO glass, NO gradients, NO blue accent. NO emoji.
+- **Tokens** (`web/src/app/globals.css`): semantic CSS vars — `canvas/paper/ink/panel/panel-2/surface/line/line-strong/muted/faint/hairline/hairline-strong/up/up-soft/down/down-soft/accent/accent-soft` + `radius-sm…xl` (6–16px) and soft `shadow-sm/md`. Never hardcode hex in components — consume tokens; don't add colors without a WCAG AA contrast check.
+- **Theme switching**: `ThemeToggle` persists `localStorage['nifty-theme']`; inline script in `layout.tsx` applies `.dark` pre-paint (no FOUC). Both themes must keep axe-core at 0 violations.
+- **Type**: Inter for display + UI text (`--font-display/--font-sans`), JetBrains Mono with tabular numerals for all prices/%/timestamps. Sentence case labels (the old all-caps terminal style is retired).
+- **Motion**: 150–200ms ease-out for state changes; respect `prefers-reduced-motion` (global CSS handles it); odometer roll + chart reveal sweep remain the signature moments.
+- **Accessibility**: focus-visible ring (token-driven), `aria-pressed/selected/current` on interactive state, combobox semantics in Search, sr-only chart summary + live price region, modals (`src/components/Modal.tsx`) trap focus, skip-to-content link.
 
 ## Keyboard shortcuts (page-level, `web/src/app/page.tsx` + `ChartPanel`)
 `/` search · `1–8` ranges · `J/K` watchlist step · `R` retry · `L` log scale · `?` help · `ESC` close · dblclick/FIT chip re-fit chart. Update the help modal + footer when adding keys.
 
 ## Data layer notes
-- Chart fallback chain: Yahoo (curl subprocess — Node undici gets TLS-fingerprint-429'd) → Google Finance (intraday) → Moneycontrol → Groww. Circuit-breaker backoff in `web/src/lib/backoff.ts`. Payload carries `source`, `degraded`, `stale` — the UI must surface these (STALE/DAILY chips exist).
-- Indices: Yahoo tickers differ (`NIFTY 50`→`^NSEI`, `SENSEX`→`^BSESN` — see `INDEX_MAP`). Indices have no non-Yahoo fallback yet (open issue, `docs/task-reports/TASK-UI-01.md`).
+- Chart fallback chain: Yahoo (curl subprocess — Node undici gets TLS-fingerprint-429'd) → Moneycontrol intraday (5m/15m/1h, equities) → Google Finance (intraday) → Moneycontrol daily → Groww. Circuit-breaker backoff in `web/src/lib/backoff.ts`. Payload carries `source`, `degraded`, `stale` — the UI must surface these (STALE/DAILY chips exist).
+- Indices: Yahoo tickers differ (`NIFTY 50`→`^NSEI`, `SENSEX`→`^BSESN` — see `INDEX_MAP`). Index fallback chain: Yahoo → Google intraday → Moneycontrol index/history (T31).
 - URL deep links: `?s=&e=&r=` are consumed on load and synced via pushState (StrictMode race fixed — don't replaceState in a mount effect).
 
 ## UX primitives (build Phase-D UIs from these)

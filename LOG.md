@@ -4,6 +4,141 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (2) — CIPHER: red gates fixed + uncommitted work landed in scoped commits
+
+### Summary
+Found `npx tsc --noEmit` red on the working tree (`api/analysis/route.ts`: `analyzeChart` required client `ChartData` but `getChart` returns server `ChartPayload`). Fixed, then landed ~2 days of coherent-but-uncommitted session work as 8 scoped commits. Gates green throughout.
+
+### Changes
+- **fix(analysis)** `deb7ac1` — `analyzeChart` now takes structural `AnalysisInput` (`exchangeName?/exchange?`) so payload and client shapes both satisfy it; quote exchange resolves `exchangeName ?? exchange ?? ""`.
+- **chore(repo)** `4b2de65` — node 24 engines + `.nvmrc`/`.node-version`; gitignore local scratch (`tmp/ nohup.out opencode.json .opencode/`).
+- **feat(data)** `0847b98` — Moneycontrol intraday fallback chain (keyless 5m/15m/1h) ahead of Google for equities; future-session bars filtered; RANGES 1D→1m, 5D→5m, 1M→15m, 3M/6M→1h; chart route VALID extended.
+- **feat(web)** `ed5aa27` — light/dark token system (semantic CSS vars, radii 6–16px, soft shadows), `ThemeToggle` (localStorage `nifty-theme`, pre-paint `.dark` script), Inter replaces Archivo, primitives restyled sentence-case.
+- **feat(quant)** `8cf0e71` — `/api/signals`, `/api/strategies`, `/api/analysis`, `/api/tracker` read APIs.
+- **feat(app)** `a74a963` — screener + breadth pages.
+- **feat(kalyan)** `03e7629` — 100-studies dossier mini-app + static assets.
+- **feat(board)** `5dba376` — kanban types/agents split + `/api/board` sync endpoint.
+- **docs(app)** `811bff9` — legal pages, DESIGN.md v2, inspiration shots, playwright reference scripts into `scripts/tests/ui/`.
+- **AGENTS.md** — design-system section rewritten to shipped light/dark reality (acid-lime terminal spec retired); data-layer notes updated (MC intraday position, T31 index fallback); playwright path fixed to `scripts/tests/ui/`.
+
+### Verification
+- `workflow.mjs review TASK-01 --agent ghost` — ✓ tsc · ✓ eslint · ✓ node:test → shipped `deb7ac1`.
+- Tree gates green at session start and post-fix; each scoped commit is a working state.
+- `data/board.json` left uncommitted deliberately — shared mutable state with concurrent GHOST agent on TASK-02 (board-sync guard); avoids lost-update clobber.
+
+### Notes
+- DESIGN.md v2 ("MIDNIGHT TERMINAL", dark-only violet) is stale vs shipped light-default neutral theme — flagged for VERTEX, not rewritten.
+- Callsign collision (two agents on GHOST) → switched to CIPHER.
+
+---
+
+## 2026-08-23 — CTO iteration 4: P1 found — quant stack consumes unadjusted closes
+
+### Summary
+Fourth pass. Cipher landed the commit backlog (dirty files 31→3, TASK-09 effectively done pending ship) and claimed TASK-07. No board wipes. Audited `db/migrations/0001_init.sql`, `ingest-eod.mjs`, `run-signals.mjs`, `run-backtest.mjs`.
+
+### Critical finding → TASK-15 (P1)
+- `eod_candles` stores RAW OHLC; split adjustment lives in a separate `adj_factor` column (`recomputeAdjFactors`).
+- **Neither consumer applies it**: `run-signals.mjs makeContext.getCandles` and `run-backtest.mjs` both `SELECT ts,o,h,l,c,v` — no adj_factor anywhere in the loaders.
+- Consequence: any symbol with a split inside its lookback gets corrupted momentum scores (S100 = jury #1) and fake crash bars in every backtest equity curve. Direct hit to the RANKINGS.md moat.
+- Adjacent documented gap: `adj_factor` is price-only (dividends deferred) — total-return semantics need an explicit decision.
+
+### Notes (not filed)
+- Universe lists now exist in 3 places (instruments.json idx flags primary, NIFTY50_FALLBACK in ingest-eod, TAPE_UNIVERSE in marketData) — acceptable while flags coverage is good; revisit if fallbacks trigger.
+- Schema itself sane: PKs/indices match query patterns; fundamentals keeps full statement history in module_json so YoY quality metrics remain computable.
+
+### Verification
+- Board: 15 tasks (P1 ×2 open: TASK-02 sync guard, TASK-15 adjustment). Gates untouched this pass (no code changes by me).
+
+---
+
+## 2026-08-23 — CTO iteration 3: strategy engine clean, tracker DoS vector + missing security headers filed
+
+### Summary
+Third standing pass. Board stable (no wipes — TASK-02/09 still doing). Audited `strategies/indicators.ts`, `s100-momentum.ts`, `analysis.ts` (post-TASK-01 `AnalysisInput` decoupling is clean), `/api/tracker`, `next.config.ts`.
+
+### Findings → tasks
+- **TASK-13**: `/api/tracker?symbols=` triggers up to 8 uncached full chart fallback chains per request (each up to ~2min of sequential upstream calls) — one abusive client can exhaust the shared Yahoo budget and trip global 429 backoff. Needs shared budget + short response cache.
+- **TASK-14**: `next.config.ts` has no security headers (CSP/XFO/HSTS/Referrer-Policy) and carries a test leftover (`T21_DISTDIR` distDir hack).
+
+### Clean bills
+- Indicator math (sma/ema/roc/zscore/pctRank): NaN-safe, aligned outputs, tie-averaged ranks — no task.
+- S100 distribution-cache design sound; per-symbol pctRank recompute is O(n²) but negligible at n≤500 — noted, not filed.
+- analysis.ts structural input type is the right seam.
+
+### Verification
+- Board: 14 tasks. Gates: tsc green (unchanged from iteration 2).
+
+---
+
+## 2026-08-23 — CTO iteration 2: backtest/screener/breadth audit, wipe recurrence, 3 new tasks
+
+### Summary
+Second standing CTO pass. TASK-01 (tsc hotfix) verified shipped — gates green again (`deb7ac1`, `tsc --noEmit` clean). Audited previously unreviewed areas: `backtest/engine.ts`, `screener/page.tsx`, `breadth/page.tsx`.
+
+### Incident recurrence
+Lost-update bug struck again: my re-filed TASK-04..08 from iteration 1 were erased when a web client holding a stale 3-task view POSTed full state. Second documented occurrence. Re-filed all five; **TASK-02 now claimed by ghost (doing)**.
+
+### New findings → tasks
+- **TASK-09** (self-organized by cipher, doing): repo hygiene — ~25 files sitting uncommitted.
+- **TASK-10**: backtest engine — benchmark is static-weight daily recentering mislabeled buy-and-hold; survivorship bias (current-constituent universe) undocumented; scorer loop fully sequential per symbol per rebalance.
+- **TASK-11**: `useISTClock` copy-pasted ×3 with divergent shapes; site header duplicated ×3 (already drifting: home sticky+blur vs others static); breadth FlowBars reads `documentElement` during render (hydration risk + ignores theme toggles).
+- **TASK-12**: screener row click hardcodes `e=NSE` — BSE-only symbols and index rows deep-link wrong.
+
+### Verification
+- Board: 12 tasks (2 doing: ghost on TASK-02, cipher on TASK-09).
+- Gates: tsc GREEN post-TASK-01 ship; lint unchanged (0 errors / 6 img warnings).
+
+---
+
+## 2026-08-23 — CTO architecture/design review → 7 tasks filed + board lost-update incident
+
+### Summary
+Owner mandate: standing CTO pass — audit codebase + design, file improvements on the board, no implementation. Full audit of data layer (`marketData.ts` 1068L), API routes, `page.tsx`, `ChartPanel.tsx`, tokens, tests, gates.
+
+### Findings → board tasks
+- **Gates RED**: `npx tsc --noEmit` fails — `api/analysis/route.ts:50` passes `ChartPayload` where `ChartData` (`.exchangeName`) expected. Ghost claimed fix as TASK-01 (in REVIEW).
+- **TASK-02 (P1, LIVE INCIDENT)**: `/api/board` POST is full-state last-writer-wins. During this session ghost's client tick overwrote 8 tasks I'd just created via CLI — the exact resurrection-class bug from the 08-22 wipes, now proven against concurrent writers.
+- **TASK-03**: design-system drift — AGENTS.md still documents stark terminal (ink/lime/no-rounded/no-glass/JetBrains-everywhere); shipped UI is light-first Inter, rounded-2xl, shadows, ThemeToggle, sage/coral. Also off-token amber chip (`page.tsx`), hardcoded chart hex duplicating CSS vars, chart ignores theme toggle until remount.
+- **TASK-04**: signals cache unbounded keyed by raw query string; chart route sends no Cache-Control; signals route opens 2 SQLite handles per request.
+- **TASK-05**: `getChart` ~200L with payload construction duplicated ×5; no singleflight (thundering herd); sequential fallback chain has no deadline budget; FIFO cache eviction; TAPE_UNIVERSE duplicates instruments.json.
+- **TASK-06**: `useISTClock` re-renders entire Home every second; crosshair legend setState per mousemove; mount effect duplicates `load()`.
+- **TASK-07**: zero unit coverage for web/src parsers (Yahoo/Google/MC) — pure functions, easily fixture-tested.
+- **TASK-08**: deploy spike ADR before TASK-28 — curl subprocess, module caches, board.json fs-write all assume a long-lived box.
+
+### Verification
+- Gates run this session: tsc FAIL (above), lint 0 errors / 6 img warnings.
+- Board after re-file: 8 tasks (TASK-01 ghost/review + TASK-02..08 todo).
+
+---
+
+
+## 2026-08-23 — Research: best single-stock daily-data source
+
+### Summary
+Goal: find the best way to fetch daily OHLCV for ONE stock. Live-tested all four candidate sources against RELIANCE (2026-08-23):
+
+| Source | Result | Verdict |
+|---|---|---|
+| Moneycontrol priceapi `resolution=1D` | 200 OK, **2701 daily candles (~10.5y) in one keyless request**, 130KB, ~0.4s | Winner for daily data |
+| Yahoo v8 chart (query1+query2) | 429 both hosts (IP-wide throttle) | Best quality (splits/divs events) when up; keep first-in-chain with backoff |
+| Groww charting `/daily` | 200 but drifted: only 25×15m bars of last session | No longer a daily source |
+| NSE official `historicalCM` | 404 even with cookie handshake (Akamai) | Dead end |
+
+### Decision
+MC priceapi is primary for one-symbol daily pulls; Yahoo stays first-in-chain opportunistically (range=max gives longer history + corporate actions). Groww fallback demoted.
+
+### Full-history probe (same session)
+Pushed for listing-to-today depth on RELIANCE: MC `countback=9000&from=1994` → **6620 daily candles back to hard floor 2000-01-03** (monthly resolution confirms the floor is data-side, not param-side). Yahoo `range=max` still 429 all session (only candidate that might reach pre-2000 + carries split/div events). NSE portal Akamai-walled. Verdict: free-keyless daily history effectively starts 2000-01-03; TASK-01 should pull `from=1994&countback=9000` (full depth) instead of 2700, Yahoo max layered opportunistically when unthrottled.
+
+### Pre-2000 probes (same session)
+NSE `historicalOR/historicalCM` → 404 even with fresh cookie jar + full headers (endpoint moved post-revamp); `/api/historical/cm/equity` serves SPA shell not JSON; `chart-databyindex` DOES answer JSON via curl (cookie surface works). Bhavcopy archives walled: archives.nseindia.com 403, nsearchives HTTP/2 errors. BSE `PriceHistoryDownload/v2` 302→error_Bse.html. Verdict: all direct-curl routes into NSE/BSE pre-2000 history are bot-walled; real-browser session (Browser MCP) is the viable path — no login required for market data, just genuine Akamai-passing cookies.
+
+Created TASK-01 → todo · Single-symbol EOD fetch (--symbol flag)
+
+---
+
+
 ## 2026-08-22 (3) — Dummy tasks purged everywhere (board + bundle seed)
 
 ### Summary
