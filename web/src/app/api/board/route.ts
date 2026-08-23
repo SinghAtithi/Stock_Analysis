@@ -2,6 +2,12 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import { mergeBoards, replaceBoard, validateBoardPayload, type BoardState } from "@/lib/kanban/merge";
+import {
+  MAX_BODY_BYTES,
+  bodyTooLarge,
+  postRateLimited,
+  replaceAuthorized,
+} from "@/lib/boardGuards";
 
 const BOARD_FILE = path.resolve(process.cwd(), "..", "data", "board.json");
 
@@ -35,20 +41,64 @@ export async function GET() {
 
 /**
  * Full-state sync with lost-update protection (TASK-02).
- * Body is validated, then MERGED into the on-disk board per-task by
- * `updatedAt` — a writer that hydrated before another agent's changes can no
- * longer wipe them. `mode:"replace"` (board import) swaps the task set.
+ * Guards (TASK-1370): per-key rate limit → body-size cap (413) → shape
+ * validation (400) → mode:"replace" token gate (403). Body is validated,
+ * then MERGED into the on-disk board per-task by `updatedAt` — a writer
+ * that hydrated before another agent's changes can no longer wipe them.
+ * `mode:"replace"` (board import) swaps the task set and additionally
+ * requires an `x-board-token` header matching BOARD_WRITE_TOKEN.
  * Responds with the merged board so clients can reconcile.
  */
 export async function POST(req: Request) {
+  const key =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    req.headers.get("x-real-ip") ??
+    "local";
+  if (postRateLimited(key)) {
+    return NextResponse.json(
+      { error: "rate_limited" },
+      { status: 429, headers: { "retry-after": "60" } }
+    );
+  }
+
+  /* fast reject before buffering when the client declared its size */
+  const declared = Number(req.headers.get("content-length") ?? "");
+  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "payload_too_large" }, { status: 413 });
+  }
+
+  let raw: string;
+  try {
+    raw = await req.text();
+  } catch {
+    return NextResponse.json({ error: "invalid JSON" }, { status: 400 });
+  }
+  if (bodyTooLarge(raw)) {
+    return NextResponse.json({ error: "payload_too_large" }, { status: 413 });
+  }
+
   let body: unknown;
   try {
-    body = await req.json();
+    body = JSON.parse(raw);
   } catch {
     return NextResponse.json({ error: "invalid JSON" }, { status: 400 });
   }
   const v = validateBoardPayload(body);
   if (!v.ok) return NextResponse.json({ error: v.error }, { status: 400 });
+
+  if (isObjWithMode(body) && body.mode === "replace") {
+    const auth = replaceAuthorized(body.mode, req.headers.get("x-board-token"));
+    if (!auth.ok) {
+      return NextResponse.json(
+        {
+          error: auth.configured
+            ? "invalid_token"
+            : "replace_disabled_set_board_write_token",
+        },
+        { status: 403 }
+      );
+    }
+  }
 
   try {
     let server: BoardState | null = null;
