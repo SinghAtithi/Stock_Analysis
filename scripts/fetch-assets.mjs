@@ -18,7 +18,7 @@ import { applyMigrations } from "./migrate.mjs";
 import {
   parseMoneycontrolChart,
   parseYahooChart,
-  upsertCandles,
+  storeCandlesReconciled,
   latestTradingDayStart,
   yahooUrl,
 } from "./ingest-eod.mjs";
@@ -111,7 +111,7 @@ export async function fetchAssets({ years = 10, dbPath = DEFAULT_DB_PATH, force 
     }
     try {
       const got = await fetchAssetSeries(asset, { years, backoff });
-      upsertCandles(db, asset.symbol, got.candles);
+      storeCandlesReconciled(db, asset.symbol, got.candles, log);
       stats.fetched += 1;
       stats.candles += got.candles.length;
       stats.sources[got.source] = (stats.sources[got.source] ?? 0) + 1;

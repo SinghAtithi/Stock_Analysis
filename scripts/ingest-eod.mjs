@@ -637,25 +637,20 @@ export async function ingest({ universe = "nifty500", years = 10, dbPath = DEFAU
             getJson: (url) => backoff.getJson(url, { cookieJar: jar }),
           });
           if (nseCandles.length) {
-            /* Replace the whole swept range with the pure NSE series.
-             * Plain upsert is NOT enough: (a) legacy segments can sit on
-             * foreign bases — MC's deep history is silently split-adjusted
-             * even though its recent tail is raw (observed ÷4 @2014); and
+            /* Replace the swept range with the pure NSE series — but write it
+             * through the ADR-0002 reconciled path (TASK-68). Plain upsert was
+             * NOT enough: (a) legacy segments can sit on foreign bases, and
              * (b) MC stamps sessions at 00:00 UTC vs our 00:00 IST keys, so
-             * both rows survive per session and interleave a sawtooth. The
-             * sweep covered every session in range (failures logged), so
-             * delete-then-write leaves one coherent raw series behind. */
-            /* eod_candles.ts is SECONDS — passing ms here makes BETWEEN an
-             * empty range and silently deletes nothing (seen live). */
-            db.prepare("DELETE FROM eod_candles WHERE symbol = ? AND ts BETWEEN ? AND ?")
-              .run(yahooSym, floorTs, Math.ceil(tailToMs / 1000));
-            const inserted = upsertCandles(db, yahooSym, nseCandles);
-            if (inserted !== nseCandles.length) {
-              log(`[warn] ${yahooSym}: ${nseCandles.length - inserted} duplicate NSE sessions dropped`);
-            }
+             * both rows survived per session. The earlier delete-then-raw-
+             * write fixed the interleave but wrote raw vendor closes whose
+             * real corporate-action gaps then read as basis splices (cliff
+             * sweep red on freshly ingested symbols). storeCandlesReconciled
+             * handles both: calendar-day dedup across stamp conventions and
+             * empirical overlap-basis rescaling onto the stored series. */
+            const inserted = storeCandlesReconciled(db, yahooSym, nseCandles, log);
             stats.candles += nseCandles.length;
             stats.sources.nse = (stats.sources.nse ?? 0) + 1;
-            log(`[ok] ${yahooSym} — ${inserted} candles via nse (${fmtDmy(nseCandles[0].ts * 1000)}..${fmtDmy(nseCandles[nseCandles.length - 1].ts * 1000)})`);
+            log(`[ok] ${yahooSym} — ${nseCandles.length} candles via nse (${fmtDmy(nseCandles[0].ts * 1000)}..${fmtDmy(nseCandles[nseCandles.length - 1].ts * 1000)})`);
           } else {
             log(`[warn] ${yahooSym} — NSE tail-fill returned nothing`);
           }
