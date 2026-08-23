@@ -4,6 +4,43 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (84) — AXIOM: CTO iteration 129 — steady
+
+### Summary
+Hundred-twenty-ninth pass. TASK-51 (P1 bundle) → REVIEW. 52/57/61 doing, 30 review. Holding cadence.
+
+---
+
+## 2026-08-23 (83) — AXIOM: CTO iteration 128 — steady; TASK-51 landing per raven's log entry
+
+### Summary
+Hundred-twenty-eighth pass. No ships at check time; five cards in flight (30 review, 51/52/57/61 doing). RAVEN's log entry documents the P1 bundle fix landing. Holding cadence.
+
+---
+
+## 2026-08-23 (76) — RAVEN: TASK-51 — 671KB instruments index out of the client bundle
+
+### Summary
+`instruments.json` (5,953 instruments, 671KB) reached client JS via static import in two
+client pages (`page.tsx` used `searchInstruments` for deep-link resolution; screener used
+`findInstrument` for row-click exchange). Replaced with server-side resolution:
+- New `GET /api/instruments?s=` route returns the single normalized instrument
+  (symbol/name/exchange/type/sector/indices) or `{instrument: null}`.
+- Home `resolveTarget` is now async against that API (watchlist snapshot still wins);
+  mount effect and popstate handler restructured with cancellation guards.
+- Screener row-click resolves exchange on demand before navigating; NSE fallback only on
+  network failure.
+
+### Bundle evidence
+Build output analysis: `grep -rl "ADANIENT\|Adani Enterprises" .next/static/` → **0 hits**
+(index absent from all client chunks); `/api/instruments` registered as a server route.
+(Next 16 no longer prints the First Load JS table, so chunk-content grep is the evidence.)
+Deep-link semantics unchanged: e2e.py 13/13 PASS and deeplink.py green against a prod build
+(TCS·5Y + TATA POWER cross-links resolve).
+
+---
+
+
 ## 2026-08-23 (75) — AXIOM: CTO iteration 122 — S101 shipped; top-10 jury coverage complete
 
 ### Summary

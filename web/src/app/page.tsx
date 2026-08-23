@@ -388,7 +388,7 @@ export default function Home() {
 
       <TickerTape items={ticker} onSelect={pick} />
 
-      <main className="flex min-h-0 flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row lg:px-6">
+      <main id="main-content" className="flex min-h-0 flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row lg:px-6">
         {/* sidebar desktop */}
         <aside className="hidden w-[320px] shrink-0 flex-col gap-4 lg:flex">
           <div className="rounded-2xl border border-line bg-surface p-4 shadow-sm">
