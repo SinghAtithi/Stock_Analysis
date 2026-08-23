@@ -1,0 +1,48 @@
+# NIFTY//CI — repo gate (TASK-29).
+# Mirrors scripts/workflow.mjs verify: tsc --noEmit → eslint → node:test.
+# Precedent: ADR-0001 fixes GitHub Actions as the first-class runner for this
+# repo's compute (curl availability, cron ingest); this workflow extends that
+# to PR gating. Red build = do not merge (by team convention; branch
+# protection is enabled repo-side when admin access allows).
+name: ci
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6 # AC: full runtime under 5min; headroom for cold caches
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc # 24.x — matches engines pin
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: deps (web)
+        working-directory: web
+        run: npm ci
+
+      - name: tsc --noEmit
+        working-directory: web
+        run: npx tsc --noEmit
+
+      - name: eslint
+        working-directory: web
+        run: npm run lint
+
+      # includes parser suites and the eod-cliff-sweep guard (self-skips when
+      # db/data/app.db is absent — it is gitignored, so CI exercises pure code)
+      - name: node:test
+        working-directory: web
+        run: npm test

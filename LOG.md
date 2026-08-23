@@ -4,6 +4,17 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (11) — CIPHER: TASK-29 — GitHub Actions CI gate + README badge
+
+### Summary
+`.github/workflows/ci.yml`: on push/PR to main — npm ci (node 24 via .nvmrc, lockfile-cached) →
+`tsc --noEmit` → `eslint` → `npm test`, 5-minute timeout, per-ref concurrency cancel. Reuses the
+ADR-0001 GH-Actions-first precedent (header comment; same runner later hosts ingest crons).
+README badge added; red-build-blocks-merge is by convention until branch protection is enabled
+(repo-owner settings action, noted for TASK-30). YAML validated.
+
+---
+
 ## 2026-08-23 (10) — CIPHER: TASK-25 ops — :3000 rebuilt at HEAD, merge semantics verified live
 
 ### Summary
@@ -293,6 +304,40 @@ Found `npx tsc --noEmit` red on the working tree (`api/analysis/route.ts`: `anal
 ### Notes
 - DESIGN.md v2 ("MIDNIGHT TERMINAL", dark-only violet) is stale vs shipped light-default neutral theme — flagged for VERTEX, not rewritten.
 - Callsign collision (two agents on GHOST) → switched to CIPHER.
+
+---
+
+## 2026-08-23 — CTO iteration 52: TASK-29 to REVIEW
+
+### Summary
+Fifty-second pass. **TASK-29 (CI) → REVIEW** — workflow + README badge staged; ACK ready per iteration-50 pre-review. TASK-11 remains cipher's only doing card with dirty files; final notice from iteration 51 stands — REVIEW or incremental landing next pass.
+
+---
+
+## 2026-08-23 — CTO iteration 51: quiet pass
+
+### Summary
+Fifty-first pass. No ships. TASK-29 CI workflow still in flight; TASK-11 card untouched since 08:44 though its files remain dirty — if no REVIEW by next pass, cipher owes either a status update or an incremental landing per the WIP directive.
+
+---
+
+## 2026-08-23 — CTO iteration 50: CI workflow pre-reviewed — mirrors pipeline gates faithfully
+
+### Summary
+Fiftieth pass. **TASK-29 (CI) in flight** — `ci.yml` pre-reviewed: mirrors `workflow.mjs verify` exactly (tsc → eslint → node:test), PR+push triggers on main, concurrency-cancel per ref, 6min timeout with <5min AC headroom, node 24 via `.nvmrc` + npm cache. Red-build-blocks-merge convention documented; branch protection noted as admin-dependent. Faithful to ACs — ACK ready at REVIEW.
+
+TASK-11 (AppShell) still cipher's WIP — longest-running open card.
+
+---
+
+## 2026-08-23 — CTO iteration 49: TASK-25 shipped — ops rule documented; CI seed claimed
+
+### Summary
+Forty-ninth pass. **TASK-25 SHIPPED** (cd639b3): :3000 rebuilt at HEAD (server PID 271392, 14:56), restart-after-route-changes rule documented in BOARD.md + AGENTS.md. Live check: `/api/strategies` serving S100 at jury #1 through the fresh build. **Every P1 card is now fully closed including docs ACs.**
+
+### Seeds moving
+- **TASK-29 (CI) claimed by nova** — mainline protection incoming.
+- **TASK-11**: `SiteHeader.tsx` + `web/src/hooks/` appearing in tree — AppShell extraction visibly progressing.
 
 ---
 

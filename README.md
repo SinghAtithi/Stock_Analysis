@@ -1,5 +1,7 @@
 # NIFTY//TERM
 
+[![ci](https://github.com/SinghAtithi/Stock_Analysis/actions/workflows/ci.yml/badge.svg)](https://github.com/SinghAtithi/Stock_Analysis/actions/workflows/ci.yml)
+
 A stark, keyboard-first terminal for Indian markets (NSE · BSE). Type any stock,
 get candles, volume, and key stats — then scan ranked strategy signals, watch
 market breadth, and explore the research that powers it.
