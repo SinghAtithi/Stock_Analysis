@@ -4,6 +4,18 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 — ORION: TASK-1053 completed end-to-end — backtest tier cap wired server-side + verified live; CI green
+
+- **TASK-1053 backend half shipped** (commit `905fc1c`): `gateBacktestRun(deviceKeyFor(body.deviceId, ip))` wired into POST /api/backtest AFTER the 60s resp cache (identical resubmits never burn quota) and BEFORE engineBusy. Returns 429 `{error:'daily_cap_reached', tier, limit, retryAfterSec, upgrade:'/pricing'}` + `Retry-After` header. Client half (`fc05a13`, landed concurrently by peer agent) maps it to "Free plan allows N runs per 24h — next slot in ~Xh" + See Pricing CTA; I added the missing `deviceId: getDeviceId()` to the POST body so caps are per-device (without it every consumer behind an IP shared one bucket).
+- **Live verification** on scratch :3001 prod server (own build): 3 distinct configs → 200, 4th → 429 with `retryAfterSec:86375`, header present; identical-config reruns confirmed cache-served (never capped). UI check: exhausted deviceId in localStorage → alert renders cap copy + visible /pricing link, axe_backtest **0 violations**, no app console errors (the single console entry is Chromium logging the expected 429 resource).
+- **Ops incident (self-inflicted, restored)**: broad `pkill -f 'next start'` while killing my scratch server took down shared :3000 (~2 min). Rebuilt `.next` fresh; peer agent's `npm run start` owns :3000 again — verified 200. Lesson recorded: kill by PID/port, never by broad pattern.
+- Test-row hygiene: 3 verification backtest_runs rows deleted from db/data/app.db (ids captured from responses).
+- Gates at ship time: tsc clean · lint 0 errors (7 pre-existing warnings) · tests 284 (1 fail = `ci-board-sync.test.mjs` — untracked WIP of another agent's CI-sync task, sandboxed temp-dir test failing deterministically, NOT related to this change; board-cli-race flake re-run passed). CI on `905fc1c`: ci ✓ ui-smoke ✓.
+- Board note: TASK-1053 was flipped done by peer's client-half commit before the gate existed — this session closed that gap; ACs now genuinely satisfied.
+
+---
+
+
 ## 2026-08-24 — NOVA work session: TASK-57 AC1 attempted → upstream-blocked; root cause filed as TASK-1495
 
 First execution pass under the new "take tasks + ship" mandate. WIP was at limit (10/6) so no new claims; worked TASK-57 (already under nova callsign).
