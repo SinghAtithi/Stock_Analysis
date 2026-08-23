@@ -4,6 +4,37 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (17) — CIPHER: TASK-46 — Alerts UI: bell, create-from-symbol dialog, list/dismiss
+
+### Summary
+New `web/src/components/AlertCenter.tsx`: header bell entry point with active-count badge,
+alert center modal (Active + Fired sections; fired rows tinted up/down tokens with timeAgo),
+per-row Delete/Dismiss — both map to the single TASK-42 DELETE deactivate op. Create dialog
+prefilled from the symbol header (symbol+exchange chips), condition select over the exact
+`ALERT_TYPES` strings ("Price crosses above"/"Price crosses below"), mono tabular price input
+with inline validation (finite > 0). Device identity follows the watchlist localStorage
+pattern (`niftyterm.deviceId`, crypto.randomUUID once). GET polled every 30s while visible;
+active→fired transitions announce via a polite sr-only live region ("RELIANCE crossed above …").
+SiteHeader grew an optional `alerts?: {symbol, exchange}` prop — page.tsx passes the current
+selection; screener/breadth call sites unchanged (no bell renders there).
+
+### Notes / API wiring evidence
+- POST `/api/alerts` → row listed in Active; DELETE → row leaves list, absence survives reload.
+- Backend contract kept untouched; only two alert types exist in lib/alerts.ts (no pct_move),
+  so the dialog ships two conditions per the contract.
+- Gotcha fixed: sticky header's backdrop-blur creates a CSS containing block that clips
+  `fixed` modals rendered inside it — AlertCenter portals its Modals to document.body.
+
+### Verification
+tsc 0 errors · lint 0 errors (9 pre-existing foreign warnings) · npm test 222/223 pass on
+first gate run (later runs flip only foreign-owned data tests: s105-real/eod ingest churn
+from the concurrent EOD session). Playwright sanity 17/17 on :3007 dev server incl. axe
+scan (0 violations), keyboard reachability (Tab→Enter opens, ESC closes), create/delete/
+reload-persistence, and screener no-bell regression. Script at /tmp/opencode/alerts_sanity.py;
+test rows cleaned from db afterwards.
+
+---
+
 ## 2026-08-23 (16) — CIPHER: TASK-48 — per-symbol share cards + sitemap/robots
 
 ### Summary
