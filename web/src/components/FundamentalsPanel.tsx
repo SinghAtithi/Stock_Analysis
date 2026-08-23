@@ -46,7 +46,9 @@ function Shell({ children }: { children: ReactNode }) {
 export default function FundamentalsPanel({ symbol }: { symbol: string }) {
   const [data, setData] = useState<Payload | null>(null);
   const [loadedFor, setLoadedFor] = useState<string | null>(null);
-  const [failed, setFailed] = useState(false);
+  /* keyed to the symbol that failed — one bad fetch must not poison other
+     symbols (TASK-875); success below clears it so a later visit retries */
+  const [failedFor, setFailedFor] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -60,9 +62,10 @@ export default function FundamentalsPanel({ symbol }: { symbol: string }) {
         if (!cancelled) {
           setData(json);
           setLoadedFor(symbol);
+          setFailedFor((f) => (f === symbol ? null : f));
         }
       } catch {
-        if (!cancelled) setFailed(true);
+        if (!cancelled) setFailedFor(symbol);
       }
     };
     tick();
@@ -71,16 +74,16 @@ export default function FundamentalsPanel({ symbol }: { symbol: string }) {
     };
   }, [symbol]);
 
-  if (failed) {
+  const fresh = loadedFor === symbol;
+  const m = fresh ? (data?.metrics ?? null) : null;
+
+  if (!fresh && failedFor === symbol) {
     return (
       <Shell>
         <p className="text-sm text-muted">Fundamentals unavailable right now.</p>
       </Shell>
     );
   }
-
-  const fresh = loadedFor === symbol;
-  const m = fresh ? (data?.metrics ?? null) : null;
 
   if (!fresh) {
     return (
