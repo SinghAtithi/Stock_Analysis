@@ -4,6 +4,108 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (138) — UI head audit pass 14: dual-listed exchange disambiguation bug logged to board (no code changes)
+
+Fourteenth pass — code + data-verified.
+
+- **TASK-405 (P2)** — Deep-link exchange param is ignored on dual-listed symbols: `?s=TATACONSUM&e=BSE` resolves to NSE because `/api/instruments` (`findInstrument`) returns the first index match and ignores `&e=`. Verified: the instruments index has 2,367 duplicate-symbol entries across NSE/BSE (TATACONSUM, SBIN, TCS…), so consumers deep-linking a BSE listing silently get the NSE chart. Same root cause also hits the screener row-click (screener/page.tsx:315 resolves via `/api/instruments?s=` and adopts whatever exchange comes back) — folded into TASK-405's scope rather than a new task.
+
+No other new findings this pass; raven's 374–397 batch is product-level and distinct. Priorities: P2 (silent wrong-exchange loads). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (137) — UI head audit pass 13: saved-view deletion + range persistence logged to board (no code changes)
+
+Thirteenth pass — code-verified against source.
+
+- **TASK-386 (P2)** — Screener saved-view deletion is instant and destructive: the preset ✕ (`ScreenerPresets.tsx:156`) calls `deleteScreenerPreset` with no confirm and no undo — a mis-tap loses a curated, named view. Raven's TASK-83 covers watchlist undo and TASK-192 import preview; the saved-view delete instance was unlogged.
+- **TASK-394 (P3)** — Chart range resets to 1Y on every reload: rg confirms no `range↔localStorage` persistence anywhere in page.tsx/ChartPanel.tsx. A consumer analyzing 5Y weekly data reloads and lands back on 1Y daily. Deep-link `?r=` still wins when present.
+
+Skipped as already-covered: search 8-result cap (raven TASK-303). No self-corrections this pass. Priorities: P2 (destructive action), P3 (context persistence). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (136) — UI head audit pass 12: alert-create price context + backtest/screener cross-link gap logged to board (no code changes)
+
+Twelfth pass — code-verified against source.
+
+- **TASK-372 (P2)** — Create-alert dialog has no current-price hint: target-price field starts empty (`placeholder="0.00"`, AlertCenter.tsx:468), so a consumer must look up the current price elsewhere to set an above/below alert — even though the bell is only reachable when a symbol is loaded whose live price is displayed right above it. Best practice: show context price + one-tap preset chips (+2%/−5%/at market), validate relative to current.
+- **TASK-373 (P3)** — No reverse cross-link: the screener offers "Backtest →" but a completed backtest result has zero screener references (rg confirms no "screener" in backtest/page.tsx) — a consumer can't jump from a finished run to that strategy's ranked list.
+
+Also noted: the invalid-deep-link fallback (bad `?s=` → `getWatchlistSnapshot()[0] ?? FALLBACK_ENTRY` at page.tsx:160) is the same class as TASK-358 (silently wrong symbol, no error) — left to that task's normalization scope rather than a new task. Raven's 360–367 batch is product-level; no overlap. Priorities: P2 (friction), P3 (cross-link). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (135) — UI head audit pass 11: exchange-suffix resolution bugs logged to board (no code changes)
+
+Eleventh pass — code + live-verified against :3000.
+
+- **TASK-358 (P2)** — Suffixed deep links silently fail: `?s=RELIANCE.NS` → `/api/instruments?s=RELIANCE.NS` → `{instrument:null}` (live-verified; index stores bare symbols only, 5,953 entries, zero `.NS`/`.BO`; `findInstrument` is exact-match). Home's `resolveTarget` then falls back to the new marquee `FALLBACK_ENTRY` (NIFTY 50) with no error — a consumer pasting a share/company link lands on the wrong symbol.
+- **TASK-359 (P2)** — Company profile QuoteHeader 404 on suffixed symbols (TASK-70 confirmed live): `/company/RELIANCE.NS` → `/api/analysis?symbol=RELIANCE.NS` → 404 → raw symbol + em-dash price. Ties into TASK-358: normalization should live in one place so company URLs stop propagating suffixes.
+
+Also confirmed ghost's TASK-77 work is in: `FALLBACK_ENTRY` (NIFTY 50) now sits at `page.tsx:91-98`, so first-visit no longer shows "Choose a symbol" — the marquee fallback landed. Raven's 334–344 batch is product-level; no overlap with 358/359. Priorities: P2 both (silent wrong-symbol loads). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (134) — UI head audit pass 10: live Playwright audit of :3000 (console/network/overflow) logged to board (no code changes)
+
+Tenth pass — live browser audit (Playwright, 390px + 1280px) against the running :3000 prod build, distinct from the static-code passes.
+
+- **TASK-333 (P3)** — Board page overflows 17px horizontally at 390px (live: `documentElement.scrollWidth` 407 vs `clientWidth` 382; body 407 vs 382) — the board is a consumer-nav route, so this side-scroll is visible to consumers. Root cause not yet pinned (WIP bar / min-width control) — acceptance criteria ask for containment at 375/390px.
+- **No new console/network findings on product pages**: home/screener/breadth/backtest/pricing/company are console-clean at both breakpoints. Two earlier signals investigated and dismissed: (1) `api/strategies` `ERR_ABORTED` on backtest = StrictMode/navigation abort, endpoint itself is 18ms/200; (2) 500s + MIME-type refusals on `/board` = stale-build chunk serving, already covered by the AGENTS.md OPS rule (rebuild + restart), not a UI defect.
+- Dark-mode confirmed applied on company + pricing; pricing card light-mode contrast is TASK-228.
+
+Priorities: P3 (mobile overflow on a consumer-nav route). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (133) — UI head audit pass 9: board-in-consumer-nav IA + title findings logged to board (no code changes)
+
+Ninth pass — code-verified (server back up at :3000, so also live-verified the title). Tracker-only via `board.mjs new`.
+
+- **TASK-295 (P2)** — IA conflict: internal kanban `/board` (agent callsigns, roadmap tasks, CLI tooling) is a primary consumer-nav item — SiteHeader desktop nav (:58), mobile nav (:119), home footer (:546) — yet `robots.ts` disallows `/board`. Consumers land on an internal tracker instead of a product page; robots disallow + main-nav presence contradict each other. Needs an intentional call: gate + remove from consumer nav, or treat as a product surface.
+- **TASK-296 (P3)** — `/board` renders the generic default `<title>NIFTY — Indian Market</title>` — it's a client component with no `metadata`/`generateMetadata` export (live-verified via curl), so even before the TASK-295 decision the page has no meaningful title.
+
+No self-corrections this pass. Priorities: P2 (IA), P3 (metadata). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (132) — UI head audit pass 8: backtest/company/breadth/tape findings logged to board (no code changes)
+
+Eighth pass — code-verified against source. Tracker-only via `board.mjs new`. Raven's 230–245 batch is product-level; these are narrower, code-level gaps.
+
+- **TASK-254 (P2)** — Backtest equity chart is inaccessible: bare `<div ref={chartRef}>` canvas (`backtest/page.tsx:370`) with no aria-label, no sr-only metric summary, no visible Strategy-vs-Benchmark legend — SR users get nothing from a completed run. (Raven's TASK-178 covers Sparkline, not this chart.)
+- **TASK-255 (P3)** — Backtest cost presets are an unexplained select: "Low (10 bps)" / "Realistic (20 bps)" with no plain-English explainer of bps→₹, and the preselected default (index 2 = Realistic) isn't visually distinct.
+- **TASK-256 (P3)** — Company "Analyst coverage" is a permanent placeholder ("No analyst data on file yet") with no ETA or next-step link — reads as a finished empty result, not an incoming TASK-57 feature.
+- **TASK-257 (P3)** — Breadth "As of" renders raw ISO (`2026-08-21`, page.tsx:157) with no IST formatting, and labels the whole page by the newest day even when FII/DII sources are a day older (`meta.sources` freshness exists but isn't surfaced).
+- **TASK-258 (P3)** — TickerTape labels everything "Live" with no staleness signal; items poll every 90s and hold last-session prices when closed, so a 2h-old price looks live next to a fresh one.
+
+No self-corrections this pass. Priorities: P2 (chart a11y), P3 (explainers + freshness). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (131) — UI head audit pass 7: pricing/legal light-mode contrast + orphan-nav findings logged to board (no code changes)
+
+Seventh pass — code-verified against source. Tracker-only via `board.mjs new`.
+
+- **TASK-228 (P2)** — Pricing cards near-invisible in light mode: `.pricing-card { background: rgb(255 255 255 / 0.02) }` (pricing.css:12) sits on `.legal-page { background: var(--color-ink) }` = `#fcfcf9` in light theme — the free/pro tier cards blend into the page, differentiated only by a hairline border. Non-text contrast (WCAG 1.4.11) concern; dark mode is fine because ink is near-black there.
+- **TASK-233 (P3)** — Legal/pricing pages are orphan routes: no shared AppShell nav, only `← Terminal` + TERMS/DISCLAIMER links. A consumer on /pricing cannot reach /screener or /breadth without the browser back button — breaks the Home↔Screener↔Company research loop (complements TASK-96's shell drift, distinct from it).
+
+No self-corrections this pass. Priorities: P2 (visible contrast), P3 (navigation polish). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (130) — UI head audit pass 6: alert-create + watchlist-sync bugs logged to board (no code changes)
+
+Sixth pass — code-verified against source. Tracker-only via `board.mjs new`. Raven has swept broad product UX (140–199); these are narrower functional bugs.
+
+- **TASK-200 (P2)** — Create-alert dialog advertises alert types it cannot create: the condition `<select>` renders all `ALERT_TYPES` (incl. `strategy_enter`/`strategy_exit`, labeled "Enters/Leaves strategy top-N"), but the form only collects symbol+price and posts `{type,symbol,exchange,price}` with no `strategyId`/`topN`. `validateAlertInput` (alerts.ts:171) rejects membership types without strategyId → generic "Could not create alert" with no explanation. Verified: `AlertCenter.tsx:353` + `submit` payload (377-382) + `TYPE_LABELS` (30-35).
+- **TASK-210 (P2)** — Watchlist cloud mirror pulls only once per browser session: module-level `mergedThisSession` (watchlistMirror.ts:16, gated at 60-64) runs `pullAndMerge` on first mount only. A symbol added on another device never appears in an already-open tab until a full reload; no visibilitychange/refocus pull (AlertCenter has one, mirror doesn't).
+
+No self-corrections this pass. Priorities: P2 for both (visible dead-ends/broken cross-device sync). Phase D. No callsign (audit-only).
+
+---
+
 ## 2026-08-23 (129) — UI head audit pass 5: alerts rendering + brand/token-consistency findings logged to board (no code changes)
 
 Fifth pass — code-verified against source. Tracker-only via `board.mjs new`. Raven's 140–159 batch is product-level; my additions here are narrower, code-level findings.
