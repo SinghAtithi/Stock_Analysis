@@ -47,6 +47,19 @@ export function save(data) {
 }
 
 export function uid() { return Math.random().toString(36).slice(2,6).toUpperCase(); }
+
+// TASK-27: derive the next numeric id from the MAX existing suffix, not
+// tasks.length — length-based ids duplicate once anything is deleted, and
+// simultaneous creators both minted the same id (LWW then ate one; the merge
+// now mangles instead, but distinct ids at creation are still better).
+export function nextTaskId(b) {
+  let max = 0;
+  for (const t of b.tasks ?? []) {
+    const m = /^TASK-(\d+)$/.exec(t.id);
+    if (m) max = Math.max(max, Number(m[1]));
+  }
+  return `TASK-${String(max + 1).padStart(2, "0")}`;
+}
 export function arg(name, def=null) {
   const i = process.argv.indexOf(name);
   if (i === -1) return def;
@@ -172,9 +185,7 @@ function cmdNew() {
   const title = arg("--title");
   if (!title) { console.error('Usage: node scripts/board.mjs new --title "..." [--phase D] [--priority P2] [--status todo] [--agent raven]'); process.exit(1); }
   const b = load();
-  let nid = `TASK-${String(b.tasks.length+1).padStart(2,"0")}`;
-  let n = b.tasks.length+1;
-  while (b.tasks.some(t=>t.id===nid)) { n+=1; nid=`TASK-${String(n).padStart(2,"0")}`; }
+  const nid = nextTaskId(b);
   const phase = arg("--phase") ?? "D";
   const priority = arg("--priority") ?? "P2";
   const status = arg("--status") ?? "todo";
@@ -197,7 +208,13 @@ function cmdNew() {
   b.activities = b.activities ?? [];
   b.activities.unshift({ id: uid(), taskId: nid, text: `created in ${status}`, agent: (agent??"SYSTEM").toUpperCase(), at: Date.now() });
   save(b);
-  console.log(`Created ${nid} → ${status} · ${title}`);
+
+  // TASK-27: if a simultaneous creator minted the same id, the canonical merge
+  // preserved ours under a "-2" style suffix instead of LWW-eating it. Report
+  // the FINAL id (matched by our unique createdAt), never silently lose it.
+  const saved = (load().tasks ?? []).find((x) => x.id === nid && x.createdAt === t.createdAt)
+    ?? (load().tasks ?? []).find((x) => x.createdAt === t.createdAt && x.title === t.title);
+  console.log(`Created ${saved ? saved.id : nid} → ${status} · ${title}`);
 }
 function cmdTick() {
   const id = process.argv[3];

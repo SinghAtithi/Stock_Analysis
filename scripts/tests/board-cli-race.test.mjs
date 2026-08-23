@@ -146,6 +146,39 @@ test("single canonical impl: CLI path and TS facade share one module (TASK-24)",
   );
 });
 
+test("TASK-27 repro: simultaneous creators with the same id both survive", async () => {
+  const { load, save, nextTaskId } = await loadBoardModule();
+  seedBoard([task("TASK-01"), task("TASK-02")]);
+
+  // both writers derive "TASK-03" from their local snapshots
+  const a = load(), b = load();
+  assert.equal(nextTaskId(a), "TASK-03");
+  const ta = { ...task("TASK-03"), title: "writer A's task", createdAt: T0 + 1000, updatedAt: T0 + 1000 };
+  const tb = { ...task("TASK-03"), title: "writer B's task", createdAt: T0 + 2000, updatedAt: T0 + 2000 };
+  a.tasks.push(ta);
+  b.tasks.push(tb);
+
+  save(a); // writer A lands first
+  save(b); // writer B must NOT erase A's task (nor lose its own)
+
+  const out = JSON.parse(fs.readFileSync(FILE, "utf-8"));
+  const titles = out.tasks.map((t) => t.title).sort();
+  assert.ok(titles.includes("writer A's task"), "A's creation survived");
+  assert.ok(titles.includes("writer B's task"), "B's creation survived (mangled id)");
+  const ids = new Set(out.tasks.map((t) => t.id));
+  assert.equal(ids.size, out.tasks.length, "ids remain unique after mangle");
+
+  // max-suffix allocation ignores mangled suffixes and keeps working
+  assert.equal(nextTaskId(out), "TASK-04");
+});
+
+test("TASK-27 migration: gapped legacy boards get gap-free max+1 allocation", async () => {
+  const { nextTaskId } = await loadBoardModule();
+  // pre-change board where deletions left gaps in TASK-nn
+  const gapped = { tasks: [task("TASK-01"), task("TASK-07"), task("TASK-09")] };
+  assert.equal(nextTaskId(gapped), "TASK-10");
+});
+
 test("flipStatus mutates fresh board and reports missing tasks cleanly", async () => {
   process.env.NIFTY_BOARD_FILE = FILE;
   const { flipStatus } = await import("../../scripts/workflow.mjs");

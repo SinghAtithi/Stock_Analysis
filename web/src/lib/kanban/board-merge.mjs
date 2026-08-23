@@ -105,9 +105,36 @@ export function mergeBoards(server, incoming, now = Date.now()) {
 
   const byId = new Map();
   for (const t of server?.tasks ?? []) byId.set(t.id, t); // server-only tasks survive verbatim
+
+  // TASK-27: two writers that minted the SAME id for DIFFERENT tasks (simultaneous
+  // creates — both derive "TASK-nn" from their local count) must both survive LWW.
+  // Same id + same createdAt = same task lineage (an edit/revision) -> normal LWW.
+  // Same id + different createdAt = distinct creations -> the incoming one is
+  // re-id'd with a deterministic "-2/-3..." suffix instead of being eaten.
+  const takenIds = new Set();
+  const refreshTaken = () => {
+    takenIds.clear();
+    for (const t of byId.values()) takenIds.add(t.id);
+  };
+  const mangledId = (base) => {
+    let n = 2;
+    while (true) {
+      const candidate = `${base}-${n}`;
+      if (!takenIds.has(candidate)) return candidate;
+      n += 1;
+    }
+  };
+
   for (const t of incoming.tasks) {
     if (!alive(t)) continue;
     const cur = byId.get(t.id);
+    if (cur && cur.createdAt !== t.createdAt && alive(cur)) {
+      // distinct task colliding on id: place under a fresh suffix
+      refreshTaken();
+      const renamed = { ...t, id: mangledId(t.id) };
+      byId.set(renamed.id, renamed);
+      continue;
+    }
     if (!cur || !alive(cur) || t.updatedAt >= cur.updatedAt) byId.set(t.id, t);
   }
 
