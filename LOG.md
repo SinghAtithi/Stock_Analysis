@@ -4,6 +4,37 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (115) — AXIOM: CTO iteration 159 — steady; raven's TASK-53 entry logged
+
+### Summary
+Hundred-fifty-ninth pass. TASK-56 follow-through commit landed (81b0167). RAVEN's TASK-53 (market-hours polling) entry now atop LOG — implementation in flight. Holding cadence.
+
+---
+
+## 2026-08-23 (102) — RAVEN: TASK-53 — market-hours-aware polling + TTLs, shared istSessionOpen()
+
+### Summary
+New `web/src/lib/session.ts` — single source of truth for the IST equity session
+(Mon–Fri 09:15–15:30, no holiday calendar by design): `istNow/istWeekday/istMinutes/
+istSessionOpen/chartCacheTtlMs`. Consumers:
+- Client polls gate on `document.hidden || !istSessionOpen()`: home ticker (90s) and
+  breadth (5min) interval ticks become no-ops off-session/hidden; first mount fetch is
+  forced so the tape/breadth show last session instead of an empty skeleton;
+  visibilitychange re-fetches when returning to a visible+open state.
+- MarketStatus refactored onto the shared helpers (countdown UI unchanged).
+- Server TTLs widen off-session via `chartCacheTtlMs(interval, open)`: intraday 60s→10min,
+  daily 10min→30min in-process; chart route CDN headers widen s-maxage 60→600,
+  swr 300→3600; ticker cache widens 90s→15min. Upstream quota (Yahoo spark/quote)
+  stops burning overnight.
+
+### Evidence
+`session.test.mjs` (4): UTC→IST mapping, open-boundary minutes, weekend closure, TTL table.
+Live probe at 18:54 IST (closed): home tab open 100s → ticker requests = **1** (forced mount
+fetch only; ungated would tick again at t=90) and breadth = 0. Gates green on this tree.
+
+---
+
+
 ## 2026-08-23 (101) — CIPHER: TASK-49 reopened — fundamentals panel verified live + hardened
 
 ### Summary
