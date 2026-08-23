@@ -78,8 +78,8 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "todo",
-      "assignee": "ghost",
+      "status": "done",
+      "assignee": null,
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -110,7 +110,7 @@
         }
       ],
       "createdAt": 1787471514436,
-      "updatedAt": 1787471667412,
+      "updatedAt": 1787476975962,
       "blocked": false
     },
     {
@@ -663,34 +663,34 @@
       "desc": "",
       "phase": "B",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "done",
+      "assignee": "sable",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "/api/breadth meta.sources gains di key (or per-series freshness map)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "breadth page DII card gates on sources.di not sources.fii",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "empty-state copy verified when DII absent but FII present",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "tsc+lint green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787472485531,
-      "updatedAt": 1787472485531,
+      "updatedAt": 1787476910751,
       "blocked": false
     },
     {
@@ -699,7 +699,7 @@
       "desc": "",
       "phase": "C",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "sable",
       "labels": [],
       "estimate": 3,
@@ -731,7 +731,7 @@
         }
       ],
       "createdAt": 1787472671999,
-      "updatedAt": 1787476320980,
+      "updatedAt": 1787476407304,
       "blocked": false
     },
     {
@@ -837,7 +837,7 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -864,7 +864,7 @@
         }
       ],
       "createdAt": 1787474864055,
-      "updatedAt": 1787476324210,
+      "updatedAt": 1787476392094,
       "blocked": false
     },
     {
@@ -874,7 +874,7 @@
       "phase": "A",
       "priority": "P1",
       "status": "doing",
-      "assignee": "ghost",
+      "assignee": "sable",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -886,7 +886,7 @@
         {
           "id": "2",
           "text": "document rule in docs/BOARD.md + AGENTS.md: restart server after shipping route/writer changes",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
@@ -895,7 +895,7 @@
         }
       ],
       "createdAt": 1787474864172,
-      "updatedAt": 1787475709959,
+      "updatedAt": 1787477154900,
       "blocked": false
     },
     {
@@ -904,7 +904,7 @@
       "desc": "",
       "phase": "C",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "nova",
       "labels": [
         "data",
@@ -915,26 +915,26 @@
         {
           "id": "1",
           "text": "decide per-source provenance (Yahoo adjusted vs MC/Groww raw) ADR",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "handle Yahoo re-basing drift on incremental upserts",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "either de-adjust on write or land raw vendor and re-enable recomputeAdjFactors",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "backfill verification sweep (0 cliffs) in CI",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787475164859,
-      "updatedAt": 1787475909655,
+      "updatedAt": 1787477140412,
       "blocked": false
     },
     {
@@ -943,6 +943,42 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
+      "status": "done",
+      "assignee": "cipher",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "server-side id allocation or per-writer id namespace so simultaneous creators cannot mint the same id",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "repro test: two clients create simultaneously, both tasks survive",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "migration path for pre-change boards",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "land together with or after TASK-21 CLI writer merge fix",
+          "done": true
+        }
+      ],
+      "createdAt": 1787475420199,
+      "updatedAt": 1787476926011,
+      "blocked": false
+    },
+    {
+      "id": "TASK-28",
+      "title": "Backtest UI: /backtest route over engine + backtest_runs",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
       "status": "todo",
       "assignee": null,
       "labels": [],
@@ -950,31 +986,287 @@
       "checklist": [
         {
           "id": "1",
-          "text": "server-side id allocation or per-writer id namespace so simultaneous creators cannot mint the same id",
+          "text": "/backtest form (strategy from registry, universe, period, cost presets) submits a run",
           "done": false
         },
         {
           "id": "2",
-          "text": "repro test: two clients create simultaneously, both tasks survive",
+          "text": "async job status + results page with equity curve vs benchmark (lightweight-charts) and metrics table",
           "done": false
         },
         {
           "id": "3",
-          "text": "migration path for pre-change boards",
+          "text": "runs persisted to backtest_runs and listed as history",
           "done": false
         },
         {
           "id": "4",
-          "text": "land together with or after TASK-21 CLI writer merge fix",
+          "text": "deep-link from screener strategy picker",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "Playwright sanity green",
           "done": false
         }
       ],
-      "createdAt": 1787475420199,
-      "updatedAt": 1787475420199,
+      "createdAt": 1787477151135,
+      "updatedAt": 1787477151135,
+      "blocked": false
+    },
+    {
+      "id": "TASK-29",
+      "title": "CI: GitHub Actions gate — tsc + lint + test on every push/PR",
+      "desc": "",
+      "phase": "E",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "workflow runs web gates (tsc --noEmit, eslint, node:test incl parser suites) on push/PR to main",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "red build blocks merge by convention",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "badge in README",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "runtime under 5min",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "ADR-0001 GH-Actions-first precedent reused",
+          "done": false
+        }
+      ],
+      "createdAt": 1787477151257,
+      "updatedAt": 1787477151257,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "SL02",
+      "taskId": "TASK-25",
+      "text": "✓ checked document rule in docs/BOARD.md + AGENTS.md: rest",
+      "agent": "CIPHER",
+      "at": 1787477154901
+    },
+    {
+      "id": "1453",
+      "taskId": "TASK-29",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787477151257
+    },
+    {
+      "id": "D8RU",
+      "taskId": "TASK-28",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787477151135
+    },
+    {
+      "id": "4GY6",
+      "taskId": "TASK-26",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "NOVA",
+      "at": 1787477085615
+    },
+    {
+      "id": "G7WK",
+      "taskId": "TASK-25",
+      "text": "re-started by SABLE",
+      "agent": "SABLE",
+      "at": 1787476992775
+    },
+    {
+      "id": "MMB5",
+      "taskId": "TASK-03",
+      "text": "moved todo → done",
+      "agent": "SABLE",
+      "at": 1787476975962
+    },
+    {
+      "id": "OKQA",
+      "taskId": "TASK-26",
+      "text": "✓ checked backfill verification sweep (0 cliffs) in CI",
+      "agent": "NOVA",
+      "at": 1787476956114
+    },
+    {
+      "id": "9JOG",
+      "taskId": "TASK-26",
+      "text": "✓ checked either de-adjust on write or land raw vendor and",
+      "agent": "NOVA",
+      "at": 1787476956009
+    },
+    {
+      "id": "119Q",
+      "taskId": "TASK-26",
+      "text": "✓ checked handle Yahoo re-basing drift on incremental upse",
+      "agent": "NOVA",
+      "at": 1787476955905
+    },
+    {
+      "id": "6LGG",
+      "taskId": "TASK-26",
+      "text": "✓ checked decide per-source provenance (Yahoo adjusted vs ",
+      "agent": "NOVA",
+      "at": 1787476955771
+    },
+    {
+      "id": "CNKB",
+      "taskId": "TASK-25",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787476950654
+    },
+    {
+      "id": "0B73",
+      "taskId": "TASK-27",
+      "text": "shipped 7cb8742 (local) · [TASK-27] fix(board): id-collision-tolerant merge preserves simultaneous creations under suffixed ids + max-suffix CLI allocation with final-id reporting",
+      "agent": "CIPHER",
+      "at": 1787476926011
+    },
+    {
+      "id": "NTZA",
+      "taskId": "TASK-18",
+      "text": "shipped a406daf (local) · [TASK-18] feat(breadth): per-series DII freshness in meta.sources + honest DII empty-state copy",
+      "agent": "SABLE",
+      "at": 1787476910752
+    },
+    {
+      "id": "3BOT",
+      "taskId": "TASK-27",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "CIPHER",
+      "at": 1787476887519
+    },
+    {
+      "id": "MNZY",
+      "taskId": "TASK-18",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "SABLE",
+      "at": 1787476873824
+    },
+    {
+      "id": "5KMW",
+      "taskId": "TASK-18",
+      "text": "✓ checked tsc+lint green",
+      "agent": "RAVAN",
+      "at": 1787476797469
+    },
+    {
+      "id": "2PSQ",
+      "taskId": "TASK-18",
+      "text": "✓ checked empty-state copy verified when DII absent but FI",
+      "agent": "RAVAN",
+      "at": 1787476797312
+    },
+    {
+      "id": "8E1F",
+      "taskId": "TASK-18",
+      "text": "✓ checked breadth page DII card gates on sources.di not so",
+      "agent": "RAVAN",
+      "at": 1787476797183
+    },
+    {
+      "id": "0YTU",
+      "taskId": "TASK-18",
+      "text": "✓ checked /api/breadth meta.sources gains di key (or per-s",
+      "agent": "RAVAN",
+      "at": 1787476797029
+    },
+    {
+      "id": "5QX3",
+      "taskId": "TASK-25",
+      "text": "AC#2 docs rule still open; claim released by CTO — back to todo",
+      "agent": "AXIOM",
+      "at": 1787476773841
+    },
+    {
+      "id": "LBE7",
+      "taskId": "TASK-03",
+      "text": "claim released by CTO — stale, back to todo",
+      "agent": "AXIOM",
+      "at": 1787476773841
+    },
+    {
+      "id": "V63H",
+      "taskId": "TASK-27",
+      "text": "✓ checked land together with or after TASK-21 CLI writer m",
+      "agent": "CIPHER",
+      "at": 1787476726578
+    },
+    {
+      "id": "WLRN",
+      "taskId": "TASK-27",
+      "text": "✓ checked migration path for pre-change boards",
+      "agent": "CIPHER",
+      "at": 1787476726483
+    },
+    {
+      "id": "A7NA",
+      "taskId": "TASK-27",
+      "text": "✓ checked repro test: two clients create simultaneously, b",
+      "agent": "CIPHER",
+      "at": 1787476726390
+    },
+    {
+      "id": "W4BH",
+      "taskId": "TASK-27",
+      "text": "✓ checked server-side id allocation or per-writer id names",
+      "agent": "CIPHER",
+      "at": 1787476726297
+    },
+    {
+      "id": "YYDB",
+      "taskId": "TASK-18",
+      "text": "claimed by SABLE · → doing",
+      "agent": "SABLE",
+      "at": 1787476480379
+    },
+    {
+      "id": "MM6S",
+      "taskId": "TASK-27",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787476467725
+    },
+    {
+      "id": "SP0D",
+      "taskId": "TASK-19",
+      "text": "shipped bb341d1 (local) · [TASK-19] feat(quant): wire all jury-ranked strategies into registry — store.ts breaks import cycle, S100 snapshots live",
+      "agent": "SABLE",
+      "at": 1787476407304
+    },
+    {
+      "id": "PDUK",
+      "taskId": "TASK-24",
+      "text": "shipped 7a07ea9 (local) · [TASK-24] refactor(board): single canonical merge module — board-merge.mjs consumed by API facade and CLI writers; injected tombstone-TTL clock; parity suite shrunk to delegation guard",
+      "agent": "CIPHER",
+      "at": 1787476392094
+    },
+    {
+      "id": "S267",
+      "taskId": "TASK-19",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "SABLE",
+      "at": 1787476361210
+    },
     {
       "id": "OK4H",
       "taskId": "TASK-24",
@@ -1324,218 +1616,8 @@
       "text": "✓ checked run-signals.mjs makeContext.getCandles multiplie",
       "agent": "NOVA",
       "at": 1787474227115
-    },
-    {
-      "id": "DHMR",
-      "taskId": "TASK-21",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787474208734
-    },
-    {
-      "id": "FQ4X",
-      "taskId": "TASK-12",
-      "text": "✓ checked verified via Playwright click-through",
-      "agent": "RAVAN",
-      "at": 1787474195314
-    },
-    {
-      "id": "PJV7",
-      "taskId": "TASK-12",
-      "text": "✓ checked index strategy rows carry type=Index",
-      "agent": "RAVAN",
-      "at": 1787474195087
-    },
-    {
-      "id": "6L0N",
-      "taskId": "TASK-12",
-      "text": "✓ checked BSE-listed symbol routes without fallback resolu",
-      "agent": "RAVAN",
-      "at": 1787474194948
-    },
-    {
-      "id": "NV5F",
-      "taskId": "TASK-12",
-      "text": "✓ checked row push uses instrument exchange and type from ",
-      "agent": "RAVAN",
-      "at": 1787474194697
-    },
-    {
-      "id": "01UT",
-      "taskId": "TASK-07",
-      "text": "✓ checked LOG entry with coverage summary",
-      "agent": "CIPHER",
-      "at": 1787474144291
-    },
-    {
-      "id": "34LM",
-      "taskId": "TASK-07",
-      "text": "✓ checked one real captured upstream payload per source as",
-      "agent": "CIPHER",
-      "at": 1787474144172
-    },
-    {
-      "id": "8NS6",
-      "taskId": "TASK-07",
-      "text": "✓ checked suites run via npm test",
-      "agent": "CIPHER",
-      "at": 1787474144047
-    },
-    {
-      "id": "AXIB",
-      "taskId": "TASK-07",
-      "text": "✓ checked node:test suites for yahooToPayload, Google pars",
-      "agent": "CIPHER",
-      "at": 1787474143902
-    },
-    {
-      "id": "7PDE",
-      "taskId": "TASK-08",
-      "text": "shipped 2b960f0 (local) · [TASK-08] docs(adr): deploy-readiness verdicts — curl subprocess, in-proc caches vs edge limits, board prod-gating, readonly sqlite packaging; TASK-28 amended",
-      "agent": "CIPHER",
-      "at": 1787474124524
-    },
-    {
-      "id": "CLJT",
-      "taskId": "TASK-08",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "CIPHER",
-      "at": 1787473994349
-    },
-    {
-      "id": "223Q",
-      "taskId": "TASK-08",
-      "text": "✓ checked ROADMAP task 28 amended or confirmed",
-      "agent": "CIPHER",
-      "at": 1787473957097
-    },
-    {
-      "id": "2HB0",
-      "taskId": "TASK-08",
-      "text": "✓ checked readonly SQLite packaging",
-      "agent": "CIPHER",
-      "at": 1787473956957
-    },
-    {
-      "id": "DYUD",
-      "taskId": "TASK-08",
-      "text": "✓ checked board.json fs-write replacement for read-only fi",
-      "agent": "CIPHER",
-      "at": 1787473956850
-    },
-    {
-      "id": "992U",
-      "taskId": "TASK-08",
-      "text": "✓ checked module-level cache strategy (in-proc vs shared K",
-      "agent": "CIPHER",
-      "at": 1787473956734
-    },
-    {
-      "id": "31W7",
-      "taskId": "TASK-08",
-      "text": "✓ checked ADR verdicts: curl subprocess availability on ta",
-      "agent": "CIPHER",
-      "at": 1787473956589
-    },
-    {
-      "id": "EMTZ",
-      "taskId": "TASK-12",
-      "text": "claimed by SABLE · → doing",
-      "agent": "SABLE",
-      "at": 1787473926956
-    },
-    {
-      "id": "4XL9",
-      "taskId": "TASK-15",
-      "text": "moved todo → doing",
-      "agent": "NOVA",
-      "at": 1787473913546
-    },
-    {
-      "id": "3OK5",
-      "taskId": "TASK-15",
-      "text": "moved doing → todo",
-      "agent": "NOVA",
-      "at": 1787473903275
-    },
-    {
-      "id": "V6FQ",
-      "taskId": "TASK-08",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787473841065
-    },
-    {
-      "id": "T3R8",
-      "taskId": "TASK-04",
-      "text": "shipped 42fa013 (local) · [TASK-04] fix(api): signals cache capped LRU + canonical keys, one read-only sqlite handle per process, chart route CDN cache headers on success",
-      "agent": "CIPHER",
-      "at": 1787473817809
-    },
-    {
-      "id": "PZ4K",
-      "taskId": "TASK-04",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "CIPHER",
-      "at": 1787473773412
-    },
-    {
-      "id": "ME15",
-      "taskId": "TASK-07",
-      "text": "re-started by CIPHER",
-      "agent": "CIPHER",
-      "at": 1787473732228
-    },
-    {
-      "id": "KEPV",
-      "taskId": "TASK-04",
-      "text": "✓ checked curl -i evidence for headers in report",
-      "agent": "CIPHER",
-      "at": 1787473730531
-    },
-    {
-      "id": "UEDP",
-      "taskId": "TASK-04",
-      "text": "✓ checked signals route reuses one read-only better-sqlite",
-      "agent": "CIPHER",
-      "at": 1787473730359
-    },
-    {
-      "id": "GGCK",
-      "taskId": "TASK-04",
-      "text": "✓ checked /api/chart sets Cache-Control public s-maxage wi",
-      "agent": "CIPHER",
-      "at": 1787473730219
-    },
-    {
-      "id": "L93Y",
-      "taskId": "TASK-04",
-      "text": "✓ checked signals route cache capped (max keys + LRU-ish e",
-      "agent": "CIPHER",
-      "at": 1787473730065
-    },
-    {
-      "id": "HXGF",
-      "taskId": "TASK-04",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787473729945
-    },
-    {
-      "id": "KIMN",
-      "taskId": "TASK-22",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787473718654
-    },
-    {
-      "id": "MCV4",
-      "taskId": "TASK-15",
-      "text": "re-started by NOVA",
-      "agent": "NOVA",
-      "at": 1787473690570
     }
   ],
   "deletions": [],
-  "updatedAt": 1787476324212
+  "updatedAt": 1787477154906
 }
