@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { isMembershipType, validateAlertInput } from "@/lib/alerts";
+import { checkCap, tierForDevice } from "@/lib/tiers";
 
 /* /api/alerts — anonymous device-scoped price alerts (ROADMAP T25 v1).
  * GET    ?deviceId=...           → alerts for the device (newest first)
@@ -46,7 +47,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "invalid_device_id" }, { status: 400 });
   }
   const db = openDb(false);
-  if (!db) return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
+  /* DB-less environments degrade to an empty list (see watchlist GET note) */
+  if (!db) {
+    return NextResponse.json({ alerts: [] });
+  }
   try {
     /* symbol/exchange/price live in payload_json (schema v1 keeps alerts
        type-generic); unpack for a friendly client shape */
@@ -95,6 +99,19 @@ export async function POST(request: NextRequest) {
   const db = openDb(true);
   if (!db) return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
   try {
+    /* tier cap (TASK-64): free devices hold at most N active alerts; pro
+       devices (ALLOW_PRO_DEVICES) get the higher limit. */
+    const tier = tierForDevice(deviceId);
+    const row = db
+      .prepare(`SELECT COUNT(*) AS n FROM alerts WHERE device_id = ? AND active = 1`)
+      .get(deviceId) as { n: number };
+    const cap = checkCap(tier, "activeAlertsMax", Number(row.n));
+    if (!cap.ok) {
+      return NextResponse.json(
+        { error: cap.reason, tier: cap.tier, limit: cap.limit, upgrade: "/pricing" },
+        { status: cap.status }
+      );
+    }
     const id = randomUUID();
     const now = Math.floor(Date.now() / 1000);
     const payload = isMembership
@@ -169,6 +186,21 @@ export async function PATCH(request: NextRequest) {
   const db = openDb(true);
   if (!db) return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
   try {
+    /* reactivating counts against the active-alert cap too (TASK-64) */
+    const tier = tierForDevice(deviceId);
+    let cap: ReturnType<typeof checkCap> = { ok: true, tier };
+    if (b.active) {
+      const row = db
+        .prepare(`SELECT COUNT(*) AS n FROM alerts WHERE device_id = ? AND active = 1 AND id != ?`)
+        .get(deviceId, id) as { n: number };
+      cap = checkCap(tier, "activeAlertsMax", Number(row.n));
+    }
+    if (!cap.ok) {
+      return NextResponse.json(
+        { error: cap.reason, tier: cap.tier, limit: cap.limit, upgrade: "/pricing" },
+        { status: cap.status }
+      );
+    }
     const res = db
       .prepare(`UPDATE alerts SET active = ? WHERE id = ? AND device_id = ?`)
       .run(b.active ? 1 : 0, id, deviceId) as unknown as { changes?: number };

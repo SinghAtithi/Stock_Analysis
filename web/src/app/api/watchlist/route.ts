@@ -102,7 +102,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "invalid_device_id" }, { status: 400 });
   }
   const db = openDb(false);
-  if (!db) return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
+  /* DB-less environments (fresh CI checkout, cold deploy) degrade to an empty
+   * watchlist — a read of "no data yet", not an error page (TASK-56 follow-up) */
+  if (!db) {
+    return NextResponse.json({ entries: [], updatedAt: null });
+  }
   try {
     const row = db
       .prepare(`SELECT data_json, updated_at FROM watchlists WHERE id = ? AND scope = 'device'`)
