@@ -589,31 +589,31 @@
         {
           "id": "1",
           "text": "Odometer animates digit rolls on value change (150-200ms ease-out), honors prefers-reduced-motion, sr-only text preserved",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "first visit with no stored theme follows prefers-color-scheme in the pre-paint inline script (toggle remains sticky)",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "OG/Twitter images replaced with PNG/JPG >=1200x630 (X and FB crawlers do not render SVG)",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "verify meta tags via curl of rendered HTML",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "tsc+lint green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787472243516,
-      "updatedAt": 1787479408465,
+      "updatedAt": 1787480172527,
       "blocked": false
     },
     {
@@ -1165,7 +1165,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "vector",
       "labels": [],
       "estimate": 3,
@@ -1173,30 +1173,222 @@
         {
           "id": "1",
           "text": "axe.py/axe_screener/axe_breadth report 0 violations both themes",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "failing tokens re-mapped or darkened with AA contrast check",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "no layout drift",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "e2e 13-check still green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787478913029,
-      "updatedAt": 1787479267635,
+      "updatedAt": 1787480175556,
+      "blocked": false
+    },
+    {
+      "id": "TASK-34",
+      "title": "Walk-forward snapshot backfill: run-signals --as-of so backtests score real historical ranks",
+      "desc": "",
+      "phase": "C",
+      "priority": "P2",
+      "status": "doing",
+      "assignee": "nova",
+      "labels": [
+        "quant",
+        "backtest"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "run-signals accepts --as-of DATE and truncates getCandles window point-in-time (no lookahead)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "--backfill-months N sweeps monthly as_of stamps idempotently (upsert per strategy_id+as_of)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "strategies verified Date.now()-free in compute paths",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "verification backtest over 2018->now shows nonzero investedDays/exposure for S100",
+          "done": false
+        }
+      ],
+      "createdAt": 1787480103243,
+      "updatedAt": 1787480153822,
+      "blocked": false
+    },
+    {
+      "id": "TASK-35",
+      "title": "Deflake v2: node:test intermittently fails (~4 tests) only while other agents run gates concurrently",
+      "desc": "",
+      "phase": "A",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "repro: full suite red once then green x3 during concurrent gate activity",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "identify contended resource (shared db/data/app.db writers vs reader suites, or CPU-timeout-sensitive cases)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "serialize DB-touching suites or give each suite an isolated temp DB copy",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "20 consecutive green runs including during a parallel ship",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "LOG note",
+          "done": false
+        }
+      ],
+      "createdAt": 1787480187749,
+      "updatedAt": 1787480187749,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "8U1W",
+      "taskId": "TASK-35",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787480187749
+    },
+    {
+      "id": "OIK4",
+      "taskId": "TASK-33",
+      "text": "review · gates green tsc=13.4s·lint=23.3s·test=6.7s · e2e✓",
+      "agent": "VECTOR",
+      "at": 1787480175556
+    },
+    {
+      "id": "KPYW",
+      "taskId": "TASK-16",
+      "text": "✓ checked OG/Twitter images replaced with PNG/JPG >=1200x6",
+      "agent": "CIPHER",
+      "at": 1787480172527
+    },
+    {
+      "id": "IWCV",
+      "taskId": "TASK-16",
+      "text": "✓ checked first visit with no stored theme follows prefers",
+      "agent": "CIPHER",
+      "at": 1787480172213
+    },
+    {
+      "id": "TH3K",
+      "taskId": "TASK-16",
+      "text": "✓ checked Odometer animates digit rolls on value change (1",
+      "agent": "CIPHER",
+      "at": 1787480171992
+    },
+    {
+      "id": "QCJG",
+      "taskId": "TASK-16",
+      "text": "✓ checked tsc+lint green",
+      "agent": "CIPHER",
+      "at": 1787480157588
+    },
+    {
+      "id": "YLMU",
+      "taskId": "TASK-16",
+      "text": "✓ checked verify meta tags via curl of rendered HTML",
+      "agent": "CIPHER",
+      "at": 1787480157350
+    },
+    {
+      "id": "TAWG",
+      "taskId": "TASK-16",
+      "text": "✓ checked OG/Twitter images replaced with PNG/JPG >=1200x6",
+      "agent": "CIPHER",
+      "at": 1787480157249
+    },
+    {
+      "id": "084N",
+      "taskId": "TASK-16",
+      "text": "✓ checked first visit with no stored theme follows prefers",
+      "agent": "CIPHER",
+      "at": 1787480157149
+    },
+    {
+      "id": "EPD4",
+      "taskId": "TASK-16",
+      "text": "✓ checked Odometer animates digit rolls on value change (1",
+      "agent": "CIPHER",
+      "at": 1787480156982
+    },
+    {
+      "id": "XIO6",
+      "taskId": "TASK-34",
+      "text": "claimed by NOVA · → doing",
+      "agent": "NOVA",
+      "at": 1787480153822
+    },
+    {
+      "id": "W8KO",
+      "taskId": "TASK-33",
+      "text": "✓ checked e2e 13-check still green",
+      "agent": "RAVAN",
+      "at": 1787480107545
+    },
+    {
+      "id": "8VQ4",
+      "taskId": "TASK-33",
+      "text": "✓ checked no layout drift",
+      "agent": "RAVAN",
+      "at": 1787480107453
+    },
+    {
+      "id": "ZPNN",
+      "taskId": "TASK-33",
+      "text": "✓ checked failing tokens re-mapped or darkened with AA con",
+      "agent": "RAVAN",
+      "at": 1787480107371
+    },
+    {
+      "id": "K2G3",
+      "taskId": "TASK-33",
+      "text": "✓ checked axe.py/axe_screener/axe_breadth report 0 violati",
+      "agent": "RAVAN",
+      "at": 1787480107171
+    },
+    {
+      "id": "6ZFT",
+      "taskId": "TASK-34",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787480103243
+    },
     {
       "id": "Z0O8",
       "taskId": "TASK-32",
@@ -1644,120 +1836,8 @@
       "text": "re-started by RAVEN",
       "agent": "RAVEN",
       "at": 1787477789920
-    },
-    {
-      "id": "K5XK",
-      "taskId": "TASK-11",
-      "text": "claimed by VECTOR · → doing",
-      "agent": "VECTOR",
-      "at": 1787477785254
-    },
-    {
-      "id": "JN48",
-      "taskId": "TASK-11",
-      "text": "claim released by CTO per iteration-53 ultimatum (~20 passes in flight). Partial artifacts live in tree: web/src/components/SiteHeader.tsx, web/src/hooks/, page.tsx mid-edit — next claimant resumes from them, do not restart from scratch",
-      "agent": "AXIOM",
-      "at": 1787477634883
-    },
-    {
-      "id": "00KZ",
-      "taskId": "TASK-17",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787477605886
-    },
-    {
-      "id": "KGPM",
-      "taskId": "TASK-20",
-      "text": "claimed by NOVA · → doing",
-      "agent": "NOVA",
-      "at": 1787477598023
-    },
-    {
-      "id": "782X",
-      "taskId": "TASK-29",
-      "text": "shipped dad58fd → origin/master · [TASK-29] feat(ci): GitHub Actions gate — tsc + eslint + node:test on push/PR, README badge (with CIPHER)",
-      "agent": "NOVA",
-      "at": 1787477568566
-    },
-    {
-      "id": "AHDX",
-      "taskId": "TASK-29",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "NOVA",
-      "at": 1787477500524
-    },
-    {
-      "id": "NE1L",
-      "taskId": "TASK-29",
-      "text": "shipped 38bb97a (local) · [TASK-29] ci: GitHub Actions gate — tsc + eslint + node:test on push/PR, node 24 cached install, 5min budget; README badge",
-      "agent": "CIPHER",
-      "at": 1787477484035
-    },
-    {
-      "id": "E2IC",
-      "taskId": "TASK-29",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "CIPHER",
-      "at": 1787477445897
-    },
-    {
-      "id": "WFK8",
-      "taskId": "TASK-29",
-      "text": "✓ checked ADR-0001 GH-Actions-first precedent reused",
-      "agent": "NOVA",
-      "at": 1787477406704
-    },
-    {
-      "id": "XYZC",
-      "taskId": "TASK-29",
-      "text": "✓ checked runtime under 5min",
-      "agent": "NOVA",
-      "at": 1787477406546
-    },
-    {
-      "id": "EYGL",
-      "taskId": "TASK-29",
-      "text": "✓ checked badge in README",
-      "agent": "NOVA",
-      "at": 1787477406300
-    },
-    {
-      "id": "GXE3",
-      "taskId": "TASK-29",
-      "text": "✓ checked red build blocks merge by convention",
-      "agent": "NOVA",
-      "at": 1787477406015
-    },
-    {
-      "id": "Y2IQ",
-      "taskId": "TASK-29",
-      "text": "✓ checked workflow runs web gates (tsc --noEmit, eslint, n",
-      "agent": "NOVA",
-      "at": 1787477405822
-    },
-    {
-      "id": "FDT6",
-      "taskId": "TASK-10",
-      "text": "claimed by SABLE · → doing",
-      "agent": "SABLE",
-      "at": 1787477369881
-    },
-    {
-      "id": "4DKM",
-      "taskId": "TASK-29",
-      "text": "✓ checked ADR-0001 GH-Actions-first precedent reused",
-      "agent": "CIPHER",
-      "at": 1787477361641
-    },
-    {
-      "id": "BS26",
-      "taskId": "TASK-29",
-      "text": "✓ checked runtime under 5min",
-      "agent": "CIPHER",
-      "at": 1787477361561
     }
   ],
   "deletions": [],
-  "updatedAt": 1787479668297
+  "updatedAt": 1787480187751
 }

@@ -4,6 +4,25 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (14) — CIPHER: TASK-16 — odometer roll, OS-default theme, raster OG
+
+### Summary
+- `Odometer.tsx`: per-character keying — a changed digit remounts its span and replays the new
+  `odo-roll` animation (175ms, cubic-bezier(0.22,1,0.36,1)); unchanged digits stay still;
+  sr-only copy static; reduced-motion honoured by scoped media query + the global kill-switch.
+- `layout.tsx` pre-paint script: first visit with no stored theme now follows
+  `prefers-color-scheme`; toggled choices remain sticky in localStorage.
+- OG/Twitter: `/og.svg` retired; new `app/opengraph-image.tsx` (next/og) renders a branded
+  1200×630 PNG at the file-convention route; Next injects og:image + twitter:image
+  (`image/png`, verified via curl: PNG magic bytes, 1200x630).
+
+### Verification
+tsc clean · lint 0 errors · npm test 192/192 · **13-check Playwright e2e ALL PASS** against
+rebuilt :3000 (incl. "reduced motion kills animations" and zero console errors) — honest --e2e
+attestation for the first outing of the TASK-17 gate.
+
+---
+
 ## 2026-08-23 (16) — NOVA: CI stabilized — next typegen step + real-data skip guards; first green run
 
 ### Summary
@@ -23,6 +42,29 @@ eod_candles" AND manufactured a phantom `app.db` that defeated `s172-s174`'s `ex
 guard in the same run. Fix: both suites adopt the eod-cliff-sweep contract — skip when the DB is
 absent **or** < 64KB (thin fixture). Verified by hiding the real DB (all WAL files) and running
 the full suite: 191 pass / 0 fail / 1 skip; gates green with real data restored (136,808 rows).
+
+---
+
+## 2026-08-23 (26) — AXIOM: CTO iteration 77 — flake pattern confirmed under concurrent load; TASK-35 filed
+
+### Summary
+Seventy-seventh pass. Gates run this pass: tsc GREEN, but node:test showed **intermittent fail-4 → then 203/203 clean twice** — same signature as the iteration-50-era transient, now correlated with concurrent gate runs (multiple agents + cipher actively editing ingest). Filed **TASK-35**: identify the contended resource (shared app.db readers vs writers, or timing-sensitive cases), serialize DB suites or isolate per-suite temp DBs, prove 20 consecutive greens including during a parallel ship.
+
+Board unchanged otherwise: 28/30 in flight.
+
+---
+
+## 2026-08-23 (25) — AXIOM: CTO iteration 76 — steady
+
+### Summary
+Seventy-sixth pass. No ships; 28/30 unchanged. Holding cadence.
+
+---
+
+## 2026-08-23 (24) — AXIOM: CTO iteration 75 — steady; CI first green run logged
+
+### Summary
+Seventy-fifth pass. No ships on 28/30 (files last touched 15:34/15:39 — active). CI milestone logged by another agent: typegen + real-data skips landed, **first fully green run**. Holding cadence.
 
 ---
 
@@ -119,6 +161,20 @@ Sable fixed the backtest route type error (tsc clean) → executed ops rule: `ne
 - Vendoring axe-core was required because the new CSP (TASK-14) blocks CDN script injection — cross-task interaction handled correctly.
 - Pre-existing color-contrast debt (~40 nodes/page, `text-faint` on light surfaces) surfaced once axe actually runs — follow-up card filed by vector; this predates TASK-11 (identical markup).
 - Ops hazard confirmed: concurrent `next dev` on another port clobbers the shared `.next` — rebuild prod after any dev run.
+
+---
+
+## 2026-08-23 (15) — VECTOR: TASK-33 shipped — axe color-contrast debt cleared: light faint/muted re-tokened to WCAG AA
+
+### Summary
+Follow-up from iteration 14's finding. `--color-faint` (#9aa0a8) rendered at 2.35–2.64:1 on light surfaces and `--color-muted` (#6b7280) dipped to 4.32:1 on panel-2 — both below the 4.5:1 required at the 10–12px sizes they're used at. Dark theme already passed everywhere and is untouched.
+
+### Changes
+- Light tokens only: `--color-faint` → `#696f77` (4.50 worst-case on panel-2, 5.07 on white), `--color-muted` → `#626870` (5.02 worst-case). Hierarchy preserved (paper < muted < faint); note for design review: the muted↔faint gap narrows by necessity — 10–12px AA text cannot stay much lighter than this.
+- Repaired cipher's mid-flight `--url` refactor of axe scripts (`BASE` referenced before assignment crashed all three).
+
+### Verification
+axe.py / axe_screener / axe_breadth all **0 violations** against rebuilt :3000 · e2e.py 13/13 PASS · served CSS confirmed carrying new tokens.
 
 ---
 

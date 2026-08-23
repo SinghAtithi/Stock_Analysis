@@ -9,8 +9,8 @@
   --color-surface: #ffffff;
   --color-line: #ece9e3;
   --color-line-strong: #ddd9d1;
-  --color-muted: #6b7280;
-  --color-faint: #9aa0a8;
+  --color-muted: #626870;
+  --color-faint: #696f77;
   --color-hairline: rgb(17 18 20 / 0.08);
   --color-hairline-strong: rgb(17 18 20 / 0.14);
   --color-up: #0e7a3a;
@@ -128,6 +128,22 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 
 .price-tick {
   transition: color 0.2s ease;
+}
+
+/* TASK-16: odometer digit roll — plays on remount when a digit changes.
+   175ms ease-out per spec; the global prefers-reduced-motion kill-switch
+   below neutralises it for motion-sensitive users. */
+@media (prefers-reduced-motion: no-preference) {
+  .odo-char {
+    display: inline-block;
+    animation: odo-roll 175ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes odo-roll {
+    from {
+      transform: translateY(0.55em);
+      opacity: 0;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
