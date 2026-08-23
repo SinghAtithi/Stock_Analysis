@@ -11,6 +11,8 @@ import {
   NSE_FLOOR,
   fmtDmy,
   nseTradeUrl,
+  nseYearsUrl,
+  parseNseFirstYear,
   parseNseTradeRows,
   nseWindows,
   fetchNseHistory,
@@ -173,4 +175,24 @@ test("resolveSymbolItem prefers NSE, strips suffixes, tolerates unknowns", () =>
     { symbol: "RELIANCE", exchange: "BSE", name: "Reliance Industries Ltd" });
   assert.deepEqual(resolveSymbolItem([], "NOVA.EQ"),
     { symbol: "NOVA", exchange: "NSE", name: "NOVA" });
+});
+
+test("nseYearsUrl encodes the year-index request", () => {
+  const url = nseYearsUrl("M&M");
+  assert.ok(url.includes("functionName=getHistoricalPeriodicDataYears"));
+  assert.ok(url.includes("symbol=M%26M"));
+});
+
+test("parseNseFirstYear returns the earliest valid year", () => {
+  assert.equal(parseNseFirstYear(["2026", "2025", "2024", "2023"]), 2023);
+  assert.equal(parseNseFirstYear(["1996"]), 1996);
+});
+
+test("parseNseFirstYear filters junk and clamps to the archive floor", () => {
+  /* a stray pre-floor year must not drag discovery below 1996 */
+  assert.equal(parseNseFirstYear(["2019", "1980"]), 2019);
+  assert.equal(parseNseFirstYear(["19xx", null, {}]), null);
+  assert.equal(parseNseFirstYear([]), null);
+  assert.equal(parseNseFirstYear(null), null);
+  assert.equal(parseNseFirstYear({ error: "boom" }), null);
 });

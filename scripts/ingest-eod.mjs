@@ -192,6 +192,7 @@ export function parseGrowwChart(data, symbol) {
  * Caps: 70 rows/request walking back from toDate; oversized ranges error. */
 
 export const NSE_FLOOR = "1996-01-01";
+const NSE_FLOOR_YEAR = 1996;
 
 const NSE_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -216,6 +217,31 @@ export function nseTradeUrl(symbol, fromDate, toDate) {
   return "https://www.nseindia.com/api/NextApi/apiClient/GetQuoteApi" +
     `?functionName=getHistoricalTradeData&symbol=${encodeURIComponent(symbol)}` +
     `&series=EQ&fromDate=${fromDate}&toDate=${toDate}`;
+}
+
+export function nseYearsUrl(symbol) {
+  return "https://www.nseindia.com/api/NextApi/apiClient/GetQuoteApi" +
+    `?functionName=getHistoricalPeriodicDataYears&symbol=${encodeURIComponent(symbol)}`;
+}
+
+/* Earliest year the exchange holds data for ("2026",…,"1996"] → 1996), or
+ * null when the payload is unusable. Lets the sweeper skip pre-listing years. */
+export function parseNseFirstYear(data) {
+  if (!Array.isArray(data) || !data.length) return null;
+  const years = data
+    .map((y) => Number(y))
+    .filter((y) => Number.isInteger(y) && y >= NSE_FLOOR_YEAR && y <= 2100);
+  return years.length ? Math.min(...years) : null;
+}
+
+async function nseFirstYear(symbol, backoff, log, jar, getJson) {
+  try {
+    const fetcher = getJson ?? ((url) => backoff.getJson(url, jar ? { cookieJar: jar } : {}));
+    return parseNseFirstYear(await fetcher(nseYearsUrl(symbol)));
+  } catch (e) {
+    log(`[nse] ${symbol} year-discovery failed, using archive floor: ${String(e?.message ?? e).slice(0, 80)}`);
+    return null;
+  }
 }
 
 export function parseNseTradeRows(data, symbol) {
@@ -593,13 +619,21 @@ export async function ingest({ universe = "nifty500", years = 10, dbPath = DEFAU
          * always re-sweeps so raw overwrites whatever sits below the seam. */
         if (!haveFrom || haveFrom > floorTs + 86_400 || force) {
           const jar = await ensureNseSession(backoff, log);
+          /* Skip pre-listing years: the exchange's own year index says where
+           * data begins, so young listings don't burn ~65 empty windows.
+           * Falls back to the archive floor when discovery fails. */
+          const firstYear = await nseFirstYear(item.symbol, backoff, log, jar,
+            (url) => backoff.getJson(url, { cookieJar: jar }));
+          const sweepFromMs = firstYear
+            ? Math.max(floorTs, epochSecForDate(`${firstYear}-01-01`)) * 1000
+            : floorTs * 1000;
           /* force = rebuild the whole pre-today range raw, whatever MIN(ts)
            * claims; otherwise stop just below the oldest covered session. */
           const tailToMs = force
             ? nowMs
-            : Math.max(floorTs * 1000, Math.min((haveFrom - 86_400) * 1000 || nowMs, nowMs));
+            : Math.max(sweepFromMs, Math.min((haveFrom - 86_400) * 1000 || nowMs, nowMs));
           const nseCandles = await fetchNseHistory(item.symbol, {
-            fromMs: floorTs * 1000, toMs: tailToMs, backoff, log,
+            fromMs: sweepFromMs, toMs: tailToMs, backoff, log,
             getJson: (url) => backoff.getJson(url, { cookieJar: jar }),
           });
           if (nseCandles.length) {
