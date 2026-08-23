@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-08-21T08:59:31.433829+00:00",
+  "symbol": "KALYANKJIL",
+  "exchange": "NSE",
+  "dataPoints": 261,
+  "lastPrice": 602.6,
+  "previousClose": 596.0,
+  "dayChange": 6.600000000000023,
+  "dayChangePct": 1.1073825503355743,
+  "fiftyTwoWeekHigh": 648.95,
+  "fiftyTwoWeekLow": 327.05,
+  "sources": {
+    "primary": "moneycontrol",
+    "kalyan": "moneycontrol",
+    "titan": "moneycontrol",
+    "nifty": "moneycontrol_index",
+    "yahooAttempted": true,
+    "moneycontrolUrl": "https://priceapi.moneycontrol.com/techCharts/indianMarket/stock/history?symbol=KALYANKJIL&resolution=1D&from=1754470765&to=1787302765&countback=260&currencyCode=INR"
+  },
+  "dateRange": {
+    "from": "01 Aug 2025",
+    "to": "21 Aug 2026",
+    "fromTs": 1754006400,
+    "toTs": 1787290200
+  },
+  "indicators": {
+    "sma20": 602.4075,
+    "sma50": 507.37899999999996,
+    "sma200": 447.59774999999996,
+    "rsi14": 60.12141602156526,
+    "macd": 23.014387628263762,
+    "signal": 30.61076004937027,
+    "vol20": 42.581719333371026,
+    "atr14": 21.799999999999986,
+    "drawdown": -5.042546485975417,
+    "maxDrawdown": -44.86666666666667
+  },
+  "forecast": {
+    "slope": 0.36945152628167643,
+    "resid_std": 77.80149308779829,
+    "base_target": 635.8506373653508,
+    "bull_target": 810.8389950423032,
+    "bear_target": 459.19974782013105,
+    "last_price": 602.6
+  },
+  "chartPaths": [
+    "analysis/kalyan/01_price_history_1y.png",
+    "analysis/kalyan/02_moving_averages.png",
+    "analysis/kalyan/03_momentum_oscillators.png",
+    "analysis/kalyan/04_peer_comparison.png",
+    "analysis/kalyan/05_volatility_drawdown.png",
+    "analysis/kalyan/06_forecast_fan.png"
+  ],
+  "extendedCharts": [
+    "analysis/kalyan/07_trend_strength.png",
+    "analysis/kalyan/08_volatility_ext.png",
+    "analysis/kalyan/09_volume_flow.png",
+    "analysis/kalyan/10_support_fib.png",
+    "analysis/kalyan/11_risk_stats.png",
+    "analysis/kalyan/12_composite_radar.png",
+    "analysis/kalyan/13_price_structure.png"
+  ],
+  "technical100": {
+    "count": 100,
+    "regime": "NEUTRAL",
+    "trendScore": 12
+  }
+}

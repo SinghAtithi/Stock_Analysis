@@ -1,0 +1,101 @@
+id,category,name,value,unit,signal,desc
+1,PRICE STRUCTURE,HL2 — (High+Low)/2,599.7,INR,neutral,"Midpoint of day's range, smoother than close"
+2,PRICE STRUCTURE,HLC3 — (H+L+C)/3,600.5500000000001,INR,neutral,"Typical price, triple average"
+3,PRICE STRUCTURE,OHLC4 — (O+H+L+C)/4,599.4125,INR,neutral,"Four-price average, pivot basis"
+4,PRICE STRUCTURE,Price vs Typical,0.28307384897176446,%,bull,Distance from typical price
+5,PRICE STRUCTURE,Daily Return,1.0486577181208157,%,up,Close-to-close return
+6,PRICE STRUCTURE,Log Return,0.010431974429631088,,up,ln(C/Cprev) for vol math
+7,PRICE STRUCTURE,Gap %,0.0,%,down,Open gap vs prior close
+8,PRICE STRUCTURE,Intraday Range %,2.7726120033812305,%,low,High-Low range as % of low
+9,PRICE STRUCTURE,Body %,1.0486577181208054,%,bull,Candle body vs open
+10,PRICE STRUCTURE,Close Position %,65.54878048780498,%,mid,Where close sits in day's range
+11,TREND — MOVING AVERAGES,SMA 20,602.3900000000001,INR,below,"Short trend, mean of 20 closes"
+12,TREND — MOVING AVERAGES,SMA 50,507.3720000000001,INR,above,"Mid trend, regime filter"
+13,TREND — MOVING AVERAGES,SMA 100,447.70299999999975,INR,above,Intermediate trend
+14,TREND — MOVING AVERAGES,SMA 200,447.5960000000003,INR,above,"Long trend, bull/bear line"
+15,TREND — MOVING AVERAGES,EMA 12,599.3852172184316,INR,above,"Fast EMA, MACD fast"
+16,TREND — MOVING AVERAGES,EMA 26,576.3987497745676,INR,above,"Slow EMA, MACD slow"
+17,TREND — MOVING AVERAGES,EMA 50,530.6919623528803,INR,above,Mid EMA
+18,TREND — MOVING AVERAGES,WMA 20,602.0223809523809,INR,above,"Weighted MA, recent heavier"
+19,TREND — MOVING AVERAGES,HMA 20,602.9775281385281,INR,below,"Hull MA, reduced lag"
+20,TREND — MOVING AVERAGES,DEMA 20,nan,INR,—,"Double EMA, faster"
+21,MOMENTUM,RSI 14,60.02844245585291,,neutral,"Wilder 14, 70/30"
+22,MOMENTUM,RSI 9,55.97866694952468,,neutral,Faster RSI
+23,MOMENTUM,RSI 2,71.04040002071764,,neutral,Mean-reversion trigger
+24,MOMENTUM,Stochastic %K 14,59.63636363636363,,neutral,Close vs 14d range
+25,MOMENTUM,Stochastic %D 3,51.39566762897939,,neutral,Signal of %K
+26,MOMENTUM,Williams %R 14,-40.36363636363637,,neutral,Inverse stochastic
+27,MOMENTUM,CCI 20,-15.172147375536596,,neutral,Commodity Channel Index
+28,MOMENTUM,MFI 14,50.51567168069683,,neutral,Volume-weighted RSI
+29,MOMENTUM,ROC 12,5.750658472344162,%,bull,Rate of Change 12d
+30,MOMENTUM,MOM 10,-4.0499999999999545,INR,bear,Momentum 10d absolute
+31,TREND STRENGTH,MACD Line (12-26),22.986467443864058,,bull,EMA12-EMA26
+32,TREND STRENGTH,MACD Signal 9,30.60517606778687,,bear,Signal of MACD
+33,TREND STRENGTH,MACD Histogram,-7.618708623922814,,bear,Line - Signal
+34,TREND STRENGTH,ADX 14,28.318313186233272,,strong,"Trend strength, >25 trending"
+35,TREND STRENGTH,+DI 14,25.69965082247318,,bull,Positive directional
+36,TREND STRENGTH,-DI 14,19.06290332750836,,bull,Negative directional
+37,TREND STRENGTH,Aroon Up 25,36.0,,weak,Days since high
+38,TREND STRENGTH,Aroon Down 25,8.0,,weak,Days since low
+39,TREND STRENGTH,Vortex VI+ 14,0.9534731323722151,,bear,Positive vortex
+40,TREND STRENGTH,Vortex VI- 14,1.0480013106159896,,bear,Negative vortex
+41,VOLATILITY,Bollinger Middle 20,602.3900000000001,INR,mid,SMA20
+42,VOLATILITY,Bollinger Upper 20,633.7093167230705,INR,resistance,Middle +2σ
+43,VOLATILITY,Bollinger Lower 20,571.0706832769297,INR,support,Middle -2σ
+44,VOLATILITY,Bandwidth 20,0.10398352138339086,,squeeze,(Up-Low)/Middle
+45,VOLATILITY,%B,0.4977649576260236,,mid,(C-Low)/(Up-Low)
+46,VOLATILITY,ATR 14,21.799999999999986,INR,high,Average True Range
+47,VOLATILITY,True Range (today),16.399999999999977,INR,—,"max(H-L, |H-Cprev|)"
+48,VOLATILITY,StdDev 20,15.659658361535223,INR,high,Rolling σ
+49,VOLATILITY,Hist Vol 20 ann.,42.5675055380221,%,low,σ(logRet)*√252
+50,VOLATILITY,Keltner Upper,621.5015764601518,INR,resistance,EMA20 +1.5 ATR
+51,VOLUME,OBV,1220266701.0,,bull,On-Balance Volume
+52,VOLUME,VWAP 20,605.3133571533434,INR,below,Volume-weighted price
+53,VOLUME,CMF 20,-0.10839051717517235,,bear,Chaikin Money Flow
+54,VOLUME,ADL,422597193.84480673,,bull,Accum/Dist line
+55,VOLUME,Volume SMA 20,18605211.9,,—,20d avg volume
+56,VOLUME,Relative Volume,0.28662022387393504,x,low,Vol / 20d avg
+57,VOLUME,Volume Trend %,-17.60106084336798,%,falling,20d avg vs 5d ago
+58,VOLUME,Ease of Movement 14,-258.27258525077144,,bear,Dm / (Vol/Range)
+59,VOLUME,Volume Oscillator,-64.31058546557054,%,bear,SMA5 vs SMA20 of vol
+60,VOLUME,Force Index 13,62759725.34247825,,bull,(C-Cprev)*Vol EMA13
+61,SUPPORT / RESISTANCE,Support 20d,561.25,INR,support,min(Lows 20)
+62,SUPPORT / RESISTANCE,Resistance 20d,648.95,INR,resistance,max(Highs 20)
+63,SUPPORT / RESISTANCE,52W High,648.95,INR,resistance,252d high
+64,SUPPORT / RESISTANCE,52W Low,327.05,INR,support,252d low
+65,SUPPORT / RESISTANCE,Dist from 52W High,-7.196240080129446,%,discount,(C-52H)/52H
+66,SUPPORT / RESISTANCE,Dist from 52W Low,84.14615502216786,%,high,(C-52L)/52L
+67,SUPPORT / RESISTANCE,Recent Swing Support,588.0,INR,support,Last pivot low
+68,SUPPORT / RESISTANCE,Recent Swing Resistance,621.8,INR,resistance,Last pivot high
+69,SUPPORT / RESISTANCE,Fib 0.382,525.9842,INR,level,H -0.382*range
+70,SUPPORT / RESISTANCE,Fib 0.618,450.0158,INR,level,H -0.618*range
+71,PATTERN,Doji Count 20d,3,,high,Body/range<0.1
+72,PATTERN,Hammer Today,0,,no,Long lower wick
+73,PATTERN,Engulfing Today,1,,yes,Body engulfs prior
+74,PATTERN,Inside Bar Today,0,,no,H<Lprev and L>Hprev
+75,PATTERN,20d High Breakout,0,,no,Close > prior 20d high
+76,PATTERN,20d Low Breakdown,0,,no,Close < prior 20d low
+77,PATTERN,Donchian Upper 20,648.95,INR,—,20d max high
+78,PATTERN,Donchian Lower 20,561.25,INR,—,20d min low
+79,PATTERN,Ichimoku Tenkan 9,603.425,INR,bear,(9h+9l)/2
+80,PATTERN,Ichimoku Kijun 26,595.1,INR,bull,(26h+26l)/2
+81,RISK & STATISTICS,Ann. Volatility 60d,42.5675055380221,%,low,σ(logRet60)*√252
+82,RISK & STATISTICS,Sharpe 60d (rf 6.5%),3.5802504407064855,,high,(AnnRet - rf)/Vol
+83,RISK & STATISTICS,Max Drawdown,-58.01497651986293,%,severe,Peak to trough
+84,RISK & STATISTICS,Current Drawdown,-23.562634852138597,%,deep,From peak
+85,RISK & STATISTICS,VaR 95% 1-day,-37.650050849739166,INR,risk,-1.645*σ*C
+86,RISK & STATISTICS,Skew 60d (logRet),1.4277978066525772,,pos,Asymmetry
+87,RISK & STATISTICS,Kurtosis 60d,4.08161081932543,,fat,Tails vs normal
+88,RISK & STATISTICS,Beta vs NIFTY 60d,1.05,,low,β proxy
+89,RISK & STATISTICS,Correlation vs NIFTY,0.62,,high,ρ 60d
+90,RISK & STATISTICS,Calmar Ratio,3.831578154908358,,high,AnnRet / |MaxDD|
+91,COMPOSITE,Trend Score,12,/100,hold,SMA+RSI+MACD composite
+92,COMPOSITE,SMA Alignment Count,4,/5,bull,How many SMA conditions true
+93,COMPOSITE,RSI Signal,60.02844245585291,,neutral,RSI 14 regime
+94,COMPOSITE,MACD Signal,-7.618708623922814,,bear,Hist sign
+95,COMPOSITE,Bollinger Signal,0.4977649576260236,,mid,%B regime
+96,COMPOSITE,Volume Signal,0.28662022387393504,x,thin,Vol participation
+97,COMPOSITE,Support/Resistance Signal,46.75028506271377,%,mid,Position in 20d range
+98,COMPOSITE,ADX Signal,28.318313186233272,,trending,Trend strength + direction
+99,COMPOSITE,Golden Cross,1,,yes,SMA50 > SMA200
+100,COMPOSITE,Trend Regime,0,neutral,NEUTRAL,Overall regime from score

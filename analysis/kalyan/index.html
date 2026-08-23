@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KALYANKJIL — Kalyan Jewellers India Ltd · NIFTY</title>
+<meta name="description" content="Kalyan Jewellers India Ltd (KALYANKJIL) dossier — clean light dossier with dark mode">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#fcfcf9; --panel:#ffffff; --panel2:#f3f2ef; --paper:#111214; --muted:#6b7280; --faint:#9aa0a8;
+  --line:#ece9e3; --line-strong:#ddd9d1;
+  --up:#0e7a3a; --up-soft:#e6f4ea; --down:#c4362b; --down-soft:#fdecea;
+  --radius:16px; --shadow:0 1px 2px rgb(17 18 20 / 0.06), 0 4px 12px rgb(17 18 20 / 0.04);
+}
+html.dark{ --canvas:#0f1012; --panel:#1c1e21; --panel2:#23252a; --paper:#e8e8e6; --muted:#9aa0a6; --faint:#6e7378; --line:#2a2d32; --line-strong:#383c44; --up:#6ee7b7; --up-soft:#0f2a1f; --down:#fca5a5; --down-soft:#2b1515; }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--canvas);color:var(--paper);font-family:Inter, system-ui, -apple-system, sans-serif; -webkit-font-smoothing:antialiased; line-height:1.5}
+a{color:inherit;text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:3px}
+a:hover{color:var(--paper);text-decoration-color:var(--paper)}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+@media(min-width:640px){.wrap{padding:0 24px}}
+.header{position:sticky;top:0;z-index:10;background:color-mix(in srgb, var(--panel) 80%, transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 0}
+.header-inner{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-weight:600;font-size:14px;letter-spacing:-0.02em}
+.brand small{font-weight:400;color:var(--muted)}
+.pill{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+.hero{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-top:20px}
+@media(min-width:640px){.hero{padding:24px}}
+.hero h1{margin:8px 0 0;font-size:28px;font-weight:600;letter-spacing:-0.03em;line-height:1}
+@media(min-width:640px){.hero h1{font-size:34px}}
+.hero p{margin:8px 0 0;font-size:14px;color:var(--muted);line-height:1.6}
+.kicker{display:inline-flex;font-size:12px;font-weight:500;padding:4px 10px;border-radius:999px;background:var(--paper);color:#fff}
+.dark .kicker{background:#fff;color:var(--paper)}
+.section{margin-top:28px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.section-head h2{margin:0;font-size:14px;font-weight:600;letter-spacing:-0.01em}
+.section-head span{font-size:12px;color:var(--faint);border:1px solid var(--line);background:var(--panel);padding:4px 10px;border-radius:999px}
+.card{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-size:12px;font-weight:500;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--panel2);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+.num{font-family:"JetBrains Mono", ui-monospace, monospace;font-variant-numeric:tabular-nums;text-align:right}
+.badge{font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;display:inline-flex;align-items:center}
+.badge-up{background:var(--up-soft);color:var(--up)}
+.badge-down{background:var(--down-soft);color:var(--down)}
+.badge-hold{background:var(--panel2);color:var(--muted);border:1px solid var(--line)}
+.grid2{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+.img-card{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.img-card img{display:block;width:100%;height:auto}
+.img-caption{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;font-size:11px;color:var(--faint);background:var(--panel2);border-top:1px solid var(--line)}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.kv{grid-template-columns:1fr}}
+.kv div{border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:12px}
+.kv label{display:block;font-size:11px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+.kv strong{font-size:13px;font-weight:600}
+.note{font-size:12px;line-height:1.7;color:var(--muted);border-left:2px solid var(--line-strong);padding-left:12px;margin-top:12px}
+.hr{height:1px;background:var(--line);margin:12px 0}
+.footer{margin-top:32px;border-top:1px solid var(--line);padding:16px 0 28px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.toggle{width:32px;height:32px;border-radius:999px;border:1px solid var(--line);background:var(--panel);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted)}
+.toggle:hover{color:var(--paper)}
+/* library */
+.lib-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
+.lib-filter{font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer}
+.lib-filter.active{background:var(--paper);color:#fff;border-color:var(--paper)} html.dark .lib-filter.active{background:#fff;color:var(--paper)}
+.lib-search{flex:1;min-width:180px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--paper);font-size:13px}
+.lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+@media(max-width:640px){.lib-grid{grid-template-columns:1fr}}
+.lib-card{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:12px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px}
+.lib-card-head{display:flex;justify-content:space-between;align-items:start;gap:8px}
+.lib-id{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;color:var(--faint);border:1px solid var(--line);padding:2px 6px;border-radius:6px;background:var(--panel2)}
+.lib-cat{font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted)}
+.lib-name{font-size:13px;font-weight:600;letter-spacing:-0.01em;line-height:1.2}
+.lib-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.lib-value{font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:700;letter-spacing:-0.02em}
+.lib-foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:8px;border-top:1px solid var(--line)}
+.lib-badges{display:flex;gap:6px;flex-wrap:wrap}
+.count-pill{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);color:var(--muted)}
+.gallery-grid{display:grid;grid-template-columns:1fr;gap:16px} @media(min-width:900px){.gallery-grid{grid-template-columns:1fr 1fr}}
+</style>
+<script>try{if(localStorage.getItem('nifty-theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}</script>
+</head>
+<body>
+<header class="header">
+  <div class="wrap header-inner">
+    <div class="brand">NIFTY <small>· Kalyan dossier</small></div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span class="pill">KALYANKJIL · NSE · 21 Aug 2026</span>
+      <button class="toggle" id="themeBtn" aria-label="Toggle dark mode" title="Toggle theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="kicker">Dossier · KALYANKJIL</div>
+    <h1>Kalyan Jewellers India Ltd <span style="font-size:13px;font-weight:500;color:var(--muted)">NSE: KALYANKJIL</span></h1>
+    <p><b style="color:var(--paper)">Kalyan Jewellers India Ltd</b> · Retail Trade / Specialty Stores · NIFTY MIDCAP 150 · NIFTY 500 · Data: Moneycontrol primary · Yahoo (curl) fallback · 831 candles</p>
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+      <a href="#library" style="font-size:12px;font-weight:600;padding:8px 14px;border-radius:999px;background:var(--paper);color:#fff;text-decoration:none">Explore 100 Studies ↓</a>
+      <a href="./technical_100.json" target="_blank" style="font-size:12px;font-weight:500;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel);text-decoration:none">JSON ↗</a>
+      <a href="./technical_100.csv" target="_blank" style="font-size:12px;font-weight:500;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel);text-decoration:none">CSV ↗</a>
+      <span class="pill" id="libCountPill">100 studies · 10 categories</span>
+    </div>
+  </div>
+
+  <section class="section" id="library">
+    <div class="section-head"><h2>00 — Library of 100 — Technical Studies</h2><span id="libStats">Live · 831 bars · 21 Aug 2026</span></div>
+    <div class="card">
+      <div class="lib-bar">
+        <input class="lib-search" id="libSearch" placeholder="Search 100 studies…  try  RSI  ADX  VWAP  Fib" />
+        <button class="lib-filter active" data-cat="ALL">All 100</button>
+        <button class="lib-filter" data-cat="PRICE STRUCTURE">Price</button>
+        <button class="lib-filter" data-cat="TREND — MOVING AVERAGES">Trend MA</button>
+        <button class="lib-filter" data-cat="MOMENTUM">Momentum</button>
+        <button class="lib-filter" data-cat="TREND STRENGTH">Strength</button>
+        <button class="lib-filter" data-cat="VOLATILITY">Vol</button>
+        <button class="lib-filter" data-cat="VOLUME">Volume</button>
+        <button class="lib-filter" data-cat="SUPPORT / RESISTANCE">S/R</button>
+        <button class="lib-filter" data-cat="PATTERN">Pattern</button>
+        <button class="lib-filter" data-cat="RISK & STATISTICS">Risk</button>
+        <button class="lib-filter" data-cat="COMPOSITE">Composite</button>
+      </div>
+      <div id="libGrid" class="lib-grid"></div>
+      <p class="note">Values at close 21 Aug 2026 · <b style="color:var(--paper)">Cool tip:</b> click a card to highlight · <span style="font-family:'JetBrains Mono',monospace">₹602.25 · SMA20 602.39 · RSI 60.0 · ADX 18 · VOL60 60.3%</span></p>
+    </div>
+  </section>
+
+  <section class="section" id="extended">
+    <div class="section-head"><h2>02b — Extended Chart Suite (07–13)</h2><span>7 new terminal charts · ink·paper·lime</span></div>
+    <div class="gallery-grid">
+      <div class="img-card"><img src="./07_trend_strength.png" alt="Trend strength" loading="lazy"><div class="img-caption"><span>07 — Trend Strength · ADX / DI + Aroon + Vortex</span><span>ADX 18</span></div></div>
+      <div class="img-card"><img src="./08_volatility_ext.png" alt="Volatility ext" loading="lazy"><div class="img-caption"><span>08 — Volatility Ext · Keltner / Donchian / Bandwidth</span><span>BW 10.4%</span></div></div>
+      <div class="img-card"><img src="./09_volume_flow.png" alt="Volume flow" loading="lazy"><div class="img-caption"><span>09 — Volume & Flow · OBV / CMF / Volume</span><span>RelVol 0.29</span></div></div>
+      <div class="img-card"><img src="./10_support_fib.png" alt="Support Fib" loading="lazy"><div class="img-caption"><span>10 — Support / Fibonacci · Levels & Pivots</span><span>Fib 60D</span></div></div>
+      <div class="img-card"><img src="./11_risk_stats.png" alt="Risk stats" loading="lazy"><div class="img-caption"><span>11 — Risk & Stats · Vol + Drawdown</span><span>Max -58%</span></div></div>
+      <div class="img-card"><img src="./12_composite_radar.png" alt="Composite radar" loading="lazy"><div class="img-caption"><span>12 — Composite Radar · 10 Signals</span><span>BULL</span></div></div>
+    </div>
+    <div class="img-card" style="margin-top:16px"><img src="./13_price_structure.png" alt="Price structure" loading="lazy"><div class="img-caption"><span>13 — Price Structure · HL2 / TEMA + Intraday Character</span><span>Range 2.7%</span></div></div>
+  </section>
+
+  <section class="section" id="snapshot">
+    <div class="section-head"><h2>01 — Snapshot</h2><span>As of 21 Aug 2026 · Close</span></div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Field</th><th>Value</th><th>Context</th></tr></thead>
+          <tbody>
+            <tr><td>Last price</td><td class="num"><b>₹602.25</b></td><td><span class="badge badge-up">+₹6.60 · +1.11%</span> vs prev 596.00 · H 607.9 L 591.5</td></tr>
+            <tr><td>Day change</td><td class="num" style="color:var(--up)">+1.05%</td><td>Volume 5.33M · Avg20 18.6M · <span class="badge badge-down">RelVol 0.29 thin</span></td></tr>
+            <tr><td>52-week range</td><td class="num">₹327.05 — ₹648.95</td><td><span style="color:var(--down)">-7.2% off high</span> · +84% off low · Support 561 · Resistance 648</td></tr>
+            <tr><td>RSI (14)</td><td class="num">60.03 <span class="badge badge-hold">Neutral</span></td><td>Repaired from 330.8 trough — not overbought</td></tr>
+            <tr><td>Trend signal</td><td class="num"><span class="badge badge-hold">Hold · 12 /100</span></td><td>SMA +20, RSI +6, MACD -13.9 — histogram dragging</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="kv" style="margin-top:12px">
+        <div><label>Structure</label><strong>Price > SMA50, SMA200 · <span style="color:var(--up)">Golden cross</span></strong><br><span style="color:var(--muted);font-size:12px">SMA20 602.39 · SMA50 507.37 · SMA200 447.60</span></div>
+        <div><label>Staleness</label><strong>0 days · <span style="color:var(--up)">Fresh</span></strong><br><span style="color:var(--muted);font-size:12px">Last candle 21 Aug 2026 · 831 bars · Moneycontrol primary</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="price">
+    <div class="section-head"><h2>02 — Price action</h2><span>Charts 01 · 02</span></div>
+    <div class="grid2">
+      <div class="img-card"><img src="./01_price_history_1y.png" alt="1-year price history" loading="lazy"><div class="img-caption"><span>01 — Price history · 1Y</span><span>831 bars</span></div></div>
+      <div class="img-card"><img src="./02_moving_averages.png" alt="Moving averages" loading="lazy"><div class="img-caption"><span>02 — Moving averages · SMA 20/50/200</span><span>Golden cross</span></div></div>
+    </div>
+    <div class="card" style="margin-top:12px"><p class="note" style="margin:0;border-left-color:var(--line)"><b style="color:var(--paper)">-58% peak-to-trough</b> (787.90 on 02 Jan 2025 → 330.80 on 11 Jun 2026) then sharp mean-reversion. Current 602 sits between SMA20 (602.39) and intraday high 607.9 — compression. Support 588 / 561.25 · Resistance 621.8 → 648.95. Bollinger %B 0.50 = mid-band.</p></div>
+  </section>
+
+  <section class="section" id="momentum">
+    <div class="section-head"><h2>03 — Momentum & technicals</h2><span>Chart 03</span></div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Indicator</th><th>Value</th><th>Signal</th><th>Context</th></tr></thead>
+          <tbody>
+            <tr><td>SMA 20/50/200</td><td class="num">602.39 / 507.37 / 447.60</td><td><span class="badge badge-up">Bull alignment</span></td><td>Price > 50/200</td></tr>
+            <tr><td>EMA 12/26</td><td class="num">599.39 / 576.40</td><td>EMA12 > EMA26</td><td>Fast above slow, MACD below signal</td></tr>
+            <tr><td>RSI 14</td><td class="num">60.03</td><td><span class="badge badge-hold">Neutral</span></td><td>63.5 → 58.1 → 60.0 — recovering</td></tr>
+            <tr><td>MACD</td><td class="num">22.99 / Sig 30.61</td><td style="color:var(--down)">Hist -7.62 Bearish cross</td><td>Negative but flattening</td></tr>
+            <tr><td>Bollinger 20,2</td><td class="num">Mid 602.39 · Up 633.71</td><td>%B 0.498 · BW 10.40%</td><td>Squeeze forming</td></tr>
+            <tr><td>ATR 14</td><td class="num">21.88</td><td>3.63% of price</td><td>Vol cooling 24.5 → 21.88</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="img-card" style="margin-top:12px"><img src="./03_momentum_oscillators.png" alt="Momentum oscillators" loading="lazy"><div class="img-caption"><span>03 — Momentum oscillators · RSI + MACD + BB</span><span>Wilder · EMA</span></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="vol">
+    <div class="section-head"><h2>04 — Volatility & risk</h2><span>Chart 05 · 60.33% ann</span></div>
+    <div class="grid2">
+      <div class="img-card"><img src="./05_volatility_drawdown.png" alt="Volatility and drawdown" loading="lazy"><div class="img-caption"><span>05 — Volatility & drawdown</span><span>Max -58.01%</span></div></div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Risk metric</th><th>Value</th><th>Interpretation</th></tr></thead>
+            <tbody>
+              <tr><td>Ann vol (60d)</td><td class="num" style="color:var(--down)">60.33% ann</td><td>Very high — daily ~3.8%</td></tr>
+              <tr><td>Max drawdown</td><td class="num" style="color:var(--down)">-58.01%</td><td>787.90 → 330.80 · now -7.2% off high</td></tr>
+              <tr><td>Sharpe (rf 6.5%)</td><td class="num" style="color:var(--up)">3.58</td><td>Recovery-inflated, not predictive</td></tr>
+              <tr><td>VaR 95% 1-day</td><td class="num" style="color:var(--down)">-₹37.6 (-6.25%)</td><td>99% ≈ -₹54.4 (-9%)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">VaR assumes normal — jewellery tails fatter. Use ATR-based stops.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="peers">
+    <div class="section-head"><h2>05 — Peer & sector</h2><span>Chart 04 · Rebased 100</span></div>
+    <div class="img-card"><img src="./04_peer_comparison.png" alt="Peer comparison" loading="lazy"><div class="img-caption"><span>04 — KALYAN vs TITAN vs THANGAMAYIL vs NIFTY</span><span>Specialty Stores</span></div></div>
+    <div class="card" style="margin-top:12px">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Peer</th><th>Symbol</th><th>1Y perf</th><th>Read</th></tr></thead>
+          <tbody>
+            <tr style="background:var(--up-soft)"><td><b>Kalyan Jewellers</b></td><td class="num">KALYANKJIL</td><td class="num" style="color:var(--up)">+17.86%</td><td>Midcap recovery leader since Jun</td></tr>
+            <tr><td>Titan</td><td class="num">TITAN</td><td class="num" style="color:var(--up)">+40.12%</td><td>NIFTY anchor · lower vol</td></tr>
+            <tr><td>Thangamayil</td><td class="num">THANGAMAYL</td><td class="num" style="color:var(--up)">+159.74%</td><td>Small-cap torque</td></tr>
+            <tr><td>Senco</td><td class="num">SENCO</td><td class="num" style="color:var(--down)">-10.58%</td><td>Underperforming YTD</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Peer candles via Moneycontrol techCharts same chain (Yahoo curl → Groww fallback). Rebased to 100 for relative strength.</p>
+    </div>
+  </section>
+
+  <section class="section" id="forecast">
+    <div class="section-head"><h2>06 — Forecast</h2><span>Chart 06 · Blend · Not a prediction</span></div>
+    <div class="img-card"><img src="./06_forecast_fan.png" alt="Forecast fan" loading="lazy"><div class="img-caption"><span>06 — Forecast fan · 50% linear + 30% mom + 20% mean-rev</span><span>±sigma cone</span></div></div>
+    <div class="card" style="margin-top:12px">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Horizon</th><th>Bear</th><th>Base</th><th>Bull</th><th>Implied (base)</th></tr></thead>
+          <tbody>
+            <tr><td><b>30 days</b></td><td class="num" style="color:var(--down)">₹435.03</td><td class="num"><b>₹610.51</b></td><td class="num" style="color:var(--up)">₹1,000.52</td><td class="num">+1.35%</td></tr>
+            <tr><td><b>90 days</b></td><td class="num" style="color:var(--down)">₹406.39</td><td class="num"><b>₹711.89</b></td><td class="num" style="color:var(--up)">₹1,910.71</td><td class="num" style="color:var(--up)">+18.20%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note"><b style="color:var(--paper)">Methodology:</b> Blend = 0.50× linear-log regression + 0.30× 20d momentum (clamped ±0.5%/d) + 0.20× Bollinger mean-reversion. Fan = uncertainty, not a target. Gold shock / results can break cone.</p>
+    </div>
+  </section>
+
+  <section class="section" id="strategy">
+    <div class="section-head"><h2>07 — Strategy signals</h2><span>Jury-ranked · 190 strategies</span></div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Rank</th><th>Strategy</th><th>Verdict</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td class="num">#1</td><td><b>S100 Momentum</b></td><td><span class="badge badge-up">Aligned +5.0%</span></td><td>20-day mom positive — vol-adjusted only</td></tr>
+            <tr><td class="num">#3</td><td><b>S174 TSM</b></td><td><span class="badge badge-up">Partial</span></td><td>Trend + but MACD hist negative</td></tr>
+            <tr><td class="num">#57</td><td><b>S001 MA Trend</b></td><td><span class="badge badge-up">Bull · Golden cross</span></td><td>Price >50&amp;200, 50&gt;200</td></tr>
+            <tr><td class="num">#101</td><td><b>S101 Low-Vol</b></td><td><span class="badge badge-down">Anti-aligned</span></td><td>60% vol top-decile</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Highest conviction today is <b style="color:var(--paper)">S001/S100 partial trend-momentum</b>, tempered by MACD cross & thinning volume.</p>
+    </div>
+  </section>
+
+  <section class="section" id="method">
+    <div class="section-head"><h2>08 — Methodology & sources</h2><span>Provenance</span></div>
+    <div class="card">
+      <div class="kv">
+        <div><label>Harvest chain</label><ul style="margin:6px 0 0 16px;padding:0;font-size:13px;color:var(--muted)"><li><b style="color:var(--paper)">Moneycontrol techCharts</b> — 831 candles primary</li><li><b style="color:var(--paper)">Yahoo curl</b> — 745 candles fallback</li><li>Groww / Google intraday fallback</li></ul></div>
+        <div><label>Artifacts</label><ul style="margin:6px 0 0 16px;padding:0;font-size:13px;color:var(--muted)"><li><code>tmp/kalyan_quant.json</code> · 831 bars</li><li><code>kalyan_summary.json</code> · 261 bars</li><li>6 PNGs · matplotlib 3.8.2</li></ul></div>
+      </div>
+      <p class="note" style="margin-top:12px"><b style="color:var(--paper)">Disclaimer — Not investment advice.</b> Quantitative artefact for education only. 60% vol — position sizing essential. Consult SEBI-registered adviser.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>Generated <b style="color:var(--paper)">21 Aug 2026 14:30 IST</b> · Data: Moneycontrol, Yahoo · matplotlib 3.8.2</span>
+    <span>NIFTY · Not investment advice · <span style="font-family:'JetBrains Mono', monospace">Canvas #fcfcf9 · Paper #111214</span></span>
+  </footer>
+</div>
+<script>
+document.getElementById('themeBtn').addEventListener('click', function(){
+  var isDark = document.documentElement.classList.toggle('dark');
+  try{ localStorage.setItem('nifty-theme', isDark ? 'dark' : 'light'); }catch(e){}
+  this.textContent = isDark ? '☀' : '◐';
+});
+// Library of 100
+(async()=>{
+  const grid=document.getElementById('libGrid');
+  const stats=document.getElementById('libStats');
+  const countPill=document.getElementById('libCountPill');
+  const search=document.getElementById('libSearch');
+  let items=[];
+  try{
+    const r=await fetch('./technical_100.json'); const j=await r.json(); items=j.items||[];
+    if(stats) stats.textContent = `Live · ${j.meta.bars} bars · ${j.meta.lastDate} · ${j.meta.regime} · score ${j.meta.trendScore}`;
+    if(countPill) countPill.textContent = `${items.length} studies · ${new Set(items.map(x=>x.category)).size} categories`;
+  }catch(e){ if(grid) grid.innerHTML='<div class="note">Failed to load technical_100.json</div>'; return; }
+  let activeCat='ALL';
+  let query='';
+  function fmt(v){
+    if(v==null || (typeof v==='number' && isNaN(v))) return '—';
+    if(typeof v!=='number') return String(v);
+    if(Math.abs(v)>=1000000) return (v/1e6).toFixed(2)+'M';
+    if(Math.abs(v)>=1000) return v.toFixed(2);
+    if(Math.abs(v)>=100) return v.toFixed(2);
+    if(Math.abs(v)>=1) return v.toFixed(2);
+    return v.toFixed(3);
+  }
+  function badgeClass(s){
+    s=(s||'').toLowerCase();
+    if(['bull','above','up','high','strong','buy','yes','close','trending','wide'].some(k=>s.includes(k))) return 'badge-up';
+    if(['bear','below','down','low','weak','sell','severe','thin','overbought'].some(k=>s.includes(k))) return 'badge-down';
+    if(['oversold','discount','bear'].some(k=>s.includes(k))) return 'badge-up';
+    return 'badge-hold';
+  }
+  // actually map oversold to up (buy), overbought to down
+  function badgeFor(item){
+    const s=(item.signal||'').toLowerCase();
+    if(s.includes('oversold')) return 'badge-up';
+    if(s.includes('overbought')) return 'badge-down';
+    if(s.includes('bull')||s.includes('above')||s.includes('up')||s.includes('high')||s.includes('strong')||s.includes('yes')&&item.name.includes('Breakout')||s.includes('trending')) return 'badge-up';
+    if(s.includes('bear')||s.includes('below')||s.includes('down')||s.includes('severe')||s.includes('risk')) return 'badge-down';
+    return 'badge-hold';
+  }
+  function render(){
+    const q=query.toLowerCase();
+    const filtered=items.filter(it=>{
+      if(activeCat!=='ALL' && it.category!==activeCat) return false;
+      if(q && !(it.name.toLowerCase().includes(q) || it.category.toLowerCase().includes(q) || it.desc.toLowerCase().includes(q) || String(it.id).includes(q))) return false;
+      return true;
+    });
+    grid.innerHTML = filtered.map(it=>`
+      <div class="lib-card" tabindex="0" role="button" aria-label="${it.name}">
+        <div class="lib-card-head"><span class="lib-id">#${String(it.id).padStart(3,'0')}</span><span class="count-pill">${it.category}</span></div>
+        <div class="lib-name">${it.name}</div>
+        <div class="lib-desc">${it.desc}</div>
+        <div class="lib-foot">
+          <div><span class="lib-value">${fmt(it.value)}</span> <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">${it.unit||''}</span></div>
+          <span class="badge ${badgeFor(it)}">${it.signal||'—'}</span>
+        </div>
+      </div>
+    `).join('');
+    if(filtered.length===0) grid.innerHTML='<div class="note">No matches — try “RSI” “ADX” “Vol”</div>';
+  }
+  document.querySelectorAll('.lib-filter').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('.lib-filter').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active'); activeCat=b.dataset.cat; render();
+    });
+  });
+  if(search) search.addEventListener('input', e=>{ query=e.target.value; render(); });
+  render();
+})();
+</script>
+</body>
+</html>

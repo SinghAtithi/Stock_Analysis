@@ -4,9 +4,9 @@ Local SQLite database backing NIFTY//TERM's data platform (EOD candles, fundamen
 
 ## Driver
 
-**Primary: [better-sqlite3](https://github.com/WiseLibs/better-sqlite3) v13** — synchronous, battle-tested, fastest option. Installed as a dependency of `web/` (`npm install better-sqlite3`). No build flags needed on Node 22.17.0 (prebuilt binaries).
+**Primary: [better-sqlite3](https://github.com/WiseLibs/better-sqlite3) v13** — synchronous, battle-tested, fastest option. Installed as a dependency of `web/` (`npm install better-sqlite3`). No build flags needed on Node 24.19.0 (prebuilt binaries).
 
-**Fallback: `node:sqlite`** — Node's built-in SQLite (`DatabaseSync`), available since Node 22.5. On Node 22.17.0 it needs no flag; on older 22.x versions run with `--experimental-sqlite` if `require("node:sqlite")` throws.
+**Fallback: `node:sqlite`** — Node's built-in SQLite (`DatabaseSync`), available since Node 22.5. On Node 24.19.0 it needs no flag; on older 22.x versions run with `--experimental-sqlite` if `require("node:sqlite")` throws.
 
 `scripts/lib/db.mjs` picks better-sqlite3 first (resolving from `scripts/` or `web/node_modules`), then falls back to `node:sqlite`, and throws a clear error if neither is available.
 

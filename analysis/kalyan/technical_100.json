@@ -1,0 +1,955 @@
+{
+  "meta": {
+    "symbol": "KALYANKJIL",
+    "name": "Kalyan Jewellers India Ltd",
+    "exchange": "NSE",
+    "generatedAt": "2026-08-21T17:42:17.928364+00:00",
+    "source": "moneycontrol",
+    "bars": 831,
+    "lastClose": 602.25,
+    "lastDate": "2026-08-21",
+    "regime": "NEUTRAL",
+    "trendScore": 12
+  },
+  "price": {
+    "open": 596.0,
+    "high": 607.9,
+    "low": 591.5,
+    "close": 602.25,
+    "volume": 5332630.0,
+    "dailyReturn": 1.0486577181208157,
+    "gap": 0.0
+  },
+  "fibonacci": {
+    "high": 648.95,
+    "low": 327.05,
+    "range": 321.90000000000003,
+    "0": 648.95,
+    "0.236": 572.9816000000001,
+    "0.382": 525.9842,
+    "0.5": 488.0,
+    "0.618": 450.0158,
+    "0.786": 395.9366,
+    "1": 327.05
+  },
+  "supportResistance": {
+    "support20": 561.25,
+    "resistance20": 648.95,
+    "high52w": 648.95,
+    "low52w": 327.05,
+    "recentSupport": 588.0,
+    "recentResistance": 621.8
+  },
+  "risk": {
+    "volatility60": 42.5675055380221,
+    "sharpe60": 3.5802504407064855,
+    "maxDD": -58.01497651986293,
+    "currentDD": -23.562634852138597,
+    "var95": -37.650050849739166,
+    "skew60": 1.4277978066525772,
+    "kurtosis60": 4.08161081932543,
+    "calmar": 3.831578154908358
+  },
+  "items": [
+    {
+      "id": 1,
+      "name": "HL2 \u2014 (High+Low)/2",
+      "category": "PRICE STRUCTURE",
+      "value": 599.7,
+      "unit": "INR",
+      "signal": "neutral",
+      "desc": "Midpoint of day's range, smoother than close"
+    },
+    {
+      "id": 2,
+      "name": "HLC3 \u2014 (H+L+C)/3",
+      "category": "PRICE STRUCTURE",
+      "value": 600.5500000000001,
+      "unit": "INR",
+      "signal": "neutral",
+      "desc": "Typical price, triple average"
+    },
+    {
+      "id": 3,
+      "name": "OHLC4 \u2014 (O+H+L+C)/4",
+      "category": "PRICE STRUCTURE",
+      "value": 599.4125,
+      "unit": "INR",
+      "signal": "neutral",
+      "desc": "Four-price average, pivot basis"
+    },
+    {
+      "id": 4,
+      "name": "Price vs Typical",
+      "category": "PRICE STRUCTURE",
+      "value": 0.28307384897176446,
+      "unit": "%",
+      "signal": "bull",
+      "desc": "Distance from typical price"
+    },
+    {
+      "id": 5,
+      "name": "Daily Return",
+      "category": "PRICE STRUCTURE",
+      "value": 1.0486577181208157,
+      "unit": "%",
+      "signal": "up",
+      "desc": "Close-to-close return"
+    },
+    {
+      "id": 6,
+      "name": "Log Return",
+      "category": "PRICE STRUCTURE",
+      "value": 0.010431974429631088,
+      "unit": "",
+      "signal": "up",
+      "desc": "ln(C/Cprev) for vol math"
+    },
+    {
+      "id": 7,
+      "name": "Gap %",
+      "category": "PRICE STRUCTURE",
+      "value": 0.0,
+      "unit": "%",
+      "signal": "down",
+      "desc": "Open gap vs prior close"
+    },
+    {
+      "id": 8,
+      "name": "Intraday Range %",
+      "category": "PRICE STRUCTURE",
+      "value": 2.7726120033812305,
+      "unit": "%",
+      "signal": "low",
+      "desc": "High-Low range as % of low"
+    },
+    {
+      "id": 9,
+      "name": "Body %",
+      "category": "PRICE STRUCTURE",
+      "value": 1.0486577181208054,
+      "unit": "%",
+      "signal": "bull",
+      "desc": "Candle body vs open"
+    },
+    {
+      "id": 10,
+      "name": "Close Position %",
+      "category": "PRICE STRUCTURE",
+      "value": 65.54878048780498,
+      "unit": "%",
+      "signal": "mid",
+      "desc": "Where close sits in day's range"
+    },
+    {
+      "id": 11,
+      "name": "SMA 20",
+      "category": "TREND \u2014 MOVING AVERAGES",
+      "value": 602.3900000000001,
+      "unit": "INR",
+      "signal": "below",
+      "desc": "Short trend, mean of 20 closes"
+    },
+    {
+      "id": 12,
+      "name": "SMA 50",
+      "category": "TREND \u2014 MOVING AVERAGES",
+      "value": 507.3720000000001,
+      "unit": "INR",
+      "signal": "above",
+      "desc": "Mid trend, regime filter"
+    },
+    {
+      "id": 13,
+      "name": "SMA 100",
+      "category": "TREND \u2014 MOVING AVERAGES",
+      "value": 447.70299999999975,
+      "unit": "INR",
+      "signal": "above",
+      "desc": "Intermediate trend"
+    },
+    {
+      "id": 14,
+      "name": "SMA 200",
+      "category": "TREND \u2014 MOVING AVERAGES",
+      "value": 447.5960000000003,
+      "unit": "INR",
+      "signal": "above",
+      "desc": "Long trend, bull/bear line"
+    },
+    {
+      "id": 15,
+      "name": "EMA 12",
+      "category": "TREND \u2014 MOVING AVERAGES",
+      "value": 599.3852172184316,
+      "unit": "INR",
+      "signal": "above",
+      "desc": "Fast EMA, MACD fast"
+    },
+    {
+      "id": 16,
+      "name": "EMA 26",
+      "category": "TREND \u2014 MOVING AVERAGES",
+      "value": 576.3987497745676,
+      "unit": "INR",
+      "signal": "above",
+      "desc": "Slow EMA, MACD slow"
+    },
+    {
+      "id": 17,
+      "name": "EMA 50",
+      "category": "TREND \u2014 MOVING AVERAGES",
+      "value": 530.6919623528803,
+      "unit": "INR",
+      "signal": "above",
+      "desc": "Mid EMA"
+    },
+    {
+      "id": 18,
+      "name": "WMA 20",
+      "category": "TREND \u2014 MOVING AVERAGES",
+      "value": 602.0223809523809,
+      "unit": "INR",
+      "signal": "above",
+      "desc": "Weighted MA, recent heavier"
+    },
+    {
+      "id": 19,
+      "name": "HMA 20",
+      "category": "TREND \u2014 MOVING AVERAGES",
+      "value": 602.9775281385281,
+      "unit": "INR",
+      "signal": "below",
+      "desc": "Hull MA, reduced lag"
+    },
+    {
+      "id": 20,
+      "name": "DEMA 20",
+      "category": "TREND \u2014 MOVING AVERAGES",
+      "value": NaN,
+      "unit": "INR",
+      "signal": "\u2014",
+      "desc": "Double EMA, faster"
+    },
+    {
+      "id": 21,
+      "name": "RSI 14",
+      "category": "MOMENTUM",
+      "value": 60.02844245585291,
+      "unit": "",
+      "signal": "neutral",
+      "desc": "Wilder 14, 70/30"
+    },
+    {
+      "id": 22,
+      "name": "RSI 9",
+      "category": "MOMENTUM",
+      "value": 55.97866694952468,
+      "unit": "",
+      "signal": "neutral",
+      "desc": "Faster RSI"
+    },
+    {
+      "id": 23,
+      "name": "RSI 2",
+      "category": "MOMENTUM",
+      "value": 71.04040002071764,
+      "unit": "",
+      "signal": "neutral",
+      "desc": "Mean-reversion trigger"
+    },
+    {
+      "id": 24,
+      "name": "Stochastic %K 14",
+      "category": "MOMENTUM",
+      "value": 59.63636363636363,
+      "unit": "",
+      "signal": "neutral",
+      "desc": "Close vs 14d range"
+    },
+    {
+      "id": 25,
+      "name": "Stochastic %D 3",
+      "category": "MOMENTUM",
+      "value": 51.39566762897939,
+      "unit": "",
+      "signal": "neutral",
+      "desc": "Signal of %K"
+    },
+    {
+      "id": 26,
+      "name": "Williams %R 14",
+      "category": "MOMENTUM",
+      "value": -40.36363636363637,
+      "unit": "",
+      "signal": "neutral",
+      "desc": "Inverse stochastic"
+    },
+    {
+      "id": 27,
+      "name": "CCI 20",
+      "category": "MOMENTUM",
+      "value": -15.172147375536596,
+      "unit": "",
+      "signal": "neutral",
+      "desc": "Commodity Channel Index"
+    },
+    {
+      "id": 28,
+      "name": "MFI 14",
+      "category": "MOMENTUM",
+      "value": 50.51567168069683,
+      "unit": "",
+      "signal": "neutral",
+      "desc": "Volume-weighted RSI"
+    },
+    {
+      "id": 29,
+      "name": "ROC 12",
+      "category": "MOMENTUM",
+      "value": 5.750658472344162,
+      "unit": "%",
+      "signal": "bull",
+      "desc": "Rate of Change 12d"
+    },
+    {
+      "id": 30,
+      "name": "MOM 10",
+      "category": "MOMENTUM",
+      "value": -4.0499999999999545,
+      "unit": "INR",
+      "signal": "bear",
+      "desc": "Momentum 10d absolute"
+    },
+    {
+      "id": 31,
+      "name": "MACD Line (12-26)",
+      "category": "TREND STRENGTH",
+      "value": 22.986467443864058,
+      "unit": "",
+      "signal": "bull",
+      "desc": "EMA12-EMA26"
+    },
+    {
+      "id": 32,
+      "name": "MACD Signal 9",
+      "category": "TREND STRENGTH",
+      "value": 30.60517606778687,
+      "unit": "",
+      "signal": "bear",
+      "desc": "Signal of MACD"
+    },
+    {
+      "id": 33,
+      "name": "MACD Histogram",
+      "category": "TREND STRENGTH",
+      "value": -7.618708623922814,
+      "unit": "",
+      "signal": "bear",
+      "desc": "Line - Signal"
+    },
+    {
+      "id": 34,
+      "name": "ADX 14",
+      "category": "TREND STRENGTH",
+      "value": 28.318313186233272,
+      "unit": "",
+      "signal": "strong",
+      "desc": "Trend strength, >25 trending"
+    },
+    {
+      "id": 35,
+      "name": "+DI 14",
+      "category": "TREND STRENGTH",
+      "value": 25.69965082247318,
+      "unit": "",
+      "signal": "bull",
+      "desc": "Positive directional"
+    },
+    {
+      "id": 36,
+      "name": "-DI 14",
+      "category": "TREND STRENGTH",
+      "value": 19.06290332750836,
+      "unit": "",
+      "signal": "bull",
+      "desc": "Negative directional"
+    },
+    {
+      "id": 37,
+      "name": "Aroon Up 25",
+      "category": "TREND STRENGTH",
+      "value": 36.0,
+      "unit": "",
+      "signal": "weak",
+      "desc": "Days since high"
+    },
+    {
+      "id": 38,
+      "name": "Aroon Down 25",
+      "category": "TREND STRENGTH",
+      "value": 8.0,
+      "unit": "",
+      "signal": "weak",
+      "desc": "Days since low"
+    },
+    {
+      "id": 39,
+      "name": "Vortex VI+ 14",
+      "category": "TREND STRENGTH",
+      "value": 0.9534731323722151,
+      "unit": "",
+      "signal": "bear",
+      "desc": "Positive vortex"
+    },
+    {
+      "id": 40,
+      "name": "Vortex VI- 14",
+      "category": "TREND STRENGTH",
+      "value": 1.0480013106159896,
+      "unit": "",
+      "signal": "bear",
+      "desc": "Negative vortex"
+    },
+    {
+      "id": 41,
+      "name": "Bollinger Middle 20",
+      "category": "VOLATILITY",
+      "value": 602.3900000000001,
+      "unit": "INR",
+      "signal": "mid",
+      "desc": "SMA20"
+    },
+    {
+      "id": 42,
+      "name": "Bollinger Upper 20",
+      "category": "VOLATILITY",
+      "value": 633.7093167230705,
+      "unit": "INR",
+      "signal": "resistance",
+      "desc": "Middle +2\u03c3"
+    },
+    {
+      "id": 43,
+      "name": "Bollinger Lower 20",
+      "category": "VOLATILITY",
+      "value": 571.0706832769297,
+      "unit": "INR",
+      "signal": "support",
+      "desc": "Middle -2\u03c3"
+    },
+    {
+      "id": 44,
+      "name": "Bandwidth 20",
+      "category": "VOLATILITY",
+      "value": 0.10398352138339086,
+      "unit": "",
+      "signal": "squeeze",
+      "desc": "(Up-Low)/Middle"
+    },
+    {
+      "id": 45,
+      "name": "%B",
+      "category": "VOLATILITY",
+      "value": 0.4977649576260236,
+      "unit": "",
+      "signal": "mid",
+      "desc": "(C-Low)/(Up-Low)"
+    },
+    {
+      "id": 46,
+      "name": "ATR 14",
+      "category": "VOLATILITY",
+      "value": 21.799999999999986,
+      "unit": "INR",
+      "signal": "high",
+      "desc": "Average True Range"
+    },
+    {
+      "id": 47,
+      "name": "True Range (today)",
+      "category": "VOLATILITY",
+      "value": 16.399999999999977,
+      "unit": "INR",
+      "signal": "\u2014",
+      "desc": "max(H-L, |H-Cprev|)"
+    },
+    {
+      "id": 48,
+      "name": "StdDev 20",
+      "category": "VOLATILITY",
+      "value": 15.659658361535223,
+      "unit": "INR",
+      "signal": "high",
+      "desc": "Rolling \u03c3"
+    },
+    {
+      "id": 49,
+      "name": "Hist Vol 20 ann.",
+      "category": "VOLATILITY",
+      "value": 42.5675055380221,
+      "unit": "%",
+      "signal": "low",
+      "desc": "\u03c3(logRet)*\u221a252"
+    },
+    {
+      "id": 50,
+      "name": "Keltner Upper",
+      "category": "VOLATILITY",
+      "value": 621.5015764601518,
+      "unit": "INR",
+      "signal": "resistance",
+      "desc": "EMA20 +1.5 ATR"
+    },
+    {
+      "id": 51,
+      "name": "OBV",
+      "category": "VOLUME",
+      "value": 1220266701.0,
+      "unit": "",
+      "signal": "bull",
+      "desc": "On-Balance Volume"
+    },
+    {
+      "id": 52,
+      "name": "VWAP 20",
+      "category": "VOLUME",
+      "value": 605.3133571533434,
+      "unit": "INR",
+      "signal": "below",
+      "desc": "Volume-weighted price"
+    },
+    {
+      "id": 53,
+      "name": "CMF 20",
+      "category": "VOLUME",
+      "value": -0.10839051717517235,
+      "unit": "",
+      "signal": "bear",
+      "desc": "Chaikin Money Flow"
+    },
+    {
+      "id": 54,
+      "name": "ADL",
+      "category": "VOLUME",
+      "value": 422597193.84480673,
+      "unit": "",
+      "signal": "bull",
+      "desc": "Accum/Dist line"
+    },
+    {
+      "id": 55,
+      "name": "Volume SMA 20",
+      "category": "VOLUME",
+      "value": 18605211.9,
+      "unit": "",
+      "signal": "\u2014",
+      "desc": "20d avg volume"
+    },
+    {
+      "id": 56,
+      "name": "Relative Volume",
+      "category": "VOLUME",
+      "value": 0.28662022387393504,
+      "unit": "x",
+      "signal": "low",
+      "desc": "Vol / 20d avg"
+    },
+    {
+      "id": 57,
+      "name": "Volume Trend %",
+      "category": "VOLUME",
+      "value": -17.60106084336798,
+      "unit": "%",
+      "signal": "falling",
+      "desc": "20d avg vs 5d ago"
+    },
+    {
+      "id": 58,
+      "name": "Ease of Movement 14",
+      "category": "VOLUME",
+      "value": -258.27258525077144,
+      "unit": "",
+      "signal": "bear",
+      "desc": "Dm / (Vol/Range)"
+    },
+    {
+      "id": 59,
+      "name": "Volume Oscillator",
+      "category": "VOLUME",
+      "value": -64.31058546557054,
+      "unit": "%",
+      "signal": "bear",
+      "desc": "SMA5 vs SMA20 of vol"
+    },
+    {
+      "id": 60,
+      "name": "Force Index 13",
+      "category": "VOLUME",
+      "value": 62759725.34247825,
+      "unit": "",
+      "signal": "bull",
+      "desc": "(C-Cprev)*Vol EMA13"
+    },
+    {
+      "id": 61,
+      "name": "Support 20d",
+      "category": "SUPPORT / RESISTANCE",
+      "value": 561.25,
+      "unit": "INR",
+      "signal": "support",
+      "desc": "min(Lows 20)"
+    },
+    {
+      "id": 62,
+      "name": "Resistance 20d",
+      "category": "SUPPORT / RESISTANCE",
+      "value": 648.95,
+      "unit": "INR",
+      "signal": "resistance",
+      "desc": "max(Highs 20)"
+    },
+    {
+      "id": 63,
+      "name": "52W High",
+      "category": "SUPPORT / RESISTANCE",
+      "value": 648.95,
+      "unit": "INR",
+      "signal": "resistance",
+      "desc": "252d high"
+    },
+    {
+      "id": 64,
+      "name": "52W Low",
+      "category": "SUPPORT / RESISTANCE",
+      "value": 327.05,
+      "unit": "INR",
+      "signal": "support",
+      "desc": "252d low"
+    },
+    {
+      "id": 65,
+      "name": "Dist from 52W High",
+      "category": "SUPPORT / RESISTANCE",
+      "value": -7.196240080129446,
+      "unit": "%",
+      "signal": "discount",
+      "desc": "(C-52H)/52H"
+    },
+    {
+      "id": 66,
+      "name": "Dist from 52W Low",
+      "category": "SUPPORT / RESISTANCE",
+      "value": 84.14615502216786,
+      "unit": "%",
+      "signal": "high",
+      "desc": "(C-52L)/52L"
+    },
+    {
+      "id": 67,
+      "name": "Recent Swing Support",
+      "category": "SUPPORT / RESISTANCE",
+      "value": 588.0,
+      "unit": "INR",
+      "signal": "support",
+      "desc": "Last pivot low"
+    },
+    {
+      "id": 68,
+      "name": "Recent Swing Resistance",
+      "category": "SUPPORT / RESISTANCE",
+      "value": 621.8,
+      "unit": "INR",
+      "signal": "resistance",
+      "desc": "Last pivot high"
+    },
+    {
+      "id": 69,
+      "name": "Fib 0.382",
+      "category": "SUPPORT / RESISTANCE",
+      "value": 525.9842,
+      "unit": "INR",
+      "signal": "level",
+      "desc": "H -0.382*range"
+    },
+    {
+      "id": 70,
+      "name": "Fib 0.618",
+      "category": "SUPPORT / RESISTANCE",
+      "value": 450.0158,
+      "unit": "INR",
+      "signal": "level",
+      "desc": "H -0.618*range"
+    },
+    {
+      "id": 71,
+      "name": "Doji Count 20d",
+      "category": "PATTERN",
+      "value": 3,
+      "unit": "",
+      "signal": "high",
+      "desc": "Body/range<0.1"
+    },
+    {
+      "id": 72,
+      "name": "Hammer Today",
+      "category": "PATTERN",
+      "value": 0,
+      "unit": "",
+      "signal": "no",
+      "desc": "Long lower wick"
+    },
+    {
+      "id": 73,
+      "name": "Engulfing Today",
+      "category": "PATTERN",
+      "value": 1,
+      "unit": "",
+      "signal": "yes",
+      "desc": "Body engulfs prior"
+    },
+    {
+      "id": 74,
+      "name": "Inside Bar Today",
+      "category": "PATTERN",
+      "value": 0,
+      "unit": "",
+      "signal": "no",
+      "desc": "H<Lprev and L>Hprev"
+    },
+    {
+      "id": 75,
+      "name": "20d High Breakout",
+      "category": "PATTERN",
+      "value": 0,
+      "unit": "",
+      "signal": "no",
+      "desc": "Close > prior 20d high"
+    },
+    {
+      "id": 76,
+      "name": "20d Low Breakdown",
+      "category": "PATTERN",
+      "value": 0,
+      "unit": "",
+      "signal": "no",
+      "desc": "Close < prior 20d low"
+    },
+    {
+      "id": 77,
+      "name": "Donchian Upper 20",
+      "category": "PATTERN",
+      "value": 648.95,
+      "unit": "INR",
+      "signal": "\u2014",
+      "desc": "20d max high"
+    },
+    {
+      "id": 78,
+      "name": "Donchian Lower 20",
+      "category": "PATTERN",
+      "value": 561.25,
+      "unit": "INR",
+      "signal": "\u2014",
+      "desc": "20d min low"
+    },
+    {
+      "id": 79,
+      "name": "Ichimoku Tenkan 9",
+      "category": "PATTERN",
+      "value": 603.425,
+      "unit": "INR",
+      "signal": "bear",
+      "desc": "(9h+9l)/2"
+    },
+    {
+      "id": 80,
+      "name": "Ichimoku Kijun 26",
+      "category": "PATTERN",
+      "value": 595.1,
+      "unit": "INR",
+      "signal": "bull",
+      "desc": "(26h+26l)/2"
+    },
+    {
+      "id": 81,
+      "name": "Ann. Volatility 60d",
+      "category": "RISK & STATISTICS",
+      "value": 42.5675055380221,
+      "unit": "%",
+      "signal": "low",
+      "desc": "\u03c3(logRet60)*\u221a252"
+    },
+    {
+      "id": 82,
+      "name": "Sharpe 60d (rf 6.5%)",
+      "category": "RISK & STATISTICS",
+      "value": 3.5802504407064855,
+      "unit": "",
+      "signal": "high",
+      "desc": "(AnnRet - rf)/Vol"
+    },
+    {
+      "id": 83,
+      "name": "Max Drawdown",
+      "category": "RISK & STATISTICS",
+      "value": -58.01497651986293,
+      "unit": "%",
+      "signal": "severe",
+      "desc": "Peak to trough"
+    },
+    {
+      "id": 84,
+      "name": "Current Drawdown",
+      "category": "RISK & STATISTICS",
+      "value": -23.562634852138597,
+      "unit": "%",
+      "signal": "deep",
+      "desc": "From peak"
+    },
+    {
+      "id": 85,
+      "name": "VaR 95% 1-day",
+      "category": "RISK & STATISTICS",
+      "value": -37.650050849739166,
+      "unit": "INR",
+      "signal": "risk",
+      "desc": "-1.645*\u03c3*C"
+    },
+    {
+      "id": 86,
+      "name": "Skew 60d (logRet)",
+      "category": "RISK & STATISTICS",
+      "value": 1.4277978066525772,
+      "unit": "",
+      "signal": "pos",
+      "desc": "Asymmetry"
+    },
+    {
+      "id": 87,
+      "name": "Kurtosis 60d",
+      "category": "RISK & STATISTICS",
+      "value": 4.08161081932543,
+      "unit": "",
+      "signal": "fat",
+      "desc": "Tails vs normal"
+    },
+    {
+      "id": 88,
+      "name": "Beta vs NIFTY 60d",
+      "category": "RISK & STATISTICS",
+      "value": 1.05,
+      "unit": "",
+      "signal": "low",
+      "desc": "\u03b2 proxy"
+    },
+    {
+      "id": 89,
+      "name": "Correlation vs NIFTY",
+      "category": "RISK & STATISTICS",
+      "value": 0.62,
+      "unit": "",
+      "signal": "high",
+      "desc": "\u03c1 60d"
+    },
+    {
+      "id": 90,
+      "name": "Calmar Ratio",
+      "category": "RISK & STATISTICS",
+      "value": 3.831578154908358,
+      "unit": "",
+      "signal": "high",
+      "desc": "AnnRet / |MaxDD|"
+    },
+    {
+      "id": 91,
+      "name": "Trend Score",
+      "category": "COMPOSITE",
+      "value": 12,
+      "unit": "/100",
+      "signal": "hold",
+      "desc": "SMA+RSI+MACD composite"
+    },
+    {
+      "id": 92,
+      "name": "SMA Alignment Count",
+      "category": "COMPOSITE",
+      "value": 4,
+      "unit": "/5",
+      "signal": "bull",
+      "desc": "How many SMA conditions true"
+    },
+    {
+      "id": 93,
+      "name": "RSI Signal",
+      "category": "COMPOSITE",
+      "value": 60.02844245585291,
+      "unit": "",
+      "signal": "neutral",
+      "desc": "RSI 14 regime"
+    },
+    {
+      "id": 94,
+      "name": "MACD Signal",
+      "category": "COMPOSITE",
+      "value": -7.618708623922814,
+      "unit": "",
+      "signal": "bear",
+      "desc": "Hist sign"
+    },
+    {
+      "id": 95,
+      "name": "Bollinger Signal",
+      "category": "COMPOSITE",
+      "value": 0.4977649576260236,
+      "unit": "",
+      "signal": "mid",
+      "desc": "%B regime"
+    },
+    {
+      "id": 96,
+      "name": "Volume Signal",
+      "category": "COMPOSITE",
+      "value": 0.28662022387393504,
+      "unit": "x",
+      "signal": "thin",
+      "desc": "Vol participation"
+    },
+    {
+      "id": 97,
+      "name": "Support/Resistance Signal",
+      "category": "COMPOSITE",
+      "value": 46.75028506271377,
+      "unit": "%",
+      "signal": "mid",
+      "desc": "Position in 20d range"
+    },
+    {
+      "id": 98,
+      "name": "ADX Signal",
+      "category": "COMPOSITE",
+      "value": 28.318313186233272,
+      "unit": "",
+      "signal": "trending",
+      "desc": "Trend strength + direction"
+    },
+    {
+      "id": 99,
+      "name": "Golden Cross",
+      "category": "COMPOSITE",
+      "value": 1,
+      "unit": "",
+      "signal": "yes",
+      "desc": "SMA50 > SMA200"
+    },
+    {
+      "id": 100,
+      "name": "Trend Regime",
+      "category": "COMPOSITE",
+      "value": 0,
+      "unit": "neutral",
+      "signal": "NEUTRAL",
+      "desc": "Overall regime from score"
+    }
+  ]
+}
