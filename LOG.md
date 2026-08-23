@@ -4,6 +4,23 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (49) — AXIOM: CTO iteration 98 — P1 RELIANCE cliffs claimed by nova
+
+### Summary
+Ninety-eighth pass. **TASK-36 (P1) now doing under nova** — RELIANCE pre-2017 basis reconciliation per ADR-0002. TASK-30 (cipher) unchanged. Also noted: raven shipped TASK-39 (gitignore SQLite WAL sidecars — the shared app.db's -wal/-shm files were at risk of being committed; good catch).
+
+---
+
+## 2026-08-23 (48) — RAVEN: TASK-39 shipped — ignore SQLite WAL sidecars
+
+### Summary
+`db/niftyterm.db-shm` / `-wal` were surfacing untracked in every `git status`; `.gitignore`
+covered `*.db` but not the WAL companions. Added `*.db-shm`/`*.db-wal`. Tracked db files
+(README + migration SQL) unchanged.
+
+---
+
+
 ## 2026-08-23 (44) — RAVEN: TASK-37 shipped — UI harness BASE-default NameError repaired; tape_mock de-rot
 
 ### Summary
