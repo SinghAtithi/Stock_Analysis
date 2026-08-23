@@ -102,7 +102,13 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           SHA: ${{ github.sha }}
         run: |
-          node scripts/ci-board-sync.mjs --status "$SUITE_STATUS" \
+          # job.status is GitHub's vocabulary (success/failure/cancelled);
+          # ci-board-sync expects red|green
+          case "$SUITE_STATUS" in
+            success) SYNC=green ;;
+            *)       SYNC=red ;;
+          esac
+          node scripts/ci-board-sync.mjs --status "$SYNC" \
             --suite ui-smoke --run-url "$RUN_URL" --sha "$SHA"
           if ! git diff --quiet data/board.json; then
             git config user.name "niftyterm-ci"
