@@ -60,6 +60,31 @@ export function checkCap(tier: Tier, kind: CapKind, used: number): CapVerdict {
 const DAY_MS = 86_400_000;
 const runStamps = new Map<string, number[]>();
 
+/**
+ * TASK-1465: bound memory WITHOUT nuking honest users' windows on a
+ * unique-key flood (the old `size > cap → clear()` let an attacker reset
+ * everyone's counters at once). Fully-expired entries go first, then
+ * oldest-touched down to `target` — call sites delete+set on access so
+ * Map insertion order is true LRU: keys actively hitting the API survive,
+ * one-shot/flood keys age out. Sweeps are amortized (cap→target headroom).
+ */
+export function evictOldest<T>(
+  map: Map<string, T>,
+  cap: number,
+  target: number,
+  isAlive: (v: T) => boolean
+): void {
+  if (map.size <= cap) return;
+  for (const [k, v] of map) {
+    if (!isAlive(v)) map.delete(k);
+  }
+  while (map.size > target) {
+    const oldest = map.keys().next();
+    if (oldest.done) break;
+    map.delete(oldest.value);
+  }
+}
+
 /* Gate + reserve one backtest run against the trailing-24h window.
    The slot is consumed even if the engine later fails (conservative anti-abuse:
    failures must not become free retries). */
@@ -72,8 +97,14 @@ export function gateBacktestRun(deviceKey: string, now = Date.now()): CapVerdict
     return { ...verdict, retryAfterSec: Math.max(1, Math.ceil((list[0] + DAY_MS - now) / 1000)) };
   }
   list.push(now);
+  runStamps.delete(deviceKey); // refresh recency: delete+set makes eviction true-LRU
   runStamps.set(deviceKey, list);
-  if (runStamps.size > 5000) runStamps.clear();
+  evictOldest(
+    runStamps,
+    5000,
+    4000,
+    (stamps) => stamps.some((t) => Date.now() - t < DAY_MS)
+  );
   return verdict;
 }
 

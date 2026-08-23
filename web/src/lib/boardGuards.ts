@@ -7,6 +7,7 @@
  * syncs to well under the rate budget; CLI writers never touch HTTP.
  */
 import { timingSafeEqual } from "node:crypto";
+import { evictOldest } from "./tiers";
 
 /** ~1MB of JSON is far above any legitimate full-board payload. */
 export const MAX_BODY_BYTES = 1_000_000;
@@ -27,9 +28,16 @@ export function postRateLimited(key: string, now = Date.now()): boolean {
     return true;
   }
   list.push(now);
+  postStamps.delete(key); // refresh recency: delete+set makes eviction true-LRU
   postStamps.set(key, list);
-  /* bounded store like tiers.ts runStamps — unique-key floods can't grow it */
-  if (postStamps.size > 5000) postStamps.clear();
+  /* bounded store WITHOUT the old clear-all — floods evict stale/untouched
+   * keys instead of resetting honest writers' budgets (TASK-1465) */
+  evictOldest(
+    postStamps,
+    5000,
+    4000,
+    (stamps) => stamps.some((t) => Date.now() - t < WINDOW_MS)
+  );
   return false;
 }
 

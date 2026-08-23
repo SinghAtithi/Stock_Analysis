@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getChart, getTicker } from "@/lib/marketData";
 import { INDEX_MAP, findInstrument } from "@/lib/instruments";
+import { clientKeyFrom } from "@/lib/clientKey";
 import type { TickerItem } from "@/lib/types";
 
 /* /api/tracker — watchlist-style quote tracker.
@@ -80,10 +81,7 @@ function respSet(key: string, data: unknown) {
 }
 
 export async function GET(request: NextRequest) {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    request.headers.get("x-real-ip") ??
-    "local";
+  const ip = clientKeyFrom(request.headers);
   if (rateLimited(ip)) {
     return NextResponse.json(
       { error: "rate_limited" },

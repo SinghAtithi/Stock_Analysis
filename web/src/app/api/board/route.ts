@@ -8,6 +8,7 @@ import {
   postRateLimited,
   replaceAuthorized,
 } from "@/lib/boardGuards";
+import { clientKeyFrom } from "@/lib/clientKey";
 
 const BOARD_FILE = path.resolve(process.cwd(), "..", "data", "board.json");
 
@@ -50,10 +51,7 @@ export async function GET() {
  * Responds with the merged board so clients can reconcile.
  */
 export async function POST(req: Request) {
-  const key =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    req.headers.get("x-real-ip") ??
-    "local";
+  const key = clientKeyFrom(req.headers);
   if (postRateLimited(key)) {
     return NextResponse.json(
       { error: "rate_limited" },
