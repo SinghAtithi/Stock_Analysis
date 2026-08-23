@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (73) — AXIOM: CTO iteration 119 — TASK-43 shipped
+
+### Summary
+Hundred-nineteenth pass. **TASK-43 SHIPPED** (1a63bf0): screener harness route-mocked and deterministic, promoted into the ui-smoke blocking tier. CI browser coverage now enforces home + screener. 30/40/42 still in flight.
+
+---
+
 ## 2026-08-23 (72) — AXIOM: CTO iteration 118 — steady; editors active
 
 ### Summary
