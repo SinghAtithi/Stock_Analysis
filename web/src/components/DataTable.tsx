@@ -15,6 +15,10 @@ export interface Column<T> {
   rank?: boolean;
   render?: (row: T) => ReactNode;
   sortValue?: (row: T) => string | number;
+  /** Pin this column to the left on horizontal overflow (TASK-54).
+   *  widthPx is required for sticky columns so offsets can stack. */
+  sticky?: boolean;
+  widthPx?: number;
 }
 
 export interface DataTableProps<T> {
@@ -52,6 +56,7 @@ export default function DataTable<T>({
   const [internalKey, setInternalKey] = useState<string | null>(sortKey);
   const [internalDir, setInternalDir] = useState<SortDir>(sortDir);
   const bodyRef = useRef<HTMLTableSectionElement>(null);
+  const keyboardNav = useRef(false);
 
   const key = onSort ? sortKey : internalKey;
   const dir = onSort ? sortDir : internalDir;
@@ -77,9 +82,25 @@ export default function DataTable<T>({
 
   const active = Math.min(activeState, Math.max(0, sorted.length - 1));
 
+  /* Sticky-column left offsets: cumulative px over preceding sticky columns. */
+  const stickyLeft = new Map<string, number>();
+  let acc = 0;
+  for (const c of columns) {
+    if (c.sticky) {
+      stickyLeft.set(c.key, acc);
+      acc += c.widthPx ?? 0;
+    }
+  }
+  const lastStickyKey =
+    [...columns].reverse().find((c) => c.sticky)?.key ?? null;
+
   useEffect(() => {
-    const el = bodyRef.current?.querySelector(`[data-active="true"]`);
-    el?.scrollIntoView({ block: "nearest" });
+    const el = bodyRef.current?.querySelector<HTMLElement>(`[data-active="true"]`);
+    if (!el) return;
+    el.scrollIntoView({ block: "nearest" });
+    /* keyboard navigation moves focus with the active row (grid pattern);
+       hover does not steal focus */
+    if (keyboardNav.current) el.focus({ preventScroll: true });
   }, [active]);
 
   const setSort = (col: Column<T>) => {
@@ -96,6 +117,9 @@ export default function DataTable<T>({
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (!rows.length) return;
+    if (["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) {
+      keyboardNav.current = true;
+    }
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setActive((a) => Math.min(a + 1, rows.length - 1));
@@ -118,16 +142,19 @@ export default function DataTable<T>({
     <div className="overflow-auto rounded-2xl border border-line bg-surface shadow-sm">
       <table
         className="w-full border-collapse text-sm"
-        tabIndex={0}
+        role="grid"
         aria-rowcount={rows.length}
         onKeyDown={onKeyDown}
       >
         <thead>
-          <tr className="border-b border-line bg-panel-2/60">
+          <tr role="row" className="border-b border-line bg-panel-2/60">
             {columns.map((c) => {
+              const sticky = c.sticky && stickyLeft.has(c.key);
+              const isLastSticky = c.key === lastStickyKey;
               return (
                 <th
                   key={c.key}
+                  role="columnheader"
                   scope="col"
                   aria-sort={
                     c.sortable && key === c.key
@@ -136,9 +163,14 @@ export default function DataTable<T>({
                         : "descending"
                       : undefined
                   }
+                  style={sticky ? { left: stickyLeft.get(c.key) } : undefined}
                   className={`sticky top-0 z-10 bg-panel-2/90 px-3 py-2.5 text-xs font-medium tracking-wide text-muted backdrop-blur ${
                     ALIGN[c.align ?? "left"]
-                  } ${c.width ?? ""}`}
+                  } ${c.width ?? ""} ${
+                    sticky
+                      ? `z-20 ${isLastSticky ? "border-r border-line shadow-[4px_0_8px_-6px_rgba(0,0,0,0.25)]" : ""}`
+                      : ""
+                  }`}
                 >
                   {c.sortable ? (
                     <button
@@ -188,11 +220,14 @@ export default function DataTable<T>({
               return (
                 <tr
                   key={rk}
+                  role="row"
                   data-active={isActive}
+                  tabIndex={isActive ? 0 : -1}
                   aria-selected={isSel}
+                  onFocus={() => setActive(i)}
                   onClick={onRowClick ? () => onRowClick(row) : undefined}
-                  onMouseEnter={() => setActive(i)}
-                  className={`cursor-pointer border-b border-line/70 last:border-0 transition-colors ${
+                  onMouseEnter={() => { keyboardNav.current = false; setActive(i); }}
+                  className={`cursor-pointer border-b border-line/70 last:border-0 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-paper ${
                     isSel
                       ? "bg-paper text-ink"
                       : isActive
@@ -200,20 +235,30 @@ export default function DataTable<T>({
                         : "hover:bg-canvas"
                   }`}
                 >
-                  {columns.map((c) => (
-                    <td
-                      key={c.key}
-                      className={`px-3 py-2.5 text-sm ${ALIGN[c.align ?? "left"]} ${isSel ? "text-ink" : c.rank ? "font-mono font-medium tabular-nums text-muted" : "text-paper"}`}
-                    >
-                      {c.render ? (
-                        c.render(row)
-                      ) : c.rank ? (
-                        <span className="text-xs">{String(i + 1).padStart(2, "0")}</span>
-                      ) : (
-                        String((row as Record<string, unknown>)[c.key] ?? "—")
-                      )}
-                    </td>
-                  ))}
+                  {columns.map((c) => {
+                    const sticky = c.sticky && stickyLeft.has(c.key);
+                    const isLastSticky = c.key === lastStickyKey;
+                    return (
+                      <td
+                        key={c.key}
+                        role="gridcell"
+                        style={sticky ? { left: stickyLeft.get(c.key) } : undefined}
+                        className={`px-3 py-2.5 text-sm ${ALIGN[c.align ?? "left"]} ${isSel ? "text-ink" : c.rank ? "font-mono font-medium tabular-nums text-muted" : "text-paper"} ${
+                          sticky
+                            ? `sticky z-[5] bg-surface ${isLastSticky ? "border-r border-line shadow-[4px_0_8px_-6px_rgba(0,0,0,0.25)]" : ""} ${isSel ? "!bg-paper" : isActive ? "!bg-canvas" : ""}`
+                            : ""
+                        }`}
+                      >
+                        {c.render ? (
+                          c.render(row)
+                        ) : c.rank ? (
+                          <span className="text-xs">{String(i + 1).padStart(2, "0")}</span>
+                        ) : (
+                          String((row as Record<string, unknown>)[c.key] ?? "—")
+                        )}
+                      </td>
+                    );
+                  })}
                 </tr>
               );
             })}
