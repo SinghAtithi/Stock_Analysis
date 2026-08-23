@@ -11,3 +11,10 @@ db/data/
 # ingest caches / raw downloads
 scripts/.cache/
 data/raw/
+.next-*/
+
+# local scratch / tooling state
+tmp/
+nohup.out
+opencode.json
+.opencode/
