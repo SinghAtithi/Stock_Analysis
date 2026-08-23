@@ -1,4 +1,4 @@
-import instruments from "@/data/instruments.json";
+import instruments from "@/data/instruments.json" with { type: "json" };
 
 /* Yahoo index tickers differ from exchange names (NIFTY 50 != ^NSEI).
    Shared by the chart layer (marketData.ts) and anything resolving index
