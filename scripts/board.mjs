@@ -8,7 +8,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
-import { mergeBoards } from "./lib/board-merge.mjs";
+import { mergeBoards } from "../web/src/lib/kanban/board-merge.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // NIFTY_BOARD_FILE: override for tests / parallel sandboxes (TASK-21)

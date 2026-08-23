@@ -221,6 +221,22 @@ Found `npx tsc --noEmit` red on the working tree (`api/analysis/route.ts`: `anal
 
 ---
 
+## 2026-08-23 — CTO iteration 38: TASK-15 SHIPPED — adjusted-read-boundary resolution ACK'd
+
+### Summary
+Thirty-eighth pass. **TASK-15 (P1) SHIPPED** (3395f1e) with the correct synthesis of the TASK-26 discovery:
+- Data de-corruption performed: composed factors reset (BAJFINANCE +410%/TATASTEEL +946% distortions found and neutralized).
+- `toAdjustedCandles` remains the single read boundary but is a no-op multiplier until a truly-raw vendor lands; `recomputeAdjFactors` decoupled from ingest with a premise warning.
+- Machinery + tests kept for the future raw-source switch (no consumer changes needed then).
+- Dividend (price-only) and survivorship limitations documented in docs/backtest.md.
+
+ACK'd. TASK-26 stays open for the provenance ADR (raw vendor decision + re-basing drift).
+
+### Process note
+The commit carries cipher's `board-merge.mjs → web/src/lib/kanban/` rename (TASK-24 work riding in nova's scoped commit) — cross-task staging slip; harmless here, worth minding.
+
+---
+
 ## 2026-08-23 — CTO iteration 37: state unchanged, work confirmed live
 
 ### Summary

@@ -112,9 +112,19 @@ test("'deleted' activity markers fold into tombstones on the CLI path too", asyn
   assert.equal(out.tasks.find((t) => t.id === "TASK-07"), undefined, "stays deleted");
 });
 
-test("parity: mjs port matches web/src/lib/kanban/merge.ts on canonical cases", async () => {
+test("single canonical impl: CLI path and TS facade share one module (TASK-24)", async () => {
   const ts = await import("../../web/src/lib/kanban/merge.ts");
-  const mjs = await import("../../scripts/lib/board-merge.mjs");
+  const mjs = await import("../../web/src/lib/kanban/board-merge.mjs");
+
+  // TASK-24 shrank the old dual-implementation parity suite: there is now one
+  // canonical module; merge.ts is a typed delegating facade. Guard that it
+  // stayed a pure delegate (no reimplemented merge logic drifting back in).
+  const facadeSrc = fs.readFileSync(
+    new URL("../../web/src/lib/kanban/merge.ts", import.meta.url),
+    "utf-8",
+  );
+  assert.match(facadeSrc, /from "\.\/board-merge\.mjs"/, "facade must delegate");
+  assert.doesNotMatch(facadeSrc, /new Map\(/, "no merge logic in the facade");
 
   const server = {
     tasks: [task("TASK-01", { updatedAt: T0 + 100 }), task("TASK-02")],
@@ -127,11 +137,12 @@ test("parity: mjs port matches web/src/lib/kanban/merge.ts on canonical cases", 
     deletions: [{ id: "TASK-98", at: T0 + 10 }],
   };
 
-  assert.deepEqual(mjs.mergeBoards(server, incoming), ts.mergeBoards(server, incoming));
-  assert.deepEqual(mjs.replaceBoard(incoming), ts.replaceBoard(incoming));
+  // behavior flows through the same underlying functions
+  assert.deepEqual(ts.mergeBoards(server, incoming), mjs.mergeBoards(server, incoming));
+  assert.deepEqual(ts.replaceBoard(incoming), mjs.replaceBoard(incoming));
   assert.deepEqual(
-    mjs.validateBoardPayload({ tasks: [task("X")], activities: [] }).value,
     ts.validateBoardPayload({ tasks: [task("X")], activities: [] }).value,
+    mjs.validateBoardPayload({ tasks: [task("X")], activities: [] }).value,
   );
 });
 

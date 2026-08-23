@@ -1,10 +1,9 @@
 /**
- * Plain-JS port of web/src/lib/kanban/merge.ts (TASK-02) so CLI writers
- * (scripts/board.mjs, scripts/workflow.mjs) get the same lost-update-safe
- * merge as POST /api/board — TASK-21. Keep the two files semantically in sync;
- * scripts/tests/board-cli-race.test.mjs asserts parity on canonical cases.
+ * CANONICAL board merge implementation (TASK-24) — single source consumed by
+ * POST /api/board (via the typed facade merge.ts) and CLI writers
+ * (scripts/board.mjs imports this file directly; stock node cannot load .ts).
  *
- * Merge contract:
+ * Ported from TASK-02's original merge.ts. Semantics:
  * - union of task ids; ids on both sides resolve by newest `updatedAt`
  * - persisted deletions[] and "deleted" activity markers hide tasks whose
  *   `updatedAt <= at`; newer edits recreate the task
@@ -89,8 +88,7 @@ function tombstonesFromActivities(activities) {
 }
 
 /** Merge an incoming full-state payload into the current server state (pure). */
-export function mergeBoards(server, incoming) {
-  const now = Date.now();
+export function mergeBoards(server, incoming, now = Date.now()) {
   const delAt = new Map();
   const fold = (list) => {
     for (const d of list) delAt.set(d.id, Math.max(delAt.get(d.id) ?? 0, d.at));
