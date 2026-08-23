@@ -25,7 +25,10 @@ export function load() {
 export function save(data) {
   data.updatedAt = Date.now();
   fs.mkdirSync(path.dirname(BOARD_FILE), { recursive: true });
-  fs.writeFileSync(BOARD_FILE, JSON.stringify(data, null, 2));
+  // temp+rename: readers (GET /api/board, other CLIs) never see a torn file
+  const tmp = `${BOARD_FILE}.${process.pid}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
+  fs.renameSync(tmp, BOARD_FILE);
 }
 
 export function uid() { return Math.random().toString(36).slice(2,6).toUpperCase(); }

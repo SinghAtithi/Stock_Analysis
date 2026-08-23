@@ -9,6 +9,7 @@ import DataTable from "@/components/DataTable";
 import type { Column as DTCol } from "@/components/DataTable";
 import { COLUMNS, PHASE_META, PRIORITY_META, type ColumnId, type Task, type Priority, type PhaseId } from "@/lib/kanban/types";
 import { CALLSIGNS, AGENT_BY_ID } from "@/lib/kanban/agents";
+import type { Tombstone } from "@/lib/kanban/merge";
 import {
   Search,
   Plus,
@@ -108,6 +109,9 @@ export default function BoardPage() {
   // pre-hydration state (empty) never races the GET and clobbers the server board
   const hydratedRef = useRef(false);
   const [activities, setActivities] = useState<Activity[]>([]);
+  // deletion tombstones — sent with every sync so deletes survive server-side
+  // merge (a task absent from a stale writer's payload must NOT be resurrected)
+  const [deletions, setDeletions] = useState<Tombstone[]>([]);
   const [agentId, setAgentId] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [phaseFilter, setPhaseFilter] = useState<PhaseId | "ALL">("ALL");
@@ -138,7 +142,7 @@ export default function BoardPage() {
       }
     } catch {}
     // load board
-    let local: { tasks?: Task[]; activities?: Activity[] } | null = null;
+    let local: { tasks?: Task[]; activities?: Activity[]; deletions?: Tombstone[] } | null = null;
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) local = JSON.parse(raw);
@@ -150,38 +154,44 @@ export default function BoardPage() {
         if (json.tasks && Array.isArray(json.tasks)) {
           setTasks(json.tasks);
           setActivities(json.activities ?? []);
-          localStorage.setItem(STORAGE_KEY, JSON.stringify({ tasks: json.tasks, activities: json.activities ?? [] }));
+          setDeletions(json.deletions ?? []);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({ tasks: json.tasks, activities: json.activities ?? [], deletions: json.deletions ?? [] }));
           return;
         }
       } catch {}
       if (local?.tasks?.length) {
         setTasks(local.tasks);
         setActivities(local.activities ?? []);
+        setDeletions(local.deletions ?? []);
       }
     };
     loadRemote().finally(() => { hydratedRef.current = true; });
   }, []);
 
-  // persist local + remote (debounced)
+  // persist local + remote (debounced). POSTs merge server-side by task id
+  // (TASK-02); `mode:"replace"` after an import so snapshots swap, not merge.
   const saveRef = useRef<number | null>(null);
+  const replaceNextRef = useRef(false);
   useEffect(() => {
     if (!hydratedRef.current) return;
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ tasks, activities }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ tasks, activities, deletions }));
       localStorage.setItem(AGENT_KEY, agentId ?? "");
     } catch {}
+    const replace = replaceNextRef.current;
+    replaceNextRef.current = false;
     if (saveRef.current) window.clearTimeout(saveRef.current);
     saveRef.current = window.setTimeout(() => {
       fetch("/api/board", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ tasks, activities }),
+        body: JSON.stringify({ tasks, activities, deletions, ...(replace ? { mode: "replace" } : {}) }),
       }).catch(() => {});
     }, 600);
     return () => {
       if (saveRef.current) window.clearTimeout(saveRef.current);
     };
-  }, [tasks, activities, agentId]);
+  }, [tasks, activities, deletions, agentId]);
 
   // keyboard
   useEffect(() => {
@@ -294,6 +304,8 @@ export default function BoardPage() {
 
   const deleteTask = (id: string) => {
     setTasks((prev) => prev.filter((t) => t.id !== id));
+    // tombstone so server-side merge drops the task instead of resurrecting it
+    setDeletions((prev) => [...prev.filter((d) => d.id !== id), { id, at: Date.now() }]);
     setSelected(null);
     pushActivity(id, "deleted");
   };
@@ -335,6 +347,8 @@ export default function BoardPage() {
         if (j.tasks && Array.isArray(j.tasks)) {
           setTasks(j.tasks);
           if (j.activities) setActivities(j.activities);
+          setDeletions([]);
+          replaceNextRef.current = true; // snapshot replaces the board, not merges
           pushActivity("BOARD", "imported JSON");
           alert(`Imported ${j.tasks.length} tasks`);
         }

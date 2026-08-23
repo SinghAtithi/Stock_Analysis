@@ -9,7 +9,7 @@
     "lint": "eslint",
     "db:migrate": "node ../scripts/migrate.mjs",
     "signals:run": "node --experimental-strip-types ../scripts/run-signals.mjs",
-    "test": "node --experimental-strip-types --test \"../scripts/tests/*.test.mjs\""
+    "test": "node --experimental-strip-types --import ../scripts/tests/helpers/register.mjs --test \"../scripts/tests/*.test.mjs\""
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
