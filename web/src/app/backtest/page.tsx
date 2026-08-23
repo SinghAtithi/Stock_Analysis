@@ -305,6 +305,14 @@ function BacktestInner() {
         : null,
     [result]
   );
+  /* TASK-254: benchmark side of the sr-only summary — same math, bench series */
+  const benchHeadline = useMemo(
+    () =>
+      result
+        ? computeSeriesMetrics(result.equity.map((p) => ({ date: p.date, value: p.bench })))
+        : null,
+    [result]
+  );
   const fmtPct1 = (v: number | null): string =>
     v === null || !Number.isFinite(v) ? "—" : `${(v * 100).toFixed(1)}%`;
 
@@ -445,7 +453,62 @@ function BacktestInner() {
               </p>
             )}
             <div className="rounded-2xl border border-line bg-surface p-4 shadow-sm">
-              <div ref={chartRef} className="h-[380px] w-full" />
+              {/* TASK-254: visible legend — token-driven so it tracks both
+                  themes; green-vs-gray also reads without color vision */}
+              <div className="mb-2 flex flex-wrap items-center gap-x-5 gap-y-1">
+                <span className="flex items-center gap-2 text-xs text-muted">
+                  <span aria-hidden className="h-0.5 w-4 rounded-full bg-up" />
+                  {nameOf(strategyId)}
+                </span>
+                <span className="flex items-center gap-2 text-xs text-muted">
+                  <span aria-hidden className="h-0.5 w-4 rounded-full bg-muted" />
+                  Benchmark
+                </span>
+              </div>
+              {/* TASK-254: figure+figcaption names the curve without role="img"
+                  — the chart lib injects an anchor internally, which would make
+                  an img container a nested-interactive violation */}
+              <figure>
+                <div
+                  ref={chartRef}
+                  className="h-[380px] w-full"
+                />
+                <figcaption className="sr-only">
+                  Equity curve, {nameOf(strategyId)} versus benchmark,
+                  window {result.config.startDate}
+                  {result.config.endDate ? ` to ${result.config.endDate}` : " to present"}.
+                  Strategy CAGR {fmtPct1(headline?.cagr ?? null)}, benchmark CAGR{" "}
+                  {fmtPct1(benchHeadline?.cagr ?? null)}. Full metrics in the summary table.
+                </figcaption>
+              </figure>
+              <table className="sr-only">
+                <caption>Backtest summary, {nameOf(strategyId)} vs benchmark</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Series</th>
+                    <th scope="col">Final equity</th>
+                    <th scope="col">CAGR</th>
+                    <th scope="col">Sharpe</th>
+                    <th scope="col">Max drawdown</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">{nameOf(strategyId)}</th>
+                    <td>{headline ? fmtPct1(headline.totalReturn) : "—"}</td>
+                    <td>{fmtPct1(headline?.cagr ?? null)}</td>
+                    <td>{fmtSharpe(headline?.sharpe)}</td>
+                    <td>{fmtPct1(headline?.maxDrawdown ?? null)}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Benchmark</th>
+                    <td>{benchHeadline ? fmtPct1(benchHeadline.totalReturn) : "—"}</td>
+                    <td>{fmtPct1(benchHeadline?.cagr ?? null)}</td>
+                    <td>{fmtSharpe(benchHeadline?.sharpe)}</td>
+                    <td>{fmtPct1(benchHeadline?.maxDrawdown ?? null)}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </section>
         )}
