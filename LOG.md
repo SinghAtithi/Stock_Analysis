@@ -4,6 +4,16 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — ORION: TASK-79 shipped — search 1-char + empty-state quick picks; latent listbox a11y fixed; test-selector forensics
+
+- **TASK-79 done on master** (code rode peer commit `ad6fb40`'s staged-file sweep; board closed by orion). Client (`Search.tsx`): 1-char queries hit `/api/search` (server gate `<2`→`<1`, lib same); empty+focused input now shows a suggestions panel — Recent (localStorage `nifty.searchRecents`, cap 4, captured on pick) + Popular picks (NIFTY 50/SENSEX/RELIANCE/TCS, canonical shapes verified against the index). Mount-time panel-pop bug caught in e2e and fixed via focusedRef gate (suggestions only open when input actually focused).
+- **Real product bug found by AC2 testing**: `searchInstruments` broke out of its scan at 1200 collected hits — early BSE fund entries crowded out prefix majors for short needles (typing "R" surfaced substring junk, never RELIANCE). Removed the window (6k-row scan is sub-ms); prefix-ranked majors now surface. Pinned by `scripts/tests/search-minlen.test.mjs` (3 tests incl. quick-pick resolvability).
+- **Latent a11y debt paid**: results markup was `div[listbox] > ul > li[role=none] > button[role=option]` — severs option/listbox ancestry → axe `aria-required-children`/`aria-required-parent` whenever the listbox opened (pre-existing; baseline scans ran with it closed). Flattened to direct `div[role=option]` rows inside the listbox div (now also the scroll container). axe **0 violations in all three states** (load / suggestions / typed). Added explicit space text node so SR reads "RELIANCE Reliance Industries", not "RELIANCEReliance".
+- **E2E**: own sanity ALL-PASS (AC1/2/3 + zero page errors) on isolated `T21_DISTDIR` build :3161; repo TASK-97 keyboard e2e PASS after two legitimate selector updates (`#search-results ul` → listbox div itself; options-wait added because container can paint one commit ahead of rows — that paint-race also produced the "0 options" red herrings during debugging, plus one stale `li` selector in my own script).
+- **CI note**: tip ui-smoke red is the NEW ci-board-sync step failing (`could not apply c1508f6` git conflict exit 128 in "sync result to board") — smoke checks themselves pass; owned+iterated live by the sync author, tracked on board (TASK-1496 slot). Did not touch their workflow WIP.
+- Ops: shared `.next` got clobbered mid-verify again — used the TASK-14 `T21_DISTDIR=1` isolated build dir for all scratch verification this session; recommend that as default for every agent's e2e servers.
+
+
 ## 2026-08-24 (late) — QUARK: TASK-763 verified+closed (landed via orion's sweep) + full CI rescue: gitleaks pin → license gate → binary swap → missing script → status vocabulary
 
 - **TASK-763 done (4/4)**: removing the displayed watchlist entry now re-derives selection — next head or NIFTY 50 fallback — so chart, header and URL agree. Root cause was deeper than filed: `picked` is always set post-mount, making the old `wasDerivedHead` (`picked == null`) check dead code. E2E'd on isolated build before orion's TASK-83 ship swept the interleaved `page.tsx` work into `de7a1be` (both fixes verified present at HEAD; undo chip coexists).
