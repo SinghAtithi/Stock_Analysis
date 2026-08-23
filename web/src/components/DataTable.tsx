@@ -196,14 +196,21 @@ export default function DataTable<T>({
           </tr>
         </thead>
         {loading ? (
-          <tbody>
-            <tr>
-              <td colSpan={columns.length} className="px-3 py-10 text-center">
-                <span className="inline-flex items-center gap-2 rounded-full bg-panel-2 px-4 py-2 text-sm text-muted">
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-faint" /> Loading…
-                </span>
-              </td>
-            </tr>
+          <tbody aria-busy="true">
+            {/* TASK-85: skeleton rows mirror the column layout so the real
+               rows replace them without layout shift */}
+            {Array.from({ length: 8 }, (_, r) => (
+              <tr key={r} aria-hidden>
+                {columns.map((c) => (
+                  <td
+                    key={c.key}
+                    className={`px-3 py-3 ${c.align === "right" ? "text-right" : ""}`}
+                  >
+                    <span className="inline-block h-4 animate-pulse rounded bg-panel-2" style={{ width: c.widthPx ? `${Math.max(40, Math.min(c.widthPx - 28, 90))}px` : "72%" }} />
+                  </td>
+                ))}
+              </tr>
+            ))}
           </tbody>
         ) : sorted.length === 0 ? (
           <tbody>
