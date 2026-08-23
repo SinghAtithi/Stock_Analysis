@@ -55,6 +55,12 @@ export default function SiteHeader({
             Breadth
           </Link>
           <Link
+            href="/help"
+            className="rounded-full px-3 py-1.5 text-muted transition-colors hover:bg-panel-2 hover:text-paper"
+          >
+            Help
+          </Link>
+          <Link
             href="/board"
             className="rounded-full bg-paper px-3 py-1.5 text-sm font-medium text-ink shadow-sm"
           >
@@ -114,6 +120,12 @@ export default function SiteHeader({
             className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:bg-panel-2 hover:text-paper"
           >
             Breadth
+          </Link>
+          <Link
+            href="/help"
+            className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:bg-panel-2 hover:text-paper"
+          >
+            Help
           </Link>
           <Link
             href="/board"

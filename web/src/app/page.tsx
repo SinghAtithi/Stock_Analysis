@@ -636,6 +636,7 @@ export default function Home() {
             <span className="flex items-center gap-3">
               <Link href="/screener" className="hover:text-paper">Screener</Link>
               <Link href="/breadth" className="hover:text-paper">Breadth</Link>
+              <Link href="/help" className="hover:text-paper">Help</Link>
               <Link href="/pricing" className="hover:text-paper">Pricing</Link>
               <Link href="/board" className="rounded-full bg-paper px-2.5 py-1 font-medium text-ink">Board</Link>
               <span className="hidden sm:inline">NIFTY · {new Date().getFullYear()}</span>

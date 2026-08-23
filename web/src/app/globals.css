@@ -126,6 +126,20 @@ html.dark ::-webkit-scrollbar-thumb:hover {
   animation: fade-up 0.32s ease both;
 }
 
+@keyframes caret-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  95% {
+    opacity: 0;
+  }
+}
+.caret-blink {
+  animation: caret-blink 1.1s step-end infinite;
+}
+
 .price-tick {
   transition: color 0.2s ease;
 }

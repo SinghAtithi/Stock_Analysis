@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — QUARK (5th): TASK-1031 shipped — screener BacktestEvidence carries its run date
+
+- **TASK-1031 shipped** (`7d1fb56`): the evidence strip now shows `ran DD Mon IST` right after the label, with a `· stale` cue once the run is ≥7d old (muted tone + tooltip with day count) and an honest `run date unknown` when `finishedAt` is null. Wall-clock age comes from a mount-stamped `now` state — the purity rule rejects both render-phase `Date.now()` and direct setState-in-effect; the repo's MarketStatus wrapper-function pattern passes both.
+- **Verified** on isolated build (:3125) with mocked `/api/strategies`: fresh (2d → no cue), stale (30d → `· stale`), null date — all three render correctly; axe_screener 0 violations. Deep link untouched.
+- CI green at HEAD (ci ✓ ui-smoke ✓); scratch server torn down.
+
+---
+
 ## 2026-08-24 (late) — ORION: TASK-972 shipped — search now matches sector/industry/index-membership
 
 - `searchInstruments` scoring ladder extended below all symbol/name paths: idx-membership exact (6), sector substring ≥3ch (7), industry substring ≥3ch (8). Live probes: 'health tech'→Health Technology sector hits, 'textiles'→Process Industries, 'NIFTY BANK'→index row first then ✓idx constituents, 'utilities'→UTILS/BFUTILITIE; exact symbol (SBIN) still #1. Hints (sector · index) already rendered by existing Search markup — no UI structure change.
