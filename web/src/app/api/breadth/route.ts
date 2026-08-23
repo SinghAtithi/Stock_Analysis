@@ -50,10 +50,10 @@ interface DayRec {
 
 const emptyPayload = (): {
   days: DayRec[];
-  meta: { as_of: string | null; sources: { vix: string | null; fii: string | null; ad: string | null } };
+  meta: { as_of: string | null; sources: { vix: string | null; fii: string | null; di: string | null; ad: string | null } };
 } => ({
   days: [],
-  meta: { as_of: null, sources: { vix: null, fii: null, ad: null } },
+  meta: { as_of: null, sources: { vix: null, fii: null, di: null, ad: null } },
 });
 
 function dayDate(ts: number): string {
@@ -132,9 +132,15 @@ function buildPayload(rows: SqlRow[]) {
 
   const newest = days.size ? Math.max(...days) : null;
   const has = (name: string) => rows.some((r) => r.name === name);
+  /* fii and di report freshness independently: one fiidii row can carry
+     FII totals with DII fields absent, and each card gates on its own key */
+  const fiidiiRows = [...fiiByDay.values()];
+  const hasFii = fiidiiRows.some((v) => v.fii_total !== null || v.fii_equity !== null);
+  const hasDi = fiidiiRows.some((v) => v.di_total !== null || v.di_equity !== null);
   const sources = {
     vix: vixByDay.size ? (has("vix") ? "vix" : "vix_spot") : null,
-    fii: fiiByDay.size ? "fiidii" : null,
+    fii: hasFii ? "fiidii" : null,
+    di: hasDi ? "fiidii" : null,
     ad: adByDay.size ? (has("breadth") ? "breadth" : "breadth_spot") : null,
   };
   return {

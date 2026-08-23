@@ -26,7 +26,7 @@ interface Breadth {
   days: Day[];
   meta: {
     as_of: string | null;
-    sources: { vix: string | null; fii: string | null; ad: string | null };
+    sources: { vix: string | null; fii: string | null; di: string | null; ad: string | null };
   };
 }
 
@@ -203,7 +203,12 @@ export default function BreadthPage() {
             <div className="mt-3">
               <FlowBars values={diSeries} />
             </div>
-            {!data?.meta.sources.fii && <p className="mt-2 text-xs text-faint">No data — source blocked</p>}
+            {!data?.meta.sources.di &&
+              (data?.meta.sources.fii ? (
+                <p className="mt-2 text-xs text-faint">FII present — DII missing from feed</p>
+              ) : (
+                <p className="mt-2 text-xs text-faint">No data — source blocked</p>
+              ))}
           </section>
         </div>
 
