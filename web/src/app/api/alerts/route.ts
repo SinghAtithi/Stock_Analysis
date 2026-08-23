@@ -3,6 +3,8 @@ import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { alertDeletePlan, isMembershipType, validateAlertInput } from "@/lib/alerts";
 import { checkCap, tierForDevice } from "@/lib/tiers";
+import { retryAfterSec, takeToken } from "@/lib/upstreamGuards";
+import { clientKeyFrom } from "@/lib/clientKey";
 
 /* /api/alerts — anonymous device-scoped price alerts (ROADMAP T25 v1).
  * GET    ?deviceId=...           → alerts for the device (newest first)
@@ -45,6 +47,13 @@ export async function GET(request: NextRequest) {
   const deviceId = request.nextUrl.searchParams.get("deviceId") ?? "";
   if (!DEVICE_RE.test(deviceId)) {
     return NextResponse.json({ error: "invalid_device_id" }, { status: 400 });
+  }
+  /* TASK-1373: throttle deviceId probing on the read path too */
+  if (!takeToken(`alerts:${clientKeyFrom(request.headers)}`)) {
+    return NextResponse.json(
+      { error: "rate_limited" },
+      { status: 429, headers: { "Retry-After": String(retryAfterSec()) } }
+    );
   }
   const db = openDb(false);
   /* DB-less environments degrade to an empty list (see watchlist GET note) */

@@ -1,4 +1,4 @@
-/* Upstream-proxy GET guards (TASK-1403): per-IP token bucket + 60s
+/* Upstream-proxy GET guards (TASK-1403): per-key token bucket + 60s
  * micro-cache for routes that fan out to Yahoo/Moneycontrol/Groww.
  *
  * Pure functions + injectable clock, mirroring tiers.ts/boardGuards.ts.
@@ -6,6 +6,7 @@
  * before these caps are load-bearing. Budget math: a full bucket allows a
  * 30-request burst and refills 0.5 req/s, so sustained abuse sheds long
  * before the marketData circuit breakers open. */
+import { evictOldest } from "./tiers";
 
 const BUCKET_CAP = 30;
 const REFILL_PER_MS = 30 / 60_000; /* ~30 req/min per IP */
@@ -32,9 +33,13 @@ export function takeToken(
     return false;
   }
   b.tokens -= 1;
+  buckets.delete(key); // refresh recency: delete+set makes eviction true-LRU
   buckets.set(key, b);
-  /* bounded store — unique-IP floods can't grow it unbounded */
-  if (buckets.size > 5000) buckets.clear();
+  /* TASK-1465 semantics: bounded WITHOUT clear-all — a bucket idle for
+     10+ minutes (fully refilled, no traffic) is evictable; actively-hit
+     keys survive floods via LRU */
+  const IDLE_MS = 10 * 60_000;
+  evictOldest(buckets, 5000, 4000, (x) => now - x.lastRefill < IDLE_MS);
   return true;
 }
 

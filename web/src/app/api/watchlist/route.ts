@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import path from "node:path";
 import { findInstrumentListing, isIndexSymbol } from "@/lib/instruments";
+import { retryAfterSec, takeToken } from "@/lib/upstreamGuards";
+import { clientKeyFrom } from "@/lib/clientKey";
 
 /* /api/watchlist — OPTIONAL cloud mirror of the localStorage watchlist
    (TASK-62). localStorage stays the source of truth; this only mirrors.
@@ -99,6 +101,13 @@ export async function GET(request: NextRequest) {
   const deviceId = request.nextUrl.searchParams.get("deviceId") ?? "";
   if (!DEVICE_RE.test(deviceId)) {
     return NextResponse.json({ error: "invalid_device_id" }, { status: 400 });
+  }
+  /* TASK-1373: throttle deviceId probing — each guess costs a SQLite read */
+  if (!takeToken(`wl:${clientKeyFrom(request.headers)}`)) {
+    return NextResponse.json(
+      { error: "rate_limited" },
+      { status: 429, headers: { "Retry-After": String(retryAfterSec()) } }
+    );
   }
   const db = openDb(false);
   /* DB-less environments (fresh CI checkout, cold deploy) degrade to an empty
