@@ -2984,7 +2984,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "review",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -2992,26 +2992,26 @@
         {
           "id": "1",
           "text": "company page header gains an 'Open chart →' / 'Open in terminal' link that routes to /?s=SYMBOL&e=EXCHANGE (resolves via instruments index, not bare symbol)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "star/watchlist toggle available on company page",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "alert create CTA available",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "existing per-section empty-state resilience preserved",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787501693919,
-      "updatedAt": 1787501693919,
+      "updatedAt": 1787523469216,
       "blocked": false
     },
     {
@@ -43548,7 +43548,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -43575,7 +43575,7 @@
         }
       ],
       "createdAt": 1787510829159,
-      "updatedAt": 1787513268439,
+      "updatedAt": 1787523453405,
       "blocked": false
     },
     {
@@ -44506,7 +44506,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -44533,7 +44533,7 @@
         }
       ],
       "createdAt": 1787511070854,
-      "updatedAt": 1787511070854,
+      "updatedAt": 1787523453830,
       "blocked": false
     },
     {
@@ -45264,7 +45264,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -45291,7 +45291,7 @@
         }
       ],
       "createdAt": 1787511337874,
-      "updatedAt": 1787511337874,
+      "updatedAt": 1787523454141,
       "blocked": false
     },
     {
@@ -46005,7 +46005,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "neon",
       "labels": [],
       "estimate": 3,
@@ -46032,7 +46032,7 @@
         }
       ],
       "createdAt": 1787511479219,
-      "updatedAt": 1787512242459,
+      "updatedAt": 1787523454548,
       "blocked": false
     },
     {
@@ -46159,7 +46159,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -46167,36 +46167,36 @@
         {
           "id": "1",
           "text": "hostile board payloads (__proto__/oversized/wrong-shape) rejected",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "symbol/q injection strings never reach curl",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "evaluate without CRON_SECRET 401",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "deviceId brute-force pattern throttled",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "backtest config bombs clamped",
-          "done": false
+          "done": true
         },
         {
           "id": "6",
           "text": "runs green via npm test",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787511594474,
-      "updatedAt": 1787511594474,
+      "updatedAt": 1787523205525,
       "blocked": false
     },
     {
@@ -46783,7 +46783,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "viper",
       "labels": [],
       "estimate": 3,
@@ -46805,7 +46805,7 @@
         }
       ],
       "createdAt": 1787511713785,
-      "updatedAt": 1787512242072,
+      "updatedAt": 1787523454889,
       "blocked": false
     },
     {
@@ -46938,7 +46938,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -46965,7 +46965,7 @@
         }
       ],
       "createdAt": 1787511822903,
-      "updatedAt": 1787511822903,
+      "updatedAt": 1787523455245,
       "blocked": false
     },
     {
@@ -48882,6 +48882,139 @@
   ],
   "activities": [
     {
+      "id": "G8WE",
+      "taskId": "TASK-80",
+      "text": "review · gates green tsc=9.2s·lint=29.2s·test=7.1s",
+      "agent": "ORION",
+      "at": 1787523469216
+    },
+    {
+      "id": "LQ5O",
+      "taskId": "TASK-1451",
+      "text": "moved todo → done",
+      "agent": "CIPHER",
+      "at": 1787523455245
+    },
+    {
+      "id": "FMY1",
+      "taskId": "TASK-1447",
+      "text": "moved todo → done",
+      "agent": "CIPHER",
+      "at": 1787523454889
+    },
+    {
+      "id": "6C4R",
+      "taskId": "TASK-1429",
+      "text": "moved todo → done",
+      "agent": "CIPHER",
+      "at": 1787523454548
+    },
+    {
+      "id": "O6S9",
+      "taskId": "TASK-1412",
+      "text": "moved todo → done",
+      "agent": "CIPHER",
+      "at": 1787523454141
+    },
+    {
+      "id": "KPTR",
+      "taskId": "TASK-1394",
+      "text": "moved todo → done",
+      "agent": "CIPHER",
+      "at": 1787523453830
+    },
+    {
+      "id": "8VFN",
+      "taskId": "TASK-1370",
+      "text": "moved doing → done",
+      "agent": "CIPHER",
+      "at": 1787523453406
+    },
+    {
+      "id": "SYCR",
+      "taskId": "TASK-80",
+      "text": "✓ checked existing per-section empty-state resilience pres",
+      "agent": "ORION",
+      "at": 1787523423304
+    },
+    {
+      "id": "TVD8",
+      "taskId": "TASK-80",
+      "text": "✓ checked alert create CTA available",
+      "agent": "ORION",
+      "at": 1787523422968
+    },
+    {
+      "id": "P2ZJ",
+      "taskId": "TASK-80",
+      "text": "✓ checked star/watchlist toggle available on company page",
+      "agent": "ORION",
+      "at": 1787523422623
+    },
+    {
+      "id": "PC9S",
+      "taskId": "TASK-80",
+      "text": "✓ checked company page header gains an 'Open chart →' / 'O",
+      "agent": "ORION",
+      "at": 1787523422355
+    },
+    {
+      "id": "1TJM",
+      "taskId": "TASK-1433",
+      "text": "shipped a2cc26a (local) · test(security): cron-auth gate regression suite + SECURITY.md evaluate row flipped to gated (TASK-1433 close-out with TASK-1429) · gates tsc=10.9s·lint=34.6s·test=7.2s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787523205526
+    },
+    {
+      "id": "EWQE",
+      "taskId": "TASK-1433",
+      "text": "review · gates green tsc=10.8s·lint=32.8s·test=8.2s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787523137333
+    },
+    {
+      "id": "CW8D",
+      "taskId": "TASK-1433",
+      "text": "✓ checked runs green via npm test",
+      "agent": "CIPHER",
+      "at": 1787523085064
+    },
+    {
+      "id": "3KC2",
+      "taskId": "TASK-1433",
+      "text": "✓ checked backtest config bombs clamped",
+      "agent": "CIPHER",
+      "at": 1787523084727
+    },
+    {
+      "id": "A4UF",
+      "taskId": "TASK-1433",
+      "text": "✓ checked deviceId brute-force pattern throttled",
+      "agent": "CIPHER",
+      "at": 1787523084510
+    },
+    {
+      "id": "A0OE",
+      "taskId": "TASK-1433",
+      "text": "✓ checked evaluate without CRON_SECRET 401",
+      "agent": "CIPHER",
+      "at": 1787523084200
+    },
+    {
+      "id": "SWAL",
+      "taskId": "TASK-1433",
+      "text": "✓ checked symbol/q injection strings never reach curl",
+      "agent": "CIPHER",
+      "at": 1787523083741
+    },
+    {
+      "id": "2KTZ",
+      "taskId": "TASK-1433",
+      "text": "✓ checked hostile board payloads (__proto__/oversized/wron",
+      "agent": "CIPHER",
+      "at": 1787523083476
+    },
+    {
       "id": "YE9Z",
       "taskId": "TASK-1496",
       "text": "created in todo · failed run https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32669553542",
@@ -49307,141 +49440,8 @@
       "text": "✓ checked ci green after pinning",
       "agent": "CIPHER",
       "at": 1787520717716
-    },
-    {
-      "id": "420F",
-      "taskId": "TASK-1478",
-      "text": "✓ checked dependabot or renovate config for action bumps",
-      "agent": "CIPHER",
-      "at": 1787520717394
-    },
-    {
-      "id": "Y4CF",
-      "taskId": "TASK-1478",
-      "text": "✓ checked all workflow uses: pinned to full SHA with versi",
-      "agent": "CIPHER",
-      "at": 1787520716990
-    },
-    {
-      "id": "D88E",
-      "taskId": "TASK-1478",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787520544416
-    },
-    {
-      "id": "NO8E",
-      "taskId": "TASK-1374",
-      "text": "shipped e64d75d (local) · fix(security): blocking ci security job — npm audit (prod, high+) + gitleaks full-history scan; optional local pre-commit script (TASK-1374) · gates tsc=14.0s·lint=36.5s·test=8.0s · e2e✓",
-      "agent": "CIPHER",
-      "at": 1787520458631
-    },
-    {
-      "id": "G1ZQ",
-      "taskId": "TASK-1374",
-      "text": "review · gates green tsc=15.0s·lint=32.4s·test=7.0s",
-      "agent": "CIPHER",
-      "at": 1787520383719
-    },
-    {
-      "id": "5XI7",
-      "taskId": "TASK-1374",
-      "text": "✓ checked workflow review gates run both",
-      "agent": "CIPHER",
-      "at": 1787520329061
-    },
-    {
-      "id": "O53I",
-      "taskId": "TASK-1374",
-      "text": "✓ checked gitleaks hook added via husky",
-      "agent": "CIPHER",
-      "at": 1787520328789
-    },
-    {
-      "id": "SBCO",
-      "taskId": "TASK-1374",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787520216632
-    },
-    {
-      "id": "0B5J",
-      "taskId": "TASK-763",
-      "text": "claimed by QUARK · → doing",
-      "agent": "QUARK",
-      "at": 1787520166524
-    },
-    {
-      "id": "R60Y",
-      "taskId": "TASK-83",
-      "text": "claimed by ORION · → doing",
-      "agent": "ORION",
-      "at": 1787520156743
-    },
-    {
-      "id": "PVJR",
-      "taskId": "TASK-1451",
-      "text": "moved review → done",
-      "agent": "CIPHER",
-      "at": 1787520114677
-    },
-    {
-      "id": "562H",
-      "taskId": "TASK-1451",
-      "text": "review · gates green tsc=9.2s·lint=31.0s·test=7.2s",
-      "agent": "CIPHER",
-      "at": 1787519966563
-    },
-    {
-      "id": "0MZX",
-      "taskId": "TASK-1451",
-      "text": "✓ checked npm test green",
-      "agent": "CIPHER",
-      "at": 1787519918780
-    },
-    {
-      "id": "LE2X",
-      "taskId": "TASK-1451",
-      "text": "✓ checked q capped ~64 chars in search+instruments routes ",
-      "agent": "CIPHER",
-      "at": 1787519918471
-    },
-    {
-      "id": "EYLV",
-      "taskId": "TASK-1451",
-      "text": "✓ checked --max-redirs 3 on curl args",
-      "agent": "CIPHER",
-      "at": 1787519918223
-    },
-    {
-      "id": "MP7A",
-      "taskId": "TASK-1451",
-      "text": "✓ checked maxBuffer <=8MB on execFileAsync",
-      "agent": "CIPHER",
-      "at": 1787519917899
-    },
-    {
-      "id": "1HA6",
-      "taskId": "TASK-1451",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787519782212
-    },
-    {
-      "id": "ZN8U",
-      "taskId": "TASK-95",
-      "text": "shipped 0e7fc6e → origin/master · feat(backtest): history rows gain human strategy name, Sharpe/maxDD (persisted at run time), /screener?strategy= cross-link and per-run Remove (DELETE /api/backtest?id=) — deep-link ?id= unchanged (TASK-95) · gates tsc=15.1s·lint=37.6s·test=7.9s · e2e✓",
-      "agent": "ORION",
-      "at": 1787519675099
-    },
-    {
-      "id": "9X06",
-      "taskId": "TASK-1412",
-      "text": "shipped 5aae154 → origin/master · fix(security): generic 500 bodies — internalError helper keeps raw exception text (server paths) server-side, clients get scope-tagged internal_error only (TASK-1412) · gates tsc=12.3s·lint=42.3s·test=7.3s · e2e✓",
-      "agent": "CIPHER",
-      "at": 1787519636462
     }
   ],
   "deletions": [],
-  "updatedAt": 1787522817469
+  "updatedAt": 1787523469310
 }
