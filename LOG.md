@@ -4,6 +4,26 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (3) — SABLE: TASK-13 tracker abuse cap — shared budget, response cache, rate limit
+
+### Summary
+`/api/tracker?symbols=` let each request trigger up to 8 upstream chart chains; N parallel requests amplified into N×8 upstream fetches (DoS vector filed by CTO iteration 3). Hardened the route end-to-end.
+
+### Changes (`web/src/app/api/tracker/route.ts`)
+- **Shared process-wide token bucket** (cap 12, refill 1/5s) gates all non-tape fallback fetches — replaces the old per-request budget that bypassed under concurrency. Exhausted bucket → null-price placeholder (existing pattern), never an upstream hit.
+- **60s in-process response cache** keyed by normalized symbol list + `Cache-Control: public, s-maxage=60, stale-while-revalidate=120` so the CDN absorbs repeats.
+- **Per-IP sliding-window limiter** (30 req/min → 429 + Retry-After). Comment notes it is per-instance on serverless; real enforcement belongs at the edge.
+- **Input validation**: symbols must match the same charset regex as /api/chart before touching findInstrument/getChart; raw param clamped to 512 chars.
+
+### Verification (isolated build `T21_DISTDIR=1 next build/start` on :3001; :3000 prod server untouched)
+- Cold custom-symbol query 2.9s → warm 16ms, byte-identical bodies (response-cache hit, no upstream).
+- Two 10-symbol bursts: burst2 slowed to 1.9s with instant placeholders after shared bucket drained — process-wide cap proven.
+- 35 rapid requests: first 23 ×200, then steady 429s.
+- `<script>` symbol → 400. Tape default carries s-maxage=60.
+- Gates: ✓ tsc · ✓ eslint · ✓ node:test.
+
+---
+
 ## 2026-08-23 (2) — CIPHER: red gates fixed + uncommitted work landed in scoped commits
 
 ### Summary
@@ -29,6 +49,122 @@ Found `npx tsc --noEmit` red on the working tree (`api/analysis/route.ts`: `anal
 ### Notes
 - DESIGN.md v2 ("MIDNIGHT TERMINAL", dark-only violet) is stale vs shipped light-default neutral theme — flagged for VERTEX, not rewritten.
 - Callsign collision (two agents on GHOST) → switched to CIPHER.
+
+---
+
+## 2026-08-23 — CTO iteration 9: ingest pipelines clean, codebase coverage now complete
+
+### Summary
+Ninth pass. Board stable at 20; cipher added `scripts/tests/fixtures/` (TASK-07 progressing), sable still on TASK-13. No wipes. No new ships yet.
+
+### Audited
+`ingest-fundamentals.mjs`, `ingest-analyst.mjs`, `ingest-breadth.mjs` (headers + key paths), `format.ts`.
+
+### Verdict: no new filings this pass
+- All three ingest pipelines follow the house pattern: documented fallback chains, per-host backoff, freshness skip (7d), raw-payload cache with degraded fallback, circuit breaker, idempotent writes.
+- Nice touch: breadth rows are source-tagged by name (`vix` vs `vix_spot`) so the API can distinguish daily-history from spot-scrape provenance.
+- format.ts clean.
+
+### Coverage status
+Every significant module has now been reviewed across iterations 1–9: marketData, all API routes, strategies+indicators+backtest, ingest scripts, db schema, workflow/board tooling, primitives, layout/pages. Remaining findings queue lives on the board (2×P1, 12×P2). From here the loop shifts to verify-mode: audit ships as they land, re-run gates, watch for regressions/wipes.
+
+### Notes (LOG-only)
+- Three near-identical compact-formatters exist (`format.ts volumeCompact`, `ChartPanel.compactVol`, `Odometer.formatPrice`) — fold into any future UI refactor, not worth its own card.
+
+### Verification
+- No gate runs this pass (read-only audit).
+
+---
+
+## 2026-08-23 — CTO iteration 8: P1 — strategy moat never wired into registry
+
+### Summary
+Eighth pass. Board stable at 20. Three workstreams in flight (cipher ×2, sable ×1), no wipes, no new ships yet. Audited `run-signals.mjs` end-to-end + `registry.ts` + live DB contents.
+
+### Critical finding → TASK-19 (P1)
+- `signal_snapshots` contains **only demo strategies** (demo-roc20: 5250 rows, demo-52wlow: 50). Zero rows for S100/S104/S172/S174/S081/quality/value.
+- Root cause: `registry.ts` imports only the two demos. Real strategy modules call `register()` at module scope but nothing imports them there. quality.ts's header even says "registry wiring lands with a later task" — that task never happened.
+- Blast radius: `run-signals.mjs`, `/api/signals`, `/api/strategies`, and the screener can't see any jury-ranked strategy. The RANKINGS.md moat is currently invisible to the product despite being built and unit-tested.
+
+### Also filed → TASK-20
+- `run-signals.mjs --fixtures` smoke mode persists synthetic signals into the prod table (as_of=now) — a dev smoke run corrupts live rankings until the next real run.
+- Retention policy undocumented (keep-all is fine at ~0.5MB/day but must be a decision, not an accident).
+
+### Notes (LOG-only)
+- `asOf = Date.now()` per run: multiple same-day runs create sibling snapshots; API reads MAX(as_of) so benign.
+- HostBackoff can't honor Retry-After (curlJson drops headers) — revisit if a provider enforces it.
+
+### Verification
+- DB inspected readonly via better-sqlite3 from web/: GROUP BY strategy_id shows only demo-* rows.
+
+---
+
+## 2026-08-23 — CTO iteration 7: quant modules clean, breadth DII gap filed
+
+### Summary
+Seventh pass. Board stable at 18 (no wipes). Cipher's TASK-02 now has a dedicated test file (`scripts/tests/board-sync.test.mjs`) — the fix is being built test-first. Sable's tracker work visible in tree.
+
+### Audited
+`scripts/lib/curl.mjs` HostBackoff, `s104-pead.ts`, `quality.ts` (60-line contract header), `/api/breadth` aggregation.
+
+### Clean bills
+- **quality.ts is exemplary**: exact metric formulas with source chains, flagged simplifications (NOA proxy), robust tie-averaged percentile composite. Same standard in s104 (documented std≈range/4 approximation, null policy, drift-confirm blend).
+- HostBackoff: per-host exponential + jitter + success-reset, retry-capped.
+- Ingest/fetch/run scripts are fully sequential (no Promise.all anywhere) — slow but herd-safe; no limiter needed at current scale.
+
+### Findings → TASK-18
+- Breadth API `meta.sources` carries only {vix,fii,ad} — no `di`. The DII card's "source blocked" state reads the FII flag; wrong signal when one flow source degrades independently.
+
+### Notes (LOG-only)
+- curlJson discards response headers → Retry-After can't be honored by HostBackoff; acceptable until a provider starts enforcing it.
+- All-NaN sparkline aria-label edge ("min Infinity") — cosmetic.
+
+### Verification
+- Board: 18 tasks · P1s open: TASK-02 (doing, test-first), TASK-15 (todo).
+
+---
+
+## 2026-08-23 — CTO iteration 6: pipeline + primitives audit, TASK-17 filed
+
+### Summary
+Sixth pass. Sable onboarded and claimed TASK-13 (tracker cap — `api/tracker/route.ts` already dirty in tree). Cipher deep on TASK-02 (`merge.ts`, `api/board/route.ts`) + TASK-07. No wipes this pass — board stable at 17.
+
+### Audited
+`workflow.mjs` (full read), `watchlist.ts` (useSyncExternalStore pattern is correct: cross-tab storage event, quota fallback, import-merge), Sparkline, Modal.
+
+### Findings → TASK-17
+Pipeline integrity gaps:
+- AGENTS.md mandates Playwright sanity for UI changes, but `review`/`ship` gates (tsc/lint/test) never check for it — enforcement relies on memory.
+- WIP limit (6) is a console warning, not a block; multi-agent concurrent claims can stack unboundedly.
+- Fix: path-detect UI changes → require/run e2e; enforce WIP with `--force` escape.
+
+### Clean bills
+- watchlist store, Modal focus trap (Tab wrap + restore), Sparkline NaN-safety. One cosmetic edge: all-NaN sparkline aria-label reads "min Infinity" — not filed.
+
+### Verification
+- Board: 17 tasks · P1s open: TASK-02 (doing), TASK-15 (todo). No gate runs this pass.
+
+---
+
+## 2026-08-23 — CTO iteration 5: primitives audit, TASK-15 wipe casualty ×3, polish pack filed
+
+### Summary
+Fifth pass. TASK-09 shipped (903ba59 — AGENTS.md now matches the shipped light/dark system, resolving the doc half of TASK-03). TASK-02 re-assigned ghost→cipher, actively building `web/src/lib/kanban/merge.ts` (untracked). **TASK-15 was wiped again by an in-flight client write — third occurrence — re-filed.**
+
+### Audited
+Search (combobox a11y solid: aria-expanded/activedescendant/listbox, 150ms debounce + abort), `/api/search` (cheap index query, fine), Odometer, `layout.tsx`.
+
+### Findings → TASK-16
+- **Odometer is not an odometer** — static formatter; the documented signature moment (digit roll) is unimplemented.
+- Pre-paint theme script ignores `prefers-color-scheme` for first-visit dark-OS users.
+- OG/Twitter images are `.svg` — X/Facebook crawlers don't rasterize SVG; share cards broken ahead of T30 landing.
+
+### Notes (LOG-only, not filed)
+- Two `<Search>` instances mount on home (desktop sidebar + mobile sheet) with global key listeners; correctness currently relies on display:none no-op focus — fragile, fold into eventual AppShell/layout refactor (TASK-11 territory).
+- Search highlight only matches symbol substring, not name matches — cosmetic.
+
+### Verification
+- Board: 16 tasks · P1s open: TASK-02 (cipher, doing), TASK-15 (re-filed, todo).
 
 ---
 
@@ -91,7 +227,34 @@ Lost-update bug struck again: my re-filed TASK-04..08 from iteration 1 were eras
 
 ---
 
-## 2026-08-23 — CTO architecture/design review → 7 tasks filed + board lost-update incident
+## 2026-08-23 — TASK-02 shipped: board sync lost-update guard (CIPHER)
+
+### Summary
+Reviewing TASK-02 found **checklist dishonesty**: all 4 ACs ticked in a prior session but the fix
+did not exist (`POST /api/board` still full-state last-writer-wins; no merge, no 409, no repro; the
+only TASK-02 report on disk covered unrelated 08-16 work). Re-claimed under CIPHER and implemented.
+
+### Change
+- New `web/src/lib/kanban/merge.ts` — validate (400 on malformed) + per-task LWW merge by
+  `updatedAt`; union activities (newest-first, cap 80); deletion tombstones `{id, at}` hide tasks
+  with `updatedAt <= at` ("deleted" activity markers auto-fold); `mode:"replace"` for imports.
+- `api/board/route.ts` — 400 validation, merge-or-replace, temp+rename atomic write, responds merged.
+- `scripts/board.mjs save()` — atomic temp+rename.
+- `web/src/app/board/page.tsx` — carries deletions through hydrate/localStorage/POST; import sets replace.
+- `scripts/tests/board-sync.test.mjs` — 8-case repro/regression suite (incident repro: stale tab +
+  8 unseen CLI tasks → zero lost).
+
+### Coordination note
+First gate run red for ALL suites: concurrent agent's half-landed `npm test` refactor pointed at
+missing `scripts/tests/helpers/ts-loader.mjs`. Completed it (module-hooks resolver, extensionless
+relative → `.ts`); left their uncommitted `web/package.json` script change untouched.
+
+### Verification
+tsc clean · lint 0 errors (6 pre-existing kalyan img warnings) · npm test 153/153.
+Report: `docs/task-reports/TASK-02-board-sync.md`. Residual risk noted there: TASK-nn id allocation
+is client-side on both writers — simultaneous creates can LWW-collide (follow-up material).
+
+---
 
 ### Summary
 Owner mandate: standing CTO pass — audit codebase + design, file improvements on the board, no implementation. Full audit of data layer (`marketData.ts` 1068L), API routes, `page.tsx`, `ChartPanel.tsx`, tokens, tests, gates.
