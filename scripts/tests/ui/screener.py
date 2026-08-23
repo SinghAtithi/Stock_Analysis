@@ -32,7 +32,8 @@ with sync_playwright() as p:
     pg = b.new_page(viewport={"width": 1440, "height": 900})
     errs = []
     failed = []
-    pg.on("console", lambda m: errs.append(m.text[:120]) if m.type == "error" else None)
+    pg.on("console", lambda m: errs.append(f"{m.text[:120]} @ {m.location.get('url','')[-60:]}:{m.location.get('lineNumber')}") if m.type == "error" else None)
+    pg.on("pageerror", lambda e: errs.append(f"pageerror: {str(e)[:300]}"))
     pg.on(
         "response",
         lambda r: failed.append(f"{r.status} {r.url[:120]}") if r.status >= 400 else None,
