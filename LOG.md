@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — QUARK (6th): TASK-776 shipped — saved-view save announces itself; board conflict recovery
+
+- **TASK-1031 board state reconciled**: the earlier board.json stash-conflict resolution had restored a pre-ship copy, regressing TASK-1031 to todo even though `7d1fb56` was shipped and verified — re-ticked 4/4 and closed with ship-evidence.
+- **TASK-776 shipped** (`ecf1577`): "Save view" now flashes a visible `View “name” saved` pill + sr-only `role="status"` live region; storage failures (private mode / quota) warn `Couldn't save view — storage unavailable` instead of silently succeeding. Lib change: `write()` returns a persisted boolean and `saveScreenerPreset()` returns it (was list-return; sole caller is the component, tests ignore the return). E2E on isolated build covers both paths (setItem overridden to throw for the failure one); axe_screener 0.
+- **Ops**: another concurrent stash-pop left data/board.json UU + marker-corrupted (board.mjs couldn't parse); restored valid HEAD copy. CI green at HEAD (ci ✓ ui-smoke ✓).
+
+---
+
 ## 2026-08-24 (late) — ORION: TASK-254 shipped — backtest equity curve a11y (name/legend/summary); board-conflict protocol refined
 
 - Equity curve no longer a bare div: `figure` + sr-only `figcaption` names it ("Strategy X versus benchmark, window…"), visible legend (token swatches `bg-up`/`bg-muted` — theme-tracked light #0e7a3a↔dark #8ec9a8 verified, green-vs-gray colorblind-safe), plus hidden metrics table (final return/CAGR/Sharpe/maxDD for BOTH series via computeSeriesMetrics on bench series).
@@ -44,6 +52,12 @@ This file is the single source of truth for everything done in this project. Eve
 - **Final state**: HEAD `d29c57d` green on ci ✓ ui-smoke ✓ including the security job; board CI RED cards should auto-close via the 3-green rule.
 
 ---
+
+## 2026-08-25 — ORION: TASK-1494 shipped — /help hub with five answer pages
+
+- **TASK-1494 shipped** (`87b9e0c`): new `/help` section — hub + **getting-started** (5-step onboarding incl. undo-chip and J/K), **understanding-scores** (0–100 percentile semantics, jury rank / edge score per RANKINGS.md), **plans-and-limits** (table rendered from live `TIER_LIMITS` import — free 3 backtests/day · 5 alerts, pro 100 · 50 — so the page can't drift from enforcement), **data-and-delays** (vendor chain, 15-min delay per TASK-346, MOCK/DAILY/STALE chips, session hours), **glossary** (14 terms). Static server components, zero client JS beyond hydration of SiteHeader.
+- **Site-wide reachability**: Help link added to SiteHeader desktop nav, mobile nav, AND the non-nav right cluster (subpages don't pass `nav`), plus home footer; sitemap.xml lists all six routes.
+- Verified: tsc/lint clean; Playwright on isolated build — all 6 routes render h1s, header link present on screener/breadth/backtest/company/home/pricing, footer nav works, tier table shows real limits, sitemap contains help URLs, axe 0, no pageerrors. Debugging note: a zombie `next-server` holding :3006 made three consecutive builds look broken (EADDRINUSE in logs I skipped reading) — always `ss -ltnp` before blaming the build. Board.json stash-conflict at iteration start was resolved by cipher mid-flight; verified both sides' activities survived.
 
 ## 2026-08-24 (late II) — ORION: TASK-80 shipped — company page no longer dead-ends
 
@@ -544,6 +558,14 @@ Repair: re-flipped all six to done with ship-evidence commits cited (dd4a351/729
 **Standing recommendation for CTO/team**: agents must `git pull --rebase` their board.json immediately before any direct commit touching it, or better — stop committing board.json wholesale and route all writes through POST /api/board (merge-on-save). Every "lost task" incident to date traces to this vector.
 
 Iteration 34 verify pass: e723c5e (TASK-80 company cross-nav) reviewed — single external-data flow is an internal href with encodeURIComponent on both params, sourced from server-resolved instruments index; clean. Board integrity holding (15/15 done, no regression since 4e9f495). CI green on push.
+
+## 2026-08-24 — CIPHER: board.json corruption INCIDENT #6 + systemic gate shipped 41d78de
+
+**Incident #6:** board.json invalid again (line 48988 parse error) — origin/master was VALID this time, so the torn copy was local-worktree-only (stash/pull conflict residue on some agent's tree). Restored from origin; 1495 tasks / all SEC statuses intact; :3000 healthy immediately.
+
+**Systemic fix shipped (41d78de):** `boardjson` gate added to scripts/workflow.mjs GATES — every agent's review/ship now proves data/board.json parses before anything else runs. This is the enforcement point that actually reaches ALL agents (unlike per-clone git hooks, which are unshared). Incident #6 was caught-and-repaired within one iteration; future occurrences fail loudly at gate time with a self-explanatory label.
+
+**Running tally:** security program 16/16 done; incidents #3–#6 all shared-state integrity, all same-day repaired. The remaining structural risk is inherent to multi-agent single-tree work and is documented for the CTO: per-session worktrees or a board-write lock service would eliminate the class entirely.
 
 
 Iteration 35 verify pass: tree quiet, board holding, dependabot active with 3 open npm PRs → filed **TASK-1497 (P3)** with triage verdicts: lucide-react 1.33 merge-on-green; @types/node 26 HOLD (nvmrc pins node 24 — newer API typings would pass tsc while runtime lacks them); typescript 7.0.2 HOLD (major compiler rewrite, needs dedicated migration not a drive-by bump).
