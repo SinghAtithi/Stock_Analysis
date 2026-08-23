@@ -459,6 +459,84 @@ export interface ChartPayload {
   degraded?: string;
 }
 
+/* ---------- shared fallback payload builder (TASK-05) ---------- */
+
+interface FallbackBase {
+  symbol: string;
+  exchange: string;
+  range: string;
+}
+
+/* One construction path for every non-Yahoo source. allow52W=false (intraday)
+ * forces 52W nulls; otherwise the >=250 distinct IST trading days rule applies. */
+function fallbackPayload(
+  base: FallbackBase,
+  src: {
+    source: "moneycontrol" | "groww";
+    candles: Candle[];
+    interval: string;
+    allow52W: boolean;
+    filterFuture?: boolean;
+    degraded?: string;
+  }
+): ChartPayload | null {
+  const nowSec = Math.floor(Date.now() / 1000);
+  const candles = src.filterFuture
+    ? src.candles.filter((c) => c.time <= nowSec)
+    : src.candles;
+  if (!candles.length) return null;
+
+  const inst = findInstrument(base.symbol);
+  const lastCandle = candles[candles.length - 1];
+  const prevClose = previousCloseFromCandles(candles);
+  const { change, changePct } = dayChange(lastCandle.close, prevClose);
+  const hasYear = src.allow52W && distinctTradingDays(candles) >= 250;
+
+  const p: ChartPayload = {
+    symbol: base.symbol,
+    name: inst?.n ?? base.symbol,
+    exchange: base.exchange,
+    fullExchangeName: base.exchange === "NSE" ? "National Stock Exchange" : "BSE",
+    currency: "INR",
+    regularMarketPrice: lastCandle.close,
+    regularMarketTime: lastCandle.time,
+    previousClose: prevClose,
+    fiftyTwoWeekHigh: hasYear ? Math.max(...candles.map((x) => x.high)) : null,
+    fiftyTwoWeekLow: hasYear ? Math.min(...candles.map((x) => x.low)) : null,
+    change,
+    changePct,
+    range: base.range,
+    interval: src.interval,
+    candles,
+    source: src.source,
+  };
+  if (src.degraded) p.degraded = src.degraded;
+  return p;
+}
+
+/* ---------- getChart: singleflight + budgeted fallback chain (TASK-05) ---------- */
+
+// whole-chain upstream budget per request; exhaustion falls through to
+// stale-while-revalidate / fail-fast instead of stacking more fallbacks
+const UPSTREAM_BUDGET_MS = 12_000;
+
+// concurrent identical requests coalesce onto one in-flight chain
+const inflights = new Map<string, Promise<ChartPayload | null>>();
+
+async function withinBudget<T>(p: Promise<T>, deadline: number): Promise<T | null> {
+  const left = deadline - Date.now();
+  if (left <= 0) return null;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<null>((resolve) => {
+    timer = setTimeout(() => resolve(null), left);
+  });
+  try {
+    return await Promise.race([p, timeout]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export async function getChart(
   symbol: string,
   exchange: string,
@@ -470,199 +548,137 @@ export async function getChart(
   const hit = cacheGet<ChartPayload>(cacheKey);
   if (hit) return hit;
 
-  const ttl = interval.endsWith("m") || interval.endsWith("h") ? 60_000 : 10 * 60_000;
-  let yahooSymbol: string | null = null;
+  const inflight = inflights.get(cacheKey);
+  if (inflight) return inflight;
 
-  if (symbol.includes(".")) {
-    yahooSymbol = symbol;
+  const task = chartChain(symbol, exchange, isIndex, range, interval, cacheKey);
+  inflights.set(cacheKey, task);
+  try {
+    return await task;
+  } finally {
+    inflights.delete(cacheKey);
+  }
+}
+
+const CHAIN_STOP = Symbol("chart-chain-stop");
+type Attempt = () => Promise<ChartPayload | null | typeof CHAIN_STOP>;
+
+async function chartChain(
+  symbol: string,
+  exchange: string,
+  isIndex: boolean,
+  range: string,
+  interval: string,
+  cacheKey: string
+): Promise<ChartPayload | null> {
+  const ttl = interval.endsWith("m") || interval.endsWith("h") ? 60_000 : 10 * 60_000;
+  const deadline = Date.now() + UPSTREAM_BUDGET_MS;
+  const dot = symbol.includes(".");
+  const base: FallbackBase = { symbol, exchange, range };
+  const put = (p: ChartPayload) => {
+    cacheSet(cacheKey, p, ttl);
+    return p;
+  };
+
+  const tryYahoo = async (sym: string): Promise<ChartPayload | null> => {
+    const y = await withinBudget(fetchYahooChart(sym, range, interval), deadline);
+    return y ? yahooToPayload(y, range, interval) : null;
+  };
+
+  const attempts: Attempt[] = [];
+  if (dot) {
+    attempts.push(() => tryYahoo(symbol));
   } else if (isIndex) {
     const caret = INDEX_MAP[symbol] ?? `^${symbol.replace(/[^A-Z0-9]/g, "_")}`;
-    const viaCaret = await fetchYahooChart(caret, range, interval);
-    if (viaCaret) {
-      const p = yahooToPayload(viaCaret, range, interval);
-      if (p) {
-        cacheSet(cacheKey, p, ttl);
-        return p;
-      }
-    }
-    yahooSymbol = `${symbol.replace(/[^A-Z0-9]/g, "_")}.NS`;
+    attempts.push(() => tryYahoo(caret));
+    attempts.push(() => tryYahoo(`${symbol.replace(/[^A-Z0-9]/g, "_")}.NS`));
   } else {
-    yahooSymbol = `${symbol}.${exchange === "BSE" ? "BO" : "NS"}`;
+    attempts.push(() => tryYahoo(`${symbol}.${exchange === "BSE" ? "BO" : "NS"}`));
+    const crossSuffix = exchange === "BSE" ? "NS" : "BO"; // some BSE rows are NSE-listed only
+    attempts.push(() => tryYahoo(`${symbol}.${crossSuffix}`));
   }
 
-  if (yahooSymbol) {
-    const y = await fetchYahooChart(yahooSymbol, range, interval);
-    if (y) {
-      const p = yahooToPayload(y, range, interval);
-      if (p) {
-        cacheSet(cacheKey, p, ttl);
-        return p;
-      }
-    }
-  }
-
-  /* some BSE rows are NSE-listed only — retry on the other exchange */
-  const crossExchange = exchange === "BSE" ? "NSE" : exchange === "NSE" ? "BSE" : null;
-  if (crossExchange && !isIndex && !symbol.includes(".")) {
-    const crossSymbol = `${symbol}.${crossExchange === "BSE" ? "BO" : "NS"}`;
-    const y = await fetchYahooChart(crossSymbol, range, interval);
-    if (y) {
-      const p = yahooToPayload(y, range, interval);
-      if (p) {
-        cacheSet(cacheKey, p, ttl);
-        return p;
-      }
-    }
-  }
-
-  /* Moneycontrol intraday (1d/5d/1mo/3mo/6mo): keyless 5m/15m/1h — richer
-     than Google's 74-bar 1D series, so it comes first for equities. */
-  if (!isIndex && !symbol.includes(".") && MC_INTRADAY_SPEC[range]) {
+  /* Moneycontrol intraday (equities): keyless 5m/15m/1h - richer than Google's
+     74-bar 1D series, so it comes first. Bars seeded for the upcoming session
+     are dropped; if nothing survives, fail fast (original behaviour). */
+  if (!isIndex && !dot && MC_INTRADAY_SPEC[range]) {
     const spec = MC_INTRADAY_SPEC[range];
-    if (spec) {
-      const mc = await fetchMoneycontrolChart(symbol, range, spec);
-      if (mc) {
-        /* MC occasionally seeds the upcoming session's bars; drop anything
-           after now so intraday matches the daily view */
-        const now = Math.floor(Date.now() / 1000);
-        mc.candles = mc.candles.filter((c) => c.time <= now);
-        if (!mc.candles.length) return null;
-        const inst = findInstrument(symbol);
-        const last = mc.candles[mc.candles.length - 1].close;
-        const prevClose = previousCloseFromCandles(mc.candles);
-        const { change, changePct } = dayChange(last, prevClose);
-        const p: ChartPayload = {
-          symbol,
-          name: inst?.n ?? symbol,
-          exchange,
-          fullExchangeName: exchange === "NSE" ? "National Stock Exchange" : "BSE",
-          currency: "INR",
-          regularMarketPrice: last,
-          regularMarketTime: mc.candles[mc.candles.length - 1].time,
-          previousClose: prevClose,
-          fiftyTwoWeekHigh: null,
-          fiftyTwoWeekLow: null,
-          change,
-          changePct,
-          range,
-          interval: mc.interval,
-          candles: mc.candles,
-          source: "moneycontrol",
-        };
-        cacheSet(cacheKey, p, ttl);
-        return p;
-      }
-    }
-  }
-
-  /* Google Finance intraday (1d/5d): NSE equities + indices. BSE equities unsupported. */
-  if ((range === "1d" || range === "5d") && !symbol.includes(".")) {
-    const g = await fetchGoogleChart(symbol, exchange, isIndex);
-    if (g) {
-      const p = googleToPayload(g, symbol, exchange, isIndex, range, interval);
-      if (p) {
-        cacheSet(cacheKey, p, ttl);
-        return p;
-      }
-    }
-  }
-
-  /* Moneycontrol index chart (1mo+): the only non-Google index fallback
-     when Yahoo is down. 1d/5d stay on Google intraday above. */
-  if (isIndex && !symbol.includes(".")) {
-    const mc = await fetchMoneycontrolIndexChart(symbol, range);
-    if (mc) {
-      const inst = findInstrument(symbol);
-      const last = mc.candles[mc.candles.length - 1].close;
-      const prevClose = previousCloseFromCandles(mc.candles);
-      const { change, changePct } = dayChange(last, prevClose);
-      const hasYear = distinctTradingDays(mc.candles) >= 250;
-      const p: ChartPayload = {
-        symbol,
-        name: inst?.n ?? symbol,
-        exchange,
-        fullExchangeName: exchange === "NSE" ? "National Stock Exchange" : "BSE",
-        currency: "INR",
-        regularMarketPrice: last,
-        regularMarketTime: mc.candles[mc.candles.length - 1].time,
-        previousClose: prevClose,
-        fiftyTwoWeekHigh: hasYear ? Math.max(...mc.candles.map((x) => x.high)) : null,
-        fiftyTwoWeekLow: hasYear ? Math.min(...mc.candles.map((x) => x.low)) : null,
-        change,
-        changePct,
-        range,
-        interval: mc.interval,
-        candles: mc.candles,
+    attempts.push(async () => {
+      const mc = await withinBudget(fetchMoneycontrolChart(symbol, range, spec), deadline);
+      if (!mc) return null;
+      const p = fallbackPayload(base, {
         source: "moneycontrol",
-      };
-      cacheSet(cacheKey, p, ttl);
-      return p;
-    }
+        candles: mc.candles,
+        interval: mc.interval,
+        allow52W: false,
+        filterFuture: true,
+      });
+      return p ?? CHAIN_STOP;
+    });
   }
 
-  /* fallbacks for equities: Moneycontrol (long ranges) -> Groww (short windows) */
-  if (!isIndex && !symbol.includes(".")) {
-    const mc = await fetchMoneycontrolChart(symbol, range);
-    if (mc) {
-      const inst = findInstrument(symbol);
-      const last = mc.candles[mc.candles.length - 1].close;
-      const prevClose = previousCloseFromCandles(mc.candles);
-      const { change, changePct } = dayChange(last, prevClose);
-      const hasYear = distinctTradingDays(mc.candles) >= 250;
-      const p: ChartPayload = {
-        symbol,
-        name: inst?.n ?? symbol,
-        exchange,
-        fullExchangeName: exchange === "NSE" ? "National Stock Exchange" : "BSE",
-        currency: "INR",
-        regularMarketPrice: last,
-        regularMarketTime: mc.candles[mc.candles.length - 1].time,
-        previousClose: prevClose,
-        fiftyTwoWeekHigh: hasYear ? Math.max(...mc.candles.map((x) => x.high)) : null,
-        fiftyTwoWeekLow: hasYear ? Math.min(...mc.candles.map((x) => x.low)) : null,
-        change,
-        changePct,
-        range,
-        interval: mc.interval,
-        candles: mc.candles,
-        source: "moneycontrol",
-      };
-      cacheSet(cacheKey, p, ttl);
-      return p;
-    }
+  /* Google Finance intraday (1d/5d): NSE equities + indices */
+  if ((range === "1d" || range === "5d") && !dot) {
+    attempts.push(async () => {
+      const g = await withinBudget(fetchGoogleChart(symbol, exchange, isIndex), deadline);
+      return g ? googleToPayload(g, symbol, exchange, isIndex, range, interval) : null;
+    });
+  }
+
+  /* Moneycontrol index chart (any range): the only non-Google index fallback */
+  if (isIndex && !dot) {
+    attempts.push(async () => {
+      const mc = await withinBudget(fetchMoneycontrolIndexChart(symbol, range), deadline);
+      return mc
+        ? fallbackPayload(base, {
+            source: "moneycontrol",
+            candles: mc.candles,
+            interval: mc.interval,
+            allow52W: true,
+          })
+        : null;
+    });
+  }
+
+  /* equity long ranges: Moneycontrol daily, then Groww (both exchanges;
+     short windows come back daily-only -> degraded chip) */
+  if (!isIndex && !dot) {
+    attempts.push(async () => {
+      const mc = await withinBudget(fetchMoneycontrolChart(symbol, range), deadline);
+      return mc
+        ? fallbackPayload(base, {
+            source: "moneycontrol",
+            candles: mc.candles,
+            interval: mc.interval,
+            allow52W: true,
+          })
+        : null;
+    });
 
     const exchanges = exchange === "NSE" ? ["NSE", "BSE"] : ["BSE", "NSE"];
     for (const ex of exchanges) {
-      const candles = await fetchGrowwChart(symbol, ex, range);
-      if (candles && candles.length) {
-        const inst = findInstrument(symbol);
-        const last = candles[candles.length - 1].close;
-        const prevClose = previousCloseFromCandles(candles);
-        const { change, changePct } = dayChange(last, prevClose);
-        const hasYear = distinctTradingDays(candles) >= 250;
-        const p: ChartPayload = {
-          symbol,
-          name: inst?.n ?? symbol,
-          exchange: ex,
-          fullExchangeName: ex === "NSE" ? "National Stock Exchange" : "BSE",
-          currency: "INR",
-          regularMarketPrice: last,
-          regularMarketTime: candles[candles.length - 1].time,
-          previousClose: prevClose,
-          fiftyTwoWeekHigh: hasYear ? Math.max(...candles.map((c) => c.high)) : null,
-          fiftyTwoWeekLow: hasYear ? Math.min(...candles.map((c) => c.low)) : null,
-          change,
-          changePct,
-          range,
-          interval: GROWW_RESOLUTION[range] ?? interval,
-          candles,
-          source: "groww",
-          ...(range === "1d" || range === "5d" ? { degraded: "daily" } : {}),
-        };
-        cacheSet(cacheKey, p, ttl);
-        return p;
-      }
+      attempts.push(async () => {
+        const candles = await withinBudget(fetchGrowwChart(symbol, ex, range), deadline);
+        if (!candles || !candles.length) return null;
+        return fallbackPayload(
+          { ...base, exchange: ex },
+          {
+            source: "groww",
+            candles,
+            interval: GROWW_RESOLUTION[range] ?? interval,
+            allow52W: true,
+            degraded: range === "1d" || range === "5d" ? "daily" : undefined,
+          }
+        );
+      });
     }
+  }
+
+  for (const attempt of attempts) {
+    if (Date.now() > deadline) break; // budget spent -> stale / fail-fast
+    const res = await withinBudget(attempt(), deadline);
+    if (res === CHAIN_STOP) return null;
+    if (res) return put(res);
   }
 
   /* stale-while-revalidate: serve a recently-expired entry instead of failing */
