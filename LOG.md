@@ -4,7 +4,36 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
-## 2026-08-23 (119) — RAVEN: TASK-54 — DataTable sticky identity columns + ARIA grid model
+## 2026-08-23 (120) — CIPHER: TASK-58 — /company/[symbol] profile page
+
+### Summary
+New per-symbol route `web/src/app/company/[symbol]`: server `page.tsx` with
+`generateMetadata` (per-symbol OG/twitter card reusing the TASK-48 raster at
+`/s/[symbol]/opengraph-image`) + client `CompanyProfile.tsx` (quote header via
+/api/analysis, FundamentalsPanel mounted as-is, strategy memberships derived
+client-side from /api/strategies + per-strategy /api/signals fan-out, analyst
+coverage placeholder, corporate actions list). New minimal API
+`/api/corporate-actions` (?symbol= → newest-first rows) copies the
+fundamentals readonly-handle pattern. `/s/[symbol]/page.tsx` now redirects to
+`/company/<symbol>`; the OG card stays mounted at the old segment.
+
+### Notes
+- signal_snapshots keys symbols bare (`RELIANCE`) while URLs are suffixed —
+  membership matching normalizes to base symbol before compare.
+- Each section owns its loader and degrades independently; one failing
+  endpoint never blanks the page.
+- Analyst section is an intentional empty state ("No analyst data on file
+  yet.") until TASK-57's analyst ingest exposes an API.
+- npm test: 255/257 — eod-cliff-sweep red is foreign churn (working-tree
+  edits to scripts/tests/fixtures/cliff-debt-registry.json by concurrent
+  ingest work), unrelated files; retry after 60s stayed red.
+
+### Verification
+tsc + eslint clean (6 pre-existing kalyan warnings only); 19-check Playwright
+sanity ALL GREEN on own :3015 dev server incl. axe 0 violations; screenshots
+/tmp/opencode/t58-company-{reliance,tcs,unknown}.png.
+
+---
 
 ### Summary
 Screener table on mobile scrolled rank+symbol out of view and its selection model was

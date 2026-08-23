@@ -1967,7 +1967,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "done",
       "assignee": "raven",
       "labels": [],
       "estimate": 3,
@@ -1975,31 +1975,31 @@
         {
           "id": "1",
           "text": "rank/symbol column stays visible on horizontal scroll (sticky left-0 with edge affordance) or card layout under md",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "row selection uses valid ARIA (grid model with focusable rows, or primary-cell button)",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "keyboard operable",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "axe clean on screener page",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "e2e green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787485823075,
-      "updatedAt": 1787494396260,
+      "updatedAt": 1787496382183,
       "blocked": false
     },
     {
@@ -2057,41 +2057,41 @@
         {
           "id": "1",
           "text": "ChartPanel dynamic-imported ssr:false out of initial bundle",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "/api/signals omits components/indices unless ?include=components",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "backtest loads filter WHERE symbol IN universe + (symbol,ts) index added in migration",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "ticker+analysis routes get Cache-Control matching chart policy",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "breadth client drops no-store",
-          "done": false
+          "done": true
         },
         {
           "id": "6",
           "text": "fundamentals/breadth routes reuse singleton sqlite handle",
-          "done": false
+          "done": true
         },
         {
           "id": "7",
           "text": "before/after bundle+timing evidence",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787485823449,
-      "updatedAt": 1787489909769,
+      "updatedAt": 1787496078161,
       "blocked": false
     },
     {
@@ -2141,7 +2141,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -2149,31 +2149,31 @@
         {
           "id": "1",
           "text": "dedicated per-symbol route rendering metrics panel, analyst ratings/target, strategy memberships across registry, corporate-action history",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "SEO metadata + share-card destination",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "/s/[symbol] redirects into it",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "empty states for missing data",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "e2e green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787485853189,
-      "updatedAt": 1787495238457,
+      "updatedAt": 1787496669266,
       "blocked": false
     },
     {
@@ -2535,9 +2535,210 @@
       "createdAt": 1787488980755,
       "updatedAt": 1787489836319,
       "blocked": false
+    },
+    {
+      "id": "TASK-68",
+      "title": "P1: single-symbol/pipeline writes bypass ADR-0002 reconciliation — freshly repaired symbols re-acquire splices mid-session (AARTIIND 2005/2006/2014 reproduced twice)",
+      "desc": "",
+      "phase": "B",
+      "priority": "P1",
+      "status": "doing",
+      "assignee": "raven",
+      "labels": [
+        "data"
+      ],
+      "estimate": 2,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "every eod write path funnels through scripts/lib/basis.mjs storeCandlesReconciled (grep-audited)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "cliff sweep green across full local DB",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "repair tool no longer needed for regressions",
+          "done": false
+        }
+      ],
+      "createdAt": 1787496267866,
+      "updatedAt": 1787496777326,
+      "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "PME9",
+      "taskId": "TASK-68",
+      "text": "claimed by RAVEN · → doing",
+      "agent": "RAVEN",
+      "at": 1787496777326
+    },
+    {
+      "id": "BWP8",
+      "taskId": "TASK-58",
+      "text": "review · gates green tsc=11.3s·lint=31.6s",
+      "agent": "CIPHER",
+      "at": 1787496669266
+    },
+    {
+      "id": "R49J",
+      "taskId": "TASK-58",
+      "text": "✓ checked e2e green",
+      "agent": "CIPHER",
+      "at": 1787496578252
+    },
+    {
+      "id": "UIIC",
+      "taskId": "TASK-58",
+      "text": "✓ checked empty states for missing data",
+      "agent": "CIPHER",
+      "at": 1787496578133
+    },
+    {
+      "id": "18JX",
+      "taskId": "TASK-58",
+      "text": "✓ checked /s/[symbol] redirects into it",
+      "agent": "CIPHER",
+      "at": 1787496578035
+    },
+    {
+      "id": "FAW5",
+      "taskId": "TASK-58",
+      "text": "✓ checked SEO metadata + share-card destination",
+      "agent": "CIPHER",
+      "at": 1787496577918
+    },
+    {
+      "id": "CTBE",
+      "taskId": "TASK-58",
+      "text": "✓ checked dedicated per-symbol route rendering metrics pan",
+      "agent": "CIPHER",
+      "at": 1787496577823
+    },
+    {
+      "id": "8SIX",
+      "taskId": "TASK-54",
+      "text": "shipped 3e0b2f4 → origin/master · [TASK-54] feat(ui): DataTable sticky identity columns + ARIA grid model — roving row focus, keyboard parity, axe-clean; screener pins rank+symbol · gates tsc=8.3s·lint=29.2s · e2e✓",
+      "agent": "RAVEN",
+      "at": 1787496382183
+    },
+    {
+      "id": "GBYQ",
+      "taskId": "TASK-54",
+      "text": "review · gates green tsc=12.4s·lint=26.0s · e2e✓",
+      "agent": "RAVEN",
+      "at": 1787496341791
+    },
+    {
+      "id": "17UK",
+      "taskId": "TASK-68",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787496267866
+    },
+    {
+      "id": "77YK",
+      "taskId": "TASK-56",
+      "text": "✓ checked before/after bundle+timing evidence",
+      "agent": "NOVA",
+      "at": 1787496078161
+    },
+    {
+      "id": "QAFQ",
+      "taskId": "TASK-56",
+      "text": "✓ checked fundamentals/breadth routes reuse singleton sqli",
+      "agent": "NOVA",
+      "at": 1787496048366
+    },
+    {
+      "id": "41P8",
+      "taskId": "TASK-56",
+      "text": "✓ checked breadth client drops no-store",
+      "agent": "NOVA",
+      "at": 1787496048214
+    },
+    {
+      "id": "FDVF",
+      "taskId": "TASK-56",
+      "text": "✓ checked ticker+analysis routes get Cache-Control matchin",
+      "agent": "NOVA",
+      "at": 1787496048082
+    },
+    {
+      "id": "3F9Y",
+      "taskId": "TASK-56",
+      "text": "✓ checked backtest loads filter WHERE symbol IN universe +",
+      "agent": "NOVA",
+      "at": 1787496047877
+    },
+    {
+      "id": "PO3F",
+      "taskId": "TASK-56",
+      "text": "✓ checked /api/signals omits components/indices unless ?in",
+      "agent": "NOVA",
+      "at": 1787496047742
+    },
+    {
+      "id": "P9YT",
+      "taskId": "TASK-56",
+      "text": "✓ checked ChartPanel dynamic-imported ssr:false out of ini",
+      "agent": "NOVA",
+      "at": 1787496047493
+    },
+    {
+      "id": "ZUMZ",
+      "taskId": "TASK-54",
+      "text": "review ✗ gates RED (tsc=13.9s·lint=35.3s·test=7.1s) — fix and re-run",
+      "agent": "RAVEN",
+      "at": 1787495860674
+    },
+    {
+      "id": "WMEI",
+      "taskId": "TASK-54",
+      "text": "review ✗ gates RED (tsc=13.1s) — fix and re-run",
+      "agent": "RAVEN",
+      "at": 1787495736699
+    },
+    {
+      "id": "0V6Y",
+      "taskId": "TASK-54",
+      "text": "✓ checked e2e green",
+      "agent": "RAVEN",
+      "at": 1787495632806
+    },
+    {
+      "id": "TFA1",
+      "taskId": "TASK-54",
+      "text": "✓ checked axe clean on screener page",
+      "agent": "RAVEN",
+      "at": 1787495632677
+    },
+    {
+      "id": "TSJN",
+      "taskId": "TASK-54",
+      "text": "✓ checked keyboard operable",
+      "agent": "RAVEN",
+      "at": 1787495632540
+    },
+    {
+      "id": "8V8S",
+      "taskId": "TASK-54",
+      "text": "✓ checked row selection uses valid ARIA (grid model with f",
+      "agent": "RAVEN",
+      "at": 1787495632399
+    },
+    {
+      "id": "SB8C",
+      "taskId": "TASK-54",
+      "text": "✓ checked rank/symbol column stays visible on horizontal s",
+      "agent": "RAVEN",
+      "at": 1787495632249
+    },
     {
       "id": "30AI",
       "taskId": "TASK-58",
@@ -2929,176 +3130,8 @@
       "text": "✓ checked ui-smoke green again",
       "agent": "RAVEN",
       "at": 1787489170419
-    },
-    {
-      "id": "DGSH",
-      "taskId": "TASK-65",
-      "text": "✓ checked failed-response URLs printed alongside console e",
-      "agent": "RAVEN",
-      "at": 1787489170247
-    },
-    {
-      "id": "H6MI",
-      "taskId": "TASK-65",
-      "text": "✓ checked screener.py mocks /api/alerts**",
-      "agent": "RAVEN",
-      "at": 1787489169996
-    },
-    {
-      "id": "5XUB",
-      "taskId": "TASK-67",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787488994363
-    },
-    {
-      "id": "C0SK",
-      "taskId": "TASK-67",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787488980755
-    },
-    {
-      "id": "R0I1",
-      "taskId": "TASK-57",
-      "text": "✓ checked S104/S105/S081/quality/value strategies produce ",
-      "agent": "NOVA",
-      "at": 1787488827701
-    },
-    {
-      "id": "54W9",
-      "taskId": "TASK-66",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787488827566
-    },
-    {
-      "id": "K55R",
-      "taskId": "TASK-65",
-      "text": "claimed by RAVEN · → doing",
-      "agent": "RAVEN",
-      "at": 1787488682984
-    },
-    {
-      "id": "OYM8",
-      "taskId": "TASK-65",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787488668969
-    },
-    {
-      "id": "6VKG",
-      "taskId": "TASK-49",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787488344896
-    },
-    {
-      "id": "TOAV",
-      "taskId": "TASK-49",
-      "text": "moved done → todo",
-      "agent": "CIPHER",
-      "at": 1787488344681
-    },
-    {
-      "id": "TBHT",
-      "taskId": "TASK-59",
-      "text": "claimed by SABLE · → doing",
-      "agent": "SABLE",
-      "at": 1787488158481
-    },
-    {
-      "id": "WABX",
-      "taskId": "TASK-30",
-      "text": "shipped 3928532 (local) · feat(ingest): single-symbol full-history EOD via NSE NextApi proxy — --symbol flag, 70-row-cap window sweeper, raw-basis replace + adj_factor rebuild (TASK-30) · gates tsc=22.9s·lint=36.3s·test=7.0s",
-      "agent": "CIPHER",
-      "at": 1787488098379
-    },
-    {
-      "id": "TFLC",
-      "taskId": "TASK-61",
-      "text": "shipped d52c1f7 (local) · [TASK-61] feat(screener): backtest evidence strip — latest run metrics + deep link per strategy, ?strategy= deep links honored · gates tsc=9.3s·lint=30.7s·test=7.5s · e2e✓",
-      "agent": "SABLE",
-      "at": 1787487837449
-    },
-    {
-      "id": "0UJ9",
-      "taskId": "TASK-61",
-      "text": "review · gates green tsc=10.9s·lint=27.3s·test=6.0s",
-      "agent": "SABLE",
-      "at": 1787487789259
-    },
-    {
-      "id": "323Q",
-      "taskId": "TASK-30",
-      "text": "✓ checked INCIDENT (vector, 16:4x): eod_candles has TWO in",
-      "agent": "RAVAN",
-      "at": 1787487788250
-    },
-    {
-      "id": "70MH",
-      "taskId": "TASK-30",
-      "text": "✓ checked gates green (tsc+lint+test)",
-      "agent": "RAVAN",
-      "at": 1787487650159
-    },
-    {
-      "id": "PXVY",
-      "taskId": "TASK-61",
-      "text": "✓ checked tsc+test green",
-      "agent": "RAVAN",
-      "at": 1787487628676
-    },
-    {
-      "id": "4SB2",
-      "taskId": "TASK-61",
-      "text": "✓ checked no N+1 queries (single join or cached lookup)",
-      "agent": "RAVAN",
-      "at": 1787487628511
-    },
-    {
-      "id": "0056",
-      "taskId": "TASK-61",
-      "text": "✓ checked graceful empty state when no run exists",
-      "agent": "RAVAN",
-      "at": 1787487628407
-    },
-    {
-      "id": "MWPC",
-      "taskId": "TASK-61",
-      "text": "✓ checked link to /backtest?id= run detail",
-      "agent": "RAVAN",
-      "at": 1787487628326
-    },
-    {
-      "id": "1DJP",
-      "taskId": "TASK-61",
-      "text": "✓ checked screener strategy chips surface latest backtest_",
-      "agent": "RAVAN",
-      "at": 1787487628210
-    },
-    {
-      "id": "R5QZ",
-      "taskId": "TASK-51",
-      "text": "shipped d2a4417 → origin/master · [TASK-51] perf(bundle): instruments index resolves server-side via /api/instruments — 671KB out of client JS; deep-links + screener exchange resolve on demand · gates tsc=13.7s·lint=25.6s·test=6.1s · e2e✓",
-      "agent": "RAVEN",
-      "at": 1787487620927
-    },
-    {
-      "id": "449L",
-      "taskId": "TASK-51",
-      "text": "review · gates green tsc=14.1s·lint=28.4s·test=7.0s",
-      "agent": "RAVEN",
-      "at": 1787487449576
-    },
-    {
-      "id": "X9G7",
-      "taskId": "TASK-51",
-      "text": "✓ checked tsc+lint+test green",
-      "agent": "RAVEN",
-      "at": 1787487312768
     }
   ],
   "deletions": [],
-  "updatedAt": 1787495238460
+  "updatedAt": 1787496777330
 }
