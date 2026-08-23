@@ -1,14 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import StarToggle from "@/components/StarToggle";
 import FundamentalsPanel from "@/components/FundamentalsPanel";
+import type { WatchlistEntry } from "@/lib/watchlist";
+import {
+  addToWatchlist,
+  getServerWatchlistSnapshot,
+  getWatchlistSnapshot,
+  isInWatchlist,
+  removeFromWatchlist,
+  subscribeWatchlist,
+} from "@/lib/watchlist";
 
 /* CompanyProfile — T58 client body for /company/[symbol]. Each section owns
  * its loader and degrades to a quiet empty state, so one failing endpoint
  * never blanks the page. Analyst coverage is a placeholder until the
- * analyst ingest API lands (TASK-57 mid-flight). */
+ * analyst ingest API lands (TASK-57 mid-flight).
+ * TASK-80: header gains cross-nav — Open chart deep-link (exchange resolved
+ * server-side via the instruments index), watchlist star, alert bell. */
+
+interface Props {
+  symbol: string;
+  /** server-resolved instruments-index entry — never a bare-symbol guess */
+  resolved: WatchlistEntry;
+}
 
 interface Quote {
   symbol: string;
@@ -77,36 +95,65 @@ function useJson<T>(url: string): { data: T | null; failed: boolean; loaded: boo
   };
 }
 
-function QuoteHeader({ symbol }: { symbol: string }) {
-  const url = `/api/analysis?symbol=${encodeURIComponent(symbol)}&exchange=NSE&range=1y&interval=1d`;
+function QuoteHeader({ symbol, resolved }: { symbol: string; resolved: WatchlistEntry }) {
+  const url = `/api/analysis?symbol=${encodeURIComponent(symbol)}&exchange=${encodeURIComponent(resolved.exchange)}&range=1y&interval=1d`;
   const { data, failed, loaded } = useJson<{ quote: Quote }>(url);
   const q = loaded ? (data?.quote ?? null) : null;
+  /* TASK-80 star: store-backed so the icon tracks remote/local mirrors */
+  const watchlist = useSyncExternalStore(
+    subscribeWatchlist,
+    getWatchlistSnapshot,
+    getServerWatchlistSnapshot,
+  );
+  const starred = watchlist.some(
+    (x) => x.symbol === resolved.symbol && x.exchange === resolved.exchange,
+  );
+  const toggleStar = () => {
+    if (starred || isInWatchlist(resolved)) {
+      removeFromWatchlist(resolved.symbol, resolved.exchange);
+      return;
+    }
+    addToWatchlist({
+      ...resolved,
+      name: q?.name ?? resolved.name,
+    });
+  };
   return (
     <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
         <div className="min-w-0">
           <h1 className="truncate text-xl font-semibold tracking-tight text-paper sm:text-2xl">
-            {q?.name ?? symbol}
+            {q?.name ?? resolved.name}
           </h1>
           <p className="mt-0.5 font-mono text-xs tabular-nums text-muted">
             {symbol}
-            {q?.exchange ? ` · ${q.exchange}` : ""}
+            {q?.exchange ? ` · ${q.exchange}` : ` · ${resolved.exchange}`}
           </p>
         </div>
-        <div className="text-right">
-          <p className="font-mono text-xl font-medium tabular-nums text-paper sm:text-2xl">
-            {failed || !loaded ? "—" : q?.price != null ? inr(q.price) : "—"}
-          </p>
-          {loaded && q?.changePct != null && (
-            <p
-              className={`font-mono text-sm font-medium tabular-nums ${
-                q.changePct >= 0 ? "text-up" : "text-down"
-              }`}
-            >
-              {q.changePct >= 0 ? "+" : ""}
-              {q.changePct.toFixed(2)}%
+        <div className="flex items-center gap-3">
+          <div className="text-right">
+            <p className="font-mono text-xl font-medium tabular-nums text-paper sm:text-2xl">
+              {failed || !loaded ? "—" : q?.price != null ? inr(q.price) : "—"}
             </p>
-          )}
+            {loaded && q?.changePct != null && (
+              <p
+                className={`font-mono text-sm font-medium tabular-nums ${
+                  q.changePct >= 0 ? "text-up" : "text-down"
+                }`}
+              >
+                {q.changePct >= 0 ? "+" : ""}
+                {q.changePct.toFixed(2)}%
+              </p>
+            )}
+          </div>
+          {/* TASK-80 cross-nav: chart deep-link + watchlist star */}
+          <Link
+            href={`/?s=${encodeURIComponent(resolved.symbol)}&e=${encodeURIComponent(resolved.exchange)}&r=1y`}
+            className="rounded-full bg-paper px-3.5 py-1.5 text-sm font-medium text-ink shadow-sm transition-colors hover:bg-accent"
+          >
+            Open chart →
+          </Link>
+          <StarToggle inList={starred} onToggle={toggleStar} />
         </div>
       </div>
     </div>
@@ -244,12 +291,16 @@ function CorporateActions({ symbol }: { symbol: string }) {
   );
 }
 
-export default function CompanyProfile({ symbol }: { symbol: string }) {
+export default function CompanyProfile({ symbol, resolved }: Props) {
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
-      <SiteHeader subtitle={symbol} subtitleClassName="ml-1 hidden text-xs font-normal text-muted sm:inline" />
+      <SiteHeader
+        subtitle={symbol}
+        subtitleClassName="ml-1 hidden text-xs font-normal text-muted sm:inline"
+        alerts={{ symbol, exchange: resolved.exchange }}
+      />
       <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col gap-5 p-4 sm:p-6">
-        <QuoteHeader symbol={symbol} />
+        <QuoteHeader symbol={symbol} resolved={resolved} />
         <FundamentalsPanel symbol={symbol} />
         <Section label="Strategy memberships">
           <Memberships symbol={symbol} />

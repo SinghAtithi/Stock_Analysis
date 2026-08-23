@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { findInstrument } from "@/lib/instruments";
+import type { WatchlistEntry } from "@/lib/watchlist";
 import CompanyProfile from "./CompanyProfile";
 
 /* Per-symbol company profile (TASK-58). Server wrapper owns SEO metadata +
  * share-card destination; the client child renders the data sections.
- * Card reuses the TASK-48 raster at /s/[symbol]/opengraph-image. */
+ * Card reuses the TASK-48 raster at /s/[symbol]/opengraph-image.
+ * TASK-80: the instruments index is resolved server-side so cross-nav
+ * (chart deep-link, star, alerts) routes BSE symbols correctly. */
 
 const UP_SYM = (s: string) => decodeURIComponent(s).trim().toUpperCase();
 
@@ -38,6 +41,16 @@ export default async function CompanyPage({
 }: {
   params: Promise<{ symbol: string }>;
 }) {
-  const { symbol } = await params;
-  return <CompanyProfile symbol={UP_SYM(symbol)} />;
+  const { symbol: raw } = await params;
+  const symbol = UP_SYM(raw);
+  const inst = findInstrument(symbol);
+  const resolved: WatchlistEntry = {
+    symbol,
+    name: inst?.n ?? symbol,
+    shortName: inst?.s ?? symbol,
+    exchange: inst?.e ?? "NSE",
+    type: inst?.idx?.length ? "Index" : "Equity",
+    sector: inst?.sec ?? "",
+  };
+  return <CompanyProfile symbol={symbol} resolved={resolved} />;
 }
