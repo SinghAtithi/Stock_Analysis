@@ -41,30 +41,33 @@ function margin(part: unknown, revenue: unknown): number | null {
   return p / r;
 }
 
+// one readonly handle per process (TASK-56)
+let cachedDb: {
+  prepare(sql: string): { get(...args: string[]): MetricsRow | undefined };
+} | null = null;
+
 function readFundamentals(symbol: string) {
   try {
-    const Database = require("better-sqlite3") as unknown as {
-      new (path: string, opts: { readonly: true }): {
-        prepare(sql: string): { get(...args: string[]): MetricsRow | undefined };
-        close(): void;
+    if (!cachedDb) {
+      const Database = require("better-sqlite3") as unknown as {
+        new (path: string, opts: { readonly: true }): {
+          prepare(sql: string): { get(...args: string[]): MetricsRow | undefined };
+        };
       };
-    };
-    const db = new Database(DB_PATH, { readonly: true });
-    try {
-      const row = db
-        .prepare("SELECT metrics_json, fetched_at FROM fundamentals WHERE symbol = ?")
-        .get(symbol.toUpperCase());
-      if (!row) return null;
-      let raw: Record<string, unknown>;
-      try {
-        raw = JSON.parse(row.metrics_json);
-      } catch {
-        return null;
-      }
-      return { raw, fetchedAt: row.fetched_at };
-    } finally {
-      db.close();
+      cachedDb = new Database(DB_PATH, { readonly: true });
     }
+    const db = cachedDb;
+    const row = db
+      .prepare("SELECT metrics_json, fetched_at FROM fundamentals WHERE symbol = ?")
+      .get(symbol.toUpperCase());
+    if (!row) return null;
+    let raw: Record<string, unknown>;
+    try {
+      raw = JSON.parse(row.metrics_json);
+    } catch {
+      return null;
+    }
+    return { raw, fetchedAt: row.fetched_at };
   } catch {
     return null;
   }

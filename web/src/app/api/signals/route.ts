@@ -60,6 +60,7 @@ interface Params {
   sector: string | null;
   sort: string;
   order: "asc" | "desc";
+  includeComponents: boolean;
 }
 
 function parseIntParam(raw: string | null, fallback: number): number {
@@ -94,6 +95,8 @@ function buildParams(url: URL): Params | { error: string; status: number } {
     sector: url.searchParams.get("sector"),
     sort,
     order,
+    // components_json dominates the payload; opt-in for clients that render it
+    includeComponents: url.searchParams.get("include") === "components",
   };
 }
 
@@ -164,7 +167,7 @@ function buildBody(params: Params): { status: number; body: unknown } {
     .map((row) => {
       const inst = findInstrument(row.symbol);
       let components: Record<string, unknown> | null = null;
-      if (row.components_json) {
+      if (params.includeComponents && row.components_json) {
         try {
           components = JSON.parse(row.components_json);
         } catch {
@@ -172,17 +175,30 @@ function buildBody(params: Params): { status: number; body: unknown } {
         }
       }
       const quote = quotes.get(row.symbol);
-      return {
+      const item: {
+        rank: number | null;
+        symbol: string;
+        name: string;
+        sector: string | null;
+        score: number | null;
+        price: number | null;
+        changePct: number | null;
+        components?: Record<string, unknown> | null;
+        indices?: unknown[];
+      } = {
         rank: row.rank,
         symbol: row.symbol,
         name: inst?.n ?? row.symbol,
         sector: inst?.sec ?? null,
-        indices: inst?.idx ?? [],
         score: row.score ?? null,
-        components,
         price: quote?.price ?? null,
         changePct: quote?.change_pct ?? null,
       };
+      if (params.includeComponents) {
+        item.components = components;
+        item.indices = inst?.idx ?? [];
+      }
+      return item;
     })
     .filter((item) => {
       if (!params.sector) return true;
@@ -191,7 +207,7 @@ function buildBody(params: Params): { status: number; body: unknown } {
 
   items.sort((a, b) => {
     let cmp: number;
-    if (params.sort === "rank") cmp = a.rank - b.rank;
+    if (params.sort === "rank") cmp = (a.rank ?? Number.MAX_SAFE_INTEGER) - (b.rank ?? Number.MAX_SAFE_INTEGER);
     else if (params.sort === "score")
       cmp = (a.score ?? -Infinity) - (b.score ?? -Infinity);
     else cmp = a.symbol.localeCompare(b.symbol);

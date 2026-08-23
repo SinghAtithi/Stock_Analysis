@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   useCallback,
   useEffect,
@@ -9,7 +10,8 @@ import {
   useSyncExternalStore,
 } from "react";
 import Search from "@/components/Search";
-import ChartPanel from "@/components/ChartPanel";
+// heavyweight (lightweight-charts + indicators): keep out of the initial bundle
+const ChartPanel = dynamic(() => import("@/components/ChartPanel"), { ssr: false });
 import StatsRail from "@/components/StatsRail";
 import FundamentalsPanel from "@/components/FundamentalsPanel";
 import TickerTape from "@/components/TickerTape";
@@ -27,6 +29,7 @@ import type {
 import type { WatchlistEntry } from "@/lib/watchlist";
 import { RANGES } from "@/lib/types";
 import { timeAgo } from "@/lib/format";
+import { istSessionOpen } from "@/lib/session";
 import {
   addToWatchlist,
   getServerWatchlistSnapshot,
@@ -162,6 +165,11 @@ export default function Home() {
   useEffect(() => {
     let cancelled = false;
     const fetchTape = async () => {
+      /* TASK-53: skip when the tab is hidden or the IST session is closed —
+         overnight/holiday polls burn upstream quota for data that cannot
+         change. One immediate fetch still runs on mount so the tape is
+         never empty on first paint. */
+      if (document.hidden || !istSessionOpen()) return;
       try {
         const res = await fetch("/api/ticker");
         const json = await res.json();
@@ -170,11 +178,16 @@ export default function Home() {
         /* silent */
       }
     };
-    fetchTape();
+    const reeval = () => {
+      if (!document.hidden && istSessionOpen()) void fetchTape();
+    };
+    document.addEventListener("visibilitychange", reeval);
+    void fetchTape();
     const t = setInterval(fetchTape, 90_000);
     return () => {
       cancelled = true;
       clearInterval(t);
+      document.removeEventListener("visibilitychange", reeval);
     };
   }, [tickerNonce]);
 
@@ -388,7 +401,7 @@ export default function Home() {
 
       <TickerTape items={ticker} onSelect={pick} />
 
-      <main id="main-content" className="flex min-h-0 flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row lg:px-6">
+      <main id="main-content" tabIndex={-1} className="flex min-h-0 flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row lg:px-6">
         {/* sidebar desktop */}
         <aside className="hidden w-[320px] shrink-0 flex-col gap-4 lg:flex">
           <div className="rounded-2xl border border-line bg-surface p-4 shadow-sm">

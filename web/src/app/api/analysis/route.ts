@@ -52,5 +52,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "no_candles" }, { status: 502 });
   }
 
-  return NextResponse.json(analysis);
+  return NextResponse.json(analysis, {
+    headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
+  });
 }
