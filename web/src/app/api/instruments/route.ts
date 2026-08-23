@@ -8,7 +8,8 @@ import { findInstrument, isIndexSymbol } from "@/lib/instruments";
  * GET /api/instruments?s=RELIANCE → { instrument } | { instrument: null }
  */
 export async function GET(request: NextRequest) {
-  const s = request.nextUrl.searchParams.get("s")?.trim() ?? "";
+  /* TASK-1451: cap lookup key length before map scan */
+  const s = (request.nextUrl.searchParams.get("s") ?? "").trim().slice(0, 64);
   if (!s) return NextResponse.json({ instrument: null });
 
   const hit = findInstrument(s);

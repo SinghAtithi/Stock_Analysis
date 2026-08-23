@@ -22,6 +22,10 @@ async function curlRaw(
     "curl",
     [
       "-sSL",
+      /* TASK-1451: cap redirect hops — bare -L would chase unlimited
+         redirects to arbitrary hosts if an upstream ever misbehaves */
+      "--max-redirs",
+      "3",
       "-m",
       "20",
       "--compressed",
@@ -34,7 +38,9 @@ async function curlRaw(
       "\n%{http_code}",
       url,
     ],
-    { maxBuffer: 64 * 1024 * 1024, encoding: "utf8" }
+    /* TASK-1451: 8MB — chart JSON tops out ~2MB; 64MB let a hostile upstream
+       amplify memory 8x per in-flight call (non-Yahoo hosts bypass the slot limiter) */
+    { maxBuffer: 8 * 1024 * 1024, encoding: "utf8" }
   );
   const cut = stdout.lastIndexOf("\n");
   const body = cut >= 0 ? stdout.slice(0, cut) : "";
