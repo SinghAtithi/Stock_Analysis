@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   createChart,
   CandlestickSeries,
@@ -35,6 +35,15 @@ interface Legend {
   v: number | null;
 }
 
+const EMPTY_LEGEND: Legend = {
+  t: null,
+  o: null,
+  h: null,
+  l: null,
+  c: null,
+  v: null,
+};
+
 export default function ChartPanel({
   data,
   range,
@@ -50,15 +59,28 @@ export default function ChartPanel({
   const chartRef = useRef<IChartApi | null>(null);
   const candleRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
   const volRef = useRef<ISeriesApi<"Histogram"> | null>(null);
-  const [legend, setLegend] = useState<Legend>({
-    t: null,
-    o: null,
-    h: null,
-    l: null,
-    c: null,
-    v: null,
-  });
+  const [legend, setLegend] = useState<Legend>(EMPTY_LEGEND);
   const [logScale, setLogScale] = useState(false);
+
+  const pendingLegend = useRef<Legend | null>(null);
+  const legendRaf = useRef<number | null>(null);
+  const queueLegend = useCallback((next: Legend) => {
+    pendingLegend.current = next;
+    if (legendRaf.current !== null) return;
+    legendRaf.current = requestAnimationFrame(() => {
+      legendRaf.current = null;
+      const v = pendingLegend.current;
+      pendingLegend.current = null;
+      if (v) setLegend(v);
+    });
+  }, []);
+  const cancelPendingLegend = useCallback(() => {
+    if (legendRaf.current !== null) {
+      cancelAnimationFrame(legendRaf.current);
+      legendRaf.current = null;
+    }
+    pendingLegend.current = null;
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -165,7 +187,7 @@ export default function ChartPanel({
           }
         | undefined;
       if (d) {
-        setLegend({
+        queueLegend({
           t: param.time as number | null,
           o: d.open,
           h: d.high,
@@ -181,12 +203,13 @@ export default function ChartPanel({
 
     return () => {
       el.removeEventListener("dblclick", onDblClick);
+      cancelPendingLegend();
       chart.remove();
       chartRef.current = null;
       candleRef.current = null;
       volRef.current = null;
     };
-  }, []);
+  }, [queueLegend, cancelPendingLegend]);
 
   useEffect(() => {
     if (!data || !chartRef.current || !candleRef.current || !volRef.current)
@@ -224,8 +247,9 @@ export default function ChartPanel({
       barSpacing: BAR_SPACING,
       rightOffset: 2,
     });
-    setLegend({ t: null, o: null, h: null, l: null, c: null, v: null });
-  }, [data]);
+    cancelPendingLegend();
+    setLegend(EMPTY_LEGEND);
+  }, [data, cancelPendingLegend]);
 
   const lc =
     legend.c !== null && legend.o !== null

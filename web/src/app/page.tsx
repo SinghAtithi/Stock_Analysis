@@ -144,31 +144,10 @@ export default function Home() {
       rangeParam && RANGES.some((x) => x.range === rangeParam)
         ? rangeParam
         : "1y";
-    let cancelled = false;
-    const id = ++reqId.current;
-    (async () => {
-      setPicked(target);
-      setRange(startRange);
-      try {
-        const res = await fetch(chartUrl(target, startRange));
-        const json = await res.json();
-        if (cancelled || id !== reqId.current) return;
-        const err = errorMessage(res, json);
-        if (err) {
-          setError(err);
-          return;
-        }
-        setData(json);
-      } catch {
-        if (!cancelled && id === reqId.current) setError("Network error");
-      } finally {
-        if (!cancelled && id === reqId.current) setLoading(false);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+    setPicked(target);
+    setRange(startRange);
+    void load(target, startRange);
+  }, [load]);
 
   useEffect(() => {
     let cancelled = false;
