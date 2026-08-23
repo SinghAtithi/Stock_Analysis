@@ -1,13 +1,1212 @@
 {
-  "tasks": [],
-  "activities": [
+  "tasks": [
     {
-      "id": "RESET2",
-      "taskId": "—",
-      "text": "board wiped — dummy tasks + seed removed from bundle; empty is authoritative",
-      "agent": "SYSTEM",
-      "at": 1787397022379
+      "id": "TASK-01",
+      "title": "Fix red gates: analyzeChart ChartData/ChartPayload mismatch",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "done",
+      "assignee": "ghost",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "analyzeChart accepts both payload shapes structurally",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "tsc green",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "lint green",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "test green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787471466855,
+      "updatedAt": 1787471544263,
+      "blocked": false
+    },
+    {
+      "id": "TASK-02",
+      "title": "Board sync lost-update guard: full-state POST wipes concurrent writers (LIVE INCIDENT)",
+      "desc": "",
+      "phase": "A",
+      "priority": "P1",
+      "status": "done",
+      "assignee": "cipher",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "POST validates shape and merges by task id or rejects stale updatedAt with 409",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "CLI (board.mjs) and web /board writes cannot erase each other's tasks",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "repro script: two writers interleaved, zero lost tasks",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "incident 2026-08-23 CTO pass referenced in report",
+          "done": true
+        }
+      ],
+      "createdAt": 1787471514370,
+      "updatedAt": 1787473022398,
+      "blocked": false
+    },
+    {
+      "id": "TASK-03",
+      "title": "Design-system reconciliation: AGENTS.md terminal spec vs shipped light/dark UI",
+      "desc": "",
+      "phase": "A",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "ghost",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "AGENTS.md design section rewritten to match shipped token set (canvas/surface/sage-coral/Inter/ThemeToggle)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "amber stale chip replaced with token-based chip (contrast-checked)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "ChartPanel colors derived from CSS vars not hardcoded hex",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "theme toggle re-themes live chart without remount",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "axe contrast check still 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787471514436,
+      "updatedAt": 1787471667412,
+      "blocked": false
+    },
+    {
+      "id": "TASK-04",
+      "title": "API hardening: unbounded signals cache, missing cache headers, per-request SQLite opens",
+      "desc": "",
+      "phase": "A",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "signals route cache capped (max keys + LRU-ish eviction)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "/api/chart sets Cache-Control public s-maxage with SWR",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "signals route reuses one read-only better-sqlite3 handle per process",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "curl -i evidence for headers in report",
+          "done": false
+        }
+      ],
+      "createdAt": 1787471664710,
+      "updatedAt": 1787471664710,
+      "blocked": false
+    },
+    {
+      "id": "TASK-05",
+      "title": "marketData deep-module refactor: payload builder, singleflight, upstream deadline",
+      "desc": "",
+      "phase": "A",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "getChart under ~80 lines with one shared fallback-payload builder (5x duplication gone)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "concurrent identical requests coalesced via singleflight map",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "per-request upstream time budget then stale/fail-fast",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "behavior parity: 3 symbols same payloads pre/post",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "npm test green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787471664791,
+      "updatedAt": 1787471664791,
+      "blocked": false
+    },
+    {
+      "id": "TASK-06",
+      "title": "Home perf pass: 1Hz clock isolates subtree, rAF-throttled chart legend, dedupe initial loader",
+      "desc": "",
+      "phase": "A",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "IST clock extracted so second-tick does not re-render TickerTape/ChartPanel (profiler evidence)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "crosshair legend max 1 setState per frame",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "mount effect reuses load() instead of duplicated fetch block",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "tsc+lint green",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "13-check Playwright e2e green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787471664868,
+      "updatedAt": 1787471664868,
+      "blocked": false
+    },
+    {
+      "id": "TASK-07",
+      "title": "Unit-test web data layer: marketData parsers + day-change helpers",
+      "desc": "",
+      "phase": "A",
+      "priority": "P2",
+      "status": "doing",
+      "assignee": "cipher",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "node:test suites for yahooToPayload, Google parser, MC parser, previousCloseFromCandles/dayChange with fixture JSON",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "suites run via npm test",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "one real captured upstream payload per source as fixture",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "LOG entry with coverage summary",
+          "done": false
+        }
+      ],
+      "createdAt": 1787471664987,
+      "updatedAt": 1787471944194,
+      "blocked": false
+    },
+    {
+      "id": "TASK-08",
+      "title": "Deploy-readiness spike before TASK-28: serverless constraints ADR",
+      "desc": "",
+      "phase": "E",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "ADR verdicts: curl subprocess availability on target runtime",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "module-level cache strategy (in-proc vs shared KV)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "board.json fs-write replacement for read-only filesystems",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "readonly SQLite packaging",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "ROADMAP task 28 amended or confirmed",
+          "done": false
+        }
+      ],
+      "createdAt": 1787471665168,
+      "updatedAt": 1787471665168,
+      "blocked": false
+    },
+    {
+      "id": "TASK-09",
+      "title": "Repo hygiene: land uncommitted session work in scoped commits",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "done",
+      "assignee": "cipher",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "scratch ignored",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "scoped commits per subsystem",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "gates green after each",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "AGENTS.md design section matches reality",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "LOG entry",
+          "done": false
+        }
+      ],
+      "createdAt": 1787471707039,
+      "updatedAt": 1787472118931,
+      "blocked": false
+    },
+    {
+      "id": "TASK-10",
+      "title": "Backtest fidelity: benchmark semantics doc/fix, survivorship ADR, scorer parallelism",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "benchmark static-weight daily recenter documented or replaced with true buy&hold compounding",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "ADR: survivorship bias of current-constituent universe quantified or acknowledged in docs/backtest.md",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "StrategyScorer loop parallelized or batched per rebalance",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "npm test green incl metrics suites",
+          "done": false
+        }
+      ],
+      "createdAt": 1787471747156,
+      "updatedAt": 1787471747156,
+      "blocked": false
+    },
+    {
+      "id": "TASK-11",
+      "title": "Shared AppShell: extract site header + single IST clock used by home/screener/breadth",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "one SiteHeader component replaces 3 copy-pasted headers (home variant keeps sticky)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "useISTClock collapses to one shared component (currently 3 divergent copies)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "breadth FlowBars stops reading documentElement during render and re-colors on theme change",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no visual regression vs current pages",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "Playwright sanity green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787471747254,
+      "updatedAt": 1787471747254,
+      "blocked": false
+    },
+    {
+      "id": "TASK-12",
+      "title": "Screener deep-link correctness: stop hardcoding e=NSE on row click",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "row push uses instrument exchange and type from signals payload or instruments index",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "BSE-listed symbol routes without fallback resolution",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "index strategy rows carry type=Index",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "verified via Playwright click-through",
+          "done": false
+        }
+      ],
+      "createdAt": 1787471747363,
+      "updatedAt": 1787471747363,
+      "blocked": false
+    },
+    {
+      "id": "TASK-13",
+      "title": "Tracker endpoint abuse cap: custom-symbol fallbacks bypass all budgets",
+      "desc": "",
+      "phase": "A",
+      "priority": "P2",
+      "status": "review",
+      "assignee": "sable",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "/api/tracker?symbols= serves custom quotes from cache or capped budget shared process-wide (not per-request)",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "response cached briefly (60s) with Cache-Control",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "per-IP rate limit or proof-of-no-DoS note",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "curl evidence: repeated calls hit cache not upstream",
+          "done": true
+        }
+      ],
+      "createdAt": 1787471923829,
+      "updatedAt": 1787473101189,
+      "blocked": false
+    },
+    {
+      "id": "TASK-14",
+      "title": "Security headers + next.config cleanup before launch",
+      "desc": "",
+      "phase": "E",
+      "priority": "P2",
+      "status": "done",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "CSP (report-only then enforce), X-Frame-Options DENY, Referrer-Policy, HSTS, Permissions-Policy set in next.config or middleware",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "no console errors from CSP in Playwright run",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "remove or justify T21_DISTDIR distDir hack",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "document choices in docs/deploy notes",
+          "done": true
+        }
+      ],
+      "createdAt": 1787471923979,
+      "updatedAt": 1787473563809,
+      "blocked": false
+    },
+    {
+      "id": "TASK-15",
+      "title": "P1: signals+backtests run on UNADJUSTED closes — adj_factor never applied",
+      "desc": "",
+      "phase": "C",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "run-signals.mjs makeContext.getCandles multiplies o/h/l/c by adj_factor (or loads pre-adjusted view)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "run-backtest.mjs candle loader same",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "fixture test: 2:1 split mid-series yields continuous adjusted returns",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "decide dividend policy: extend adj_factor to total-return or document price-only limitation in docs/backtest.md",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "re-run S100 snapshot and diff affected symbols",
+          "done": false
+        }
+      ],
+      "createdAt": 1787472161087,
+      "updatedAt": 1787472161087,
+      "blocked": false
+    },
+    {
+      "id": "TASK-16",
+      "title": "Design-identity polish: real odometer roll, OS theme default, raster OG images",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Odometer animates digit rolls on value change (150-200ms ease-out), honors prefers-reduced-motion, sr-only text preserved",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "first visit with no stored theme follows prefers-color-scheme in the pre-paint inline script (toggle remains sticky)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "OG/Twitter images replaced with PNG/JPG >=1200x630 (X and FB crawlers do not render SVG)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "verify meta tags via curl of rendered HTML",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "tsc+lint green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787472243516,
+      "updatedAt": 1787472243516,
+      "blocked": false
+    },
+    {
+      "id": "TASK-17",
+      "title": "Pipeline hardening: enforce UI e2e gate + WIP cap instead of advisories",
+      "desc": "",
+      "phase": "A",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "review/ship detect dirty or staged web/src/app|components paths and require an explicit --e2e flag or run the Playwright sanity script automatically",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "workflow start refuses claims past WIP limit unless --force",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "gate results recorded on task activity",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "docs/BOARD.md updated",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "tsc+lint+test green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787472368906,
+      "updatedAt": 1787472368906,
+      "blocked": false
+    },
+    {
+      "id": "TASK-18",
+      "title": "Breadth API: expose per-source freshness for DII (meta.sources.di missing)",
+      "desc": "",
+      "phase": "B",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "/api/breadth meta.sources gains di key (or per-series freshness map)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "breadth page DII card gates on sources.di not sources.fii",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "empty-state copy verified when DII absent but FII present",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "tsc+lint green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787472485531,
+      "updatedAt": 1787472485531,
+      "blocked": false
+    },
+    {
+      "id": "TASK-19",
+      "title": "P1: real strategies never wired into registry — moat invisible to product",
+      "desc": "",
+      "phase": "C",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "registry.ts imports+registers all implemented strategy modules (S100,S104,S172,S174,S081,quality trio,S099 family)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "/api/strategies + /api/signals expose them with jury ranks",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "screener picker lists them",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "signals:run produces snapshots for S100 from eod_candles",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "sequence note: land after or together with adj_factor fix (TASK-15) so first real ranks are clean",
+          "done": false
+        }
+      ],
+      "createdAt": 1787472671999,
+      "updatedAt": 1787472671999,
+      "blocked": false
+    },
+    {
+      "id": "TASK-20",
+      "title": "Signal snapshot hygiene: fixtures mode persists synthetic data to prod table",
+      "desc": "",
+      "phase": "C",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [],
+      "createdAt": 1787472672117,
+      "updatedAt": 1787472672117,
+      "blocked": false
     }
   ],
-  "updatedAt": 1787397022379
+  "activities": [
+    {
+      "id": "O207",
+      "taskId": "TASK-14",
+      "text": "shipped 3155115 (local) · [TASK-14] feat(web): security headers — CSP, HSTS, XFO, nosniff, Permissions-Policy + deploy notes",
+      "agent": "NOVA",
+      "at": 1787473563810
+    },
+    {
+      "id": "DZHN",
+      "taskId": "TASK-14",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "NOVA",
+      "at": 1787473523801
+    },
+    {
+      "id": "20BZ",
+      "taskId": "TASK-14",
+      "text": "✓ checked document choices in docs/deploy notes",
+      "agent": "RAVAN",
+      "at": 1787473192068
+    },
+    {
+      "id": "8NQK",
+      "taskId": "TASK-14",
+      "text": "✓ checked remove or justify T21_DISTDIR distDir hack",
+      "agent": "RAVAN",
+      "at": 1787473191941
+    },
+    {
+      "id": "9AEE",
+      "taskId": "TASK-14",
+      "text": "✓ checked no console errors from CSP in Playwright run",
+      "agent": "RAVAN",
+      "at": 1787473191847
+    },
+    {
+      "id": "IWPP",
+      "taskId": "TASK-14",
+      "text": "✓ checked CSP (report-only then enforce), X-Frame-Options ",
+      "agent": "RAVAN",
+      "at": 1787473191679
+    },
+    {
+      "id": "W5NS",
+      "taskId": "TASK-13",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "NOVA",
+      "at": 1787473101189
+    },
+    {
+      "id": "GXOJ",
+      "taskId": "TASK-02",
+      "text": "shipped b677229 (local) · [TASK-02] feat(board): lost-update-safe sync — server-side per-task merge with deletion tombstones",
+      "agent": "NOVA",
+      "at": 1787473022399
+    },
+    {
+      "id": "HLKJ",
+      "taskId": "TASK-02",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "NOVA",
+      "at": 1787472952790
+    },
+    {
+      "id": "YDGA",
+      "taskId": "TASK-13",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "SABLE",
+      "at": 1787472882878
+    },
+    {
+      "id": "95G8",
+      "taskId": "TASK-02",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "CIPHER",
+      "at": 1787472797953
+    },
+    {
+      "id": "N9LT",
+      "taskId": "TASK-02",
+      "text": "✓ checked incident 2026-08-23 CTO pass referenced in repor",
+      "agent": "RAVAN",
+      "at": 1787472761092
+    },
+    {
+      "id": "JYKT",
+      "taskId": "TASK-02",
+      "text": "✓ checked repro script: two writers interleaved, zero lost",
+      "agent": "RAVAN",
+      "at": 1787472760988
+    },
+    {
+      "id": "LBZ6",
+      "taskId": "TASK-02",
+      "text": "✓ checked CLI (board.mjs) and web /board writes cannot era",
+      "agent": "RAVAN",
+      "at": 1787472760782
+    },
+    {
+      "id": "1X66",
+      "taskId": "TASK-02",
+      "text": "✓ checked POST validates shape and merges by task id or re",
+      "agent": "RAVAN",
+      "at": 1787472760680
+    },
+    {
+      "id": "8MOS",
+      "taskId": "TASK-13",
+      "text": "✓ checked curl evidence: repeated calls hit cache not upst",
+      "agent": "RAVAN",
+      "at": 1787472737103
+    },
+    {
+      "id": "CG4O",
+      "taskId": "TASK-13",
+      "text": "✓ checked per-IP rate limit or proof-of-no-DoS note",
+      "agent": "RAVAN",
+      "at": 1787472736895
+    },
+    {
+      "id": "ILZ0",
+      "taskId": "TASK-13",
+      "text": "✓ checked response cached briefly (60s) with Cache-Control",
+      "agent": "RAVAN",
+      "at": 1787472736751
+    },
+    {
+      "id": "GDO9",
+      "taskId": "TASK-13",
+      "text": "✓ checked /api/tracker?symbols= serves custom quotes from ",
+      "agent": "RAVAN",
+      "at": 1787472736570
+    },
+    {
+      "id": "RXTC",
+      "taskId": "TASK-20",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787472672117
+    },
+    {
+      "id": "J5I6",
+      "taskId": "TASK-19",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787472671999
+    },
+    {
+      "id": "766A",
+      "taskId": "TASK-18",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787472485531
+    },
+    {
+      "id": "4G7T",
+      "taskId": "TASK-17",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787472368906
+    },
+    {
+      "id": "SMVK",
+      "taskId": "TASK-16",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787472243516
+    },
+    {
+      "id": "44YE",
+      "taskId": "TASK-13",
+      "text": "claimed by SABLE · → doing",
+      "agent": "SABLE",
+      "at": 1787472162444
+    },
+    {
+      "id": "R1ZZ",
+      "taskId": "TASK-15",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787472161087
+    },
+    {
+      "id": "KSP8",
+      "taskId": "TASK-09",
+      "text": "shipped 903ba59 (local) · [TASK-09] chore(docs): reconcile AGENTS.md with shipped light/dark design system + LOG entry",
+      "agent": "CIPHER",
+      "at": 1787472118932
+    },
+    {
+      "id": "LQCV",
+      "taskId": "TASK-02",
+      "text": "re-started by CIPHER",
+      "agent": "CIPHER",
+      "at": 1787472086861
+    },
+    {
+      "id": "JPBS",
+      "taskId": "TASK-09",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "CIPHER",
+      "at": 1787472081240
+    },
+    {
+      "id": "ZJ1V",
+      "taskId": "TASK-09",
+      "text": "✓ checked scoped commits per subsystem",
+      "agent": "RAVAN",
+      "at": 1787472049907
+    },
+    {
+      "id": "QUNO",
+      "taskId": "TASK-09",
+      "text": "✓ checked scratch ignored",
+      "agent": "RAVAN",
+      "at": 1787472049805
+    },
+    {
+      "id": "3533",
+      "taskId": "TASK-07",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787471944194
+    },
+    {
+      "id": "NGGU",
+      "taskId": "TASK-14",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471923979
+    },
+    {
+      "id": "OIKL",
+      "taskId": "TASK-13",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471923829
+    },
+    {
+      "id": "SFTE",
+      "taskId": "TASK-12",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471747363
+    },
+    {
+      "id": "R8DH",
+      "taskId": "TASK-11",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471747255
+    },
+    {
+      "id": "P9V4",
+      "taskId": "TASK-10",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471747156
+    },
+    {
+      "id": "02G7",
+      "taskId": "TASK-09",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787471745778
+    },
+    {
+      "id": "7YWV",
+      "taskId": "TASK-02",
+      "text": "claimed by GHOST · → doing",
+      "agent": "GHOST",
+      "at": 1787471707121
+    },
+    {
+      "id": "G1AZ",
+      "taskId": "TASK-09",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471707040
+    },
+    {
+      "id": "D9JH",
+      "taskId": "TASK-03",
+      "text": "unchecked theme toggle re-themes live chart without remoun",
+      "agent": "GHOST",
+      "at": 1787471667412
+    },
+    {
+      "id": "0TCT",
+      "taskId": "TASK-03",
+      "text": "unchecked ChartPanel colors derived from CSS vars not hard",
+      "agent": "GHOST",
+      "at": 1787471667320
+    },
+    {
+      "id": "F3IR",
+      "taskId": "TASK-03",
+      "text": "unchecked amber stale chip replaced with token-based chip ",
+      "agent": "GHOST",
+      "at": 1787471667188
+    },
+    {
+      "id": "64IY",
+      "taskId": "TASK-03",
+      "text": "unchecked AGENTS.md design section rewritten to match ship",
+      "agent": "GHOST",
+      "at": 1787471667061
+    },
+    {
+      "id": "UK98",
+      "taskId": "TASK-08",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471665168
+    },
+    {
+      "id": "CDUH",
+      "taskId": "TASK-07",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471664987
+    },
+    {
+      "id": "4E0E",
+      "taskId": "TASK-06",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471664868
+    },
+    {
+      "id": "FGCP",
+      "taskId": "TASK-05",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471664791
+    },
+    {
+      "id": "BE09",
+      "taskId": "TASK-04",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471664710
+    },
+    {
+      "id": "EHOQ",
+      "taskId": "TASK-03",
+      "text": "✓ checked theme toggle re-themes live chart without remoun",
+      "agent": "GHOST",
+      "at": 1787471613008
+    },
+    {
+      "id": "U7SM",
+      "taskId": "TASK-02",
+      "text": "✓ checked incident 2026-08-23 CTO pass referenced in repor",
+      "agent": "GHOST",
+      "at": 1787471612923
+    },
+    {
+      "id": "8JS8",
+      "taskId": "TASK-03",
+      "text": "✓ checked ChartPanel colors derived from CSS vars not hard",
+      "agent": "GHOST",
+      "at": 1787471612843
+    },
+    {
+      "id": "17UL",
+      "taskId": "TASK-02",
+      "text": "✓ checked repro script: two writers interleaved, zero lost",
+      "agent": "GHOST",
+      "at": 1787471612773
+    },
+    {
+      "id": "UTNY",
+      "taskId": "TASK-03",
+      "text": "✓ checked amber stale chip replaced with token-based chip ",
+      "agent": "GHOST",
+      "at": 1787471612696
+    },
+    {
+      "id": "QNVA",
+      "taskId": "TASK-02",
+      "text": "✓ checked CLI (board.mjs) and web /board writes cannot era",
+      "agent": "GHOST",
+      "at": 1787471612637
+    },
+    {
+      "id": "BW3U",
+      "taskId": "TASK-03",
+      "text": "✓ checked AGENTS.md design section rewritten to match ship",
+      "agent": "GHOST",
+      "at": 1787471612570
+    },
+    {
+      "id": "6KU4",
+      "taskId": "TASK-02",
+      "text": "✓ checked POST validates shape and merges by task id or re",
+      "agent": "GHOST",
+      "at": 1787471612509
+    },
+    {
+      "id": "RD7P",
+      "taskId": "TASK-03",
+      "text": "claimed by GHOST",
+      "agent": "GHOST",
+      "at": 1787471612445
+    },
+    {
+      "id": "UM3E",
+      "taskId": "TASK-01",
+      "text": "shipped deb7ac1 (local) · [TASK-01] fix(analysis): decouple analyzeChart from ChartData — accepts payload structurally (exchange/exchangeName)",
+      "agent": "GHOST",
+      "at": 1787471544263
+    },
+    {
+      "id": "U5UL",
+      "taskId": "TASK-03",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471514436
+    },
+    {
+      "id": "XA0A",
+      "taskId": "TASK-02",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471514370
+    },
+    {
+      "id": "DTAU",
+      "taskId": "TASK-01",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "GHOST",
+      "at": 1787471494446
+    },
+    {
+      "id": "TUBC",
+      "taskId": "TASK-01",
+      "text": "✓ checked analyzeChart accepts both payload shapes structu",
+      "agent": "RAVAN",
+      "at": 1787471475387
+    },
+    {
+      "id": "LSJB",
+      "taskId": "TASK-01",
+      "text": "claimed by GHOST · → doing",
+      "agent": "GHOST",
+      "at": 1787471466929
+    },
+    {
+      "id": "R066",
+      "taskId": "TASK-01",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787471466855
+    }
+  ],
+  "deletions": [],
+  "updatedAt": 1787473563810
 }

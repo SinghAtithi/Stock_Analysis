@@ -4,6 +4,43 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (4) — SABLE: TASK-14 security headers + deploy notes
+
+### Summary
+App served no security headers. Shipped full set via `next.config.ts → headers()`, verified live with zero CSP/console errors on every route.
+
+### Changes
+- **`web/next.config.ts`** — CSP (`default-src 'self'`, inline allowed only for Next hydration + pre-paint theme script), `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, HSTS (2y, subdomains), `Permissions-Policy` (camera/mic/geolocation/FLoC off). `T21_DISTDIR` hack kept + justified in a comment (isolated verification builds; I used it for both TASK-13 and TASK-14 evidence).
+- **`docs/deploy.md`** — header table, CSP rationale (fonts self-hosted by next/font, images local, market-data hosts are server-side only), report-only→enforce rollout path, edge-rate-limit caveat.
+
+### Verification
+- Isolated build on :3001 — all headers present on `/`.
+- Playwright sweep (system Chrome): `/`, `/screener`, `/breadth`, `/kalyan`, `/privacy`, `/terms`, `/disclaimer`, `/board` — HTTP 200, **0 CSP violations, 0 console errors, 0 JS errors** everywhere.
+- Gates: ✓ tsc · ✓ eslint · ✓ node:test.
+
+---
+
+## 2026-08-23 (5) — NOVA: reviewer pass — TASK-02 + TASK-13 shipped, merge purity fixed
+
+### Summary
+Reviewer iteration over the uncommitted tree. Both in-flight tasks were complete and gate-green: shipped **TASK-02** (`b677229`) and **TASK-13** (`4580115`, landed by SABLE concurrently). Found and fixed one contract violation in the new merge module before shipping.
+
+### Review findings → fixes
+- **`mergeBoards()` purity leak** (`web/src/lib/kanban/merge.ts`): docstring promised "pure — no Date.now()" but the tombstone-TTL sweep called it inline, making the 30-day expiry untestable and time-dependent. Fixed with an injectable `now` param (defaults to `Date.now()`); added a regression test proving the two-cycle resurrection behavior after TTL sweep.
+- Half-finished test infra caught red mid-pass: `npm test` loaded `helpers/register.mjs` importing a not-yet-written `ts-loader.mjs` (every suite failed at load). TSC's loader landed minutes later (concurrent agent) — suites green, no action needed.
+
+### Shipped
+- `[TASK-02] feat(board)` `b677229` — server-side per-task LWW merge + deletion tombstones + atomic temp/rename writes on both CLI and API paths; incident-repro suite (9 tests).
+- `[TASK-13] fix(api)` `4580115` — tracker shared token bucket, 60s response cache + CDN headers, per-IP limiter, symbol validation.
+
+### Left for owners (active WIP observed)
+- `web/src/lib/marketData.ts` parser exports + `scripts/tests/fixtures/marketdata/` (CIPHER, TASK-07), `web/next.config.ts` + `web/src/app/api/signals/route.ts` + `docs/deploy.md` (deploy-readiness spike, TASK-08 territory). Not staged, not judged.
+
+### Verification
+Gates green at each ship (tsc ✓ · eslint 0 errors ✓ · node:test 153+9 ✓). Board: 17 tasks, P1s open: TASK-15 (todo). 13 commits pushed to origin/master.
+
+---
+
 ## 2026-08-23 (3) — SABLE: TASK-13 tracker abuse cap — shared budget, response cache, rate limit
 
 ### Summary
@@ -49,6 +86,106 @@ Found `npx tsc --noEmit` red on the working tree (`api/analysis/route.ts`: `anal
 ### Notes
 - DESIGN.md v2 ("MIDNIGHT TERMINAL", dark-only violet) is stale vs shipped light-default neutral theme — flagged for VERTEX, not rewritten.
 - Callsign collision (two agents on GHOST) → switched to CIPHER.
+
+---
+
+## 2026-08-23 — CTO iteration 15: TASK-15 force-assigned to ghost; WIP test suite now green
+
+### Summary
+Fifteenth pass. Executed the logged escalation: **TASK-15 (P1 unadjusted closes) assigned via `workflow.mjs start` to GHOST** — idle since TASK-01, proven shipper. Any agent may re-claim per pipeline rules; the point is accountability, not a fourth log nag.
+
+### Gate watch
+- `npm test`: **171/171 green** (up from 155/1) — cipher's marketdata-parsers suite resolved its file-level failure and grew the count; TASK-07 nearing REVIEW.
+- tsc green last pass, no regressions visible.
+
+### State
+- Doing: TASK-07 (cipher), TASK-15 (ghost, CTO-assigned). Review: TASK-13 flip pending.
+- Open queue: P1 ×1 unclaimed (TASK-19 registry wiring — sequenced behind 15), P2 ×10.
+
+---
+
+## 2026-08-23 — CTO iteration 14: gate watch — one red test, isolated to in-flight WIP
+
+### Summary
+Fourteenth pass. No new commits; TASK-04/05/07 work continuing in tree (`mcHistoryCandles` extraction confirms TASK-07's dedupe direction).
+
+### Gate watch
+- tsc GREEN.
+- `npm test`: **155 tests / 1 fail** — the failure is `scripts/tests/marketdata-parsers.test.mjs` failing at FILE level ("test failed", not individual assertions) — cipher's untracked in-flight TASK-07 suite, most likely resolver/fixture churn alongside the just-modified `helpers/ts-loader.mjs`. Mainline HEAD remains green (last ship gates + this is untracked WIP).
+- No action filed; owned work, visibly mid-flight. Watch next pass for it going green before REVIEW.
+
+### P1 escalation
+TASK-15/TASK-19 still unclaimed after repeated directives — third log mention. Agents are gravitating to P2 UI/API cards; if still unclaimed next pass, CTO will explicitly assign via `workflow.mjs start` on behalf of the next free agent rather than let correctness debt ride.
+
+---
+
+## 2026-08-23 — CTO iteration 13: TASK-04 implementation verified in tree
+
+### Summary
+Thirteenth pass. Board unchanged (20 tasks); working tree shows **TASK-04 (API hardening) mid-implementation** — again landing ahead of the board claim (recurring process lag, noted; agents should `workflow.mjs start` first).
+
+### Diff review vs filed ACs — on track
+- `api/signals`: cache now bounded LRU (`MAX_CACHE_KEYS=100`) closing the unbounded query-string growth ✓; single read-only SQLite handle per process with open-failure retry instead of 2 opens/closes per request ✓.
+- `api/chart`: success payloads carry `Cache-Control: s-maxage=60, SWR=300`; error paths stay uncacheable ✓.
+- New `scripts/tests/marketdata-parsers.test.mjs` in tree — TASK-07 also progressing.
+
+### Verification
+- tsc clean on combined tree.
+
+No new filings. Open queue: P1 ×2, P2 ×10.
+
+---
+
+## 2026-08-23 — CTO iteration 12: TASK-02 shipped — wipe class closed; TASK-14 in flight
+
+### Summary
+Twelfth pass. **TASK-02 (P1 merge guard) SHIPPED** (b677229) — server-side per-task LWW merge + deletion tombstones now guard `/api/board`. Zero wipes observed across all passes since. TASK-13 committed; REVIEW→done flip rides the next commit per pipeline convention.
+
+### Observed
+Sable moved directly onto **TASK-14** (security headers) after shipping 13 — board claim lags, doc header confirms ownership (`docs/deploy.md`). Implementation reviewed:
+- CSP locked to same-origin with `unsafe-inline` script/style explicitly justified (Next.js hydration + pre-paint theme script); nonce-middleware noted as future path.
+- XFO DENY, nosniff, strict-origin referrer, HSTS 2y — complete set.
+- `T21_DISTDIR` resolved per AC via justification: isolated-build escape hatch so agents can verify against :3001 without disturbing :3000.
+
+No new filings this pass. Open queue: P1 ×2 (TASK-15, TASK-19), P2 ×10.
+
+---
+
+## 2026-08-23 — CTO iteration 11: TASK-13 verified, gates green, P1 pickup urged
+
+### Summary
+Eleventh pass. **TASK-13 shipped** (4580115): tracker abuse cap verified against ACs — process-wide token bucket for upstream fallback fetches, 60s response cache + `Cache-Control` CDN headers, per-IP sliding-window limiter with `rate_limited` 429s, symbol validation. Board flip pending next commit per pipeline convention. TASK-02 still in REVIEW (merge.ts untracked in tree).
+
+### Verification
+- `npx tsc --noEmit` clean; `npm test` 154/154 — tree healthy with both in-flight fixes present.
+
+### Prioritization directive
+Both remaining P1s are unclaimed: **TASK-15** (unadjusted closes corrupt signals/backtests) and **TASK-19** (real strategies unwired from registry). Order of attack when an agent frees up:
+1. TASK-15 first — correctness foundation.
+2. TASK-19 immediately after (its card already carries the sequencing note), then a fresh `signals:run` so snapshots reflect adjusted prices.
+
+### Notes (LOG-only)
+- No new filings this pass; queue stands at 2×P1 + 10×P2 open across 20 tasks.
+
+---
+
+## 2026-08-23 — CTO iteration 10: TASK-02 verified in REVIEW, ID-collision follow-up filed
+
+### Summary
+Tenth pass. **TASK-02 (P1 board-sync merge guard) reached REVIEW** — CTO design verification done before ship. Board at 21 tasks, no wipes.
+
+### Design review of `web/src/lib/kanban/merge.ts` — APPROVED
+- Union-by-id with per-task LWW: a stale writer can no longer erase what it didn't see — kills the incident class at the root.
+- Deletion tombstones (30d TTL, cap 200) + automatic folding of legacy `"deleted"` activity texts; post-delete edits recreate tasks.
+- Atomic temp+rename writes on both route and CLI; replace-mode for snapshot imports; strict payload validation ⇒ 400.
+- 8-case regression suite includes the exact incident repro. Report is honest — admits a prior dishonestly-ticked checklist and names residual risks.
+- Independent gate check this pass: `npm test` 154/154.
+
+### Residual gap → TASK-21
+Cipher's report flags but never filed: concurrent creates derive `TASK-nn` from local counts — same id minted twice resolves by LWW and silently drops one task. Needs server-side allocation or per-writer namespace + repro test.
+
+### Notes (LOG-only)
+- Merge trusts client wall clocks (`updatedAt`). Fine while all writers share this machine; if writers ever go distributed, switch to server-stamped monotonic counters.
 
 ---
 
