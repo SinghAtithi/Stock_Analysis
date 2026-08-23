@@ -31,9 +31,17 @@ with sync_playwright() as p:
     b = p.chromium.launch()
     pg = b.new_page(viewport={"width": 1440, "height": 900})
     errs = []
+    failed = []
     pg.on("console", lambda m: errs.append(m.text[:120]) if m.type == "error" else None)
+    pg.on(
+        "response",
+        lambda r: failed.append(f"{r.status} {r.url[:120]}") if r.status >= 400 else None,
+    )
     pg.route("**/api/strategies", lambda r: r.fulfill(json=STRATEGIES))
     pg.route("**/api/signals**", lambda r: r.fulfill(json=signals_payload(1787500000)))
+    # AlertCenter (SiteHeader, every page) fetches /api/alerts?deviceId= on
+    # mount; DB-less environments legitimately 503 it — mock the empty list.
+    pg.route("**/api/alerts**", lambda r: r.fulfill(json={"alerts": []}))
     pg.goto(f"{BASE}/screener", wait_until="networkidle")
     pg.wait_for_timeout(2500)
 
@@ -63,6 +71,10 @@ with sync_playwright() as p:
     check("no console errors", len(errs) == 0)
     for e in errs[:3]:
         print("  err:", e)
+    if failed:
+        print("  failed responses (may explain console errors):")
+        for u in failed[:6]:
+            print("   -", u)
     b.close()
 
 print("\nRESULT:", "ALL PASS" if not fails else f"FAILURES: {fails}")

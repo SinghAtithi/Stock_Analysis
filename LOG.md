@@ -4,6 +4,61 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (100) — NOVA: TASK-66 — fundamentals source ADR; keyless paths empirically dead
+
+### Probes
+NSE `quote-equity` and `NextApi getQuoteData` both 403 through the working TASK-30 session jar (Akamai allowlist covers price-history endpoints only). screener.in rejected (no JSON, brittle, ToS). BSE same Akamai family. Yahoo quoteSummary remains IP-blocked locally + on GH runners.
+
+### ADR-0003 (`docs/adr/0003-fundamentals-source.md`)
+Keep Yahoo path intact (self-heals on clean IPs); refuse shallow substitutes that can't feed statement-level strategies; recommend paid vendor evaluation (FMP / TrueData / Global Datafeeds) with concrete selection criteria. Runner wiring from 4aa5e73 makes any conforming source a drop-in.
+
+### Status
+TASK-60's S101 live; TASK-57 blocked at AC0/AC2-full pending owner source decision (TASK-66 → done-pending-decision: probes + ADR delivered, wiring ready).
+
+---
+
+## 2026-08-23 (100) — AXIOM: CTO iteration 144 — steady
+
+### Summary
+Hundred-forty-fourth pass. No ships; six doing cards unchanged (49/52/57/59/65/67). Holding cadence.
+
+---
+
+## 2026-08-23 (99) — AXIOM: CTO iteration 143 — steady
+
+### Summary
+Hundred-forty-third pass. No ships; six doing cards unchanged. Holding cadence.
+
+---
+
+## 2026-08-23 (98) — AXIOM: CTO iteration 142 — steady
+
+### Summary
+Hundred-forty-second pass. No ships; eight cards in flight/review. Holding cadence.
+
+---
+
+## 2026-08-23 (97) — AXIOM: CTO iteration 141 — steady
+
+### Summary
+Hundred-forty-first pass. No ships; six cards in flight. Holding cadence.
+
+---
+
+## 2026-08-23 (96) — AXIOM: CTO iteration 140 — steady; TASK-57 factor wiring formally landed
+
+### Summary
+Hundred-fortieth pass. TASK-57's runner wiring formally committed (4aa5e73). New: cipher self-seeded **TASK-67** (NSE sweeper starts at listing year — skips empty pre-listing windows, improving their own TASK-30 follow-up). 49/52/59/65 unchanged. Holding cadence.
+
+---
+
+## 2026-08-23 (95) — AXIOM: CTO iteration 139 — steady; nova unblocked factor wiring, Yahoo blocker escalated (TASK-66)
+
+### Summary
+Hundred-thirty-ninth pass. Nova's TASK-57 progress is substantial: `run-signals makeContext` now serves fundamentals/analyst to strategies (without it S104/S105/S081/quality/value could never score), verified end-to-end via seeded smoke → real S104 CLI signals. **Blocker found and escalated correctly**: Yahoo quoteSummary v10 is IP-blocked locally AND on GH runners — TASK-66 (P1) filed by nova for alternate/paid source ADR. This gates full moat activation but the wiring work stands.
+
+---
+
 ## 2026-08-23 (94) — NOVA: TASK-57 progress — factor wiring live in runner; Yahoo source blocker filed (TASK-66)
 
 ### Runner wiring (landed)
@@ -1208,6 +1263,23 @@ All three under `scripts/tests/fixtures/marketdata/` carry embedded `_provenance
 
 ### Verification
 Gates green: ✓ `npx tsc --noEmit` · ✓ `npm run lint` (0 errors; only the 6 pre-existing kalyan `<img>` warnings) · ✓ `npm test` — **171 pass / 0 fail** across all suites, 17 of them new.
+
+---
+
+## 2026-08-23 (15) — SABLE: TASK-59 — strategy-entry alerts + delivery digest
+
+### Summary
+Alerts could only watch prices. Added strategy-membership alerts (fire on top-N enter/exit between snapshot runs), a scheduled-run CLI evaluator, per-alert pause/resume, and a logged-digest delivery with a Resend-shaped adapter for when an email key appears.
+
+### Changes
+- **lib/alerts.ts** — `strategy_enter`/`strategy_exit` types; `membershipDiff(prevTop, currTop)`; `membershipEvents(rows, diffs, now)` matching watched strategies; validation branches by lane (membership: `{strategyId, topN}` with registry check + 1–50 bounds; price: unchanged).
+- **/api/alerts/evaluate** — two lanes: price via cached tape, membership via last-two-runs diff from signal_snapshots (per-strategy LIMIT-2 DISTINCT as_of); both feed the same fired/deactivate/digest path. Digest logs always; Resend POST only when `RESEND_API_KEY` exists.
+- **scripts/run-alerts.mjs** — standalone evaluator for Actions (no server needed): membership fully supported from DB; price alerts reported pending-live (need the tape). Wired into pipelines.yml signals job after snapshot ingest.
+- **/api/alerts PATCH** + **AlertCenter** — per-alert Pause/Resume toggle (aria-pressed), membership-aware row labels.
+- Tests: membershipDiff/membershipEvents/validation branches + temp-DB CLI integration (fires on crafted diff, deactivates alert, stamps fired_at). Suite now 16 alerts tests.
+
+### Verification
+- Full gates green (252 tests). CLI run against live DB correctly reports "nothing fired" when latest S100 runs are identical, and fires in the temp-DB diff scenario.
 
 ---
 
