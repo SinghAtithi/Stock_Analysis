@@ -8,9 +8,13 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
+import { mergeBoards } from "./lib/board-merge.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const BOARD_FILE = path.resolve(__dirname, "..", "data", "board.json");
+// NIFTY_BOARD_FILE: override for tests / parallel sandboxes (TASK-21)
+const BOARD_FILE = process.env.NIFTY_BOARD_FILE
+  ? path.resolve(process.env.NIFTY_BOARD_FILE)
+  : path.resolve(__dirname, "..", "data", "board.json");
 
 export const CALLSIGNS = ["ghost","viper","phantom","nova","axiom","blade","cipher","orion","vector","spectre","neon","raven","falcon","wraith","kite","hawk","sable","echo","frost","jet","lynx","mantis","vertex","quark"];
 
@@ -23,11 +27,22 @@ export function load() {
   return j;
 }
 export function save(data) {
-  data.updatedAt = Date.now();
+  // merge-on-save (TASK-21): writers hold `data` for up to 40s+ across gate
+  // runs; writing it verbatim clobbers everything that landed in between
+  // (the TASK-15/14 incident). Re-read the file and LWW-merge per task id,
+  // honoring deletion tombstones, immediately before the atomic write.
+  let current = null;
+  try {
+    current = JSON.parse(fs.readFileSync(BOARD_FILE, "utf-8"));
+  } catch {
+    // missing/corrupt file → merge onto empty (same semantics as POST /api/board)
+  }
+  const merged = mergeBoards(current, data);
+  merged.updatedAt = Date.now();
   fs.mkdirSync(path.dirname(BOARD_FILE), { recursive: true });
   // temp+rename: readers (GET /api/board, other CLIs) never see a torn file
   const tmp = `${BOARD_FILE}.${process.pid}.tmp`;
-  fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
+  fs.writeFileSync(tmp, JSON.stringify(merged, null, 2));
   fs.renameSync(tmp, BOARD_FILE);
 }
 

@@ -50,6 +50,16 @@ function getTask(id) {
   return { b, t };
 }
 
+// Apply a status flip to a board object. Exported for the race-regression test.
+export function flipStatus(b, id, status, actText, agent) {
+  const t = findTask(b, id);
+  if (!t) return { ok: false, reason: `No task ${id} on board — deleted or renamed mid-run?` };
+  t.status = status;
+  t.updatedAt = Date.now();
+  addActivity(b, id, actText, agent);
+  return { ok: true };
+}
+
 function git(args, opts = {}) {
   return spawnSync("git", args, { cwd: ROOT, encoding: "utf-8", ...opts });
 }
@@ -128,9 +138,11 @@ function cmdReview() {
     process.exit(1);
   }
   const from = t.status;
-  t.status = "review";
-  t.updatedAt = Date.now();
-  addActivity(b, id, `review · gates green (${results.filter(r=>!r.skipped).map(r=>r.label).join("·")})`, agent);
+  // AC2 (TASK-21): never mutate the pre-gate snapshot — reload fresh so the
+  // flip lands on the current file instead of resurrecting a stale board.
+  b.tasks = load().tasks; // refresh in place: same object, current rows
+  const r = flipStatus(b, id, "review", `review · gates green (${results.filter(r=>!r.skipped).map(r=>r.label).join("·")})`, agent);
+  if (!r.ok) die(r.reason);
   save(b);
   console.log(`\n✓ ${id}: ${from.toUpperCase()} → REVIEW (${agent.toUpperCase()})
   reviewer ACK then:
@@ -184,11 +196,15 @@ function cmdShip() {
     pushed = true;
   }
 
-  // board AFTER commit — the status flip rides the next commit, never this one
-  t.status = "done";
-  t.updatedAt = Date.now();
-  addActivity(b, id, `shipped ${hash}${pushed ? ` → origin/${branch}` : " (local)"} · ${full}`, agent);
-  save(b);
+  // board AFTER commit — the status flip rides the next commit, never this one.
+  // TASK-21: reload fresh (gates + commit held the pre-run board for 40s+).
+  b.tasks = load().tasks; // refresh in place: same object, current rows
+  const flip = flipStatus(b, id, "done", `shipped ${hash}${pushed ? ` → origin/${branch}` : " (local)"} · ${full}`, agent);
+  if (!flip.ok) {
+    console.log(`⚠ board not flipped: ${flip.reason} — set ${id} to done on /board manually.`);
+  } else {
+    save(b);
+  }
 
   console.log(`\n✓ SHIPPED ${id} · ${hash} · ${branch}${pushed ? " · pushed" : ""}\n  ${full}`);
   if (!pushed) console.log("  not pushed — run: git push origin HEAD");

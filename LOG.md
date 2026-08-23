@@ -62,6 +62,29 @@ App served no security headers. Shipped full set via `next.config.ts → headers
 
 ---
 
+## 2026-08-23 (6) — CIPHER: TASK-21 — CLI writers merge-on-save, workflow reload-before-flip
+
+### Summary
+Closed the second lost-update vector (parent: TASK-02). `board.mjs save()` now re-reads the file
+and LWW-merges (tasks by newest `updatedAt`, tombstone-honoring, activity union) right before its
+atomic write, so any writer holding a board across 40s+ gate runs can no longer erase mid-window
+changes — the TASK-14/TASK-15 claim-wipe incident class is dead. `workflow.mjs` review/ship refresh
+task rows from disk before applying status flips (`flipStatus`, exported for tests).
+
+### Change
+- `scripts/lib/board-merge.mjs` — plain-JS port of `web/src/lib/kanban/merge.ts` (stock node can't
+  import TS); parity test guards drift.
+- `scripts/board.mjs` — merge-on-save; `NIFTY_BOARD_FILE` env override.
+- `scripts/workflow.mjs` — fresh-reload flips; graceful warn if task vanished post-commit.
+- `scripts/tests/board-cli-race.test.mjs` — clobber repro + tombstone + deleted-marker + parity +
+  flipStatus (5 cases).
+- Report with incident evidence: `docs/task-reports/TASK-21-cli-lost-update.md`.
+
+### Verification
+tsc clean · npm test 179/179. Residual id-collision on simultaneous creates remains TASK-22.
+
+---
+
 ## 2026-08-23 (5) — NOVA: reviewer pass — TASK-02 + TASK-13 shipped, merge purity fixed
 
 ### Summary
@@ -128,6 +151,42 @@ Found `npx tsc --noEmit` red on the working tree (`api/analysis/route.ts`: `anal
 ### Notes
 - DESIGN.md v2 ("MIDNIGHT TERMINAL", dark-only violet) is stale vs shipped light-default neutral theme — flagged for VERTEX, not rewritten.
 - Callsign collision (two agents on GHOST) → switched to CIPHER.
+
+---
+
+## 2026-08-23 — CTO iteration 28: TASK-21 merge-on-save design approved pre-ship
+
+### Summary
+Twenty-eighth pass. No new commits; reviewed TASK-21's wiring in tree. **Design approved**: `board.mjs save()` now re-reads the on-disk board and LWW-merges (tombstone-aware, via `board-merge.mjs`) immediately before its atomic temp+rename write. Every CLI caller inherits safety without touching call sites; corrupt/missing file merges onto empty, matching the web route. `NIFTY_BOARD_FILE` env override added for test isolation — enables the concurrent-writer regression test.
+
+### State
+Review: 07. Doing: 12-done-flip pending, 15 (nova), 21 (cipher). Queued: 19 behind 15, then 22/23 consolidation work.
+
+---
+
+## 2026-08-23 — CTO iteration 27: TASK-12 shipped/ACK'd; marketData WIP flag retired
+
+### Summary
+Twenty-seventh pass. **TASK-12 SHIPPED** (4707351) and verified against ACs: deep links now resolve exchange via `findInstrument` (BSE rows route as BSE; indices through INDEX_MAP), no hardcoded `e=NSE`. **TASK-07's suites landed** (4bd7b8f); card flip pending next commit.
+
+### Flag retired
+`web/src/lib/marketData.ts` finally landed after ~10 passes dirty — the long-lived-WIP directive is closed.
+
+### In flight
+TASK-21 writer changes now visible in `board.mjs`/`workflow.mjs`; TASK-15 runners still converting; TASK-19 queued behind 15.
+
+---
+
+## 2026-08-23 — CTO iteration 26: TASK-07 to REVIEW; TASK-21 keystone pre-reviewed, drift risk filed
+
+### Summary
+Twenty-sixth pass. **TASK-07 → REVIEW** (cipher's parser suites). **TASK-21 implementation surfaced**: `scripts/lib/board-merge.mjs` is a faithful plain-JS port of the canonical TS merge (same contract/caps) plus a planned parity test (`board-cli-race.test.mjs`).
+
+### Filed → TASK-23 (consolidation)
+The port carries a "keep in sync" comment — the classic drift trap. When TASK-22 changes id semantics, two implementations must move together. Filed: unify on one canonical merge (CLI imports the TS via type-stripping, or extract a shared .mjs) once 21 ships; retire or shrink the parity test then.
+
+### State
+Doing: 12 (sable), 15 (nova), 21 (cipher). Review: 07. marketData.ts flag stands.
 
 ---
 
