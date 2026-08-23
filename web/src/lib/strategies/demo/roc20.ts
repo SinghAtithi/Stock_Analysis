@@ -1,4 +1,5 @@
 import type { Signal, Strategy, StrategyContext, StrategyMeta } from "../types";
+import { evalDay } from "../pointInTime";
 import { pctRank, roc } from "../indicators";
 
 const ROC_PERIOD = 20;
@@ -31,7 +32,7 @@ interface Distribution {
 const cache = new WeakMap<StrategyContext, Distribution>();
 
 async function loadDistribution(ctx: StrategyContext, universe: "nifty50" | "nifty500") {
-  const day = Math.floor(Date.now() / 86_400_000);
+  const day = evalDay(ctx);
   const hit = cache.get(ctx);
   if (hit && hit.day === day && hit.universe === universe) return hit;
 

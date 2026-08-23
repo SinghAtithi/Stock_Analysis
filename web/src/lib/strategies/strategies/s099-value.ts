@@ -29,6 +29,7 @@ import type {
   StrategyContext,
   StrategyMeta,
 } from "../types";
+import { evalDay } from "../pointInTime";
 import { safeDiv, zscore } from "../indicators";
 
 const CONCURRENCY = 10;
@@ -173,7 +174,7 @@ async function loadDistribution(
   ctx: StrategyContext,
   universe: "nifty50" | "nifty500"
 ): Promise<ValueDistribution> {
-  const day = Math.floor(Date.now() / 86_400_000);
+  const day = evalDay(ctx);
   const hit = cache.get(ctx);
   if (hit && hit.day === day && hit.universe === universe) return hit;
   const inflight = pending.get(ctx);

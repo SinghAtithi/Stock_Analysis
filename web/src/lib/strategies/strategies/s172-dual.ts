@@ -8,6 +8,7 @@
  * Self-registering on import. Never throws — returns null on insufficient data.
  */
 import type { Signal, Strategy, StrategyContext, StrategyMeta } from "../types";
+import { evalDay } from "../pointInTime";
 import { sma, safeDiv } from "../indicators";
 import { register } from "../store";
 
@@ -56,7 +57,7 @@ const cache = new WeakMap<StrategyContext, Snapshot>();
 const pending = new WeakMap<StrategyContext, Promise<Snapshot>>();
 
 async function loadSnapshot(ctx: StrategyContext): Promise<Snapshot> {
-  const day = Math.floor(Date.now() / 86_400_000);
+  const day = evalDay(ctx);
   const hit = cache.get(ctx);
   if (hit && hit.day === day) return hit;
   const inflight = pending.get(ctx);

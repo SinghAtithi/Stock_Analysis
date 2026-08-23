@@ -54,6 +54,14 @@ export interface StrategyContext {
   ): Promise<Record<string, unknown> | null> | Record<string, unknown> | null;
   /** Optional universe membership (resolved from instruments.json idx). */
   getUniverse?(universe: "nifty50" | "nifty500"): string[] | null;
+  /**
+   * Evaluation clock, epoch MILLISECONDS — the instant this computation is
+   * "as of". Strategies MUST derive wall-clock quantities (cache-day keys,
+   * event ages) from here instead of Date.now(), or walk-forward backfills
+   * (--as-of) leak the real present into historical evaluations. Optional
+   * for backward compatibility: treat absence as Date.now().
+   */
+  now?(): number;
 }
 
 export interface Strategy {

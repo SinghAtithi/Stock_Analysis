@@ -65,6 +65,7 @@
  *   NaN, never a throw).
  */
 import type { Signal, Strategy, StrategyContext, StrategyMeta } from "../types";
+import { evalDay } from "../pointInTime";
 import { pctRank, safeDiv } from "../indicators";
 
 const CONCURRENCY = 10;
@@ -385,7 +386,7 @@ async function loadRows(
   ctx: StrategyContext,
   universe: "nifty50" | "nifty500"
 ): Promise<Distribution> {
-  const day = Math.floor(Date.now() / 86_400_000);
+  const day = evalDay(ctx);
   const hit = cache.get(ctx);
   if (hit && hit.day === day && hit.universe === universe) return hit;
   const inflight = pending.get(ctx);

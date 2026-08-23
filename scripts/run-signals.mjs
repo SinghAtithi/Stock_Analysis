@@ -21,6 +21,7 @@ import { fileURLToPath } from "node:url";
 import { registerHooks } from "node:module";
 import { openDb, REPO_ROOT } from "./lib/db.mjs";
 import { toAdjustedCandles } from "./lib/adjust.mjs";
+import { backfillStamps } from "./lib/stamps.mjs";
 
 registerHooks({
   resolve(specifier, context, nextResolve) {
@@ -42,7 +43,7 @@ const UNIVERSE_LABEL = { nifty50: "NIFTY 50", nifty500: "NIFTY 500" };
 const FIXTURE_DAYS = 50;
 
 function parseArgs(argv) {
-  const args = { strategyId: null, universe: "nifty50", fixtures: false };
+  const args = { strategyId: null, universe: "nifty50", fixtures: false, asOf: null, backfillMonths: 0 };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--universe") {
@@ -54,6 +55,24 @@ function parseArgs(argv) {
       args.universe = v;
     } else if (a === "--fixtures") {
       args.fixtures = true;
+    } else if (a === "--as-of") {
+      // YYYY-MM-DD — evaluate strategies point-in-time at that date (UTC)
+      const v = argv[++i];
+      const t = Date.parse(`${v}T00:00:00Z`);
+      if (!v || Number.isNaN(t)) {
+        console.error(`--as-of needs a YYYY-MM-DD date, got "${v}"`);
+        process.exit(2);
+      }
+      args.asOf = Math.floor(t / 1000);
+    } else if (a === "--backfill-months") {
+      // walk-forward sweep: one run per month-end for the last N months.
+      // Real candles only — synthetic fixtures must never reach snapshots.
+      const v = Number(argv[++i]);
+      if (!Number.isInteger(v) || v < 1 || v > 360) {
+        console.error(`--backfill-months needs an integer 1..360, got "${argv[i]}"`);
+        process.exit(2);
+      }
+      args.backfillMonths = v;
     } else if (a.startsWith("--")) {
       console.error(`unknown flag "${a}"`);
       process.exit(2);
@@ -64,8 +83,15 @@ function parseArgs(argv) {
       process.exit(2);
     }
   }
+  if (args.fixtures && (args.asOf !== null || args.backfillMonths > 0)) {
+    console.error("--fixtures is incompatible with --as-of/--backfill-months");
+    process.exit(2);
+  }
   return args;
 }
+
+/** UTC month-end epoch seconds, k months before the month containing endSec (k=0 → same month). */
+
 
 function resolveUniverse(universe) {
   const raw = JSON.parse(readFileSync(INSTRUMENTS_PATH, "utf8"));
@@ -129,7 +155,7 @@ function loadDb() {
   return { db, hasCandles };
 }
 
-function makeContext(db, universeSymbols, fixtures) {
+function makeContext(db, universeSymbols, fixtures, asOfSec = Math.floor(Date.now() / 1000)) {
   // universe labels are bare ("RELIANCE") but eod_candles keys are suffixed
   // ("RELIANCE.NS") — resolve once so real candles are actually read
   const dbSymbols = new Set(
@@ -142,11 +168,13 @@ function makeContext(db, universeSymbols, fixtures) {
   );
   return {
     universe: universeSymbols,
+    // point-in-time clock (TASK-34): strategies derive cache-day keys and
+    // event ages from here so future --as-of backfills stay reproducible
+    now: () => asOfSec * 1000,
     async getCandles(symbol, lookbackDays) {
       if (fixtures) return fixtureCandles(symbol);
-      // eod_candles.ts is epoch SECONDS (see schema) — Date.now() is ms; mixing
-      // them filtered out every row and silently nulled all signals
-      const since = Math.floor(Date.now() / 1000) - lookbackDays * 86_400 * 1.6;
+      // window is anchored to the evaluation instant, not wall clock
+      const since = asOfSec - lookbackDays * 86_400 * 1.6;
       const rows = stmt.all(resolveCandleSymbol(symbol), since);
       return toAdjustedCandles(rows);
     },
@@ -231,16 +259,26 @@ if (strategies.some((s) => s === undefined)) {
   process.exit(1);
 }
 
-const ctx = makeContext(db, universeSymbols, args.fixtures);
-const asOf = Math.floor(Date.now() / 1000);
+// Evaluation stamps: default [now]. --as-of pins a single instant.
+// --backfill-months N sweeps the last N historical month-ends, then the
+// current instant — giving backtests real rank history to score (TASK-34).
+const nowSec = Math.floor(Date.now() / 1000);
+const stamps = backfillStamps(nowSec, args.backfillMonths);
+if (args.asOf !== null) stamps[stamps.length - 1] = args.asOf;
 
 let total = 0;
-for (const strategy of strategies) {
-  if (strategy.meta.universe !== args.universe) {
-    console.log(`note: ${strategy.meta.id} design universe=${strategy.meta.universe}, running on ${args.universe}`);
+for (const stamp of stamps) {
+  const ctx = makeContext(db, universeSymbols, args.fixtures, stamp);
+  if (stamps.length > 1) {
+    console.log(`\n=== as_of=${stamp} (${new Date(stamp * 1000).toISOString().slice(0, 10)}) ===`);
   }
-  total += await runStrategy(strategy, ctx, db, asOf, args.universe, !args.fixtures);
+  for (const strategy of strategies) {
+    if (strategy.meta.universe !== args.universe) {
+      console.log(`note: ${strategy.meta.id} design universe=${strategy.meta.universe}, running on ${args.universe}`);
+    }
+    total += await runStrategy(strategy, ctx, db, stamp, args.universe, !args.fixtures);
+  }
 }
 
 db.close();
-console.log(`\ndone: ${strategies.length} strategy(ies), ${total} signals ${args.fixtures ? "computed (fixtures: nothing persisted)" : "written"}, as_of=${asOf}`);
+console.log(`\ndone: ${strategies.length} strategy(ies) × ${stamps.length} stamp(s), ${total} signals ${args.fixtures ? "computed (fixtures: nothing persisted)" : "written"}, final as_of=${stamps[stamps.length - 1]}`);

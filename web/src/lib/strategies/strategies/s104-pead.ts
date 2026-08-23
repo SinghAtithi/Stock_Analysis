@@ -2,6 +2,7 @@ import type { Candle } from "../../types";
 import type { Signal, Strategy, StrategyContext, StrategyMeta } from "../types";
 import { register } from "../store";
 import { safeDiv } from "../indicators";
+import { evalNow } from "../pointInTime";
 
 /**
  * S104 — PEAD / SUE (Post-Earnings-Announcement Drift), jury rank 2.
@@ -200,7 +201,8 @@ export const s104Strategy: Strategy = {
         ? 50 + 50 * (clamp(sue, -SUE_CAP, SUE_CAP) / SUE_CAP)
         : 50 + 50 * clamp((surprisePct as number) / 100, -1, 1);
 
-    const ageDays = (Date.now() - eventDateMs) / DAY_MS;
+    // event age on the evaluation clock (point-in-time safe for backfills)
+    const ageDays = (evalNow(ctx) - eventDateMs) / DAY_MS;
     const inWindow = ageDays >= 0 && ageDays <= DRIFT_WINDOW_DAYS;
 
     let drift60d: number | null = null;
