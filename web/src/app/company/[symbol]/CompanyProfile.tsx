@@ -61,43 +61,79 @@ function Section({
   );
 }
 
-function Empty({ text }: { text: string }) {
+function Empty({
+  text,
+  action,
+}: {
+  text: string;
+  action?: React.ReactNode;
+}) {
   return (
-    <p className="rounded-2xl border border-line bg-surface px-4 py-3 text-sm text-muted shadow-sm">
-      {text}
-    </p>
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-line bg-surface px-4 py-3 text-sm text-muted shadow-sm">
+      <p>{text}</p>
+      {action != null && <span className="ml-auto">{action}</span>}
+    </div>
   );
 }
 
-function useJson<T>(url: string): { data: T | null; failed: boolean; loaded: boolean } {
+/* TASK-600: failed sections offer recovery — quiet chip matching home's */
+function RetryChip({ onRetry }: { onRetry: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onRetry}
+      className="rounded-full border border-line bg-surface px-2.5 py-0.5 text-xs font-medium text-muted shadow-sm transition-colors hover:border-line-strong hover:text-paper"
+    >
+      Retry
+    </button>
+  );
+}
+
+function useJson<T>(url: string): {
+  data: T | null;
+  failed: boolean;
+  loaded: boolean;
+  retry: () => void;
+} {
   const [state, setState] = useState<{ forUrl: string; data: T | null } | null>(null);
-  const [failed, setFailed] = useState(false);
+  /* failure keyed to the url it happened for — one bad fetch must not poison
+     other sections, and a retry clears it instead of sticking forever (TASK-600) */
+  const [failedFor, setFailedFor] = useState<string | null>(null);
+  const [nonce, setNonce] = useState(0);
   useEffect(() => {
     let cancelled = false;
-    (async () => {
+    const run = async () => {
       try {
         const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) throw new Error(String(res.status));
         const json: T = await res.json();
-        if (!cancelled) setState({ forUrl: url, data: json });
+        if (!cancelled) {
+          setState({ forUrl: url, data: json });
+          setFailedFor((f) => (f === url ? null : f));
+        }
       } catch {
-        if (!cancelled) setFailed(true);
+        if (!cancelled) setFailedFor(url);
       }
-    })();
+    };
+    run();
     return () => {
       cancelled = true;
     };
-  }, [url]);
+  }, [url, nonce]);
   return {
     data: state?.forUrl === url ? state.data : null,
-    failed,
+    failed: failedFor === url,
     loaded: state?.forUrl === url,
+    retry: () => {
+      setFailedFor(null);
+      setNonce((n) => n + 1);
+    },
   };
 }
 
 function QuoteHeader({ symbol, resolved }: { symbol: string; resolved: WatchlistEntry }) {
   const url = `/api/analysis?symbol=${encodeURIComponent(symbol)}&exchange=${encodeURIComponent(resolved.exchange)}&range=1y&interval=1d`;
-  const { data, failed, loaded } = useJson<{ quote: Quote }>(url);
+  const { data, failed, loaded, retry } = useJson<{ quote: Quote }>(url);
   const q = loaded ? (data?.quote ?? null) : null;
   /* TASK-80 star: store-backed so the icon tracks remote/local mirrors */
   const watchlist = useSyncExternalStore(
@@ -135,15 +171,20 @@ function QuoteHeader({ symbol, resolved }: { symbol: string; resolved: Watchlist
             <p className="font-mono text-xl font-medium tabular-nums text-paper sm:text-2xl">
               {failed || !loaded ? "—" : q?.price != null ? inr(q.price) : "—"}
             </p>
-            {loaded && q?.changePct != null && (
-              <p
-                className={`font-mono text-sm font-medium tabular-nums ${
-                  q.changePct >= 0 ? "text-up" : "text-down"
-                }`}
-              >
-                {q.changePct >= 0 ? "+" : ""}
-                {q.changePct.toFixed(2)}%
-              </p>
+            {failed ? (
+              <RetryChip onRetry={retry} />
+            ) : (
+              loaded &&
+              q?.changePct != null && (
+                <p
+                  className={`font-mono text-sm font-medium tabular-nums ${
+                    q.changePct >= 0 ? "text-up" : "text-down"
+                  }`}
+                >
+                  {q.changePct >= 0 ? "+" : ""}
+                  {q.changePct.toFixed(2)}%
+                </p>
+              )
             )}
           </div>
           {/* TASK-80 cross-nav: chart deep-link + watchlist star */}
@@ -167,14 +208,16 @@ interface StrategyMeta {
 
 function Memberships({ symbol }: { symbol: string }) {
   const [state, setState] = useState<{ for: string; hits: StrategyMeta[] } | null>(null);
-  const [failed, setFailed] = useState(false);
+  /* keyed failure + user-triggered retry, matching useJson (TASK-600) */
+  const [failedFor, setFailedFor] = useState<string | null>(null);
+  const [nonce, setNonce] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
-    /* signal_snapshots keys symbols bare (RELIANCE), URLs carry exchange
-     * suffix (RELIANCE.NS) — compare on the base symbol */
-    const base = symbol.replace(/\.(NS|BO)$/i, "").toUpperCase();
-    (async () => {
+    const run = async () => {
+      /* signal_snapshots keys symbols bare (RELIANCE), URLs carry exchange
+       * suffix (RELIANCE.NS) — compare on the base symbol */
+      const base = symbol.replace(/\.(NS|BO)$/i, "").toUpperCase();
       let metas: StrategyMeta[] = [];
       try {
         const res = await fetch("/api/strategies", { cache: "no-store" });
@@ -182,7 +225,7 @@ function Memberships({ symbol }: { symbol: string }) {
         const json: { strategies?: StrategyMeta[] } = await res.json();
         metas = json.strategies ?? [];
       } catch {
-        if (!cancelled) setFailed(true);
+        if (!cancelled) setFailedFor(symbol);
         return;
       }
       const results = await Promise.allSettled(
@@ -197,13 +240,24 @@ function Memberships({ symbol }: { symbol: string }) {
         })
       );
       if (cancelled) return;
+      if (results.some((r) => r.status === "rejected")) {
+        setFailedFor(symbol);
+        return;
+      }
       const found = results.flatMap((r) => (r.status === "fulfilled" ? r.value ?? [] : []));
       setState({ for: symbol, hits: found });
-    })();
+    };
+    run();
     return () => {
       cancelled = true;
     };
-  }, [symbol]);
+  }, [symbol, nonce]);
+
+  const failed = failedFor === symbol;
+  const retry = () => {
+    setFailedFor(null);
+    setNonce((n) => n + 1);
+  };
 
   if (state?.for !== symbol && !failed) {
     return (
@@ -215,7 +269,12 @@ function Memberships({ symbol }: { symbol: string }) {
     );
   }
   if (failed) {
-    return <Empty text="Strategy signals unavailable right now." />;
+    return (
+      <Empty
+        text="Strategy signals unavailable right now."
+        action={<RetryChip onRetry={retry} />}
+      />
+    );
   }
   const hits = state?.for === symbol ? state.hits : [];
   if (hits.length === 0) {
@@ -254,9 +313,15 @@ function actionValue(a: CorpAction): string {
 
 function CorporateActions({ symbol }: { symbol: string }) {
   const url = `/api/corporate-actions?symbol=${encodeURIComponent(symbol)}`;
-  const { data, failed, loaded } = useJson<{ items: CorpAction[] }>(url);
+  const { data, failed, loaded, retry } = useJson<{ items: CorpAction[] }>(url);
 
-  if (failed) return <Empty text="Corporate actions unavailable right now." />;
+  if (failed)
+    return (
+      <Empty
+        text="Corporate actions unavailable right now."
+        action={<RetryChip onRetry={retry} />}
+      />
+    );
   if (!loaded) {
     return (
       <div className="space-y-2 px-1" aria-hidden>
