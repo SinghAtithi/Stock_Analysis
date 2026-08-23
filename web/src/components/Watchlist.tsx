@@ -70,7 +70,7 @@ export default function Watchlist({
       {items.length === 0 && (
         <div className="rounded-xl border border-dashed border-line bg-canvas px-4 py-6 text-center">
           <p className="text-sm font-medium text-paper">No symbols yet</p>
-          <p className="mt-1 text-xs leading-relaxed text-muted">Search above and press the star on any chart to add it here.</p>
+          <p className="mt-1 text-xs leading-relaxed text-muted">Press <kbd className="rounded border border-line bg-panel-2 px-1 py-0.5 font-mono text-[10px]">/</kbd> to search, star to save — showing NIFTY 50 until you add one.</p>
         </div>
       )}
 

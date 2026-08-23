@@ -32,10 +32,13 @@ import { timeAgo } from "@/lib/format";
 import { istSessionOpen } from "@/lib/session";
 import {
   addToWatchlist,
+  DEFAULT_WATCHLIST,
   getServerWatchlistSnapshot,
   getWatchlistSnapshot,
   removeFromWatchlist,
   subscribeWatchlist,
+  WATCHLIST_EVENT,
+  WATCHLIST_KEY,
 } from "@/lib/watchlist";
 import { useWatchlistMirror } from "@/lib/watchlistMirror";
 
@@ -82,6 +85,18 @@ const resolveTarget = async (
   }
 };
 
+/* Fallback for cold-start / empty-watchlist — AC1+AC3: never render
+   "Choose a symbol" with no chart. Marquee index so a first-time or
+   wiped visitor lands on a real chart; deep-links still win via resolveTarget. */
+const FALLBACK_ENTRY: SearchResult = {
+  symbol: "NIFTY 50",
+  name: "NIFTY 50",
+  shortName: "NIFTY 50",
+  exchange: "NSE",
+  type: "Index",
+  sector: "",
+};
+
 export default function Home() {
   useWatchlistMirror();
   const watchlist = useSyncExternalStore(
@@ -90,7 +105,7 @@ export default function Home() {
     getServerWatchlistSnapshot,
   );
   const [picked, setPicked] = useState<SearchResult | null>(null);
-  const selected = picked ?? watchlist[0] ?? null;
+  const selected: SearchResult | WatchlistEntry = picked ?? watchlist[0] ?? FALLBACK_ENTRY;
   const selectedRef = useRef(selected);
   useEffect(() => {
     selectedRef.current = selected;
@@ -134,7 +149,7 @@ export default function Home() {
 
   const retry = useCallback(() => {
     setTickerNonce((n) => n + 1);
-    if (selected) load(selected, range);
+    load(selected, range);
   }, [selected, range, load]);
 
   useEffect(() => {
@@ -142,13 +157,7 @@ export default function Home() {
     (async () => {
       const params = new URLSearchParams(location.search);
       const resolved = await resolveTarget(params);
-      const target = resolved ?? getWatchlistSnapshot()[0] ?? null;
-      if (!target) {
-        if (!cancelled) {
-          setLoading(false);
-        }
-        return;
-      }
+      const target = resolved ?? getWatchlistSnapshot()[0] ?? FALLBACK_ENTRY;
       if (cancelled) return;
       const rangeParam = params.get("r") as RangeKey | null;
       const startRange: RangeKey =
@@ -304,7 +313,7 @@ export default function Home() {
   };
 
   const up = (data?.change ?? 0) >= 0;
-  const busy = loading && selected != null;
+  const busy = loading;
 
   useEffect(() => {
     if (!wlOpen) return;
@@ -438,19 +447,46 @@ export default function Home() {
             </button>
           </div>
 
+          {/* onboarding hint — visible until first symbol is added */}
+          {watchlist.length === 0 && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="flex flex-wrap items-center gap-3 rounded-2xl border border-line bg-panel-2 px-4 py-3 text-sm leading-relaxed"
+            >
+              <span className="text-paper">
+                Your watchlist is empty — showing {DEFAULT_WATCHLIST[0].symbol}. Press{" "}
+                <kbd className="rounded border border-line bg-surface px-1 py-0.5 font-mono text-xs">/</kbd> to search, star to save.
+              </span>
+              <button
+                onClick={() => {
+                  try {
+                    window.localStorage.setItem(WATCHLIST_KEY, JSON.stringify(DEFAULT_WATCHLIST));
+                    window.dispatchEvent(new CustomEvent(WATCHLIST_EVENT));
+                  } catch {
+                    /* quota */
+                  }
+                }}
+                className="rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-paper hover:bg-paper hover:text-ink"
+              >
+                Restore defaults
+              </button>
+            </div>
+          )}
+
           {/* instrument header */}
           <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="min-w-0">
                 <h1 className="truncate text-[22px] font-semibold tracking-tight text-paper sm:text-[28px]">
-                  {selected?.name ?? "Choose a symbol"}
+                  {(selected ?? (watchlist.length === 0 ? DEFAULT_WATCHLIST[0] : null))?.name ?? "Choose a symbol"}
                 </h1>
                 <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
                   <span className="rounded-full bg-paper px-2.5 py-1 font-mono text-xs font-medium text-ink">
-                    {selected?.symbol ?? "—"}
+                    {(selected ?? (watchlist.length === 0 ? DEFAULT_WATCHLIST[0] : null))?.symbol ?? "—"}
                   </span>
                   <span className="rounded-full border border-line bg-panel-2 px-2.5 py-1 text-muted">
-                    {selected?.exchange ?? "NSE"}
+                    {(selected ?? (watchlist.length === 0 ? DEFAULT_WATCHLIST[0] : null))?.exchange ?? "NSE"}
                   </span>
                   <span className="rounded-full border border-line px-2.5 py-1 text-faint">
                     {data?.currency ?? "INR"}
@@ -506,6 +542,7 @@ export default function Home() {
             <span className="flex items-center gap-3">
               <Link href="/screener" className="hover:text-paper">Screener</Link>
               <Link href="/breadth" className="hover:text-paper">Breadth</Link>
+              <Link href="/pricing" className="hover:text-paper">Pricing</Link>
               <Link href="/board" className="rounded-full bg-paper px-2.5 py-1 font-medium text-ink">Board</Link>
               <span className="hidden sm:inline">NIFTY · {new Date().getFullYear()}</span>
             </span>
