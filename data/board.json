@@ -1245,7 +1245,7 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "vector",
       "labels": [],
       "estimate": 3,
@@ -1277,7 +1277,7 @@
         }
       ],
       "createdAt": 1787480187749,
-      "updatedAt": 1787481475598,
+      "updatedAt": 1787481588578,
       "blocked": false
     },
     {
@@ -1352,6 +1352,13 @@
     }
   ],
   "activities": [
+    {
+      "id": "9UEO",
+      "taskId": "TASK-35",
+      "text": "review · gates green tsc=10.1s·lint=27.6s·test=8.4s",
+      "agent": "VECTOR",
+      "at": 1787481588578
+    },
     {
       "id": "QZAH",
       "taskId": "TASK-34",
@@ -1904,15 +1911,8 @@
       "text": "shipped 03fe3f8 (local) · [TASK-11] feat(app): shared AppShell — SiteHeader + useISTClock replace 3 copied headers/clocks; FlowBars on CSS vars; e2e selectors de-staled; axe harness vendored (CSP-safe) · gates tsc=24.9s·lint=23.6s·test=6.6s · e2e✓",
       "agent": "VECTOR",
       "at": 1787479045130
-    },
-    {
-      "id": "7Q12",
-      "taskId": "TASK-11",
-      "text": "review · gates green tsc=12.2s·lint=25.7s·test=6.8s · e2e✓",
-      "agent": "VECTOR",
-      "at": 1787478967116
     }
   ],
   "deletions": [],
-  "updatedAt": 1787481527206
+  "updatedAt": 1787481588580
 }

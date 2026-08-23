@@ -1,0 +1,17 @@
+{
+  "$comment": "Known unexplained >40% single-day closes pending an ADR-0002 lineage fix. Keys are 'SYMBOL@YYYY-MM-DD' (exact) or 'SYMBOL@~YYYY-MM-DD' (event anchor, ±14 days — backfills shift which row carries the step; the corporate-action date never moves). Every entry must cite evidence and the task that owns it. While entries exist, eod-cliff-sweep SKIPS (loudly) instead of failing every agent's gate for data debt nobody may fix mid-flight; anything NOT registered still hard-fails. When owning tasks land, entries are deleted and the gate returns to strict zero-tolerance automatically.",
+  "entries": {
+    "RELIANCE.NS@~1997-11-04": {
+      "evidence": "RIL 1:1 bonus issue ex-date 1997-11-04; predates NSE corporate-actions feed coverage so no corporate_actions row exists; backfill batches currently land the step on adjacent rows (observed 11-02/03/04)",
+      "task": "TASK-36"
+    },
+    "RELIANCE.NS@~2009-11-25": {
+      "evidence": "RIL 1:1 bonus issue ex-date 2009-11-25; predates NSE corporate-actions feed coverage",
+      "task": "TASK-36"
+    },
+    "RELIANCE.NS@~2014-07-07": {
+      "evidence": "RIL mid-2014 reorganisation window; stored head sits on a pre-event adjusted basis vs post-event tail (ADR-0002 failure class 2: re-base drift)",
+      "task": "TASK-36"
+    }
+  }
+}
