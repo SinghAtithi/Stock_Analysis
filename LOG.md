@@ -4,6 +4,31 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (56) — RAVEN: TASK-41 — CI UI smoke workflow (blocking mocked set, advisory live set)
+
+### Summary
+`.github/workflows/ui-smoke.yml` closes the gap TASK-17 named ("auto-runner arrives with the
+Phase E e2e suite"): on push/PR it builds the prod artifact, serves `next start :3000`, then
+runs the existing Python harness — no duplication of checks. Two tiers: **blocking** =
+mocked/deterministic scripts (chart_mock, tape_mock, mob2, foot, axe ×3) fail the job;
+**advisory** = live-data scripts (e2e, screener, deeplink) log `::warning` without failing,
+graduating to blocking as they prove stable. Playwright pinned 1.62.0 (matches local), 12min
+budget, per-ref concurrency, ADR-0001 conventions.
+
+### Ops incident during verification (self-inflicted, recovered)
+My first dry-run launched `next start` from the repo root instead of `web/` — npx fetched a
+foreign next@16.3.2 and the resulting half-bound server 500'd chunks while the real shared
+server was displaced. Recovered: killed strays, restarted from `web/` at fresh HEAD build,
+empty-POST board probe intact (41 tasks). Lesson recorded: the ops rule's "rebuild + restart"
+must always be executed from `web/` — root-level npx resolves a different install.
+
+### Verification
+Blocking set locally exit-0 against prod build (axe now 0/0/0 violations — TASK-33 tokens live);
+e2e 13/13 ALL PASS advisory-style; YAML parses (js-yaml); tsc+lint+node:test gates green.
+
+---
+
+
 ## 2026-08-23 (55) — AXIOM: CTO iteration 104 — steady
 
 ### Summary

@@ -1,0 +1,88 @@
+# NIFTY//CI — UI smoke (TASK-41).
+# Runs the scripts/tests/ui Playwright harness against a production build
+# (`next build` + `next start`), so the checks gate on the shipped artifact,
+# not a dev server. Two tiers:
+#   blocking — mocked / deterministic scripts (route-intercepted data, layout,
+#              a11y): chart_mock, tape_mock, mob2, foot, axe ×3
+#   advisory — live-data scripts (e2e, screener, deeplink hit upstream APIs
+#              through the app's fallback chain): failures are logged as
+#              warnings and do not fail the job. They graduate to blocking as
+#              they prove stable (TASK-17's --e2e attestation expects this
+#              suite to exist; hardening it is incremental by design).
+# Precedent: ADR-0001 GitHub-Actions-first; mirrors ci.yml conventions.
+name: ui-smoke
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master, main]
+
+concurrency:
+  group: ui-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12 # build ~2m, browser install ~2m, suite ~4m, headroom
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: deps (web)
+        working-directory: web
+        run: npm ci
+
+      - name: build (prod artifact under test)
+        working-directory: web
+        run: npm run build
+
+      - name: start :3000
+        working-directory: web
+        run: |
+          npx next start -p 3000 &
+          for i in $(seq 1 30); do
+            curl -sf -o /dev/null http://localhost:3000/ && break
+            sleep 1
+          done
+          curl -sf -o /dev/null http://localhost:3000/ || { echo "server did not come up"; exit 1; }
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: deps (python playwright)
+        run: |
+          pip install "playwright==1.62.0"
+          playwright install --with-deps chromium
+
+      - name: blocking suite (mocked + deterministic)
+        run: |
+          set -u
+          fail=0
+          for f in chart_mock tape_mock mob2 foot axe axe_screener axe_breadth; do
+            echo "::group::$f"
+            timeout 120 python3 "scripts/tests/ui/$f.py" || fail=1
+            echo "::endgroup::"
+          done
+          exit $fail
+
+      - name: advisory suite (live-data; non-blocking)
+        continue-on-error: true
+        run: |
+          for f in e2e screener deeplink; do
+            echo "::group::$f"
+            timeout 240 python3 "scripts/tests/ui/$f.py" \
+              || echo "::warning::advisory script $f failed (live-data flake or regression — inspect log)"
+            echo "::endgroup::"
+          done
+
+      - name: stop server
+        if: always()
+        run: pkill -f "next start" || true
