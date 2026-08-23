@@ -1647,7 +1647,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -1655,31 +1655,31 @@
         {
           "id": "1",
           "text": "bell entry point opens alert center (list active/fired, dismiss, delete)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "create dialog prefilled from symbol header (cross above/below/±%)",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "wire to TASK-42 CRUD API",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "keyboard accessible + aria-live on fired alerts",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "Playwright sanity green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787483528282,
-      "updatedAt": 1787484535513,
+      "updatedAt": 1787485731003,
       "blocked": false
     },
     {
@@ -1688,7 +1688,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "sable",
       "labels": [],
       "estimate": 3,
@@ -1720,7 +1720,7 @@
         }
       ],
       "createdAt": 1787483528433,
-      "updatedAt": 1787485291762,
+      "updatedAt": 1787485922403,
       "blocked": false
     },
     {
@@ -1729,7 +1729,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P2",
-      "status": "doing",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -1761,7 +1761,7 @@
         }
       ],
       "createdAt": 1787483673378,
-      "updatedAt": 1787485239938,
+      "updatedAt": 1787485759183,
       "blocked": false
     },
     {
@@ -1811,7 +1811,7 @@
       "desc": "",
       "phase": "C",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": "raven",
       "labels": [
         "quant"
@@ -1821,35 +1821,871 @@
         {
           "id": "1",
           "text": "s105 strategy registered + snapshot-capable from analyst_data.derived_json",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "NaN-safe null policy (no revisionTrend -> null)",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "cross-sectional pctRank verified on fixture",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "meta matches jury record (#11)",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "node:test green incl real-data smoke",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787485065349,
-      "updatedAt": 1787485065349,
+      "updatedAt": 1787485959987,
+      "blocked": false
+    },
+    {
+      "id": "TASK-51",
+      "title": "P1: 671KB instruments.json ships in client bundle via static import",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "doing",
+      "assignee": "raven",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "searchInstruments/findInstrument resolve server-side (API) or split slim client-safe module",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "instruments.json no longer in any client bundle (verify with build output analysis)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "deep-links + screener still resolve names correctly",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "Lighthouse/bundle evidence in report",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "tsc+lint+test green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485797320,
+      "updatedAt": 1787486165591,
+      "blocked": false
+    },
+    {
+      "id": "TASK-52",
+      "title": "Mobile navigation + site-wide skip links",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "SiteHeader nav reachable under sm breakpoint (menu or scrollable row)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "skip-to-content link on every page via SiteHeader/layout targeting main",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "help control not mobile-hidden",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "Playwright mobile-viewport check green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485797533,
+      "updatedAt": 1787485797533,
+      "blocked": false
+    },
+    {
+      "id": "TASK-53",
+      "title": "Market-hours-aware polling and TTLs (client + server)",
+      "desc": "",
+      "phase": "A",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "client polls (ticker 90s, breadth 5min) pause when tab hidden or IST market closed",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "server intraday TTLs widen outside 09:15-15:30 IST weekdays instead of burning upstream quota",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "shared istSessionOpen() helper reused client+server",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "evidence: request counts during closed hours drop to ~0",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485797694,
+      "updatedAt": 1787485797694,
+      "blocked": false
+    },
+    {
+      "id": "TASK-54",
+      "title": "DataTable: mobile sticky first column + valid ARIA selection model",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "rank/symbol column stays visible on horizontal scroll (sticky left-0 with edge affordance) or card layout under md",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "row selection uses valid ARIA (grid model with focusable rows, or primary-cell button)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "keyboard operable",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe clean on screener page",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "e2e green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485823075,
+      "updatedAt": 1787485823075,
+      "blocked": false
+    },
+    {
+      "id": "TASK-55",
+      "title": "Subpage UX polish: retry actions on errors + touch targets >=44px + FlowBars SR summary",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "screener/breadth/backtest error states include inline Retry wired to refetch",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "icon buttons (watchlist x, theme, star, bell, help) reach 44px hit area without visual bloat",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "breadth FlowBars gains visually-hidden series summary and visible tap values",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "sentence-case reskin for ErrorBoundary/not-found",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "axe+e2e green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485823220,
+      "updatedAt": 1787485823220,
+      "blocked": false
+    },
+    {
+      "id": "TASK-56",
+      "title": "Perf grab-bag: lazy ChartPanel, signals payload slimming, backtest composite index, API header consistency",
+      "desc": "",
+      "phase": "A",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "ChartPanel dynamic-imported ssr:false out of initial bundle",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "/api/signals omits components/indices unless ?include=components",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "backtest loads filter WHERE symbol IN universe + (symbol,ts) index added in migration",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "ticker+analysis routes get Cache-Control matching chart policy",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "breadth client drops no-store",
+          "done": false
+        },
+        {
+          "id": "6",
+          "text": "fundamentals/breadth routes reuse singleton sqlite handle",
+          "done": false
+        },
+        {
+          "id": "7",
+          "text": "before/after bundle+timing evidence",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485823449,
+      "updatedAt": 1787485823449,
+      "blocked": false
+    },
+    {
+      "id": "TASK-57",
+      "title": "Activate Phase-C moat: fundamentals+analyst ingest on nifty500 + EOD universe expansion",
+      "desc": "",
+      "phase": "B",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "ingest-fundamentals + ingest-analyst run over full universe (tables currently 0 rows)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "eod_candles expands 54 -> nifty500 symbols via TASK-30 single-symbol path or batch",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "S104/S105/S081/quality/value strategies produce non-null signals",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "cliff sweep gate passes at 500 scale",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "signals:run scheduled per TASK-47 chain",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485852943,
+      "updatedAt": 1787485852943,
+      "blocked": false
+    },
+    {
+      "id": "TASK-58",
+      "title": "Company profile page /company/[symbol]: fundamentals, analyst data, signal membership, corporate actions",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "dedicated per-symbol route rendering metrics panel, analyst ratings/target, strategy memberships across registry, corporate-action history",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "SEO metadata + share-card destination",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "/s/[symbol] redirects into it",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "empty states for missing data",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "e2e green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485853189,
+      "updatedAt": 1787485853189,
+      "blocked": false
+    },
+    {
+      "id": "TASK-59",
+      "title": "Strategy-entry alerts + notification delivery (email/log digest)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "alert type strategy-membership: fires on top-N enter/exit between snapshot runs (diffable from signal_snapshots)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "evaluation wired to scheduled runs",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "delivery via logged digest now, Resend-shaped adapter for email when key present",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "togglable per alert in AlertCenter",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "tests for membership diff",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485853306,
+      "updatedAt": 1787485853306,
+      "blocked": false
+    },
+    {
+      "id": "TASK-60",
+      "title": "S101 Low-Volatility Anomaly (jury #6): realized-vol percentile strategy",
+      "desc": "",
+      "phase": "C",
+      "priority": "P2",
+      "status": "doing",
+      "assignee": "nova",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "realized vol (e.g. 126d std of daily returns) percentile-ranked cross-sectionally like S100",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "registered with juryRank 6",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "fixture tests incl insufficient-history null policy",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "screener auto-lists",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "signals run produces snapshot",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485889267,
+      "updatedAt": 1787486123757,
+      "blocked": false
+    },
+    {
+      "id": "TASK-61",
+      "title": "Evidence layer: backtest metrics (CAGR/Sharpe/maxDD) inline on screener strategy header",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "screener strategy chips surface latest backtest_runs metrics for the selected strategy",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "link to /backtest?id= run detail",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "graceful empty state when no run exists",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no N+1 queries (single join or cached lookup)",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "tsc+test green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485889555,
+      "updatedAt": 1787485889555,
+      "blocked": false
+    },
+    {
+      "id": "TASK-62",
+      "title": "Saved screeners + server-side watchlists over watchlists table",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "named screener configs (strategy/filters/sort) persist device-scoped and reload via URL or picker",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "watchlists table wired as optional cloud mirror of localStorage watchlist",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "merge-on-read with localStorage",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "migration path documented toward auth claim",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "tests green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485889758,
+      "updatedAt": 1787485889758,
+      "blocked": false
+    },
+    {
+      "id": "TASK-63",
+      "title": "Auth v1 slice: magic-link + Google login claiming anon device data",
+      "desc": "",
+      "phase": "E",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "login route + session",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "first login claims anon device alerts/watchlists/backtests per T27",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "mutation APIs check session where applicable, reads stay public",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "logout",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "privacy page updated to match reality",
+          "done": false
+        },
+        {
+          "id": "6",
+          "text": "e2e login->claim->data-visible flow",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485889877,
+      "updatedAt": 1787485889877,
+      "blocked": false
+    },
+    {
+      "id": "TASK-64",
+      "title": "Pricing stub + free/pro usage gates on compute APIs",
+      "desc": "",
+      "phase": "E",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "/pricing page (free: charts/search",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "pro: full screener/backtests/alerts)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "per-device caps on backtest runs + active alerts enforced in API layer with 429/402 semantics",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "limits documented",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "gates tested",
+          "done": false
+        },
+        {
+          "id": "6",
+          "text": "no billing integration required yet",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485890061,
+      "updatedAt": 1787485890061,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "N18H",
+      "taskId": "TASK-51",
+      "text": "claimed by RAVEN · → doing",
+      "agent": "RAVEN",
+      "at": 1787486165592
+    },
+    {
+      "id": "9KA5",
+      "taskId": "TASK-60",
+      "text": "claimed by NOVA · → doing",
+      "agent": "NOVA",
+      "at": 1787486123758
+    },
+    {
+      "id": "27MN",
+      "taskId": "TASK-50",
+      "text": "shipped e2bfc0e → origin/master · [TASK-50] feat(quant): wire S105 Analyst Revision Drift (jury #11) — revisionTrend momentum, cross-sectional pctRank, 9 unit tests + skip-guarded real-data smoke · gates tsc=12.5s·lint=30.1s·test=6.4s",
+      "agent": "RAVEN",
+      "at": 1787485959987
+    },
+    {
+      "id": "D0VE",
+      "taskId": "TASK-47",
+      "text": "shipped eb1a81d (local) · [TASK-47] ci(pipelines): scheduled eod ingest → signals chain + morning breadth — cached DB, failure issues · gates tsc=9.5s·lint=30.2s·test=6.9s",
+      "agent": "SABLE",
+      "at": 1787485922403
+    },
+    {
+      "id": "A4F6",
+      "taskId": "TASK-64",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485890061
+    },
+    {
+      "id": "1T2Z",
+      "taskId": "TASK-63",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485889877
+    },
+    {
+      "id": "NAT3",
+      "taskId": "TASK-62",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485889758
+    },
+    {
+      "id": "JUQS",
+      "taskId": "TASK-61",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485889555
+    },
+    {
+      "id": "GMBS",
+      "taskId": "TASK-60",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485889267
+    },
+    {
+      "id": "5WL3",
+      "taskId": "TASK-47",
+      "text": "review · gates green tsc=9.8s·lint=28.7s·test=6.4s",
+      "agent": "SABLE",
+      "at": 1787485875392
+    },
+    {
+      "id": "GEFW",
+      "taskId": "TASK-59",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485853306
+    },
+    {
+      "id": "K2NF",
+      "taskId": "TASK-58",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485853189
+    },
+    {
+      "id": "2BVX",
+      "taskId": "TASK-57",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485852943
+    },
+    {
+      "id": "8TDU",
+      "taskId": "TASK-50",
+      "text": "✓ checked node:test green incl real-data smoke",
+      "agent": "RAVEN",
+      "at": 1787485827203
+    },
+    {
+      "id": "I205",
+      "taskId": "TASK-56",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485823449
+    },
+    {
+      "id": "T4XG",
+      "taskId": "TASK-55",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485823220
+    },
+    {
+      "id": "H1MK",
+      "taskId": "TASK-54",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485823075
+    },
+    {
+      "id": "EFJ1",
+      "taskId": "TASK-53",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485797694
+    },
+    {
+      "id": "EP2N",
+      "taskId": "TASK-52",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485797534
+    },
+    {
+      "id": "X1HI",
+      "taskId": "TASK-51",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787485797320
+    },
+    {
+      "id": "RHW1",
+      "taskId": "TASK-50",
+      "text": "review · gates green tsc=13.4s·lint=30.2s·test=6.6s",
+      "agent": "RAVEN",
+      "at": 1787485791695
+    },
+    {
+      "id": "7FM8",
+      "taskId": "TASK-48",
+      "text": "shipped 326c3a0 (local) · [TASK-48] feat(web): per-symbol share cards (/s/[symbol] og route + sparkline) and sitemap/robots from instruments index · gates tsc=12.6s·lint=34.6s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787485759183
+    },
+    {
+      "id": "VMMN",
+      "taskId": "TASK-50",
+      "text": "✓ checked meta matches jury record (#11)",
+      "agent": "RAVEN",
+      "at": 1787485741099
+    },
+    {
+      "id": "59YE",
+      "taskId": "TASK-50",
+      "text": "✓ checked cross-sectional pctRank verified on fixture",
+      "agent": "RAVEN",
+      "at": 1787485740828
+    },
+    {
+      "id": "JWY3",
+      "taskId": "TASK-50",
+      "text": "✓ checked NaN-safe null policy (no revisionTrend -> null)",
+      "agent": "RAVEN",
+      "at": 1787485740441
+    },
+    {
+      "id": "33L5",
+      "taskId": "TASK-50",
+      "text": "✓ checked s105 strategy registered + snapshot-capable from",
+      "agent": "RAVEN",
+      "at": 1787485740293
+    },
+    {
+      "id": "6JLG",
+      "taskId": "TASK-46",
+      "text": "review · gates green tsc=12.8s·lint=30.5s·test=8.1s",
+      "agent": "CIPHER",
+      "at": 1787485731003
+    },
+    {
+      "id": "IJKM",
+      "taskId": "TASK-48",
+      "text": "review · gates green tsc=11.9s·lint=26.2s",
+      "agent": "CIPHER",
+      "at": 1787485630065
+    },
+    {
+      "id": "DFU6",
+      "taskId": "TASK-46",
+      "text": "✓ checked Playwright sanity green",
+      "agent": "CIPHER",
+      "at": 1787485621553
+    },
+    {
+      "id": "GVIZ",
+      "taskId": "TASK-46",
+      "text": "✓ checked keyboard accessible + aria-live on fired alerts",
+      "agent": "CIPHER",
+      "at": 1787485621407
+    },
+    {
+      "id": "P3J3",
+      "taskId": "TASK-46",
+      "text": "✓ checked wire to TASK-42 CRUD API",
+      "agent": "CIPHER",
+      "at": 1787485621282
+    },
+    {
+      "id": "B6FD",
+      "taskId": "TASK-46",
+      "text": "✓ checked create dialog prefilled from symbol header (cros",
+      "agent": "CIPHER",
+      "at": 1787485621078
+    },
+    {
+      "id": "SV7E",
+      "taskId": "TASK-46",
+      "text": "✓ checked bell entry point opens alert center (list active",
+      "agent": "CIPHER",
+      "at": 1787485620802
+    },
+    {
+      "id": "PS3W",
+      "taskId": "TASK-47",
+      "text": "review ✗ gates RED (tsc=9.5s·lint=31.3s·test=6.4s) — fix and re-run",
+      "agent": "SABLE",
+      "at": 1787485597768
+    },
+    {
+      "id": "BXQF",
+      "taskId": "TASK-48",
+      "text": "review · gates green tsc=11.9s·lint=31.5s·test=7.3s",
+      "agent": "CIPHER",
+      "at": 1787485364063
+    },
+    {
+      "id": "D941",
+      "taskId": "TASK-47",
+      "text": "shipped a72fb6a → origin/master · [TASK-47] feat(ci): scheduled data pipelines — nightly eod→signals chain, morning breadth, refreshed db committed to master · gates tsc=11.1s·lint=31.0s·test=7.0s",
+      "agent": "NOVA",
+      "at": 1787485344039
+    },
     {
       "id": "XDD6",
       "taskId": "TASK-47",
@@ -2157,260 +2993,8 @@
       "text": "review ✗ gates RED (tsc=11.9s·lint=28.9s·test=6.8s) — fix and re-run",
       "agent": "CIPHER",
       "at": 1787483974140
-    },
-    {
-      "id": "DWWM",
-      "taskId": "TASK-44",
-      "text": "review ✗ gates RED (tsc=12.0s·lint=28.7s·test=6.9s) — fix and re-run",
-      "agent": "CIPHER",
-      "at": 1787483875271
-    },
-    {
-      "id": "XJ09",
-      "taskId": "TASK-43",
-      "text": "review · gates green tsc=11.2s·lint=27.1s·test=6.6s",
-      "agent": "RAVEN",
-      "at": 1787483874569
-    },
-    {
-      "id": "3WSI",
-      "taskId": "TASK-43",
-      "text": "review ✗ gates RED (tsc=10.4s) — fix and re-run",
-      "agent": "RAVEN",
-      "at": 1787483738816
-    },
-    {
-      "id": "EPVQ",
-      "taskId": "TASK-40",
-      "text": "review ✗ gates RED (tsc=13.4s) — fix and re-run",
-      "agent": "VECTOR",
-      "at": 1787483697937
-    },
-    {
-      "id": "Z706",
-      "taskId": "TASK-44",
-      "text": "review ✗ gates RED (tsc=14.7s) — fix and re-run",
-      "agent": "CIPHER",
-      "at": 1787483685420
-    },
-    {
-      "id": "T2WJ",
-      "taskId": "TASK-49",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787483673579
-    },
-    {
-      "id": "JD70",
-      "taskId": "TASK-48",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787483673378
-    },
-    {
-      "id": "MOKL",
-      "taskId": "TASK-44",
-      "text": "✓ checked scoped ship + LOG entry",
-      "agent": "CIPHER",
-      "at": 1787483670455
-    },
-    {
-      "id": "4L2L",
-      "taskId": "TASK-44",
-      "text": "✓ checked npx tsc --noEmit + npm run lint green",
-      "agent": "CIPHER",
-      "at": 1787483650063
-    },
-    {
-      "id": "GEA8",
-      "taskId": "TASK-44",
-      "text": "✓ checked /og.svg removed from web/public and no route/met",
-      "agent": "CIPHER",
-      "at": 1787483649978
-    },
-    {
-      "id": "5DYV",
-      "taskId": "TASK-44",
-      "text": "✓ checked no .odo-char references remain in globals.css or",
-      "agent": "CIPHER",
-      "at": 1787483649808
-    },
-    {
-      "id": "GUMR",
-      "taskId": "TASK-43",
-      "text": "review ✗ gates RED (tsc=11.0s·lint=27.1s·test=7.3s) — fix and re-run",
-      "agent": "RAVEN",
-      "at": 1787483629017
-    },
-    {
-      "id": "7SVL",
-      "taskId": "TASK-43",
-      "text": "✓ checked explicit nonzero exit on assertion failure",
-      "agent": "RAVEN",
-      "at": 1787483551071
-    },
-    {
-      "id": "ROZW",
-      "taskId": "TASK-43",
-      "text": "✓ checked promoted from advisory to blocking list in ui-sm",
-      "agent": "RAVEN",
-      "at": 1787483550846
-    },
-    {
-      "id": "N836",
-      "taskId": "TASK-43",
-      "text": "✓ checked screener.py passes with zero network/DB dependen",
-      "agent": "RAVEN",
-      "at": 1787483550565
-    },
-    {
-      "id": "2M53",
-      "taskId": "TASK-47",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787483528433
-    },
-    {
-      "id": "AIUX",
-      "taskId": "TASK-46",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787483528282
-    },
-    {
-      "id": "14CV",
-      "taskId": "TASK-45",
-      "text": "created in todo",
-      "agent": "CIPHER",
-      "at": 1787483475054
-    },
-    {
-      "id": "9WNH",
-      "taskId": "TASK-44",
-      "text": "created in todo",
-      "agent": "CIPHER",
-      "at": 1787483474934
-    },
-    {
-      "id": "Y2E3",
-      "taskId": "TASK-43",
-      "text": "claimed by RAVEN · → doing",
-      "agent": "RAVEN",
-      "at": 1787483416855
-    },
-    {
-      "id": "B1FK",
-      "taskId": "TASK-43",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787483405028
-    },
-    {
-      "id": "DBN9",
-      "taskId": "TASK-40",
-      "text": "review ✗ gates RED (tsc=12.4s·lint=24.5s·test=6.3s) — fix and re-run",
-      "agent": "VECTOR",
-      "at": 1787483154946
-    },
-    {
-      "id": "HY99",
-      "taskId": "TASK-40",
-      "text": "✓ checked scripts/tests/ui/README.md updated",
-      "agent": "RAVAN",
-      "at": 1787483089574
-    },
-    {
-      "id": "RV4J",
-      "taskId": "TASK-40",
-      "text": "✓ checked smoke script exercises strategy select + Run and",
-      "agent": "RAVAN",
-      "at": 1787483089467
-    },
-    {
-      "id": "3L2A",
-      "taskId": "TASK-40",
-      "text": "✓ checked axe_backtest.py reports 0 violations both themes",
-      "agent": "RAVAN",
-      "at": 1787483089341
-    },
-    {
-      "id": "FD7K",
-      "taskId": "TASK-41",
-      "text": "shipped 178d901 → origin/master · [TASK-41] ci(ui-smoke): run python playwright harness vs prod build — mocked set blocking, live-data advisory · gates tsc=24.8s·lint=24.7s·test=6.1s",
-      "agent": "RAVEN",
-      "at": 1787482910547
-    },
-    {
-      "id": "KFZT",
-      "taskId": "TASK-41",
-      "text": "✓ checked workflow YAML validated",
-      "agent": "RAVEN",
-      "at": 1787482781264
-    },
-    {
-      "id": "T014",
-      "taskId": "TASK-41",
-      "text": "review · gates green tsc=11.0s·lint=25.3s·test=6.3s",
-      "agent": "RAVEN",
-      "at": 1787482765570
-    },
-    {
-      "id": "JFBR",
-      "taskId": "TASK-41",
-      "text": "✓ checked live-data scripts (e2e,screener,deeplink) adviso",
-      "agent": "RAVEN",
-      "at": 1787482722801
-    },
-    {
-      "id": "RKVJ",
-      "taskId": "TASK-41",
-      "text": "✓ checked mocked scripts (chart_mock,tape_mock,mob2,foot,a",
-      "agent": "RAVEN",
-      "at": 1787482722658
-    },
-    {
-      "id": "HZU5",
-      "taskId": "TASK-41",
-      "text": "✓ checked .github/workflows/ui-smoke.yml runs next build +",
-      "agent": "RAVEN",
-      "at": 1787482722535
-    },
-    {
-      "id": "SUVV",
-      "taskId": "TASK-36",
-      "text": "shipped 5edae23 → origin/master · [TASK-36] fix(data): RELIANCE cliff debt cleared — corrupt 1997 candle removed, stale registry entries pruned, strict sweep restored; basis-repair tool added · gates tsc=8.8s·lint=21.9s·test=7.9s",
-      "agent": "NOVA",
-      "at": 1787482571230
-    },
-    {
-      "id": "BX8B",
-      "taskId": "TASK-36",
-      "text": "review · gates green tsc=11.7s·lint=22.4s·test=6.3s",
-      "agent": "NOVA",
-      "at": 1787482501888
-    },
-    {
-      "id": "AIFY",
-      "taskId": "TASK-42",
-      "text": "claimed by SABLE · → doing",
-      "agent": "SABLE",
-      "at": 1787482482850
-    },
-    {
-      "id": "C6CC",
-      "taskId": "TASK-42",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787482482659
-    },
-    {
-      "id": "MZ91",
-      "taskId": "TASK-36",
-      "text": "✓ checked backtest scorers re-run on clean series",
-      "agent": "NOVA",
-      "at": 1787482357057
     }
   ],
   "deletions": [],
-  "updatedAt": 1787485291766
+  "updatedAt": 1787486165594
 }

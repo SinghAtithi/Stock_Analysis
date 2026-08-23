@@ -11,6 +11,7 @@ import {
 import Search from "@/components/Search";
 import ChartPanel from "@/components/ChartPanel";
 import StatsRail from "@/components/StatsRail";
+import FundamentalsPanel from "@/components/FundamentalsPanel";
 import TickerTape from "@/components/TickerTape";
 import Odometer from "@/components/Odometer";
 import Watchlist from "@/components/Watchlist";
@@ -369,6 +370,9 @@ export default function Home() {
         sticky
         nav
         onHelp={() => setHelpOpen(true)}
+        alerts={
+          selected ? { symbol: selected.symbol, exchange: selected.exchange } : null
+        }
       />
 
       <TickerTape items={ticker} onSelect={pick} />
@@ -466,6 +470,8 @@ export default function Home() {
           </div>
 
           {data && <StatsRail data={data} />}
+
+          {selected && <FundamentalsPanel symbol={selected.symbol} />}
 
           <ChartPanel data={data} range={range} onRange={changeRange} loading={busy} />
 

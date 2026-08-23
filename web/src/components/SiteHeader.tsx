@@ -4,6 +4,7 @@ import Link from "next/link";
 import useISTClock from "@/hooks/useISTClock";
 import MarketStatus from "@/components/MarketStatus";
 import ThemeToggle from "@/components/ThemeToggle";
+import AlertCenter from "@/components/AlertCenter";
 
 interface SiteHeaderProps {
   subtitle: string;
@@ -11,6 +12,7 @@ interface SiteHeaderProps {
   sticky?: boolean;
   nav?: boolean;
   onHelp?: () => void;
+  alerts?: { symbol: string; exchange: string } | null;
 }
 
 export default function SiteHeader({
@@ -19,6 +21,7 @@ export default function SiteHeader({
   sticky = false,
   nav = false,
   onHelp,
+  alerts = null,
 }: SiteHeaderProps) {
   const clock = useISTClock();
   return (
@@ -63,6 +66,7 @@ export default function SiteHeader({
       <div
         className={`flex items-center ${nav ? "gap-2 sm:gap-3" : "gap-3 sm:gap-4"}`}
       >
+        {alerts && <AlertCenter symbol={alerts.symbol} exchange={alerts.exchange} />}
         <span className="hidden font-mono text-xs tabular-nums text-faint sm:inline">
           {clock ? `${clock} IST` : "—"}
         </span>

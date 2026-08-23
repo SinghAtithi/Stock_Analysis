@@ -1,0 +1,481 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import Modal from "@/components/Modal";
+import { ALERT_TYPES } from "@/lib/alerts";
+import { timeAgo } from "@/lib/format";
+
+const DEVICE_KEY = "niftyterm.deviceId";
+const POLL_MS = 30_000;
+
+interface AlertRecord {
+  id: string;
+  symbol: string | null;
+  exchange: string;
+  type: string;
+  price: number | null;
+  active: boolean;
+  createdAt: number;
+  firedAt: number | null;
+}
+
+interface Props {
+  symbol: string;
+  exchange: string;
+}
+
+const TYPE_LABELS: Record<string, string> = {
+  price_above: "Price crosses above",
+  price_below: "Price crosses below",
+};
+
+const firedVerb = (type: string): string =>
+  type === "price_below" ? "crossed below" : "crossed above";
+
+function getDeviceId(): string {
+  try {
+    const existing = window.localStorage.getItem(DEVICE_KEY);
+    if (existing) return existing;
+    const id = crypto.randomUUID();
+    window.localStorage.setItem(DEVICE_KEY, id);
+    return id;
+  } catch {
+    return "nifty-local-device";
+  }
+}
+
+function BellIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+      <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+    </svg>
+  );
+}
+
+export default function AlertCenter({ symbol, exchange }: Props) {
+  const [open, setOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [alerts, setAlerts] = useState<AlertRecord[]>([]);
+  const [loadedOnce, setLoadedOnce] = useState(false);
+  const [listError, setListError] = useState<string | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [announcement, setAnnouncement] = useState("");
+  const activeIdsRef = useRef<Set<string>>(new Set());
+
+  const applyAlerts = useCallback((rows: AlertRecord[]) => {
+    const prevActive = activeIdsRef.current;
+    const newlyFired = rows.filter(
+      (r) => !r.active && r.firedAt != null && prevActive.has(r.id),
+    );
+    if (newlyFired.length > 0) {
+      setAnnouncement(
+        newlyFired
+          .map(
+            (f) =>
+              `${f.symbol ?? "Symbol"} ${firedVerb(f.type)} ${f.price ?? ""}`,
+          )
+          .join("; "),
+      );
+    }
+    activeIdsRef.current = new Set(
+      rows.filter((r) => r.active).map((r) => r.id),
+    );
+    setAlerts(rows);
+    setLoadedOnce(true);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const poll = async () => {
+      if (document.visibilityState !== "visible") return;
+      try {
+        const res = await fetch(
+          `/api/alerts?deviceId=${encodeURIComponent(getDeviceId())}`,
+        );
+        if (!res.ok) return;
+        const json = (await res.json()) as { alerts?: AlertRecord[] };
+        if (!cancelled) applyAlerts(json.alerts ?? []);
+      } catch {
+        /* offline — next tick retries */
+      }
+    };
+    void poll();
+    const t = setInterval(poll, POLL_MS);
+    const onVis = () => {
+      if (document.visibilityState === "visible") void poll();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      cancelled = true;
+      clearInterval(t);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, [applyAlerts]);
+
+  const refresh = useCallback(async () => {
+    setListError(null);
+    try {
+      const res = await fetch(
+        `/api/alerts?deviceId=${encodeURIComponent(getDeviceId())}`,
+      );
+      if (!res.ok) {
+        setListError("Could not load alerts");
+        return;
+      }
+      const json = (await res.json()) as { alerts?: AlertRecord[] };
+      applyAlerts(json.alerts ?? []);
+    } catch {
+      setListError("Could not load alerts");
+    }
+  }, [applyAlerts]);
+
+  const removeAlert = async (id: string) => {
+    setBusyId(id);
+    setListError(null);
+    try {
+      const res = await fetch(
+        `/api/alerts?deviceId=${encodeURIComponent(getDeviceId())}&id=${encodeURIComponent(id)}`,
+        { method: "DELETE" },
+      );
+      if (!res.ok) throw new Error("delete_failed");
+      setAlerts((prev) => prev.filter((a) => a.id !== id));
+    } catch {
+      setListError("Could not remove alert");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const active = alerts.filter((a) => a.active);
+  const fired = alerts.filter((a) => !a.active && a.firedAt != null);
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label={
+          active.length > 0
+            ? `Alert center, ${active.length} active`
+            : "Alert center"
+        }
+        aria-haspopup="dialog"
+        title="Alerts"
+        className="relative inline-flex h-8 w-8 items-center justify-center rounded-full border border-line bg-surface text-muted transition-colors hover:text-paper"
+      >
+        <BellIcon />
+        {active.length > 0 && (
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-paper px-1 font-mono text-[10px] font-semibold tabular-nums text-ink">
+            {active.length}
+          </span>
+        )}
+      </button>
+
+      <div role="status" aria-live="polite" className="sr-only">
+        {announcement}
+      </div>
+
+      {(open || createOpen) &&
+        createPortal(
+          <>
+            <Modal open={open} onClose={() => setOpen(false)} label="Alert center">
+        <div className="mb-4 flex items-center justify-between gap-3 border-b border-line pb-3">
+          <span className="text-sm font-semibold text-paper">Alerts</span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setCreateOpen(true)}
+              className="rounded-full bg-paper px-3 py-1 text-xs font-medium text-ink shadow-sm transition-opacity hover:opacity-90"
+            >
+              New alert
+            </button>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Close alert center"
+              className="rounded-full border border-line bg-surface px-2 py-1 text-sm text-muted hover:text-paper"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        {listError && (
+          <p className="mb-3 rounded-lg bg-down-soft px-3 py-2 text-xs text-down" role="alert">
+            {listError}
+          </p>
+        )}
+
+        {!loadedOnce ? (
+          <p className="py-6 text-center text-xs text-faint">Loading…</p>
+        ) : (
+          <div className="flex flex-col gap-4">
+            <section aria-label="Active alerts">
+              <p className="mb-2 text-xs font-medium tracking-wide text-muted">Active</p>
+              {active.length === 0 ? (
+                <p className="rounded-xl border border-dashed border-line px-3 py-5 text-center text-xs text-faint">
+                  No active alerts — create one from {symbol || "any symbol"}.
+                </p>
+              ) : (
+                <ul className="flex flex-col gap-2">
+                  {active.map((a) => (
+                    <li
+                      key={a.id}
+                      className="flex items-center justify-between gap-3 rounded-xl border border-line bg-panel-2 px-3 py-2"
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate text-sm text-paper">
+                          <span className="font-mono text-xs font-medium">{a.symbol}</span>
+                          <span className="mx-1.5 text-faint">·</span>
+                          {TYPE_LABELS[a.type] ?? a.type}
+                        </p>
+                        <p className="mt-0.5 font-mono text-xs tabular-nums text-muted">
+                          @ {a.price ?? "—"} · {a.exchange}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => void removeAlert(a.id)}
+                        disabled={busyId === a.id}
+                        aria-label={`Delete alert for ${a.symbol}`}
+                        className="shrink-0 rounded-full border border-line bg-surface px-2.5 py-1 text-xs text-muted transition-colors hover:text-down disabled:opacity-50"
+                      >
+                        Delete
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+
+            {fired.length > 0 && (
+              <section aria-label="Fired alerts">
+                <p className="mb-2 text-xs font-medium tracking-wide text-muted">Fired</p>
+                <ul className="flex flex-col gap-2">
+                  {fired.map((a) => (
+                    <li
+                      key={a.id}
+                      className="flex items-center justify-between gap-3 rounded-xl border border-line bg-panel-2 px-3 py-2"
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate text-sm text-paper">
+                          <span className="font-mono text-xs font-medium">{a.symbol}</span>
+                          <span
+                            className={`ml-2 rounded-full px-2 py-0.5 text-[11px] ${
+                              a.type === "price_below"
+                                ? "bg-down-soft text-down"
+                                : "bg-up-soft text-up"
+                            }`}
+                          >
+                            {firedVerb(a.type)} {a.price ?? ""}
+                          </span>
+                        </p>
+                        <p className="mt-0.5 text-xs text-faint">{timeAgo(a.firedAt)}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => void removeAlert(a.id)}
+                        disabled={busyId === a.id}
+                        aria-label={`Dismiss fired alert for ${a.symbol}`}
+                        className="shrink-0 rounded-full border border-line bg-surface px-2.5 py-1 text-xs text-muted transition-colors hover:text-paper disabled:opacity-50"
+                      >
+                        Dismiss
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </div>
+        )}
+          </Modal>
+
+          <CreateAlertDialog
+            open={createOpen}
+            onClose={() => setCreateOpen(false)}
+            symbol={symbol}
+            exchange={exchange}
+            onCreated={() => void refresh()}
+          />
+        </>,
+        document.body,
+      )}
+    </>
+  );
+}
+
+function CreateAlertDialog({
+  open,
+  onClose,
+  symbol,
+  exchange,
+  onCreated,
+}: {
+  open: boolean;
+  onClose: () => void;
+  symbol: string;
+  exchange: string;
+  onCreated: () => void;
+}) {
+  const [type, setType] = useState<string>(ALERT_TYPES[0]);
+  const [price, setPrice] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const reset = () => {
+    setType(ALERT_TYPES[0]);
+    setPrice("");
+    setError(null);
+  };
+
+  const submit = async () => {
+    const value = Number(price);
+    if (!price.trim() || !Number.isFinite(value) || value <= 0) {
+      setError("Enter a valid price above zero");
+      return;
+    }
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/alerts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          deviceId: getDeviceId(),
+          symbol,
+          exchange,
+          type,
+          price: value,
+        }),
+      });
+      if (!res.ok) {
+        const json = (await res.json().catch(() => ({}))) as { error?: string };
+        setError(
+          json.error === "db_unavailable"
+            ? "Alert service unavailable — try again shortly"
+            : "Could not create alert",
+        );
+        return;
+      }
+      reset();
+      onClose();
+      onCreated();
+    } catch {
+      setError("Network error — try again");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <Modal
+      open={open}
+      onClose={() => {
+        reset();
+        onClose();
+      }}
+      label="Create alert"
+    >
+      <div className="mb-4 flex items-center justify-between border-b border-line pb-3">
+        <span className="text-sm font-semibold text-paper">New price alert</span>
+        <button
+          type="button"
+          onClick={() => {
+            reset();
+            onClose();
+          }}
+          aria-label="Close create alert"
+          className="rounded-full border border-line bg-surface px-2 py-1 text-sm text-muted hover:text-paper"
+        >
+          ✕
+        </button>
+      </div>
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          void submit();
+        }}
+        className="flex flex-col gap-3"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted">Symbol</span>
+          <span className="rounded-full bg-paper px-2.5 py-1 font-mono text-xs font-medium tabular-nums text-ink">
+            {symbol || "—"}
+          </span>
+          <span className="rounded-full border border-line bg-panel-2 px-2.5 py-1 text-xs text-muted">
+            {exchange}
+          </span>
+        </div>
+
+        <label className="flex flex-col gap-1.5">
+          <span className="text-xs text-muted">Condition</span>
+          <select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="rounded-lg border border-line bg-panel-2 px-3 py-2 text-sm text-paper focus-visible:outline-2 focus-visible:outline-accent"
+          >
+            {ALERT_TYPES.map((t) => (
+              <option key={t} value={t}>
+                {TYPE_LABELS[t]}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="flex flex-col gap-1.5">
+          <span className="text-xs text-muted">Target price (₹)</span>
+          <input
+            type="number"
+            inputMode="decimal"
+            step="any"
+            min="0"
+            placeholder="0.00"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+            className="rounded-lg border border-line bg-panel-2 px-3 py-2 text-right font-mono text-sm tabular-nums text-paper focus-visible:outline-2 focus-visible:outline-accent"
+          />
+        </label>
+
+        {error && (
+          <p role="alert" className="text-xs text-down">
+            {error}
+          </p>
+        )}
+
+        <div className="mt-1 flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              reset();
+              onClose();
+            }}
+            className="rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-medium text-muted transition-colors hover:text-paper"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={submitting || !symbol}
+            className="rounded-full bg-paper px-3.5 py-1.5 text-sm font-medium text-ink shadow-sm transition-opacity hover:opacity-90 disabled:opacity-50"
+          >
+            Create alert
+          </button>
+        </div>
+      </form>
+    </Modal>
+  );
+}

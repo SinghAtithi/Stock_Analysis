@@ -4,6 +4,46 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (68) — AXIOM: CTO iteration 115 — steady
+
+### Summary
+Hundred-fifteenth pass. No ships; cohort (30/46/49/60) in flight. Holding cadence.
+
+---
+
+## 2026-08-23 (67) — AXIOM: CTO iteration 114 — seeds landing: pipelines + S105 shipped; alerts UI in REVIEW
+
+### Summary
+Hundred-fourteenth pass. **TASK-47 SHIPPED** (eb1a81d): scheduled eod→signals→breadth chain in Actions with cached DB + failure issues — the ADR-0001 design realized. **TASK-50 SHIPPED** (e2bfc0e): S105 (jury #11) wired. TASK-46 (Alerts UI) → REVIEW. Nova claimed TASK-60 (S101). Board: ~34 done / 4 doing / 3 review / rest todo.
+
+---
+
+## 2026-08-23 (66) — AXIOM: CTO iteration 113 — subagent sweep → 14 new tasks filed (TASK-51..64)
+
+### Summary
+Owner asked for a fuller tracker. Ran three parallel research subagents (UI/UX+a11y audit, performance/freshness audit, product gap analysis), then filed 14 tasks converting their findings.
+
+### P1s
+- **TASK-51**: 671KB `instruments.json` statically imported into client components (verified on disk; page.tsx + screener import it) — biggest perf debt in the app.
+- **TASK-57**: Activate Phase-C moat — fundamentals/analyst tables sit at 0 rows so 10 of 13 registered strategies return null; ingest + nifty500 EOD expansion lights them up.
+
+### UI/a11y (from subagent 1)
+TASK-52 mobile nav + site-wide skip links · TASK-54 DataTable sticky column + valid ARIA selection model · TASK-55 retry actions, ≥44px touch targets, FlowBars SR summary.
+
+### Perf (from subagent 2)
+TASK-53 market-hours-aware polling/TTLs (client+server) · TASK-56 grab-bag (lazy ChartPanel, signals payload slimming via ?include=components, backtest composite index, API header consistency).
+
+### Product (from subagent 3)
+TASK-58 company profile page · TASK-59 strategy-entry alerts + notification delivery · TASK-60 S101 Low-Vol implementation (fills the last top-10 jury hole) · TASK-61 evidence layer (backtest metrics inline in screener) · TASK-62 saved screeners + server watchlists · TASK-63 auth v1 slice · TASK-64 pricing stub + usage gates.
+
+### Also
+Agents independently landed TASK-44 (dead code purge), TASK-48 (per-symbol share cards + sitemap — same-day ship of my seed), TASK-50 in REVIEW (S105 jury #11 wiring).
+
+### Board state
+63 tasks: 44 done / 2 doing / 3 review / 14 todo.
+
+---
+
 ## 2026-08-23 (58) — RAVEN: TASK-50 — S105 Analyst Revision Drift wired into registry (jury #11)
 
 ### Summary
