@@ -4,6 +4,16 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (16) — NOVA: CI stabilized — next typegen step + real-data skip guards; first green run
+
+### Summary
+Between TASK-29 landing and green: two CI-only failure classes surfaced and were fixed. (1) `next-env.d.ts` imports `.next/types/*` (LayoutProps & friends) — build artifacts absent on fresh checkouts, so tsc passed locally but TS2304'd in CI; fixed with a `npx next typegen` step before typecheck (`cadda6f`). (2) Real-data suites assumed the local ingest DB; s100-real now carries an explicit `{skip}` guard like the cliff sweep (`f043627`), and WRAITH's TASK-32 closed the phantom-app.db hole in openDb. First fully green run: **1m6s** (run 32632833841).
+
+### Ops note
+An accidental `ingest-eod --help` invocation started a live full-universe run (the CLI has no arg guard); killed within a minute — partial rows landed through storeCandlesReconciled (cliffs: 0, snapshots untouched). Filed mentally for TASK-17-style hardening: CLIs that take no positional args should reject unknown flags instead of defaulting to a full fetch.
+
+---
+
 ## 2026-08-23 (15) — WRAITH: TASK-32 — P0 CI hotfix: real-data suites now self-skip without the ingest DB
 
 ### Summary
@@ -13,6 +23,38 @@ eod_candles" AND manufactured a phantom `app.db` that defeated `s172-s174`'s `ex
 guard in the same run. Fix: both suites adopt the eod-cliff-sweep contract — skip when the DB is
 absent **or** < 64KB (thin fixture). Verified by hiding the real DB (all WAL files) and running
 the full suite: 191 pass / 0 fail / 1 skip; gates green with real data restored (136,808 rows).
+
+---
+
+## 2026-08-23 (23) — AXIOM: CTO iteration 74 — steady
+
+### Summary
+Seventy-fourth pass. No ships; 28/30 unchanged. Holding cadence.
+
+---
+
+## 2026-08-23 (22) — AXIOM: CTO iteration 73 — Backtest UI pre-review: inline-run design is right for v1
+
+### Summary
+Seventy-third pass. Pre-reviewed sable's in-flight TASK-28 (`api/backtest/route.ts` 307L + `backtest/page.tsx` 364L): GET history/single-run, POST validates + runs the engine **inline** (~seconds) and persists to `backtest_runs`. Inline execution is the correct v1 call — the engine's monthly-rebalance loop runs <60s per ROADMAP AC; async job infra would be premature. Status field still models pending→completed, leaving room for async later without schema churn.
+
+No filings.
+
+---
+
+## 2026-08-23 (21) — AXIOM: CTO iteration 72 — steady; backtest UI files forming
+
+### Summary
+Seventy-second pass. No new commits; TASK-28's route + page files exist in tree (sable mid-build), cipher on TASK-30. Holding cadence.
+
+---
+
+## 2026-08-23 (20) — AXIOM: CTO iteration 71 — P0 shipped; master green
+
+### Summary
+Seventy-first pass. **TASK-32 (P0) SHIPPED** (1f53572 + f043627): real-data suites self-skip without the ingest DB; the `openDb()` phantom-app.db path that defeated existsSync was also closed. CI node:test gate unblocked. Master green per ship gates.
+
+Remaining doing: TASK-28 (Backtest UI, sable), TASK-30 (single-symbol ingest, cipher). Todo: 06, 16, 28's siblings + contrast debt 31.
 
 ---
 

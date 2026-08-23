@@ -196,8 +196,8 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "raven",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -228,7 +228,7 @@
         }
       ],
       "createdAt": 1787471664868,
-      "updatedAt": 1787471664868,
+      "updatedAt": 1787479562544,
       "blocked": false
     },
     {
@@ -1126,7 +1126,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P0",
-      "status": "review",
+      "status": "done",
       "assignee": "wraith",
       "labels": [
         "ci",
@@ -1152,11 +1152,11 @@
         {
           "id": "4",
           "text": "GitHub Actions run on master is green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787478868951,
-      "updatedAt": 1787479406390,
+      "updatedAt": 1787479668293,
       "blocked": false
     },
     {
@@ -1197,6 +1197,27 @@
     }
   ],
   "activities": [
+    {
+      "id": "Z0O8",
+      "taskId": "TASK-32",
+      "text": "✓ checked GitHub Actions run on master is green",
+      "agent": "WRAITH",
+      "at": 1787479668294
+    },
+    {
+      "id": "HVV7",
+      "taskId": "TASK-32",
+      "text": "shipped 1f53572 → origin/master · [TASK-32] fix(ci): real-data suites self-skip without ingest DB — openDb() phantom app.db no longer defeats existsSync guards · gates tsc=13.1s·lint=23.5s·test=6.2s",
+      "agent": "WRAITH",
+      "at": 1787479564257
+    },
+    {
+      "id": "BB8M",
+      "taskId": "TASK-06",
+      "text": "claimed by RAVEN · → doing",
+      "agent": "RAVEN",
+      "at": 1787479562544
+    },
     {
       "id": "FQFW",
       "taskId": "TASK-16",
@@ -1735,29 +1756,8 @@
       "text": "✓ checked runtime under 5min",
       "agent": "CIPHER",
       "at": 1787477361561
-    },
-    {
-      "id": "YVRR",
-      "taskId": "TASK-29",
-      "text": "✓ checked badge in README",
-      "agent": "CIPHER",
-      "at": 1787477361466
-    },
-    {
-      "id": "ZZHG",
-      "taskId": "TASK-29",
-      "text": "✓ checked red build blocks merge by convention",
-      "agent": "CIPHER",
-      "at": 1787477361363
-    },
-    {
-      "id": "JQDV",
-      "taskId": "TASK-29",
-      "text": "✓ checked workflow runs web gates (tsc --noEmit, eslint, n",
-      "agent": "CIPHER",
-      "at": 1787477361244
     }
   ],
   "deletions": [],
-  "updatedAt": 1787479469148
+  "updatedAt": 1787479668297
 }
