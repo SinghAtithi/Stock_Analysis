@@ -22,6 +22,50 @@ import instruments from "@/data/instruments.json" with { type: "json" };
 
 export const dynamic = "force-dynamic";
 
+/* ---- abuse hardening (review pass, mirrors /api/tracker) ----
+ * POST executes a CPU-bound engine inline: unguarded, N parallel requests
+ * pin the event loop and pile up sqlite writers. Three guards:
+ *   1. per-IP sliding window (per-instance best-effort; edge owns real enforcement)
+ *   2. single-flight engine lock — one run at a time, others get 429+Retry-After
+ *   3. 60s config-keyed response cache — identical UI re-submits are free */
+
+const RATE_LIMIT = 10;
+const RATE_WINDOW_MS = 60_000;
+const hits = new Map<string, number[]>();
+
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const list = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  if (list.length >= RATE_LIMIT) {
+    hits.set(ip, list);
+    return true;
+  }
+  list.push(now);
+  hits.set(ip, list);
+  if (hits.size > 5000) hits.clear();
+  return false;
+}
+
+let engineBusy = false;
+
+const RESP_TTL_MS = 60_000;
+const respCache = new Map<string, { body: Record<string, unknown>; expires: number }>();
+
+function respGet(key: string): Record<string, unknown> | null {
+  const hit = respCache.get(key);
+  if (hit && hit.expires > Date.now()) return hit.body;
+  respCache.delete(key);
+  return null;
+}
+
+function respSet(key: string, body: Record<string, unknown>) {
+  if (respCache.size >= 50) {
+    const oldest = respCache.keys().next().value;
+    if (oldest !== undefined) respCache.delete(oldest);
+  }
+  respCache.set(key, { body, expires: Date.now() + RESP_TTL_MS });
+}
+
 interface DbLike {
   prepare(sql: string): { get(...args: unknown[]): unknown; all(...args: unknown[]): unknown[]; run(...args: unknown[]): unknown };
   close(): void;
@@ -176,6 +220,17 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    request.headers.get("x-real-ip") ??
+    "local";
+  if (rateLimited(ip)) {
+    return NextResponse.json(
+      { error: "rate_limited" },
+      { status: 429, headers: { "Retry-After": "60" } }
+    );
+  }
+
   let body: Record<string, unknown>;
   try {
     body = (await request.json()) as Record<string, unknown>;
@@ -209,9 +264,39 @@ export async function POST(request: NextRequest) {
   const costPct = clampNum(body.cost, 0, 1, DEFAULT_COST_PCT * 100) / 100;
   const slippagePct = clampNum(body.slippage, 0, 1, DEFAULT_SLIPPAGE_PCT * 100) / 100;
 
+  const cacheKey = `${strategyId}|${universe}|${start}|${end ?? ""}|${topN}|${costPct}|${slippagePct}`;
+  const cached = respGet(cacheKey);
+  if (cached) return NextResponse.json(cached);
+
+  if (engineBusy) {
+    return NextResponse.json(
+      { error: "engine_busy" },
+      { status: 429, headers: { "Retry-After": "3" } }
+    );
+  }
+  engineBusy = true;
+  try {
+    const { status, body } = await runEngine(strategyId, universe, start, end, topN, costPct, slippagePct, cacheKey);
+    if (status === 200) respSet(cacheKey, body);
+    return NextResponse.json(body, { status });
+  } finally {
+    engineBusy = false;
+  }
+}
+
+async function runEngine(
+  strategyId: string,
+  universe: string,
+  start: string,
+  end: string | undefined,
+  topN: number,
+  costPct: number,
+  slippagePct: number,
+  cacheKey: string
+): Promise<{ status: number; body: Record<string, unknown> }> {
   const scorer = snapshotScorer(strategyId);
   if (!scorer) {
-    return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
+    return { status: 503, body: { error: "db_unavailable" } };
   }
 
   const symbols = universeSymbols(universe);
@@ -222,7 +307,7 @@ export async function POST(request: NextRequest) {
     candlesBySymbol.set(sym.replace(/\.NS$/, ""), arr);
   }
   if (candlesBySymbol.size === 0) {
-    return NextResponse.json({ error: "no_candles" }, { status: 409 });
+    return { status: 409, body: { error: "no_candles" } };
   }
 
   const result = await runBacktest(candlesBySymbol, scorer, {
@@ -268,7 +353,7 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  return NextResponse.json({
+  const body: Record<string, unknown> = {
     id,
     status: "completed",
     config: { strategyId, universe, topN, startDate: start, endDate: end ?? result.config.endDate },
@@ -276,11 +361,11 @@ export async function POST(request: NextRequest) {
     investedDays: result.investedDays,
     rebalanceDates: result.rebalanceDates.length,
     equity: result.equity,
-    warning:
-      result.trades.every((t) => t.added.length === 0 && t.held.length === 0)
-        ? "No portfolio was ever formed — signal snapshot history is thinner than this window."
-        : undefined,
-  });
+  };
+  if (result.trades.every((t) => t.added.length === 0 && t.held.length === 0)) {
+    body.warning = "No portfolio was ever formed — signal snapshot history is thinner than this window.";
+  }
+  return { status: 200, body };
 }
 
 function clampInt(v: unknown, min: number, max: number, dflt: number): number {

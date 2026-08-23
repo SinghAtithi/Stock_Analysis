@@ -72,6 +72,17 @@ test("most recent shared day wins when several overlap", () => {
   assert.ok(Math.abs(out.scale - 1.2) < 1e-9, "uses day 100 factor, not day 90");
 });
 
+test("cross-vendor stamp conventions still count as the same trading day", () => {
+  // legacy Yahoo rows stamped IST-midnight (18:30Z), new vendor at UTC-midnight:
+  // exact-ts equality would miss the overlap entirely and duplicate the series
+  const istStamp = (day, c) => ({ ts: day * DAY + 66_600, o: c, h: c, l: c, c });
+  const utcStamp = (day, c) => candle(day, c);
+  const stored = [istStamp(99, 955), istStamp(100, 950)];   // raw-basis tail
+  const incoming = [utcStamp(98, 95.5), utcStamp(100, 96)]; // adjusted batch, same days
+  const out = reconcileBasis(stored, incoming);
+  assert.ok(Math.abs(out.scale - 96 / 950) < 1e-9, "day-keyed match found day 100 across conventions");
+});
+
 test("scaleCandles touches OHLC only", () => {
   const [r] = scaleCandles([{ ts: 7, o: 2, h: 3, l: 1, c: 2.5, v: 42 }], 10);
   assert.deepEqual(r, { ts: 7, o: 20, h: 30, l: 10, c: 25, v: 42 });

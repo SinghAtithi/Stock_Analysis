@@ -18,10 +18,20 @@
 
 const DAY_S = 86_400;
 
-/** Map ts -> candle for O(1) overlap lookup. */
+/**
+ * Canonical calendar-day bucket. Vendors stamp the same trading day at
+ * different intra-day epochs (Yahoo IST-midnight = 18:30Z prev-label,
+ * Moneycontrol UTC-midnight), so exact-ts equality never matches across
+ * sources and writes would duplicate rows. All matching is day-based.
+ */
+function dayKey(ts) {
+  return Math.floor(ts / DAY_S);
+}
+
+/** Map dayKey -> candle for O(1) overlap lookup. */
 function byTs(rows) {
   const m = new Map();
-  for (const r of rows) m.set(r.ts, r);
+  for (const r of rows) m.set(dayKey(r.ts), r);
   return m;
 }
 
@@ -50,9 +60,9 @@ export function reconcileBasis(stored, incoming, opts = {}) {
   //    scale reflects the freshest basis pair available.
   let overlapDay = null;
   for (const r of stored) {
-    const incRow = inc.get(r.ts);
+    const incRow = inc.get(dayKey(r.ts));
     if (incRow && Number.isFinite(incRow.c) && incRow.c > 0 && r.c > 0) {
-      if (overlapDay === null || r.ts > overlapDay.ts) {
+      if (overlapDay === null || dayKey(r.ts) > dayKey(overlapDay.ts)) {
         overlapDay = { ts: r.ts, storedC: r.c, incomingC: incRow.c };
       }
     }
@@ -86,4 +96,39 @@ export function scaleCandles(rows, scale) {
     l: r.l * scale,
     c: r.c * scale,
   }));
+}
+
+/**
+ * Write-path wrapper (TASK-36 hotfix): rescale onto the incoming basis when
+ * bases disagree, delete stored rows colliding on CALENDAR DAY with incoming
+ * (vendor stamp conventions differ — exact-ts upsert would duplicate), then
+ * insert. `db` is an open better-sqlite3/node:sqlite handle; `log` optional.
+ */
+export function storeCandlesReconciled(db, symbol, incoming, log = () => {}) {
+  const stored = db.prepare("SELECT ts, c FROM eod_candles WHERE symbol = ?").all(symbol);
+  const { scale, reason } = reconcileBasis(stored, incoming);
+  const incomingDays = new Set(incoming.map((r) => Math.floor(r.ts / DAY_S)));
+  const tx = db.transaction(() => {
+    if (scale !== 1) {
+      db.prepare(
+        "UPDATE eod_candles SET o = o * ?, h = h * ?, l = l * ?, c = c * ? WHERE symbol = ?"
+      ).run(scale, scale, scale, scale, symbol);
+    }
+    const del = db.prepare(
+      "DELETE FROM eod_candles WHERE symbol = ? AND CAST(ts / 86400 AS INT) = ?"
+    );
+    for (const d of incomingDays) del.run(symbol, d);
+    const ins = db.prepare(
+      `INSERT INTO eod_candles (symbol, ts, o, h, l, c, v, adj_factor)
+       VALUES (?, ?, ?, ?, ?, ?, ?, 1)
+       ON CONFLICT (symbol, ts) DO UPDATE SET
+         o = excluded.o, h = excluded.h, l = excluded.l, c = excluded.c, v = excluded.v`
+    );
+    for (const r of incoming) ins.run(symbol, r.ts, r.o, r.h, r.l, r.c, r.v);
+  });
+  tx();
+  if (scale !== 1) {
+    log(`[basis] ${symbol}: rescaled ${stored.length} stored rows ×${scale.toFixed(4)} (${reason})`);
+  }
+  return incoming.length;
 }

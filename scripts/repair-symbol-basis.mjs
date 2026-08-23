@@ -16,12 +16,12 @@
 import { parseArgs } from "node:util";
 import { openDb, DEFAULT_DB_PATH } from "./lib/db.mjs";
 import {
-  storeCandlesReconciled,
   mergeCorporateActions,
   loadInstruments,
   resolveUniverse,
   fetchEodForSymbol,
 } from "./ingest-eod.mjs";
+import { storeCandlesReconciled } from "./lib/basis.mjs";
 
 const { positionals, values } = parseArgs({
   allowPositionals: true,
