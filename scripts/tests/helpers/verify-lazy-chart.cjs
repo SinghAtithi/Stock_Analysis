@@ -1,3 +1,4 @@
+/* Runs from web/ after next build — reads .next/build-manifest.json. */
 /* TASK-56 AC6 evidence — verify ChartPanel's chart library is NOT in the
  * initial page bundle after the dynamic() change. */
 const fs = require("fs");

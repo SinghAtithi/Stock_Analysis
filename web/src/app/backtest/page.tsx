@@ -101,32 +101,27 @@ function BacktestInner() {
   /* deep link: /backtest?id=<run> loads a persisted run; bad ids degrade
      back to the form-only view with a soft note */
   const runId = params.get("id");
-  useEffect(() => {
+  const loadRun = useCallback(async () => {
     if (!runId) return;
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch(`/api/backtest?id=${encodeURIComponent(runId)}`);
-        if (!res.ok) {
-          if (!cancelled) {
-            setResult(null);
-            setError("That run could not be loaded — it may have been removed.");
-          }
-          return;
-        }
-        const json = await res.json();
-        if (!cancelled) {
-          setError(null);
-          setResult(json as RunResult);
-        }
-      } catch {
-        if (!cancelled) setError("That run could not be loaded.");
+    try {
+      const res = await fetch(`/api/backtest?id=${encodeURIComponent(runId)}`);
+      if (!res.ok) {
+        setResult(null);
+        setError("That run could not be loaded — it may have been removed.");
+        return;
       }
-    })();
-    return () => {
-      cancelled = true;
-    };
+      const json = await res.json();
+      setError(null);
+      setResult(json as RunResult);
+    } catch {
+      setError("That run could not be loaded.");
+    }
   }, [runId]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loadRun sets state only after awaits
+    void loadRun();
+  }, [loadRun]);
 
   function openRun(id: string, strategy: string) {
     router.replace(`/backtest?strategy=${encodeURIComponent(strategy)}&id=${encodeURIComponent(id)}`, {
@@ -199,8 +194,7 @@ function BacktestInner() {
     };
   }, [result]);
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
+  const runBacktest = useCallback(async () => {
     if (!strategyId || running) return;
     setRunning(true);
     setError(null);
@@ -243,6 +237,11 @@ function BacktestInner() {
     } finally {
       setRunning(false);
     }
+  }, [strategyId, universe, start, end, preset, running, loadHistory, router]);
+
+  function submit(e: React.FormEvent) {
+    e.preventDefault();
+    void runBacktest();
   }
 
   function fmtPct(v: number | null | undefined): string {
@@ -253,7 +252,7 @@ function BacktestInner() {
   return (
     <div className="min-h-dvh">
       <SiteHeader subtitle="Backtest" subtitleClassName="font-normal text-muted" />
-      <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6">
         <h1 className="text-xl font-semibold tracking-tight text-paper sm:text-2xl">Strategy backtest</h1>
         <form
           onSubmit={submit}

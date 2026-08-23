@@ -12,9 +12,9 @@ interface SignalItem {
   symbol: string;
   name: string;
   sector: string;
-  indices: string[];
+  indices?: string[];
   score: number;
-  components: Record<string, number | string | null>;
+  components?: Record<string, number | string | null>;
   price: number | null;
   changePct: number | null;
 }
@@ -60,6 +60,7 @@ export default function ScreenerPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -112,7 +113,7 @@ export default function ScreenerPage() {
     return () => {
       cancelled = true;
     };
-  }, [strategy]);
+  }, [strategy, reloadKey]);
 
   const items = data?.items ?? [];
   const meta = data?.strategy;
@@ -168,7 +169,7 @@ export default function ScreenerPage() {
     <div className="flex min-h-screen flex-col bg-canvas">
       <SiteHeader subtitle="Screener" subtitleClassName="font-normal text-muted" />
 
-      <main id="main-content" className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col gap-4 p-4 sm:p-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col gap-4 p-4 sm:p-6">
         <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
           <h1 className="text-xl font-semibold tracking-tight text-paper sm:text-2xl">Signal screener</h1>
           <p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted">Ranked signals from the strategy engine. Pick a strategy, sort the table, click a row to open the chart.</p>
