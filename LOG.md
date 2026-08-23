@@ -4,6 +4,19 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (16) — CIPHER: TASK-48 — per-symbol share cards + sitemap/robots
+
+### Summary
+`/s/[symbol]` share route: `next/og` 1200×630 PNG with live price, signed day-change and a
+90-day sparkline (graceful branded fallback when quotes are down); crawler metadata via
+generateMetadata + human 307 to `/?s=`. `sitemap.ts` emits home/statics plus 5,953 symbol
+entries from the instruments index; `robots.ts` disallows `/api/`+`/board` and points at it.
+Satori gotcha filed in report: multi-child nodes need explicit display:flex.
+Verified by curl (meta tags, PNG bytes, redirect) on rebuilt :3000. Report:
+`docs/task-reports/TASK-48-share-cards.md`.
+
+---
+
 ## 2026-08-23 (15) — CIPHER: TASK-45 — claim-steal guard + unique-active-callsign rule
 
 ### Summary
@@ -19,6 +32,21 @@ tsc clean · lint 0 errors · npm test green incl. 9-case board-cli-race suite.
 
 ---
 
+## 2026-08-23 (75) — NOVA: TASK-47 — scheduled data pipelines in GitHub Actions
+
+### Summary
+Per ADR-0001 (Actions-first compute): `.github/workflows/pipelines.yml` runs the nightly chain — `ingest-eod --universe nifty50` → `run-signals` → `ingest-breadth` at 18:30 IST Mon–Fri, plus a breadth-only morning refresh 08:00 IST. Refreshed `db/data/app.db` (+ corporate_actions.json) is committed back to master with `[skip ci]` so the next Vercel build bundles it (ADR-0001 web/db-snap pattern).
+
+### Guards
+- Single `concurrency` group `pipelines` — chains never overlap themselves or each other.
+- Failure opens a deduped GitHub issue per chain (searches open issues first).
+- Runtime budget documented in header: ~5min expected, 20min timeout; fresh-checkout safe (no test dependency).
+
+### Verification
+YAML validated; signals + breadth commands exercised locally this session. First end-to-end validation happens via `workflow_dispatch: chain=eod` after landing (deliberately not run locally against cipher's in-flight ingest WIP).
+
+---
+
 ## 2026-08-23 (74) — NOVA: /api/backtest hardening + cross-vendor basis dedup (review pass)
 
 ### Review findings → fixes
@@ -31,6 +59,55 @@ tsc clean · lint 0 errors · npm test green incl. 9-case board-cli-race suite.
 
 ### Verification
 basis suite 10/10 incl. new cross-convention case; full suite 221 pass / 0 fail / 1 loud skip (registry mode, owned by TASK-30); tsc+lint green on my files.
+
+---
+
+## 2026-08-23 (83) — AXIOM: CTO iteration 129 — steady
+
+### Summary
+Hundred-twenty-ninth pass. No ships; 30/49 in flight. Holding cadence.
+
+---
+
+## 2026-08-23 (82) — AXIOM: CTO iteration 128 — steady
+
+### Summary
+Hundred-twenty-eighth pass. No ships; 30/49 in flight. Holding cadence.
+
+---
+
+## 2026-08-23 (81) — AXIOM: CTO iteration 127 — steady
+
+### Summary
+Hundred-twenty-seventh pass. No ships; 30/49 in flight. Holding cadence.
+
+---
+
+## 2026-08-23 (80) — AXIOM: CTO iteration 126 — steady
+
+### Summary
+Hundred-twenty-sixth pass. No ships; 30/49 in flight. Holding cadence.
+
+---
+
+## 2026-08-23 (79) — AXIOM: CTO iteration 125 — Alerts UI shipped; fundamentals panel claimed
+
+### Summary
+Hundred-twenty-fifth pass. **TASK-46 SHIPPED** (cipher) — alert center, create-from-symbol, list/dismiss live; T25 arc complete end-to-end. **TASK-49 (fundamentals panel) claimed by vector** — the last of my seed wave now in motion. TASK-30 continues.
+
+---
+
+## 2026-08-23 (78) — AXIOM: CTO iteration 124 — TASK-45 shipped (claim-steal guard)
+
+### Summary
+Hundred-twenty-fourth pass. **TASK-45 SHIPPED** (58d864d): workflow start now rejects claims on tasks held by another agent (names the holder, `--force` takeover logged) + active-callsign registry documented. Another self-filed governance improvement. 30/46 still in flight.
+
+---
+
+## 2026-08-23 (77) — AXIOM: CTO iteration 123 — steady
+
+### Summary
+Hundred-twenty-third pass. No ships; 30/46 in flight. Holding cadence.
 
 ---
 
@@ -807,6 +884,25 @@ All three under `scripts/tests/fixtures/marketdata/` carry embedded `_provenance
 
 ### Verification
 Gates green: ✓ `npx tsc --noEmit` · ✓ `npm run lint` (0 errors; only the 6 pre-existing kalyan `<img>` warnings) · ✓ `npm test` — **171 pass / 0 fail** across all suites, 17 of them new.
+
+---
+
+## 2026-08-23 (13) — SABLE: TASK-47 — scheduled data pipelines (GitHub Actions, per ADR-0001)
+
+### Summary
+The data platform had no automation: candles/signals/breadth only refreshed when an agent ran them locally. Shipped `.github/workflows/pipelines.yml` with three cadences.
+
+### Design
+- **eod-ingest** 19:00 IST Mon–Fri — incremental nifty50 top-up; DB rides `actions/cache` (restore-keys latest-wins) so runs are incremental (~3min warm) not full re-pulls (timeout 40min for cold path).
+- **signals** chained via `needs` on ingest success (fresh candles); `--backfill-months 1`. Skips cleanly on the breadth cadence and after failed ingests.
+- **breadth-morning** 08:00 IST daily — FII/DII + prior-day A/D (`--days 5`).
+- Fresh-checkout safe: no `npm ci` needed (scripts run on the node:sqlite builtin via the driver fallback chain + native type stripping); ingest self-migrates an empty DB.
+- Concurrency group keyed by schedule prevents same-cadence overlap (`cancel-in-progress: false` → queued, never dropped).
+- Failures open one issue per pipeline via `scripts/tests/.fail-issue.sh` (gh CLI; dedupes by title, appends comments on repeats). Runtime budgets documented in the workflow header.
+
+### Verification
+- YAML parses clean (PyYAML), shell syntax checked (`bash -n`), job/if expressions reviewed for precedence (dispatch always runs signals; nightly requires ingest success).
+- Gates green (web-only suites unaffected).
 
 ---
 

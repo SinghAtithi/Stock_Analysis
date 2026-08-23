@@ -1,0 +1,122 @@
+# NIFTY//PIPELINES — scheduled data pipelines (TASK-47, per ADR-0001).
+#
+# Cadences (IST = UTC+5:30):
+#   eod-ingest        13:30 UTC Mon–Fri (19:00 IST) — post-close daily top-up
+#   signals           chained after eod-ingest via `needs` (fresh candles)
+#   breadth-morning    02:30 UTC daily (08:00 IST) — FII/DII + prior-day breadth
+#
+# Runtime budget (documented per AC):
+#   eod-ingest   timeout 40min — ~3min with a warm DB cache (incremental
+#                top-up); a cache-miss full-history pull is the slow path.
+#   signals      timeout 15min — registry run over nifty50 (~2–3min warm).
+#   breadth      timeout 10min — VIX/FII-DII/breadth collection (~1–2min).
+#
+# Fresh-checkout safe: db/data/ is gitignored, ingest runs migrations on an
+# empty DB; suites invoked here self-skip without data. The DB itself rides
+# actions/cache so nightly runs are incremental, not full re-pulls.
+#
+# Failure notification: any failed job opens (or appends to) an issue via gh.
+
+name: pipelines
+
+on:
+  schedule:
+    - cron: "30 13 * * 1-5" # eod-ingest — 19:00 IST Mon–Fri
+    - cron: "30 2 * * *"    # breadth-morning — 08:00 IST daily
+  workflow_dispatch: {}     # manual run for testing/debugging
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: pipelines-${{ github.event.schedule || 'manual' }}
+  cancel-in-progress: false
+
+jobs:
+  eod-ingest:
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 13 * * 1-5'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: restore candle store
+        uses: actions/cache@v4
+        with:
+          path: db/data
+          key: eod-db-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: eod-db-${{ runner.os }}-
+
+      - name: eod ingest (nifty50, incremental)
+        run: node --experimental-strip-types scripts/ingest-eod.mjs --universe nifty50
+
+      - name: report failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./scripts/tests/.fail-issue.sh "eod-ingest" "${{ github.run_id }}"
+
+  signals:
+    needs: eod-ingest
+    # runs after a successful nightly ingest, or unconditionally on manual
+    # dispatch; silently skips on the morning-breadth cadence
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.schedule == '30 13 * * 1-5' && needs.eod-ingest.result == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: restore candle store (written by eod-ingest's cache save)
+        uses: actions/cache@v4
+        with:
+          path: db/data
+          key: eod-db-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: eod-db-${{ runner.os }}-
+
+      - name: signal snapshots (all strategies)
+        run: node --experimental-strip-types scripts/run-signals.mjs --backfill-months 1
+
+      - name: report failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+        run: ./scripts/tests/.fail-issue.sh "signals" "$RUN_ID"
+
+  breadth-morning:
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 2 * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: restore candle store (A/D counts read eod_candles)
+        uses: actions/cache@v4
+        with:
+          path: db/data
+          key: eod-db-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: eod-db-${{ runner.os }}-
+
+      - name: breadth ingest (last 5 days)
+        run: node --experimental-strip-types scripts/ingest-breadth.mjs --days 5
+
+      - name: report failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./scripts/tests/.fail-issue.sh "breadth" "${{ github.run_id }}"

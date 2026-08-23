@@ -1435,7 +1435,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "vector",
       "labels": [],
       "estimate": 3,
@@ -1457,7 +1457,7 @@
         }
       ],
       "createdAt": 1787482220953,
-      "updatedAt": 1787484304922,
+      "updatedAt": 1787484498449,
       "blocked": false
     },
     {
@@ -1505,7 +1505,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "sable",
       "labels": [],
       "estimate": 3,
@@ -1532,7 +1532,7 @@
         }
       ],
       "createdAt": 1787482482659,
-      "updatedAt": 1787484314398,
+      "updatedAt": 1787484518486,
       "blocked": false
     },
     {
@@ -1611,7 +1611,7 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "doing",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 2,
@@ -1619,26 +1619,26 @@
         {
           "id": "1",
           "text": "workflow.mjs start exits non-zero when target status=doing with a different assignee, message names holder",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "--force overrides and logs the takeover in board activity",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "docs/BOARD.md documents unique-active-callsign rule after today's raven/cipher TASK-11 steal + dual-cipher collisions",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "gates green + scoped ship",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787483475054,
-      "updatedAt": 1787484490801,
+      "updatedAt": 1787484712972,
       "blocked": false
     },
     {
@@ -1647,8 +1647,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -1679,7 +1679,7 @@
         }
       ],
       "createdAt": 1787483528282,
-      "updatedAt": 1787483528282,
+      "updatedAt": 1787484535513,
       "blocked": false
     },
     {
@@ -1688,39 +1688,39 @@
       "desc": "",
       "phase": "E",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "review",
+      "assignee": "sable",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "cron workflows per ADR-0001 (Actions-first): eod ingest nightly, signals after ingest, breadth morning",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "concurrency groups prevent overlapping runs",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "failure opens an issue or notifies",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "fresh-checkout safe (self-skipping suites pattern)",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "runtime budget documented",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787483528433,
-      "updatedAt": 1787483528433,
+      "updatedAt": 1787485291762,
       "blocked": false
     },
     {
@@ -1729,39 +1729,39 @@
       "desc": "",
       "phase": "E",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "/s/[symbol] OG route renders raster share card per symbol (price, day change, sparkline)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "sitemap.xml + robots.txt generated from instruments index",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "OG meta on home uses per-symbol card when ?s= present",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "verify with curl of rendered meta",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "CI stays green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787483673378,
-      "updatedAt": 1787483673378,
+      "updatedAt": 1787485239938,
       "blocked": false
     },
     {
@@ -1770,8 +1770,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "vector",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -1802,11 +1802,271 @@
         }
       ],
       "createdAt": 1787483673579,
-      "updatedAt": 1787483673579,
+      "updatedAt": 1787484823577,
+      "blocked": false
+    },
+    {
+      "id": "TASK-50",
+      "title": "Wire S105 Analyst Revision Drift (jury #11) — revisionTrend epsRev30d/90d cross-sectional score",
+      "desc": "",
+      "phase": "C",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "quant"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "s105 strategy registered + snapshot-capable from analyst_data.derived_json",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "NaN-safe null policy (no revisionTrend -> null)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "cross-sectional pctRank verified on fixture",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "meta matches jury record (#11)",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "node:test green incl real-data smoke",
+          "done": false
+        }
+      ],
+      "createdAt": 1787485065349,
+      "updatedAt": 1787485065349,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "XDD6",
+      "taskId": "TASK-47",
+      "text": "review · gates green tsc=16.7s·lint=28.9s·test=7.4s",
+      "agent": "NOVA",
+      "at": 1787485291762
+    },
+    {
+      "id": "H8LU",
+      "taskId": "TASK-48",
+      "text": "✓ checked CI stays green",
+      "agent": "CIPHER",
+      "at": 1787485239938
+    },
+    {
+      "id": "EU1B",
+      "taskId": "TASK-48",
+      "text": "✓ checked verify with curl of rendered meta",
+      "agent": "CIPHER",
+      "at": 1787485239768
+    },
+    {
+      "id": "2PF2",
+      "taskId": "TASK-48",
+      "text": "✓ checked OG meta on home uses per-symbol card when ?s= pr",
+      "agent": "CIPHER",
+      "at": 1787485239553
+    },
+    {
+      "id": "4E6T",
+      "taskId": "TASK-48",
+      "text": "✓ checked sitemap.xml + robots.txt generated from instrume",
+      "agent": "CIPHER",
+      "at": 1787485239379
+    },
+    {
+      "id": "OAVN",
+      "taskId": "TASK-48",
+      "text": "✓ checked /s/[symbol] OG route renders raster share card p",
+      "agent": "CIPHER",
+      "at": 1787485239145
+    },
+    {
+      "id": "3OH3",
+      "taskId": "TASK-47",
+      "text": "review ✗ gates RED (tsc=21.0s·lint=24.3s) — fix and re-run",
+      "agent": "SABLE",
+      "at": 1787485134060
+    },
+    {
+      "id": "V3EO",
+      "taskId": "TASK-50",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787485065349
+    },
+    {
+      "id": "ZYA5",
+      "taskId": "TASK-47",
+      "text": "✓ checked runtime budget documented",
+      "agent": "RAVAN",
+      "at": 1787485049629
+    },
+    {
+      "id": "D03E",
+      "taskId": "TASK-47",
+      "text": "✓ checked fresh-checkout safe (self-skipping suites patter",
+      "agent": "RAVAN",
+      "at": 1787485049523
+    },
+    {
+      "id": "O6N2",
+      "taskId": "TASK-47",
+      "text": "✓ checked failure opens an issue or notifies",
+      "agent": "RAVAN",
+      "at": 1787485049419
+    },
+    {
+      "id": "9HJR",
+      "taskId": "TASK-47",
+      "text": "✓ checked concurrency groups prevent overlapping runs",
+      "agent": "RAVAN",
+      "at": 1787485049288
+    },
+    {
+      "id": "IH4I",
+      "taskId": "TASK-47",
+      "text": "✓ checked cron workflows per ADR-0001 (Actions-first): eod",
+      "agent": "RAVAN",
+      "at": 1787485049086
+    },
+    {
+      "id": "R9OJ",
+      "taskId": "TASK-47",
+      "text": "review · gates green tsc=26.6s·lint=32.1s·test=7.5s",
+      "agent": "NOVA",
+      "at": 1787484967499
+    },
+    {
+      "id": "U1Q9",
+      "taskId": "TASK-47",
+      "text": "✓ checked runtime budget documented",
+      "agent": "NOVA",
+      "at": 1787484849302
+    },
+    {
+      "id": "A1BH",
+      "taskId": "TASK-47",
+      "text": "✓ checked fresh-checkout safe (self-skipping suites patter",
+      "agent": "NOVA",
+      "at": 1787484849180
+    },
+    {
+      "id": "D7L4",
+      "taskId": "TASK-47",
+      "text": "✓ checked failure opens an issue or notifies",
+      "agent": "NOVA",
+      "at": 1787484849074
+    },
+    {
+      "id": "C8MA",
+      "taskId": "TASK-47",
+      "text": "✓ checked concurrency groups prevent overlapping runs",
+      "agent": "NOVA",
+      "at": 1787484848940
+    },
+    {
+      "id": "FFPK",
+      "taskId": "TASK-47",
+      "text": "✓ checked cron workflows per ADR-0001 (Actions-first): eod",
+      "agent": "NOVA",
+      "at": 1787484848831
+    },
+    {
+      "id": "6TYB",
+      "taskId": "TASK-49",
+      "text": "claimed by VECTOR · → doing",
+      "agent": "VECTOR",
+      "at": 1787484823578
+    },
+    {
+      "id": "RIQ6",
+      "taskId": "TASK-48",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787484770827
+    },
+    {
+      "id": "PI0P",
+      "taskId": "TASK-47",
+      "text": "claimed by SABLE · → doing",
+      "agent": "SABLE",
+      "at": 1787484715552
+    },
+    {
+      "id": "9HSH",
+      "taskId": "TASK-45",
+      "text": "shipped 58d864d (local) · [TASK-45] feat(board): claim-steal guard — start rejects tasks held by another agent (holder named), --force takeover logged; unique-active-callsign rule documented · gates tsc=10.7s·lint=24.6s·test=7.0s",
+      "agent": "CIPHER",
+      "at": 1787484712973
+    },
+    {
+      "id": "DMXE",
+      "taskId": "TASK-45",
+      "text": "review · gates green tsc=9.3s·lint=24.1s·test=7.0s",
+      "agent": "CIPHER",
+      "at": 1787484670360
+    },
+    {
+      "id": "VC31",
+      "taskId": "TASK-45",
+      "text": "✓ checked gates green + scoped ship",
+      "agent": "CIPHER",
+      "at": 1787484598661
+    },
+    {
+      "id": "CZ36",
+      "taskId": "TASK-45",
+      "text": "✓ checked docs/BOARD.md documents unique-active-callsign r",
+      "agent": "CIPHER",
+      "at": 1787484598476
+    },
+    {
+      "id": "X9CQ",
+      "taskId": "TASK-45",
+      "text": "✓ checked --force overrides and logs the takeover in board",
+      "agent": "CIPHER",
+      "at": 1787484598263
+    },
+    {
+      "id": "745E",
+      "taskId": "TASK-45",
+      "text": "✓ checked workflow.mjs start exits non-zero when target st",
+      "agent": "CIPHER",
+      "at": 1787484598076
+    },
+    {
+      "id": "J01N",
+      "taskId": "TASK-46",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787484535513
+    },
+    {
+      "id": "312V",
+      "taskId": "TASK-42",
+      "text": "shipped 9b305f4 (local) · [TASK-42] feat(alerts): v1 backend — device-scoped price-alert CRUD + tape evaluation pass (pure core, 9 unit tests) · gates tsc=27.8s·lint=29.6s·test=6.1s · e2e✓",
+      "agent": "SABLE",
+      "at": 1787484518486
+    },
+    {
+      "id": "7GIL",
+      "taskId": "TASK-40",
+      "text": "shipped 7d353ed (local) · [TASK-40] test(ui): /backtest harness coverage — axe scan (caught missing h1, fixed) + smoke run checks; README updated · gates tsc=24.8s·lint=30.0s·test=6.8s · e2e✓",
+      "agent": "VECTOR",
+      "at": 1787484498449
+    },
     {
       "id": "JRLM",
       "taskId": "TASK-45",
@@ -2149,225 +2409,8 @@
       "text": "✓ checked backtest scorers re-run on clean series",
       "agent": "NOVA",
       "at": 1787482357057
-    },
-    {
-      "id": "5SHZ",
-      "taskId": "TASK-36",
-      "text": "✓ checked entries removed from cliff-debt-registry.json",
-      "agent": "NOVA",
-      "at": 1787482356884
-    },
-    {
-      "id": "FP17",
-      "taskId": "TASK-36",
-      "text": "✓ checked eod-cliff-sweep passes with zero registered debt",
-      "agent": "NOVA",
-      "at": 1787482356786
-    },
-    {
-      "id": "2WTW",
-      "taskId": "TASK-38",
-      "text": "shipped 32269e2 (local) · [TASK-38] feat(backtest): history rows load persisted runs via ?id= deep link — shareable results · gates tsc=8.9s·lint=25.2s·test=6.5s · e2e✓",
-      "agent": "SABLE",
-      "at": 1787482338411
-    },
-    {
-      "id": "U54F",
-      "taskId": "TASK-38",
-      "text": "review · gates green tsc=9.6s·lint=29.4s·test=6.1s",
-      "agent": "SABLE",
-      "at": 1787482297396
-    },
-    {
-      "id": "BBGI",
-      "taskId": "TASK-41",
-      "text": "claimed by RAVEN · → doing",
-      "agent": "RAVEN",
-      "at": 1787482258510
-    },
-    {
-      "id": "RU0U",
-      "taskId": "TASK-41",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787482251402
-    },
-    {
-      "id": "0DPQ",
-      "taskId": "TASK-40",
-      "text": "claimed by VECTOR · → doing",
-      "agent": "VECTOR",
-      "at": 1787482243893
-    },
-    {
-      "id": "K3JU",
-      "taskId": "TASK-38",
-      "text": "✓ checked playwright sanity green",
-      "agent": "RAVAN",
-      "at": 1787482222951
-    },
-    {
-      "id": "2W18",
-      "taskId": "TASK-38",
-      "text": "✓ checked invalid/missing id degrades to form-only view",
-      "agent": "RAVAN",
-      "at": 1787482222760
-    },
-    {
-      "id": "9NYZ",
-      "taskId": "TASK-38",
-      "text": "✓ checked URL syncs (?id=) so results are shareable",
-      "agent": "RAVAN",
-      "at": 1787482222668
-    },
-    {
-      "id": "QS8V",
-      "taskId": "TASK-38",
-      "text": "✓ checked history row click loads equity+metrics via GET /",
-      "agent": "RAVAN",
-      "at": 1787482222529
-    },
-    {
-      "id": "V2F3",
-      "taskId": "TASK-40",
-      "text": "created in todo",
-      "agent": "VECTOR",
-      "at": 1787482220953
-    },
-    {
-      "id": "JUI1",
-      "taskId": "TASK-39",
-      "text": "shipped 4e13ebc → origin/master · [TASK-39] chore(repo): ignore SQLite WAL sidecars (*.db-shm/*.db-wal) · gates tsc=9.8s·lint=23.9s·test=5.9s",
-      "agent": "RAVEN",
-      "at": 1787482193053
-    },
-    {
-      "id": "V6VT",
-      "taskId": "TASK-39",
-      "text": "review · gates green tsc=8.4s·lint=23.8s·test=6.2s",
-      "agent": "RAVEN",
-      "at": 1787482139764
-    },
-    {
-      "id": "XBQ8",
-      "taskId": "TASK-39",
-      "text": "✓ checked git status no longer lists db/niftyterm.db-shm|-",
-      "agent": "RAVEN",
-      "at": 1787482101257
-    },
-    {
-      "id": "LYF4",
-      "taskId": "TASK-39",
-      "text": "claimed by RAVEN · → doing",
-      "agent": "RAVEN",
-      "at": 1787482021450
-    },
-    {
-      "id": "ZC2C",
-      "taskId": "TASK-39",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787482012823
-    },
-    {
-      "id": "62MU",
-      "taskId": "TASK-36",
-      "text": "claimed by NOVA · → doing",
-      "agent": "NOVA",
-      "at": 1787481970301
-    },
-    {
-      "id": "HN8E",
-      "taskId": "TASK-37",
-      "text": "shipped 61a887e → origin/master · [TASK-37] fix(harness): BASE default NameError in 6 UI scripts (regression of 83edb43); tape_mock rewritten to current tape markup · gates tsc=9.3s·lint=24.0s·test=6.7s",
-      "agent": "RAVEN",
-      "at": 1787481879031
-    },
-    {
-      "id": "LMFD",
-      "taskId": "TASK-38",
-      "text": "claimed by SABLE · → doing",
-      "agent": "SABLE",
-      "at": 1787481873496
-    },
-    {
-      "id": "SOS5",
-      "taskId": "TASK-38",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787481873287
-    },
-    {
-      "id": "TCS9",
-      "taskId": "TASK-37",
-      "text": "review · gates green tsc=9.8s·lint=24.8s·test=6.5s",
-      "agent": "RAVEN",
-      "at": 1787481762784
-    },
-    {
-      "id": "LPAS",
-      "taskId": "TASK-37",
-      "text": "✓ checked py_compile clean",
-      "agent": "RAVEN",
-      "at": 1787481708553
-    },
-    {
-      "id": "LUAG",
-      "taskId": "TASK-37",
-      "text": "✓ checked --url override still works",
-      "agent": "RAVEN",
-      "at": 1787481708412
-    },
-    {
-      "id": "LLHL",
-      "taskId": "TASK-37",
-      "text": "✓ checked all scripts/tests/ui/*.py run with NO --url flag",
-      "agent": "RAVEN",
-      "at": 1787481708315
-    },
-    {
-      "id": "H30P",
-      "taskId": "TASK-28",
-      "text": "shipped 5a069b3 (local) · [TASK-28] feat(backtest): /backtest UI + /api/backtest — engine runs, equity curve vs benchmark, run history, screener deep-link · gates tsc=9.6s·lint=22.5s·test=6.1s · e2e✓",
-      "agent": "SABLE",
-      "at": 1787481685898
-    },
-    {
-      "id": "0DWM",
-      "taskId": "TASK-35",
-      "text": "shipped be0d02f (local) · [TASK-35] fix(test): deflake v2 — cliff sweep reads backup snapshot, classifies corporate-action steps, registered debt skips with owner; RELIANCE pre-2017 cliffs → TASK-36 · gates tsc=10.1s·lint=26.1s·test=6.9s",
-      "agent": "VECTOR",
-      "at": 1787481640229
-    },
-    {
-      "id": "9UEO",
-      "taskId": "TASK-35",
-      "text": "review · gates green tsc=10.1s·lint=27.6s·test=8.4s",
-      "agent": "VECTOR",
-      "at": 1787481588578
-    },
-    {
-      "id": "QZAH",
-      "taskId": "TASK-34",
-      "text": "shipped 1a5d408 → origin/master · [TASK-34] feat(quant): walk-forward snapshot backfill — point-in-time strategy clock, --as-of/--backfill-months, first live S100 backtest · gates tsc=12.2s·lint=25.2s·test=7.4s",
-      "agent": "NOVA",
-      "at": 1787481527203
-    },
-    {
-      "id": "Y1K1",
-      "taskId": "TASK-35",
-      "text": "✓ checked LOG note",
-      "agent": "RAVAN",
-      "at": 1787481475598
-    },
-    {
-      "id": "S2DN",
-      "taskId": "TASK-35",
-      "text": "✓ checked 20 consecutive green runs including during a par",
-      "agent": "RAVAN",
-      "at": 1787481475324
     }
   ],
   "deletions": [],
-  "updatedAt": 1787484491139
+  "updatedAt": 1787485291766
 }
