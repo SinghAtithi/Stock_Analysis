@@ -1,54 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  istNow,
+  istWeekday,
+  istMinutes,
+  SESSION_OPEN_MIN,
+  SESSION_CLOSE_MIN,
+  type IstParts,
+} from "@/lib/session";
 
-const SESSION_OPEN = 9 * 60 + 15;
-const SESSION_CLOSE = 15 * 60 + 30;
-
-interface Ist {
-  y: number;
-  mo: number;
-  da: number;
-  h: number;
-  m: number;
-  s: number;
-}
-
-function istNow(): Ist {
-  const p = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Asia/Kolkata",
-    hour12: false,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  }).formatToParts(new Date());
-  const get = (t: string) => Number(p.find((x) => x.type === t)?.value);
-  return {
-    y: get("year"),
-    mo: get("month"),
-    da: get("day"),
-    h: get("hour"),
-    m: get("minute"),
-    s: get("second"),
-  };
-}
-
-function weekday(ist: Ist): number {
-  return new Date(ist.y, ist.mo - 1, ist.da).getDay();
-}
-
-function minutesOfDay(ist: Ist): number {
-  return ist.h * 60 + ist.m;
-}
+const SESSION_OPEN = SESSION_OPEN_MIN;
+const SESSION_CLOSE = SESSION_CLOSE_MIN;
 
 const HHMM = (mins: number) =>
   `${String(Math.floor(mins / 60)).padStart(2, "0")}:${String(mins % 60).padStart(2, "0")}`;
 
 export default function MarketStatus() {
-  const [ist, setIst] = useState<Ist | null>(null);
+  const [ist, setIst] = useState<IstParts | null>(null);
 
   useEffect(() => {
     const tick = () => setIst(istNow());
@@ -65,8 +34,8 @@ export default function MarketStatus() {
       </span>
     );
 
-  const dow = weekday(ist);
-  const mins = minutesOfDay(ist);
+  const dow = istWeekday(ist);
+  const mins = istMinutes(ist);
   const isWeekday = dow >= 1 && dow <= 5;
   const isOpen = isWeekday && mins >= SESSION_OPEN && mins < SESSION_CLOSE;
 

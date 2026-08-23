@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getChart } from "@/lib/marketData";
+import { istSessionOpen } from "@/lib/session";
 
 const VALID = new Set([
   "1d/1m",
@@ -52,8 +53,12 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // CDN-cacheable success payloads; errors stay uncacheable (TASK-04)
+  // CDN-cacheable success payloads; errors stay uncacheable (TASK-04).
+  // Outside the IST session payloads are frozen — widen CDN TTLs (TASK-53).
+  const open = istSessionOpen();
+  const sMaxage = open ? 60 : 600;
+  const swr = open ? 300 : 3600;
   return NextResponse.json(payload, {
-    headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
+    headers: { "Cache-Control": `public, s-maxage=${sMaxage}, stale-while-revalidate=${swr}` },
   });
 }

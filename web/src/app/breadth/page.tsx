@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import Sparkline from "@/components/Sparkline";
+import { istSessionOpen } from "@/lib/session";
 
 interface Day {
   date: string;
@@ -29,26 +30,62 @@ interface Breadth {
   };
 }
 
-function FlowBars({ values }: { values: (number | null)[] }) {
+const shortDate = (d: string): string => {
+  const t = new Date(d);
+  return Number.isNaN(t.getTime())
+    ? d
+    : t.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+};
+
+function FlowBars({ label, dates, values }: { label: string; dates: string[]; values: (number | null)[] }) {
   const max = Math.max(...values.map((v) => Math.abs(v ?? 0)), 1);
+  const entries = values.flatMap((v, i) =>
+    v != null ? [{ v, date: dates[i] ?? "" }] : []
+  );
+  const pos = entries.filter((e) => e.v >= 0).length;
+  const neg = entries.length - pos;
+  const peak = entries.reduce<{ v: number; date: string } | null>(
+    (best, e) => (!best || Math.abs(e.v) > Math.abs(best.v) ? e : best),
+    null
+  );
+  const signed = (v: number): string => `${v >= 0 ? "+" : ""}${v.toFixed(0)}`;
+  const summary =
+    `${label} across last ${entries.length} sessions: ${pos} positive, ${neg} negative` +
+    (peak ? `, strongest ${signed(peak.v)} cr on ${shortDate(peak.date)}` : "");
   return (
-    <div className="flex h-16 items-end gap-1">
-      {values.map((v, i) => {
-        const n = v ?? 0;
-        const h = Math.max(3, Math.round((Math.abs(n) / max) * 52));
-        return (
-          <span
-            key={i}
-            className="flex-1 rounded-full"
-            title={n.toFixed(0)}
-            style={{
-              height: `${h}px`,
-              background: n >= 0 ? "var(--color-up)" : "var(--color-down)",
-              opacity: 0.85,
-            }}
-          />
-        );
-      })}
+    <div>
+      <div className="flex h-16 items-end gap-1">
+        {values.map((v, i) => {
+          const n = v ?? 0;
+          const h = Math.max(3, Math.round((Math.abs(n) / max) * 52));
+          return (
+            <button
+              key={i}
+              type="button"
+              tabIndex={-1}
+              aria-label={`${dates[i] ? `${shortDate(dates[i])}: ` : ""}${signed(n)} crore`}
+              title={n.toFixed(0)}
+              className="group/bar relative flex h-full flex-1 items-end"
+            >
+              <span
+                className="w-full rounded-full transition-opacity duration-150 group-hover/bar:opacity-100 group-focus/bar:opacity-100"
+                style={{
+                  height: `${h}px`,
+                  background: n >= 0 ? "var(--color-up)" : "var(--color-down)",
+                  opacity: 0.85,
+                }}
+              />
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -top-1 left-1/2 z-10 hidden -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-full border border-line bg-surface px-1.5 py-0.5 font-mono text-[10px] font-medium tabular-nums text-paper shadow-sm group-hover/bar:block group-focus/bar:block"
+              >
+                {signed(n)}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+      <p className="sr-only">{summary}</p>
     </div>
   );
 }
@@ -57,12 +94,16 @@ export default function BreadthPage() {
   const [data, setData] = useState<Breadth | null>(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
-    const tick = async () => {
+    const tick = async (force = false) => {
+      /* TASK-53: interval ticks skip while closed/hidden — breadth cannot
+         change then. First mount fetch always runs (force). */
+      if (!force && (document.hidden || !istSessionOpen())) return;
       try {
-        const res = await fetch("/api/breadth", { cache: "no-store" });
+        const res = await fetch("/api/breadth");
         const json = await res.json();
         if (!cancelled) {
           setData(json);
@@ -74,13 +115,18 @@ export default function BreadthPage() {
         if (!cancelled) setLoading(false);
       }
     };
-    tick();
+    const reeval = () => {
+      if (!document.hidden && istSessionOpen()) void tick(true);
+    };
+    document.addEventListener("visibilitychange", reeval);
+    void tick(true);
     const t = setInterval(tick, 5 * 60_000);
     return () => {
       cancelled = true;
       clearInterval(t);
+      document.removeEventListener("visibilitychange", reeval);
     };
-  }, []);
+  }, [reloadKey]);
 
   const days = data?.days ?? [];
   const latest = days[0];
@@ -93,6 +139,7 @@ export default function BreadthPage() {
     )
     .filter((v): v is number => v != null);
   const vixSeries = [...days].reverse().map((d) => d.vix).filter((v): v is number => v != null);
+  const sessionDates = days.map((d) => d.date);
   const fiiSeries = [...days].map((d) => d.fii_total);
   const diSeries = [...days].map((d) => d.di_total);
 
@@ -103,7 +150,7 @@ export default function BreadthPage() {
     <div className="flex min-h-screen flex-col bg-canvas">
       <SiteHeader subtitle="Breadth" subtitleClassName="font-normal text-muted" />
 
-      <main className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col gap-4 p-4 sm:p-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col gap-4 p-4 sm:p-6">
         <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
           <h1 className="text-xl font-semibold tracking-tight text-paper sm:text-2xl">Market breadth</h1>
           <p className="mt-1 text-sm text-muted">Advance/decline, VIX and FII/DII flows. Updated every few minutes.</p>
@@ -111,7 +158,16 @@ export default function BreadthPage() {
         </div>
 
         {error && (
-          <p className="rounded-xl border border-down/20 bg-down-soft px-4 py-3 text-sm text-down">Breadth feed unreachable — showing last cached data.</p>
+          <p role="alert" className="flex flex-wrap items-center gap-3 rounded-xl border border-down/20 bg-down-soft px-4 py-3 text-sm text-down">
+            <span className="flex-1">Breadth feed unreachable — showing last cached data.</span>
+            <button
+              type="button"
+              onClick={() => setReloadKey((k) => k + 1)}
+              className="rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted transition-colors hover:bg-panel-2"
+            >
+              Retry
+            </button>
+          </p>
         )}
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -150,7 +206,7 @@ export default function BreadthPage() {
               <span>DEBT {num(latest?.fii_debt, 0)}</span>
             </div>
             <div className="mt-3">
-              <FlowBars values={fiiSeries} />
+              <FlowBars label="FII flows" dates={sessionDates} values={fiiSeries} />
             </div>
             {!data?.meta.sources.fii && <p className="mt-2 text-xs text-faint">No data — source blocked</p>}
           </section>
@@ -163,7 +219,7 @@ export default function BreadthPage() {
               <span>DEBT {num(latest?.di_debt, 0)}</span>
             </div>
             <div className="mt-3">
-              <FlowBars values={diSeries} />
+              <FlowBars label="DII flows" dates={sessionDates} values={diSeries} />
             </div>
             {!data?.meta.sources.di &&
               (data?.meta.sources.fii ? (

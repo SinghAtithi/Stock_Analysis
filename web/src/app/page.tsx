@@ -164,12 +164,12 @@ export default function Home() {
 
   useEffect(() => {
     let cancelled = false;
-    const fetchTape = async () => {
-      /* TASK-53: skip when the tab is hidden or the IST session is closed —
-         overnight/holiday polls burn upstream quota for data that cannot
-         change. One immediate fetch still runs on mount so the tape is
-         never empty on first paint. */
-      if (document.hidden || !istSessionOpen()) return;
+    const fetchTape = async (force = false) => {
+      /* TASK-53: interval ticks skip when the tab is hidden or the IST
+         session is closed — overnight/holiday polls burn upstream quota
+         for data that cannot change. The first mount fetch always runs
+         (force) so the tape shows last session instead of staying empty. */
+      if (!force && (document.hidden || !istSessionOpen())) return;
       try {
         const res = await fetch("/api/ticker");
         const json = await res.json();
@@ -179,10 +179,10 @@ export default function Home() {
       }
     };
     const reeval = () => {
-      if (!document.hidden && istSessionOpen()) void fetchTape();
+      if (!document.hidden && istSessionOpen()) void fetchTape(true);
     };
     document.addEventListener("visibilitychange", reeval);
-    void fetchTape();
+    void fetchTape(true);
     const t = setInterval(fetchTape, 90_000);
     return () => {
       cancelled = true;

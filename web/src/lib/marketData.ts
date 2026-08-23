@@ -2,6 +2,7 @@ import { execFile } from "child_process";
 import { promisify } from "util";
 import { findInstrument, INDEX_MAP } from "@/lib/instruments";
 import { nextBackoff } from "@/lib/backoff";
+import { chartCacheTtlMs, istSessionOpen } from "@/lib/session";
 import type { Candle, TickerItem } from "@/lib/types";
 
 const execFileAsync = promisify(execFile);
@@ -571,7 +572,7 @@ async function chartChain(
   interval: string,
   cacheKey: string
 ): Promise<ChartPayload | null> {
-  const ttl = interval.endsWith("m") || interval.endsWith("h") ? 60_000 : 10 * 60_000;
+  const ttl = chartCacheTtlMs(interval, istSessionOpen());
   const deadline = Date.now() + UPSTREAM_BUDGET_MS;
   const dot = symbol.includes(".");
   const base: FallbackBase = { symbol, exchange, range };
@@ -1062,7 +1063,9 @@ export async function getTicker(): Promise<TickerItem[]> {
     }
   }
 
-  if (items.length) cacheSet(key, items, 90_000);
+  /* session-aware (TASK-53): overnight the tape cannot change — widen the
+     cache instead of re-hitting Yahoo every 90s for frozen data */
+  if (items.length) cacheSet(key, items, istSessionOpen() ? 90_000 : 15 * 60_000);
   /* stale-while-revalidate: last good tape survives up to 30min past expiry */
   if (!items.length) {
     const stale = cacheGetStale<TickerItem[]>(key, 30 * 60_000);
