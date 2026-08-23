@@ -88,8 +88,13 @@ function AgentAvatar({ id, size = 28 }: { id: string | null; size?: number }) {
   const a = AGENT_BY_ID[id];
   return (
     <span
-      className="inline-flex items-center justify-center rounded-full border border-line bg-surface font-mono text-[10px] font-bold text-paper shadow-sm"
-      style={{ width: size, height: size, background: a.color, color: "#fff" }}
+      className="inline-flex items-center justify-center rounded-full border-2 font-mono text-[10px] font-bold text-ink shadow-sm dark:text-paper"
+      style={{
+        width: size,
+        height: size,
+        borderColor: a.color,
+        background: `color-mix(in srgb, ${a.color} 20%, var(--color-surface))`,
+      }}
       title={a.callsign}
     >
       {a.callsign.slice(0, 2)}
@@ -411,7 +416,7 @@ export default function BoardPage() {
             title="Change callsign"
           >
             <span className="hidden sm:inline">YOU:</span>
-            <span className="flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold text-white" style={{ background: agentId ? AGENT_BY_ID[agentId]?.color ?? "#111214" : "#111214" }}>
+            <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 text-[10px] font-bold text-ink dark:text-paper" style={{ borderColor: agentId ? AGENT_BY_ID[agentId]?.color ?? "#111214" : "#111214", background: `color-mix(in srgb, ${agentId ? AGENT_BY_ID[agentId]?.color ?? "#111214" : "#111214"} 20%, var(--color-surface))` }}>
               {agentId ? AGENT_BY_ID[agentId]?.callsign.slice(0, 2) ?? "??" : "??"}
             </span>
             <span className="max-w-[90px] truncate font-mono text-xs font-semibold tracking-wide">{agentId ? AGENT_BY_ID[agentId]?.callsign ?? agentId : "—"}</span>
@@ -479,7 +484,12 @@ export default function BoardPage() {
           </div>
 
           {/* agent dock */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-thin">
+          <div
+            className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-thin"
+            tabIndex={0}
+            role="region"
+            aria-label="Agent filters — scrollable"
+          >
             <span className="shrink-0 rounded-full border border-line bg-surface px-2.5 py-1 font-mono text-[11px] font-medium tracking-wide text-muted">AGENTS</span>
             <div className="flex items-center gap-1.5">
               {agentsWithCounts.slice(0, 16).map((a) => {
@@ -491,7 +501,7 @@ export default function BoardPage() {
                     onClick={() => setAssigneeFilter((prev) => (prev === a.id ? "ALL" : a.id))}
                     aria-pressed={active}
                     title={`${a.callsign} · ${a.count} tasks${isYou ? " · YOU" : ""}`}
-                    className={`group inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
+                    className={`group inline-flex min-h-[44px] items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
                       active
                         ? "border-paper bg-paper text-ink shadow-sm"
                         : isYou
@@ -500,13 +510,16 @@ export default function BoardPage() {
                     }`}
                   >
                     <span
-                      className="flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-bold text-white"
-                      style={{ background: a.color }}
+                      className="flex h-5 w-5 items-center justify-center rounded-full border-2 text-[9px] font-bold text-ink dark:text-paper"
+                      style={{
+                        borderColor: a.color,
+                        background: `color-mix(in srgb, ${a.color} 20%, var(--color-surface, #ffffff))`,
+                      }}
                     >
                       {a.callsign.slice(0, 2)}
                     </span>
                     <span className="hidden font-mono tracking-wide sm:inline">{a.callsign}</span>
-                    <span className={`rounded-full px-1 py-0.5 font-mono text-[11px] ${active || isYou ? "bg-black/10 text-ink" : "bg-panel-2 text-faint"}`}>{a.count}</span>
+                    <span className={`rounded-full px-1 py-0.5 font-mono text-[11px] ${active || isYou ? "bg-black/10 text-ink" : "bg-panel-2 text-muted"}`}>{a.count}</span>
                     {isYou && <span className="hidden text-[10px] font-bold tracking-widest sm:inline">YOU</span>}
                   </button>
                 );
@@ -538,7 +551,7 @@ export default function BoardPage() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search TASK-15, momentum, phoenix…"
-                  className="h-9 w-full rounded-full border border-line bg-canvas pl-9 pr-3 font-mono text-sm text-paper placeholder:text-faint focus:border-paper focus:outline-none focus:ring-2 focus:ring-paper/10"
+                  className="h-11 sm:h-9 w-full rounded-full border border-line bg-canvas pl-9 pr-3 font-mono text-sm text-paper placeholder:text-faint focus:border-paper focus:outline-none focus:ring-2 focus:ring-paper/10"
                 />
                 {query && (
                   <button onClick={() => setQuery("")} className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 text-faint hover:text-paper">
@@ -634,9 +647,10 @@ export default function BoardPage() {
                 ))}
               </div>
               <span className="hidden h-4 w-px bg-line sm:inline" />
-              <label className="flex items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 py-1 text-xs font-medium text-muted">
+              <label className="flex min-h-[44px] items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 py-1 text-xs font-medium text-muted">
                 <span className="hidden sm:inline">ASSIGNEE</span>
                 <select
+                  aria-label="Filter by assignee"
                   value={assigneeFilter}
                   onChange={(e) => setAssigneeFilter(e.target.value as string)}
                   className="bg-transparent font-mono text-xs font-medium text-paper outline-none"
@@ -658,7 +672,13 @@ export default function BoardPage() {
       {/* board */}
       <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-4 px-4 py-6 sm:px-6">
         {view === "board" ? (
-          <div className="flex gap-4 overflow-x-auto pb-6 snap-x snap-mandatory lg:gap-3" style={{ scrollbarWidth: "thin" }}>
+          <div
+            className="mt-3 flex gap-4 overflow-x-auto pb-6 snap-x snap-mandatory lg:gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-paper"
+            style={{ scrollbarWidth: "thin" }}
+            tabIndex={0}
+            role="region"
+            aria-label="Kanban columns — scroll horizontally"
+          >
             {COLUMNS.map((col) => {
               const list = byColumn[col.id];
               const over = dragOver === col.id;
@@ -691,7 +711,7 @@ export default function BoardPage() {
                         {col.id === "backlog" && <Layers size={12} className="text-faint" />}
                         {col.id === "todo" && <Clock3 size={12} className="text-faint" />}
                         {col.label}
-                        <span className={`rounded-full px-1.5 py-0.5 font-mono text-[11px] ${overWip ? "bg-down text-white" : "bg-paper text-ink"}`}>{list.length}</span>
+                        <span className={`rounded-full px-1.5 py-0.5 font-mono text-[11px] ${overWip ? "bg-down-soft text-down border border-down/40" : "bg-paper text-ink"}`}>{list.length}</span>
                         {wip != null && <span className={`font-normal tracking-normal ${overWip ? "text-down" : "text-faint"}`}>/ {wip}</span>}
                       </h2>
                       <button
@@ -704,7 +724,7 @@ export default function BoardPage() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-[11px] text-faint">{col.hint}</span>
-                      {overWip && <span className="rounded-full bg-down px-1.5 py-0.5 font-mono text-[10px] font-bold tracking-wide text-white">WIP EXCEEDED</span>}
+                      {overWip && <span className="rounded-full px-1.5 py-0.5 font-mono text-[10px] font-bold tracking-wide bg-down-soft text-down border border-down/40">WIP EXCEEDED</span>}
                     </div>
                     {wip != null && (
                       <div className="h-1 overflow-hidden rounded-full bg-line">
@@ -764,7 +784,13 @@ export default function BoardPage() {
                           {t.desc && <p className="line-clamp-2 text-xs leading-relaxed text-muted">{t.desc}</p>}
 
                           <div className="flex flex-wrap items-center gap-1.5">
-                            <span className="rounded-full border bg-surface px-2 py-0.5 font-mono text-[11px] font-medium text-muted" style={{ borderColor: phase.color, color: phase.color }}>
+                            <span
+                              className="rounded-full border bg-surface px-2 py-0.5 font-mono text-[11px] font-medium text-ink dark:text-paper"
+                              style={{
+                                borderColor: phase.color,
+                                background: `color-mix(in srgb, ${phase.color} 16%, var(--color-surface))`,
+                              }}
+                            >
                               {t.phase} · {phase.label}
                             </span>
                             {t.labels.slice(0, 3).map((l) => (
@@ -793,7 +819,7 @@ export default function BoardPage() {
                                 {t.assignee ? AGENT_BY_ID[t.assignee]?.callsign ?? t.assignee : "UNASSIGNED"}
                               </span>
                               {t.blocked && (
-                                <span className="inline-flex items-center gap-1 rounded-full bg-down px-1.5 py-0.5 font-mono text-[10px] font-bold tracking-wide text-white">
+                                <span className="inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 font-mono text-[10px] font-bold tracking-wide bg-down-soft text-down border border-down/40">
                                   <AlertTriangle size={10} /> BLOCKED
                                 </span>
                               )}
@@ -902,7 +928,12 @@ export default function BoardPage() {
               Activity feed
               <span className="rounded-full bg-panel-2 px-2 py-0.5 font-mono text-xs text-muted">{activities.length}</span>
             </h3>
-            <div className="mt-3 flex max-h-[220px] flex-col gap-2 overflow-y-auto pr-1">
+            <div
+              className="mt-3 flex max-h-[220px] flex-col gap-2 overflow-y-auto pr-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-paper"
+              tabIndex={0}
+              role="region"
+              aria-label="Task checklist — scrollable"
+            >
               {activities.length === 0 && <p className="py-6 text-center text-sm text-faint">No moves yet — drag a card to start the trail.</p>}
               {activities.map((a) => (
                 <div key={a.id} className="flex items-center gap-3 rounded-xl border border-line bg-panel-2/40 px-3 py-2">
@@ -927,7 +958,10 @@ export default function BoardPage() {
                 const pct = c ? Math.round((done / c) * 100) : 0;
                 return (
                   <div key={ph} className="rounded-xl border border-line bg-panel-2/40 p-3 text-center">
-                    <div className="font-mono text-[11px] font-bold tracking-widest" style={{ color: PHASE_META[ph].color }}>
+                    <div
+                      className="font-mono text-[11px] font-bold tracking-widest text-ink dark:text-paper"
+                      style={{ background: `color-mix(in srgb, ${PHASE_META[ph].color} 18%, transparent)` }}
+                    >
                       {ph}
                     </div>
                     <div className="mt-1 font-mono text-lg font-semibold tabular-nums text-paper">{c}</div>
@@ -994,7 +1028,7 @@ export default function BoardPage() {
                 aria-pressed={active}
                 className={`flex flex-col items-center gap-2 rounded-2xl border p-3 text-center transition ${active ? "border-paper bg-paper text-ink shadow-sm" : "border-line bg-surface text-paper hover:border-line-strong hover:bg-panel-2"}`}
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm" style={{ background: a.color }}>
+                <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 text-xs font-bold text-ink shadow-sm dark:text-paper" style={{ borderColor: a.color, background: `color-mix(in srgb, ${a.color} 20%, var(--color-surface))` }}>
                   {a.glyph}
                 </span>
                 <span className="font-mono text-xs font-semibold tracking-widest">{a.callsign}</span>
@@ -1147,10 +1181,16 @@ function TaskDetail({
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full border border-line bg-panel-2 px-2 py-0.5 font-mono text-xs font-medium tracking-wide text-muted">{task.id}</span>
             <span className={`rounded-full border px-2 py-0.5 font-mono text-xs font-medium ${PRIORITY_META[priority].bg} border`}>{priority}</span>
-            <span className="rounded-full border bg-surface px-2 py-0.5 font-mono text-xs" style={{ borderColor: PHASE_META[phase].color, color: PHASE_META[phase].color }}>
+            <span
+              className="rounded-full border bg-surface px-2 py-0.5 font-mono text-xs font-medium text-ink dark:text-paper"
+              style={{
+                borderColor: PHASE_META[phase].color,
+                background: `color-mix(in srgb, ${PHASE_META[phase].color} 16%, var(--color-surface))`,
+              }}
+            >
               {phase} · {PHASE_META[phase].label}
             </span>
-            {blocked && <span className="rounded-full bg-down px-2 py-0.5 font-mono text-xs font-bold tracking-wide text-white">BLOCKED</span>}
+            {blocked && <span className="rounded-full border border-down/40 bg-down-soft px-2 py-0.5 font-mono text-xs font-bold tracking-wide text-down">BLOCKED</span>}
           </div>
           <p className="mt-2 font-mono text-xs text-faint">Updated {timeAgo(task.updatedAt)} · Created {timeAgo(task.createdAt)}</p>
         </div>
@@ -1172,7 +1212,7 @@ function TaskDetail({
         <label className="flex flex-col gap-1.5">
           <span className="text-xs font-medium tracking-wide text-muted">STATUS</span>
           <div className="relative">
-            <select value={task.status} onChange={(e) => onMove(task.id, e.target.value as ColumnId)} className="h-9 w-full appearance-none rounded-xl border border-line bg-canvas px-3 pr-8 text-sm font-medium text-paper">
+            <select aria-label="Status" value={task.status} onChange={(e) => onMove(task.id, e.target.value as ColumnId)} className="h-9 w-full appearance-none rounded-xl border border-line bg-canvas px-3 pr-8 text-sm font-medium text-paper">
               {COLUMNS.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.label}
@@ -1185,7 +1225,7 @@ function TaskDetail({
         <label className="flex flex-col gap-1.5">
           <span className="text-xs font-medium tracking-wide text-muted">ASSIGNEE</span>
           <div className="flex gap-2">
-            <select value={assignee ?? ""} onChange={(e) => setAssignee(e.target.value || null)} onBlur={save} className="h-9 flex-1 rounded-xl border border-line bg-canvas px-3 text-sm font-medium text-paper">
+            <select value={assignee ?? ""} onChange={(e) => setAssignee(e.target.value || null)} onBlur={save} aria-label="Assignee" className="h-9 flex-1 rounded-xl border border-line bg-canvas px-3 text-sm font-medium text-paper">
               <option value="">Unassigned</option>
               {CALLSIGNS.map((a) => (
                 <option key={a.id} value={a.id}>
@@ -1209,7 +1249,7 @@ function TaskDetail({
         </label>
         <label className="flex flex-col gap-1.5">
           <span className="text-xs font-medium tracking-wide text-muted">PHASE</span>
-          <select value={phase} onChange={(e) => setPhase(e.target.value as PhaseId)} onBlur={save} className="h-9 rounded-xl border border-line bg-canvas px-3 text-sm font-medium text-paper">
+          <select aria-label="Phase" value={phase} onChange={(e) => setPhase(e.target.value as PhaseId)} onBlur={save} className="h-9 rounded-xl border border-line bg-canvas px-3 text-sm font-medium text-paper">
             {(Object.keys(PHASE_META) as PhaseId[]).map((ph) => (
               <option key={ph} value={ph}>
                 {ph} · {PHASE_META[ph].label}
@@ -1219,7 +1259,7 @@ function TaskDetail({
         </label>
         <label className="flex flex-col gap-1.5">
           <span className="text-xs font-medium tracking-wide text-muted">PRIORITY</span>
-          <select value={priority} onChange={(e) => setPriority(e.target.value as Priority)} onBlur={save} className="h-9 rounded-xl border border-line bg-canvas px-3 text-sm font-medium text-paper">
+          <select aria-label="Priority" value={priority} onChange={(e) => setPriority(e.target.value as Priority)} onBlur={save} className="h-9 rounded-xl border border-line bg-canvas px-3 text-sm font-medium text-paper">
             <option value="P0">P0 · CRITICAL</option>
             <option value="P1">P1 · HIGH</option>
             <option value="P2">P2 · MED</option>
