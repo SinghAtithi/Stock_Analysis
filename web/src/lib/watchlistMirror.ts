@@ -13,8 +13,10 @@ import {
    stays the source of truth: pushes are fire-and-forget, pulls union-only
    (localStorage wins conflicts), every network failure is silent. */
 
-let mergedThisSession = false;
+const PULL_INTERVAL_MS = 90_000;
+
 let pushTimer: ReturnType<typeof setTimeout> | null = null;
+let pullInFlight = false;
 
 async function pushMirror(): Promise<void> {
   try {
@@ -41,6 +43,9 @@ function schedulePush(): void {
 }
 
 async function pullAndMerge(): Promise<void> {
+  /* hidden tabs skip polling; in-flight guard stops overlapping pulls */
+  if (pullInFlight || document.hidden) return;
+  pullInFlight = true;
   try {
     const res = await fetch(
       `/api/watchlist?deviceId=${encodeURIComponent(getDeviceId())}`,
@@ -51,16 +56,26 @@ async function pullAndMerge(): Promise<void> {
     if (mergeIntoWatchlist(json.entries) > 0) schedulePush();
   } catch {
     /* silent — localStorage remains authoritative */
+  } finally {
+    pullInFlight = false;
   }
 }
 
-/** One merge-on-read per session + debounced best-effort push on change. */
+/** Pull on mount, on tab refocus, and every 90s while visible
+ *  (TASK-210) + debounced best-effort push on change. */
 export function useWatchlistMirror(): void {
   useEffect(() => {
-    if (!mergedThisSession) {
-      mergedThisSession = true;
-      void pullAndMerge();
-    }
-    return subscribeWatchlist(schedulePush);
+    void pullAndMerge();
+    const onVisibility = () => {
+      if (!document.hidden) void pullAndMerge();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    const pullInterval = setInterval(() => void pullAndMerge(), PULL_INTERVAL_MS);
+    const unsubscribe = subscribeWatchlist(schedulePush);
+    return () => {
+      unsubscribe();
+      document.removeEventListener("visibilitychange", onVisibility);
+      clearInterval(pullInterval);
+    };
   }, []);
 }

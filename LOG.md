@@ -4,6 +4,64 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (142) — UI head audit pass 22: flat-day color/sign bug logged to board (no code changes)
+
+Twenty-second pass — code-verified against source.
+
+- **TASK-626 (P2)** — Flat/unchanged day renders as green "up" with a "+" sign: `page.tsx:315` (`const up = (data?.change ?? 0) >= 0`) makes both change 0.00 and null (no data) green, and the change chip (`page.tsx:518`) prepends "+" — so a genuinely flat day shows "+0.00 · +0.00%" in green. Convention should be neutral for exactly 0, green/+ for >0, down/– for <0. (Note: the board title lost the code snippet to shell backtick expansion — the file:line refs above are the precise citation.) Distinct from TASK-91 (no-data "—" case, spectre).
+
+Priorities: P2 (misleading color/sign on flat days). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 21: saved-view name overwrite without warning logged to board (no code changes)
+
+Twenty-first pass — code-verified against source.
+
+- **TASK-613 (P2)** — Saving a screener view with an existing name silently overwrites it: `saveScreenerPreset` (`screenerPresets.ts:110`) filters out any preset with the same name and replaces it (`[preset, ...current]`) with no confirm, no "updated" feedback, and no undo. A consumer reusing a name clobbers the old definition thinking they created a new view. Distinct from TASK-386 (delete) and TASK-471 (cap eviction) — this is the rename-collision path. Acceptance criteria: overwrite warning/confirm + sr-only announcement.
+
+Also re-verified the MarketStatus Friday countdown math (`3 * 1440 - now + SESSION_OPEN`) — correct for Fri→Mon; no issue. No self-corrections this pass. Priorities: P2 (silent overwrite). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 20: company-page no-retry gap logged to board (no code changes)
+
+Twentieth pass — code-verified against source.
+
+- **TASK-600 (P2)** — Company page sections have no retry: `useJson` (CompanyProfile.tsx:54) fires once; on failure it sets `failed` and QuoteHeader/Memberships/CorporateActions render "—"/empty forever with no retry affordance — unlike home, which has a Retry chip. Given this app's documented transient upstream throttling, a throttled moment leaves the whole company page dead with no recovery. Acceptance criteria: per-section retry (or refetch on refocus), failed-state copy with recovery path.
+
+Priorities: P2 (dead page on transient failure). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — CIPHER: TASK-146 — DataTable rank badge shows true strategy rank, not sorted position
+
+Rank column (`Column.rank`) rendered `String(i + 1).padStart(2, "0")` — the row's position in
+the currently-sorted array — so sorting a screener by score/symbol/price silently renumbered
+every badge and discarded the strategy's real rank. Fix: new module-level `rankBadge(v)` helper
+in `web/src/components/DataTable.tsx` reads the row's own field via the same generic record cast
+the default cell renderer uses; finite numbers render padded, anything else renders an honest
+em-dash (no fake numbers for rows lacking rank). Badge styling untouched; sits cleanly on top of
+raven's TASK-54 ARIA-grid/sticky-column model (no interaction with sticky offsets or grid roles).
+Screener page already passes `rank` through — no prop fix needed.
+
+Gates: tsc clean · lint 0 errors (6 pre-existing `<img>` warnings, foreign `kalyan/page.tsx`)
+· npm test 271 pass / 0 fail / 2 skipped. Playwright sanity (/tmp/opencode/t146.py, own dev
+server :3023, mocked /api/signals with ranks 7/3/12 + one missing-rank row): badges 07/03/12/—
+stable across score asc→desc and symbol sorts; top-score RELIANCE keeps 07 in desc order;
+missing-rank row shows em-dash everywhere; screenshots t146_desc.png / t146_symbol.png. The two
+console errors in dev mode reproduce on raven's untouched screener.py harness against the same
+server (CSP eval noise + uSES dev warning) — environmental, not from this diff.
+
+## 2026-08-23 (140) — SPECTRE audit pass 3: reduced-motion + dark + alert flow verified clean; TASK-537/538 filed (no code changes)
+
+- **Reduced-motion: no gap.** Global `@media (prefers-reduced-motion)` kill-switch (globals.css:133) + `motion-reduce:transition-none` on Odometer roll (Odometer.tsx:21) + sr-only price text; `animate-pulse`/`fade-up` are CSS-covered; no JS-driven animation escapes (rAF in ChartPanel is legend throttling, not motion).
+- **Dark theme: 4/4 subpages axe-clean** (/breadth /backtest /company /screener, class persists across client nav).
+- **Alert flow: clean** — bell → Alert Center (labelled empty state) → "New alert" dialog labelled, ESC-closes, focus returns to bell. Create-form validation test inconclusive (server broke mid-test, below).
+- **TASK-537 (P3)**: `backdrop-blur` glass drift — sticky SiteHeader ships `bg-surface/80 backdrop-blur` on home (SiteHeader.tsx:30), Modal scrim 2px (Modal.tsx:100), ChartPanel overlay (ChartPanel.tsx:353), DataTable sticky header (DataTable.tsx:172), board/kalyan headers — AGENTS rule is NO glass.
+- **TASK-538 (P3)**: deploy churn → stale-chunk loads hit full "Something went wrong" crash screen (repro'd 2× today: BUILD_ID swapped under live tab; chunk 500s/MIME-refusals). ErrorBoundary should auto-reload once on ChunkLoadError before showing crash UI.
+- Ops: :3000 was rebuilt mid-session again (22:06) and served 500s + half-written chunks while I tested — transient; TASK-25-class. Alert-form validation AC left unverified, folded into future pass.
+
 ## 2026-08-23 (139) — UI head audit pass 15: alert bell fired-signal gap logged to board (no code changes)
 
 Fifteenth pass — code-verified against source.
