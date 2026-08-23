@@ -212,6 +212,7 @@ export default function Home() {
     .join(",");
   useEffect(() => {
     if (!watchKey) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- clear quotes when watchlist empties
       setWatchQuotes(new Map());
       return;
     }
@@ -461,6 +462,7 @@ export default function Home() {
               selected={selected}
               onPick={pick}
               onRemove={removeEntry}
+              quotes={watchQuotes}
             />
           </div>
         </aside>
@@ -626,7 +628,7 @@ export default function Home() {
           <span className="text-sm font-semibold text-paper">Watchlist</span>
           <button onClick={() => setWlOpen(false)} aria-label="Close watchlist" className="rounded-full border border-line bg-surface px-2 py-1 text-sm text-muted hover:text-paper">✕</button>
         </div>
-        <Watchlist items={watchlist} selected={selected} onPick={pickFromSheet} onRemove={removeEntry} bare />
+        <Watchlist items={watchlist} selected={selected} onPick={pickFromSheet} onRemove={removeEntry} bare quotes={watchQuotes} />
       </Modal>
     </div>
   );
