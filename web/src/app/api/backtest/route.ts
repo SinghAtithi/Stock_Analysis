@@ -11,6 +11,7 @@ import {
   DEFAULT_SLIPPAGE_PCT,
 } from "@/lib/backtest/engine";
 import type { Candle } from "@/lib/types";
+import { computeSeriesMetrics } from "@/lib/backtest/metrics";
 import instruments from "@/data/instruments.json" with { type: "json" };
 
 /* /api/backtest — submit and read backtest runs (TASK-28).
@@ -18,6 +19,7 @@ import instruments from "@/data/instruments.json" with { type: "json" };
  * GET ?id=<runId>    → single run incl. equity curve
  * POST               → validate config, run the engine inline (~seconds),
  *                      persist to backtest_runs, return {id}.
+ * DELETE ?id=<runId> → drop one noisy run from the history (TASK-95).
  * Inline execution is deliberate: runs take seconds on the NIFTY-50 daily
  * store, and node-server background tasks after a response are not
  * guaranteed across hosts. status still models pending→completed. */
@@ -222,6 +224,21 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({ runs: listRuns() });
 }
 
+export async function DELETE(request: NextRequest) {
+  const id = request.nextUrl.searchParams.get("id");
+  if (!id || !/^[a-zA-Z0-9_-]{1,64}$/.test(id)) {
+    return NextResponse.json({ error: "invalid_id" }, { status: 400 });
+  }
+  const db = openDb(true);
+  if (!db) return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
+  try {
+    db.prepare(`DELETE FROM backtest_runs WHERE id = ?`).run(id);
+    return NextResponse.json({ ok: true });
+  } finally {
+    db.close();
+  }
+}
+
 export async function POST(request: NextRequest) {
   const ip = clientKeyFrom(request.headers);
   if (rateLimited(ip)) {
@@ -342,6 +359,9 @@ async function runEngine(
     .slice(0, 24);
 
   const now = Math.floor(Date.now() / 1000);
+  /* TASK-95: persist sharpe/maxDD alongside CAGR so history rows can show
+     the full headline without shipping equity payloads to the list view. */
+  const m = computeSeriesMetrics(result.equity.map((p) => ({ date: p.date, value: p.strat })));
   const db = openDb(true);
   if (db) {
     try {
@@ -353,7 +373,9 @@ async function runEngine(
         strategyId,
         JSON.stringify({ topN, rebalance: "monthly", startDate: start, endDate: end ?? result.config.endDate, universe, costPct, slippagePct }),
         JSON.stringify({
-          cagr: metricsOf(result.equity).cagr,
+          cagr: m.cagr,
+          sharpe: m.sharpe,
+          maxDrawdown: m.maxDrawdown,
           totalTurnover: result.totalTurnover,
           investedDays: result.investedDays,
           rebalances: result.rebalanceDates.length,
@@ -394,15 +416,4 @@ function clampNum(v: unknown, min: number, max: number, dflt: number): number {
   const n = Number(v);
   if (!Number.isFinite(n)) return dflt;
   return Math.min(max, Math.max(min, n));
-}
-
-/** Minimal cumulative-return CAGR for the persisted metrics summary. */
-function metricsOf(equity: { date: string; strat: number }[]): { cagr: number | null } {
-  if (equity.length < 2) return { cagr: null };
-  const first = new Date(`${equity[0].date}T00:00:00Z`).getTime();
-  const last = new Date(`${equity[equity.length - 1].date}T00:00:00Z`).getTime();
-  const years = (last - first) / (365.25 * 86_400_000);
-  const total = equity[equity.length - 1].strat / equity[0].strat;
-  if (years <= 0 || total <= 0) return { cagr: null };
-  return { cagr: Math.pow(total, 1 / years) - 1 };
 }

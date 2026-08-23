@@ -48,7 +48,7 @@ interface RunSummary {
   status: string;
   createdAt: number | null;
   config: { startDate?: string; endDate?: string } | null;
-  metrics: { cagr?: number | null } | null;
+  metrics: { cagr?: number | null; sharpe?: number | null; maxDrawdown?: number | null } | null;
 }
 
 /* structured so cap errors can carry a Pricing CTA without changing copy paths */
@@ -144,6 +144,16 @@ function BacktestInner() {
       scroll: false,
     });
   }
+
+  /* TASK-95: drop one noisy run — optimistic locally, DELETE best-effort */
+  const removeRun = useCallback(async (id: string) => {
+    setHistory((prev) => prev.filter((r) => r.id !== id));
+    try {
+      await fetch(`/api/backtest?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+    } catch {
+      /* row already dropped locally; next reload reconciles */
+    }
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -298,6 +308,13 @@ function BacktestInner() {
   const fmtPct1 = (v: number | null): string =>
     v === null || !Number.isFinite(v) ? "—" : `${(v * 100).toFixed(1)}%`;
 
+  /* TASK-95: human strategy names for history rows (registry may still be
+     loading or the id unknown — raw id is the fallback) */
+  const strategyNames = useMemo(() => new Map(strategies.map((s) => [s.id, s.name])), [strategies]);
+  const nameOf = (id: string): string => strategyNames.get(id) ?? id;
+  const fmtSharpe = (v: number | null | undefined): string =>
+    v === null || v === undefined || !Number.isFinite(v) ? "—" : v.toFixed(2);
+
   return (
     <div className="min-h-dvh">
       <SiteHeader subtitle="Backtest" subtitleClassName="font-normal text-muted" />
@@ -438,20 +455,41 @@ function BacktestInner() {
           <ul className="mt-3 grid gap-2">
             {history.length === 0 && <li className="text-sm text-muted">No runs yet.</li>}
             {history.slice(0, 12).map((r) => (
-              <li key={r.id}>
+              <li
+                key={r.id}
+                className="flex w-full flex-wrap items-baseline justify-between gap-x-4 gap-y-1 rounded-xl border border-line bg-surface px-4 py-2.5 text-sm shadow-sm"
+              >
                 <button
                   type="button"
                   onClick={() => openRun(r.id, r.strategyId)}
-                  className="flex w-full flex-wrap items-baseline justify-between gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-left text-sm shadow-sm transition-colors hover:border-line-strong"
-                  aria-label={`Load backtest run ${r.strategyId} from ${r.config?.startDate ?? "unknown"}`}
+                  className="min-w-0 flex-1 text-left transition-colors hover:text-muted"
+                  aria-label={`Load backtest run ${nameOf(r.strategyId)} from ${r.config?.startDate ?? "unknown"}`}
                 >
-                  <span className="font-mono tabular-nums">{r.strategyId}</span>
-                  <span className="text-muted tabular-nums">
+                  <span className="font-medium">{nameOf(r.strategyId)}</span>
+                  <span className="ml-2 font-mono text-xs tabular-nums text-faint">{r.strategyId}</span>
+                  <span className="ml-3 text-muted tabular-nums">
                     {r.config?.startDate ?? "—"}
                     {r.config?.endDate ? ` – ${r.config.endDate}` : ""}
                   </span>
-                  <span className="font-mono tabular-nums">{fmtPct(r.metrics?.cagr ?? null)} CAGR</span>
-                  <span className="text-xs uppercase tracking-wide text-faint">{r.status}</span>
+                </button>
+                <span className="font-mono tabular-nums" aria-label="CAGR">{fmtPct(r.metrics?.cagr ?? null)} CAGR</span>
+                <span className="font-mono tabular-nums text-muted" aria-label="Sharpe">Sharpe {fmtSharpe(r.metrics?.sharpe)}</span>
+                <span className="font-mono tabular-nums text-muted" aria-label="Max drawdown">maxDD {fmtPct1(r.metrics?.maxDrawdown ?? null)}</span>
+                <span className="text-xs uppercase tracking-wide text-faint">{r.status}</span>
+                <Link
+                  href={`/screener?strategy=${encodeURIComponent(r.strategyId)}`}
+                  className="rounded-full border border-line bg-panel-2 px-2.5 py-0.5 text-xs text-muted transition-colors hover:border-line-strong hover:text-paper"
+                >
+                  Screener →
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => void removeRun(r.id)}
+                  aria-label={`Remove backtest run from ${r.config?.startDate ?? "unknown"}`}
+                  title="Remove run"
+                  className="shrink-0 rounded-full px-1.5 py-0.5 text-xs text-faint transition-colors hover:bg-down-soft hover:text-down"
+                >
+                  ✕
                 </button>
               </li>
             ))}
