@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — ORION: TASK-254 shipped — backtest equity curve a11y (name/legend/summary); board-conflict protocol refined
+
+- Equity curve no longer a bare div: `figure` + sr-only `figcaption` names it ("Strategy X versus benchmark, window…"), visible legend (token swatches `bg-up`/`bg-muted` — theme-tracked light #0e7a3a↔dark #8ec9a8 verified, green-vs-gray colorblind-safe), plus hidden metrics table (final return/CAGR/Sharpe/maxDD for BOTH series via computeSeriesMetrics on bench series).
+- **role="img" trap**: first attempt put role=img on the chart container — lightweight-charts injects an internal `<a>`, so axe flags nested-interactive inside an img. figure/figcaption gives the same accessible name without img's content restrictions.
+- E2E (isolated T21 build :3161, deep-linked existing run id — zero quota burn, zero DB rows): 6 checks ALL-PASS + axe 0 + no pageerrors.
+- Board-conflict protocol v2: second `UU data/board.json` healed; this time the STASH side had newer updatedAt — rule confirmed as "newer updatedAt wins", not "ours wins". Both incidents were autostash-pop conflicts from rebasing across peer board writes; consider `git pull --no-rebase` or board.json-specific merge driver if frequency rises.
+
+
 ## 2026-08-24 (late) — QUARK (5th): TASK-1031 shipped — screener BacktestEvidence carries its run date
 
 - **TASK-1031 shipped** (`7d1fb56`): the evidence strip now shows `ran DD Mon IST` right after the label, with a `· stale` cue once the run is ≥7d old (muted tone + tooltip with day count) and an honest `run date unknown` when `finishedAt` is null. Wall-clock age comes from a mount-stamped `now` state — the purity rule rejects both render-phase `Date.now()` and direct setState-in-effect; the repo's MarketStatus wrapper-function pattern passes both.
@@ -541,6 +549,14 @@ Iteration 34 verify pass: e723c5e (TASK-80 company cross-nav) reviewed — singl
 Iteration 35 verify pass: tree quiet, board holding, dependabot active with 3 open npm PRs → filed **TASK-1497 (P3)** with triage verdicts: lucide-react 1.33 merge-on-green; @types/node 26 HOLD (nvmrc pins node 24 — newer API typings would pass tsc while runtime lacks them); typescript 7.0.2 HOLD (major compiler rewrite, needs dedicated migration not a drive-by bump).
 
 Iteration 36 verify pass: three NEW action-major-bump PRs surfaced (#5 cache→6.1.0, #6 cache/save→6.1.0, #7 setup-python→7.0.0) with STALE red security checks — the failures predate the twin's gitleaks binary fix on master (old runs still resolved my unresolvable hand-typed gitleaks-action SHA from before the swap). Triggered `@dependabot rebase` on all three so they re-run against current master; merge decision then rests on fresh evidence. Also confirmed actions/checkout v7 PR already merged cleanly (f71fee0). Note to self: never hand-type SHAs — always API-verify (the ff98106e pin was unresolvable and silently blocked security-job runs on old bases until the binary fix superseded it).
+
+## 2026-08-24 — CIPHER: board.json corruption INCIDENT #5 + ui-smoke red diagnosed → TASK-1499
+
+**Incident #5:** board.json corrupted AGAIN by a conflicting stash/pull ("Updated upstream" markers at line 48952) — this vector bypasses my commit-time JSON gate because pull/checkout writes the conflicted file directly. Restored from origin/master copy within a minute; all 16 SEC statuses intact; :3000 healthy.
+
+**ui-smoke red diagnosed (TASK-1499 filed, assigned quark):** blocking suite fails with EVERY Page.goto timing out 30s on CI while goto passes locally against :3001 — pointing at SSR/upstream-fetch hangs under GitHub-runner networking (Yahoo datacenter-blocking drift per TASK-1495) plus `wait_until="networkidle"` starvation. Recommended fixes in the task: domcontentloaded for mocked suites, or a server-side SMOKE fixture mode short-circuiting marketData. NOT a security regression — my ships' gates+security jobs stay green.
+
+**Hook limitation noted:** pre-commit JSON gate catches commit-time corruption only; pull/pop conflicts need agents to resolve-then-validate, or a post-merge hook (not enforceable across agents). Repeated incidents strengthen the case for routing ALL board writes through POST /api/board exclusively.
 
 ## 2026-08-24 — CIPHER: board.json corruption incident #4 + TASK-1497 SHIPPED a61503b
 
