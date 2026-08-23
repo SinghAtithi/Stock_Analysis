@@ -4,6 +4,108 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 — NOVA work session: TASK-57 AC1 attempted → upstream-blocked; root cause filed as TASK-1495
+
+First execution pass under the new "take tasks + ship" mandate. WIP was at limit (10/6) so no new claims; worked TASK-57 (already under nova callsign).
+
+**What happened:**
+- Ran `ingest-fundamentals.mjs --universe nifty500` (500 symbols) — every fetch failed at curl layer within seconds.
+- Diagnosis: network healthy (example.com 200); `query1/query2` v8 chart → **429** (IP hard-throttled); v10 quoteSummary → **401** without auth; `v1/test/getcrumb` → **429 body**. Yahoo now requires cookie+crumb for quoteSummary AND is throttling this IP — the ingest scripts predate the crumb requirement.
+- Killed the doomed run, verified DB state (`db/data/app.db`: fundamentals=2 fixture rows, analyst_data=2, eod_candles 209,816 rows / 73 symbols), did NOT tick AC1 — no fake progress.
+
+**Deliverables:**
+- **TASK-1495 filed (P1, B)**: crumb bootstrap in `scripts/lib/curl.mjs` + 429-aware pacing; unblocks TASK-57 AC1 for whoever runs next with a clean IP.
+- **TASK-57 blocked ON** with upstream reason.
+- No code changed → gates not applicable this pass.
+
+Lesson recorded: run a 2-symbol `--limit` smoke before launching universe sweeps.
+
+---
+
+## 2026-08-24 — NOVA idea-generation pass 7: valuation intelligence & gentle nudges (TASK-1487..1491)
+
+Seventh creative loop, ideation only. Sweep found score-drilldown already exists (referenced by TASK-808) — dropped. Batch intentionally small; the unique-surface well is narrowing, so remaining filings are precise extensions rather than speculative epics.
+
+| ID | Idea | Angle |
+|---|---|---|
+| TASK-1487 | Return decomposition (EPS growth vs multiple re-rating) | Quality-of-rally intelligence per holding |
+| TASK-1488 | Valuation-vs-own-history percentile bands | "Cheap vs itself" value lens |
+| TASK-1489 | In-app What's New changelog from shipped board items | Trust signal, no internal jargon |
+| TASK-1490 | Thesis revisit nudges on notes | Gentle retention loop, offline-first |
+| TASK-1491 | Position concentration alert | Safety rail tying X-ray → rebalance |
+
+All `todo`, ACs inline.
+
+---
+
+## 2026-08-24 — ORION (CTO) strategy pass 10: stalled-flow escalation → 1409→FALCON, 1424→SABLE
+
+Flow diagnosis: done frozen at 80, review empty, same 7 doing cards since pass 1 — stalling at BOTH transitions (todo→doing and doing→review). AXIOM/BLADE: 2 passes, no pickup on assigned Sprint-0 items. Escalation = widen to proven-active agents rather than churn-reassign idle ones:
+
+- **TASK-1409 (observability) → FALCON** (shipped TASK-97 this session)
+- **TASK-1424 (payments) → SABLE** (12-task track record)
+
+Sprint-0 now has four assigned lanes: 1392/AXIOM · 1408/BLADE · 1409/FALCON · 1424/SABLE.
+
+Decision rule logged: if next pass shows zero movement across all four, conclusion for founder is that assignment does not drive agent behavior in current loops — stop spending CTO passes on it, revert to filing+verification only. TASK-1466 still in flight (quark). No new filings; NOVA took 1480–1486.
+
+## 2026-08-24 — NOVA idea-generation pass 6: surfaces & baselines (TASK-1480..1486)
+
+Sixth creative loop, ideation only. Sweep-clean; benchmark-library idea scoped as the systematic superset of existing hardcoded-benchmark nits (TASK-173/149), divergence flag boundary-noted against TASK-748.
+
+| ID | Idea | Angle |
+|---|---|---|
+| TASK-1480 | Sector landing pages /sector/[name] | Missing mid-level navigation surface |
+| TASK-1481 | Benchmark library (Next50/Midcap150/Smallcap250/Gold) | Infra unification across chart/backtest/watchlist |
+| TASK-1482 | Alert outcome tracker (7d/30d what-happened) | Self-learning loop on alerts |
+| TASK-1483 | Breadth divergence flag with honest base rates | Quant touch on breadth |
+| TASK-1484 | Multi-portfolio X-ray (household books) | India family-use pattern |
+| TASK-1485 | Annual Wrapped year-in-review card | December viral artifact, client-side |
+| TASK-1486 | Shareholding pattern QoQ panel | Quarterly structure vs 1415's deal flow |
+
+All `todo`, ACs inline.
+
+---
+
+## 2026-08-24 — ORION (CTO) strategy pass 9: CI auto-filing gap → TASK-1479; assignments pending
+
+Escalation watch: TASK-1392→AXIOM / 1408→BLADE still todo, no pickup yet (agents act on own loop cadence — acceptable; next pass escalates if still idle). Doing is healthy at 7 with old P1s in flight.
+
+Incident noted & verified clean: **TASK-1466 ui-smoke red since 16:26Z** — owned (quark, P1, doing); NOT caused by CTO filings (board/LOG writes only). Root process gap filed:
+
+- **TASK-1479 (P2, A)** — CI red runs discovered by luck; no auto-filing. Auto-create dedup'd board card on failure (suite/sha/run-link), auto-close after 3 green runs, via existing board CLI writer.
+
+Portfolio 25 open, zero overlap found vs NOVA pass 5 (1469–1476).
+
+## 2026-08-24 — NOVA idea-generation pass 5: India-instrument depth + activation (TASK-1469..1476)
+
+Fifth creative loop, ideation only. Sweep-clean batch; onboarding idea scoped to unify existing TASK-269/108 slices rather than duplicate them. IDs 1467-68/1472 consumed by concurrent writers — merge-on-save clean.
+
+| ID | Idea | Angle |
+|---|---|---|
+| TASK-1469 | ETF premium/tracking-error tracker (iNAV vs price) | Instrument depth; spike-first data honesty |
+| TASK-1470 | Corporate action arb calculators (buyback/rights/OFS) | Wires S114/S120 into usable math |
+| TASK-1471 | Economic calendar + historical reaction cards | Macro layer: RBI/CPI/budget |
+| TASK-1473 | Custom index builder from any watchlist | Retention: "my own index" vs Nifty |
+| TASK-1474 | Portfolio attribution lite (allocation vs selection) | Sophisticate tier, X-ray extension |
+| TASK-1475 | First-90-days mission loop | Activation funnel unifying empty-state nits |
+| TASK-1476 | Watchlist NxN correlation matrix | Diversification check, extends twins 1386 |
+
+All `todo`, ACs inline.
+
+---
+
+## 2026-08-24 — ORION (CTO) strategy pass 8: sprint kickoff via assignment → TASK-1472 filed, 1392→AXIOM, 1408→BLADE
+
+Health: done 80 (+2 micro-fixes incl. released 1053 shipped), doing 7, SPRINT-0 still 0/5 — pull discipline not converting despite 9 idle agents. Per ROADMAP charter ("scrum master… one task per subagent assignment"), escalated from filing to **assignment**:
+
+- **TASK-1392 (curation) → AXIOM** — Sprint-0 step 1; unblocks sane pulling for everyone else.
+- **TASK-1408 (deploy) → BLADE** — Sprint-0 step 2; unblocks public URL + founder VPS prerequisite (1449).
+
+New filing: **TASK-1472 (P2, C)** — golden-file regression net for strategy math (fixture candles → pinned Signal outputs, exact-match CI); TASK-1433 covers security defenses only; nothing guards the moat's numbers today.
+
+Portfolio now 24 open. Watch item for next pass: do assigned tasks move? If not, escalate to pair-review of blockers with AXIOM/BLADE directly.
+
 ## 2026-08-24 — ORION (CTO) strategy pass 7: ops resilience + portfolio audit → TASK-1463/1464
 
 Governance sweep of all 21 open ORION filings: metadata 100% well-formed (priority/phase/checklist), all todo, zero true dups vs other agents' batches (4 flagged title-overlaps = generic-word false positives; 1450↔462 intentional root-cause link). New filings:
@@ -149,6 +251,16 @@ Iteration 7 (same day): full `npm audit` incl. dev deps → 0 vulnerabilities. G
 Iteration 8 (same day): curl subprocess verified hang-safe (`-m 20` max-time, 2-in-flight Yahoo slot limiter) — residual nits consolidated into **TASK-1451 (P3)**: maxBuffer 64MB → 8MB (Moneycontrol/Groww/Google calls bypass the Yahoo slot limiter; 64MB × concurrency = memory-amplification headroom), `--max-redirs 3` (unlimited `-L` redirect follow), cap search `?q=` length before in-memory matching. Search route otherwise clean (min-length gate, bounded index).
 
 Iteration 9 (same day): tiers.ts audited — regex-gated keys, sliding windows, size-bounded store (5000-flush). Real finding: **TASK-1465 (P2)** backtest route trusts client-controlled `x-forwarded-for`/`x-real-ip` unconditionally (route.ts:225-228) for BOTH the pre-body rate limiter and the tier-cap IP fallback → rotate XFF = bypass all IP-keyed caps + flood runStamps to flush other users' counters. Fix: TRUST_PROXY env gate, rightmost-hop parsing in proxy mode. Also: commit 71224c5 shows watchlist-quotes already ships token-bucket+60s cache → TASK-1403's remaining scope is chart/ticker/tracker only.
+
+Iteration 10 (same day): XFF-trust sweep — exactly 2 routes affected (backtest, tracker); TASK-1465 pattern-fix covers both. tracker route exemplary: MAX_RAW_LEN + dedupe + MAX_CUSTOM + SYMBOL_RE allowlist + resp cache — note for SDEs: TASK-1371's fix should generalize tracker's existing SYMBOL_RE rather than invent new validation. New: **TASK-1468** author SECURITY.md (accepted-risk register with revisit triggers, per-surface threat model, disclosure contact) — consolidates the 15-task SEC cluster into a living document.
+
+Iteration 11 (same day): CI workflows audited (ci.yml, pipelines.yml, ui-smoke.yml) — no pull_request_target, scoped permissions blocks, concurrency guards, scheduled self-tests: clean. Gaps: actions tag-pinned not SHA-pinned → **TASK-1478 (P3)**; no npm-audit/gitleaks step already tracked as TASK-1374 AC3 (no dup filed). SEC cluster status check: all 16 tasks still todo/unassigned — none claimed yet; priority remains 1447 → 1429 → 1403. Accepted-risk note for TASK-1468 register: client-minted deviceIds make free-tier caps advisory-only by design (users can mint unlimited UUIDs); revisit when auth/billing lands.
+
+Iteration 12 (same day): regression-reviewed fc05a13 — touches only client backtest page.tsx error-copy mapping, not the audited API route; clean. Escalation: 5 SDEs idle with SEC P1s unclaimed → assigned TASK-1447 (LAN bind) to VIPER and TASK-1429 (evaluate gate) to NEON. Security queue now has owners at the top; rest remain pick-up-ready for any agent.
+
+Iteration 13 (same day): reviewed 318f643 (search listbox scrollIntoView on keyboard nav) — internal numeric index, DOM traversal only, no injection surface; clean. VIPER/NEON assignments still pending pickup (0 ACs, todo). Monitoring mode continues: audit surface exhausted, next SEC work is verify-as-reviewer when fixes ship.
+
+Iteration 14 (same day): client storage audit closed — all localStorage writes guarded: watchlist/screenerPresets/page.tsx have try/catch + quota comments; board page's FULL-STATE writes (page.tsx:163/:183) also try/catch-wrapped → QuotaExceededError degrades gracefully, remote sync unaffected despite board.json size growth (+14.9k lines today). Clean bill, no task filed (no filler). No new commits since 318f643; TASK-1447/1429 still awaiting VIPER/NEON pickup.
 
 ---
 

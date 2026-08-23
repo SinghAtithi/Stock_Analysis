@@ -2100,7 +2100,7 @@
       "desc": "",
       "phase": "B",
       "priority": "P1",
-      "status": "doing",
+      "status": "todo",
       "assignee": "nova",
       "labels": [],
       "estimate": 3,
@@ -2132,8 +2132,8 @@
         }
       ],
       "createdAt": 1787485852943,
-      "updatedAt": 1787495218316,
-      "blocked": false
+      "updatedAt": 1787513101419,
+      "blocked": true
     },
     {
       "id": "TASK-58",
@@ -3609,7 +3609,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "falcon",
       "labels": [],
       "estimate": 3,
@@ -3641,7 +3641,7 @@
         }
       ],
       "createdAt": 1787501838321,
-      "updatedAt": 1787511910643,
+      "updatedAt": 1787511993250,
       "blocked": false
     },
     {
@@ -4410,8 +4410,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P3",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "falcon",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -4432,7 +4432,7 @@
         }
       ],
       "createdAt": 1787501997822,
-      "updatedAt": 1787501997822,
+      "updatedAt": 1787512857159,
       "blocked": false
     },
     {
@@ -31267,8 +31267,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "vector",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -31299,7 +31299,7 @@
         }
       ],
       "createdAt": 1787505363211,
-      "updatedAt": 1787505363211,
+      "updatedAt": 1787512294836,
       "blocked": false
     },
     {
@@ -32304,7 +32304,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "quark",
       "labels": [],
       "estimate": 3,
@@ -32312,31 +32312,31 @@
         {
           "id": "1",
           "text": "index classification uses the instrument's name/index-membership (or a curated INDEX_MAP set) not just the symbol regex",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "BSE AUTO/BANKEX/BHARAT 22 and similar resolve through the index chart path",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "ETFs stay Equity",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "no regression to NIFTY 50/SENSEX/BANKNIFTY",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "axe 0 violations",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787505578596,
-      "updatedAt": 1787511711088,
+      "updatedAt": 1787512621448,
       "blocked": false
     },
     {
@@ -43548,34 +43548,34 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "body size cap ~1MB returns 413",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "rate limit per-IP on POST",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "mode:replace requires shared write token env",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "tests cover reject paths",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787510829159,
-      "updatedAt": 1787510829159,
+      "updatedAt": 1787513268439,
       "blocked": false
     },
     {
@@ -43881,7 +43881,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "doing",
       "assignee": "nova",
       "labels": [],
       "estimate": 3,
@@ -43918,7 +43918,7 @@
         }
       ],
       "createdAt": 1787510892555,
-      "updatedAt": 1787510892555,
+      "updatedAt": 1787512625143,
       "blocked": false
     },
     {
@@ -44300,7 +44300,7 @@
       "desc": "",
       "phase": "B",
       "priority": "P1",
-      "status": "todo",
+      "status": "doing",
       "assignee": "orion",
       "labels": [
         "ops",
@@ -44311,26 +44311,26 @@
         {
           "id": "1",
           "text": "scripts/backup-db.mjs using sqlite3 .backup API (WAL-safe) for DB file + board.json copy",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "nightly run wired into existing cron/self-test pattern with 14-day retention in gitignored backups/",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "docs/runbook-restore.md restore drill executed once and pasted into report",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "fresh-clone unaffected when backups absent",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787510954213,
-      "updatedAt": 1787510954213,
+      "updatedAt": 1787513286167,
       "blocked": false
     },
     {
@@ -44418,7 +44418,7 @@
       "phase": "A",
       "priority": "P1",
       "status": "todo",
-      "assignee": "orion",
+      "assignee": "axiom",
       "labels": [
         "ops"
       ],
@@ -44451,7 +44451,7 @@
         }
       ],
       "createdAt": 1787510955015,
-      "updatedAt": 1787510955015,
+      "updatedAt": 1787512086766,
       "blocked": false
     },
     {
@@ -45088,7 +45088,7 @@
       "phase": "E",
       "priority": "P1",
       "status": "todo",
-      "assignee": "orion",
+      "assignee": "blade",
       "labels": [
         "ops",
         "infra"
@@ -45122,7 +45122,7 @@
         }
       ],
       "createdAt": 1787511329272,
-      "updatedAt": 1787511329272,
+      "updatedAt": 1787512087319,
       "blocked": false
     },
     {
@@ -45132,7 +45132,7 @@
       "phase": "A",
       "priority": "P1",
       "status": "todo",
-      "assignee": "orion",
+      "assignee": "falcon",
       "labels": [
         "api",
         "ops"
@@ -45166,7 +45166,7 @@
         }
       ],
       "createdAt": 1787511329804,
-      "updatedAt": 1787511329804,
+      "updatedAt": 1787512305105,
       "blocked": false
     },
     {
@@ -45778,7 +45778,7 @@
       "phase": "E",
       "priority": "P1",
       "status": "todo",
-      "assignee": "orion",
+      "assignee": "sable",
       "labels": [
         "api",
         "growth",
@@ -45823,7 +45823,7 @@
         }
       ],
       "createdAt": 1787511458325,
-      "updatedAt": 1787511458325,
+      "updatedAt": 1787512305455,
       "blocked": false
     },
     {
@@ -46006,7 +46006,7 @@
       "phase": "D",
       "priority": "P1",
       "status": "todo",
-      "assignee": null,
+      "assignee": "neon",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -46032,7 +46032,7 @@
         }
       ],
       "createdAt": 1787511479219,
-      "updatedAt": 1787511479219,
+      "updatedAt": 1787512242459,
       "blocked": false
     },
     {
@@ -46784,7 +46784,7 @@
       "phase": "D",
       "priority": "P1",
       "status": "todo",
-      "assignee": null,
+      "assignee": "viper",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -46805,7 +46805,7 @@
         }
       ],
       "createdAt": 1787511713785,
-      "updatedAt": 1787511713785,
+      "updatedAt": 1787512242072,
       "blocked": false
     },
     {
@@ -47572,8 +47572,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "quark",
       "labels": [
         "ui",
         "reliability",
@@ -47584,17 +47584,17 @@
         {
           "id": "1",
           "text": "load() validates Array.isArray(json.candles) before setData, else error skin",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "StatsRail guards undefined candles defensively",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "screener.py smoke passes locally vs prod build",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
@@ -47603,11 +47603,1733 @@
         }
       ],
       "createdAt": 1787511983432,
-      "updatedAt": 1787511983432,
+      "updatedAt": 1787512946056,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1467",
+      "title": "Sitemap/robots emit localhost:3000 when NEXT_PUBLIC_SITE_URL unset — silent SEO catastrophe on prod deploy (sitemap.ts:7, robots.ts:3; localhost=0 board hits)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "nova",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "build-time or runtime guard: warn-loudly and fall back to a safe canonical domain or skip sitemap emission rather than emitting http://localhost:3000 URLs",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": ".env.example documents NEXT_PUBLIC_SITE_URL",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "verify by building with var unset and inspecting /sitemap.xml + /robots.txt output",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no behavior change when env set",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512017357,
+      "updatedAt": 1787512017357,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1468",
+      "title": "SEC: author SECURITY.md — threat-model summary, accepted-risk register, disclosure contact",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "register lists known-accepted risks (unsafe-inline CSP, in-process caps, localhost posture) with revisit triggers",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "threat model per surface (api/board, alerts, upstream proxies)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "responsible-disclosure section",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "links to SEC task cluster 1370-1465",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512045346,
+      "updatedAt": 1787512045346,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1469",
+      "title": "ETF premium/tracking-error tracker — iNAV vs market price discount + tracking-error history",
+      "desc": "",
+      "phase": "B",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "data"
+      ],
+      "estimate": 8,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "spike: verify iNAV/NAV source per major NSE ETFs (document in docs/data-sources.md)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "premium/discount % live chip on ETF company pages",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "tracking-error sparkline vs stated index over 1Y",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "warning badge when premium exceeds band (e.g. >1%)",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "honest fallback to NAV T-1 when iNAV unavailable",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512046962,
+      "updatedAt": 1787512046962,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1470",
+      "title": "Corporate action arbitrage calculators — buyback tender accept? + rights entitlement + OFS basics (S114/S120 wired)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "moat"
+      ],
+      "estimate": 8,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "buyback: inputs (price, size, holding) → estimated accept ratio + tender vs hold value math, tagged S114 (#27)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "rights: entitlement calc from ratio + price, renounceable note, post-issue impact on cost basis",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "OFS: floor price context + subscription status if verifiable",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "each calculator shows assumptions table + not-advice disclaimer",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "linked from corporate action events on company timeline",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512047370,
+      "updatedAt": 1787512047370,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1471",
+      "title": "Economic calendar with reaction cards — RBI policy, CPI/WPI, budget: dates + historical Nifty/sector reaction",
+      "desc": "",
+      "phase": "B",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "data"
+      ],
+      "estimate": 5,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "upcoming macro events list (source verified or manual-curated JSON in repo)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "reaction card per event type: last 6 occurrences date, Nifty day move, sector winners/losers from eod_candles",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "watchlist impact hint via sector mapping",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "ICS export reusing TASK-512 helper",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "clearly separates scheduled facts from historical stats",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512047938,
+      "updatedAt": 1787512047938,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1472",
+      "title": "Strategy math has no golden-file regression net: refactor can silently bend scores/ranks — the moat itself is unprotected",
+      "desc": "",
+      "phase": "C",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "orion",
+      "labels": [
+        "data",
+        "test"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "fixture candles + fundamentals per strategy family pinned under web/src/lib/strategies/__fixtures__",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "expected Signal outputs (scores/ranks/components) snapshotted once after manual verification vs RANKINGS methodology",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "node:test compares compute() output exactly (tolerance 1e-9) on every run — any drift fails CI with diff",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "covers at least momentum/quality/value families + edge cases (short history, missing EPS)",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "npm test wired",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512075545,
+      "updatedAt": 1787512075545,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1473",
+      "title": "Custom index builder — track any watchlist as a weighted personal index vs Nifty over time",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "retention"
+      ],
+      "estimate": 8,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "pick watchlist + weighting (equal / market-cap / custom %)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "compute daily index series from eod_candles with rebalance rule (none/fixed dates)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "performance line vs Nifty with drawdown",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "persist as named object, embeddable on home",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "document methodology (base 100 at start date)",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512077261,
+      "updatedAt": 1787512077261,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1474",
+      "title": "Portfolio attribution lite — split X-ray return into sector allocation vs stock selection (brinson-lite)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "nice-to-have"
+      ],
+      "estimate": 5,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "from X-ray holdings + weights compute period return decomposition vs Nifty",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "waterfall or stacked bar: allocation effect per sector + selection effect within sector",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "plain-English takeaway line (\"your pick did it, not your sectors\")",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "uses same client-side-only data rules as TASK-1378",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "label as approximation with methodology note",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512077649,
+      "updatedAt": 1787512077649,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1475",
+      "title": "First-90-days mission loop — daily activation checklist that unifies demo-portfolio/preset nits into a habit funnel",
+      "desc": "",
+      "phase": "E",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "growth",
+        "retention"
+      ],
+      "estimate": 5,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "mission list: add 3 symbols, set first alert, run one screener, read one strategy card, try paper trade (TASK-1376), import holdings (TASK-1378)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "progress persisted locally + celebratory state at completion",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "each mission deep-links to its surface and ticks via existing events (analytics TASK-1388 instruments completion)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "unifies TASK-269/108 empty-state slices under one system",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "skippable forever, never naggy",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512077968,
+      "updatedAt": 1787512077968,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1476",
+      "title": "Watchlist correlation matrix view — NxN heatmap of 90d return correlations for diversification check",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "data",
+        "nice-to-have"
+      ],
+      "estimate": 5,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "matrix heatmap from same 90d correlation engine as twins finder (TASK-1386 extension to full NxN)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "color scale diverging with token colors, values on tap/hover for a11y",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "flag pairs >0.85 with warning line under matrix",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "how",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512078567,
+      "updatedAt": 1787512078567,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1477",
+      "title": "Watchlist live-quote rows never surface stale/degraded/source from batched API — contract says UI must surface these (AGENTS.md data-layer notes); Watchlist.tsx has zero provenance handling",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "nova",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "rows show muted STALE dot on the price pill when payload marks degraded/stale, title tooltip names fallback source like chart's NSE 2m chip",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "sr-only text mirrors state without per-row live-region spam (one polite region for the list)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "dot uses faint/muted tokens not down-red to avoid alarm fatigue",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no layout shift when appearing",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "Playwright sanity: mock degraded response and assert dot renders",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512148580,
+      "updatedAt": 1787512148580,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1478",
+      "title": "SEC: pin GitHub Actions to commit SHAs (supply-chain) — checkout/setup-node/cache currently tag-pinned",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "all workflow uses: pinned to full SHA with version comment",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "dependabot or renovate config for action bumps",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "ci green after pinning",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512153955,
+      "updatedAt": 1787512153955,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1479",
+      "title": "CI failures are discovered by luck: red ui-smoke (TASK-1466) waited for an agent to notice — no auto-filing pipeline exists",
+      "desc": "",
+      "phase": "A",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "orion",
+      "labels": [
+        "ops",
+        "ci"
+      ],
+      "estimate": 2,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "on red ci/ui-smoke run, workflow auto-creates board card titled 'CI RED: <suite> @ <short-sha>' with failing-check name, run URL, last-green sha, priority P1, assignee unclaimed",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "dedupe = skip if open card exists for same suite",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "auto-close (done) after suite green for 3 consecutive scheduled runs",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "uses existing board CLI writer merge-on-save path",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "tested once by forcing a red run",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512207261,
+      "updatedAt": 1787512207261,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1480",
+      "title": "Sector landing pages /sector/[name] — aggregate fundamentals, top movers, strategy scores per sector",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "growth"
+      ],
+      "estimate": 8,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "route per sector from instruments.json taxonomy",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "header stats: sector avg P/E, day/1M return vs market, count of covered symbols",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "top gainers/losers + most-checked this week",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "strategy score distribution for the sector (which strategies like it now)",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "entry points: heatmap tiles, peers strip View-all, search sector rows",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512222709,
+      "updatedAt": 1787512222709,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1481",
+      "title": "Benchmark library — Nifty Next 50/Midcap 150/Smallcap 250/Gold as first-class baselines across surfaces",
+      "desc": "",
+      "phase": "B",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "data",
+        "product"
+      ],
+      "estimate": 5,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "extend INDEX_MAP + ingest for Next50/Midcap150/Smallcap250/GOLDBEES",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "benchmark picker on home chart + backtests replacing hardcoded default (superset of TASK-173/149 nits)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "relative-to-baseline mode in watchlist totals and custom indexes (TASK-1473)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "verify daily candles per new index before enabling",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "fallback chain documented per index",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512223047,
+      "updatedAt": 1787512223047,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1482",
+      "title": "Alert outcome tracker — after a fired alert, show 7d/30d what-happened-next stats",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "retention",
+        "nice-to-have"
+      ],
+      "estimate": 5,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "fired alert history gains outcome columns: price 7d/30d later vs trigger, direction hit if directional",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "aggregate card: my alerts hit-rate by type",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "purely informational, framed as learning not advice",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "uses eod_candles lookups, no extra polling",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "respects dismissed-alert deletion semantics (TASK-963 boundary)",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512223426,
+      "updatedAt": 1787512223426,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1483",
+      "title": "Breadth divergence flag — auto-flag 'index up but A/D negative' (and inverse) with history",
+      "desc": "",
+      "phase": "B",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "data",
+        "nice-to-have"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "detect divergence between index day move and advance/decline ratio beyond threshold",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "chip on breadth screen + optional alert type",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "small historical stats: how often divergence preceded X% index moves in 20d (honest base rates)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "distinct from TASK-748 FII/DII divergence",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "off by default",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512246034,
+      "updatedAt": 1787512246034,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1484",
+      "title": "Multi-portfolio X-ray — multiple named books (self/family) with per-book stats and switcher",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "nice-to-have"
+      ],
+      "estimate": 5,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "X-ray imports can be saved as named portfolios with switcher",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "per-book totals, sector mix, tax-lot views isolated",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "combined view rolls up all books for household picture",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "localStorage-first like watchlist, no accounts required",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "rename/delete with confirm, export per book",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512246325,
+      "updatedAt": 1787512246325,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1485",
+      "title": "Annual Wrapped year-in-review card — December viral recap: best pick, vs Nifty, most-checked symbol, streaks",
+      "desc": "",
+      "phase": "E",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "growth",
+        "viral",
+        "nice-to-have"
+      ],
+      "estimate": 5,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "generated each December from local analytics events + watchlist/paper data",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "slides: total return vs Nifty, best/worst pick with sparklines, most-searched symbol, alerts fired count, longest beat streak",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "shareable image reusing watermark pattern + copy-as-text",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "privacy: everything computed client-side from local data",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "graceful empty state for new users",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512246675,
+      "updatedAt": 1787512246675,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1486",
+      "title": "Shareholding pattern QoQ panel — promoter/FII/DII/public stake trends from quarterly filings",
+      "desc": "",
+      "phase": "B",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "data"
+      ],
+      "estimate": 8,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "ingest quarterly shareholding pattern (source spike documented)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "company page panel: stacked trend of promoter/FII/DII/public/govt across last 8 quarters with QoQ delta chips",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "flag notable swings (>1pp change in a block)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "watches boundary with TASK-1415 radar (deals vs quarterly structure)",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "empty state when filings unavailable",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512247052,
+      "updatedAt": 1787512247052,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1487",
+      "title": "Return decomposition panel — split each holding's price move into EPS growth vs multiple re-rating (1y/3y)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "intelligence"
+      ],
+      "estimate": 8,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "per symbol: 1y and 3y price change split into earnings contribution (EPS delta) and valuation contribution (PE multiple delta) from fundamentals pipeline",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "stacked bar + plain-English line (\"most of this rally was re-rating\")",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "watchlist rollup view",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "handles missing EPS history by showing partial decomposition labeled as such",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "not-advice framing",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512388658,
+      "updatedAt": 1787512388658,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1488",
+      "title": "Valuation-vs-own-history bands — current P/E and P/B as percentile vs trailing 5y ('cheap vs itself')",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "data"
+      ],
+      "estimate": 5,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "company page valuation card gains 5y percentile band for P/E and P/B (needs own-history approximation documented)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "verdict chip: Cheap/Average/Rich vs itself, distinct from vs-sector view (boundary with fundamentals median tasks)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "mini history sparkline of the multiple",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "methodology tooltip explains EPS-TTM basis and gaps",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "graceful state when <3y data",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512389067,
+      "updatedAt": 1787512389067,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1489",
+      "title": "In-app What's New changelog — release notes feed derived from shipped board items",
+      "desc": "",
+      "phase": "E",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "trust",
+        "nice-to-have"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "changelog page + dismissible badge on nav dot",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "entries generated from DONE board tasks grouped weekly, human-curated titles only (no internal jargon)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "deep links to affected surfaces",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "RSS-style JSON endpoint for reuse",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "never surfaces internal agent/board vocabulary",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512389491,
+      "updatedAt": 1787512389491,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1490",
+      "title": "Thesis revisit nudges — watchlist notes can carry a review-by date that resurfaces gently",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "retention",
+        "nice-to-have"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "note editor gains optional review date",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "due nudges appear once in-app (bell digest), never push spam",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "tap opens the symbol + original note",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "auto-archive after actioned",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "works fully offline via localStorage like notes",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512390035,
+      "updatedAt": 1787512390035,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1491",
+      "title": "Position concentration alert — warn when one stock crosses X% of total book value",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "product",
+        "safety",
+        "nice-to-have"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "threshold configurable (default 25%) computed from X-ray/paper holdings values",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "in-app warning chip on watchlist row + optional alert type",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "links to rebalance suggester (TASK-1422)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "recomputes on quotes refresh without extra polling",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "off until user sets first threshold",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512390435,
+      "updatedAt": 1787512390435,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1492",
+      "title": "ui-smoke red on master: screener blocked suite FAIL 'no console errors' — TypeError Cannot read properties of undefined (reading 'length') in prod chunk",
+      "desc": "",
+      "phase": "D",
+      "priority": "P0",
+      "status": "backlog",
+      "assignee": "falcon",
+      "labels": [
+        "ci",
+        "regression"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "reproduce locally via npm run build + next start + screener.py",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "identify offending commit/component and fix root cause",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "screener.py passes clean locally",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "push and confirm gh ui-smoke green on master",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512391103,
+      "updatedAt": 1787512793462,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1493",
+      "title": "Follow-on to TASK-997 WIP: 63 BSE indices become searchable+selectable but are unchartable — INDEX_MAP has 8 majors, ^SYM heuristic (marketData.ts:593) 404s AUTO/200EQW/TECK etc.",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "nova",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "top BSE indices (BANKEX, SENSEX siblings) get verified Yahoo carets in INDEX_MAP or explicit Moneycontrol index-history routing per T31 chain",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "indices with no source render a calm 'no chart data for this index' panel naming it, never the generic all-sources error",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "search hit for sourceless indices stays selectable but shows muted 'data soon' hint instead of dead end",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no regression on NIFTY 50/SENSEX paths",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "Playwright sanity: pick BANKEX and assert graceful panel",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512437765,
+      "updatedAt": 1787512437765,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1494",
+      "title": "No consumer help surface: retail users face 190 strategies, tiers, and delay semantics with zero /help hub — every answer becomes a support ticket",
+      "desc": "",
+      "phase": "E",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "orion",
+      "labels": [
+        "ui",
+        "growth"
+      ],
+      "estimate": 5,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "5 static pages under /help: getting-started, understanding-scores (canonical target for TASK-377/744 tooltip links), plans-and-limits (TIER_LIMITS-driven table mirroring /pricing), data-and-delays (sources, 15-min delay per TASK-346, staleness chips), glossary",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "linked from SiteHeader + footer",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "design-token clean both themes, axe 0 violations",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "sitemap.ts includes them",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "content reviewed against RANKINGS.md terminology",
+          "done": false
+        }
+      ],
+      "createdAt": 1787512448977,
+      "updatedAt": 1787512448977,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1495",
+      "title": "Yahoo v10 quoteSummary now requires cookie+crumb — ingest-fundamentals/analyst return 401/429 universe-wide, blocking TASK-57 AC1",
+      "desc": "",
+      "phase": "B",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "api",
+        "data",
+        "bug"
+      ],
+      "estimate": 5,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "add shared crumb bootstrap (fc.yahoo.com cookie -> v1/test/getcrumb) cached per process in scripts/lib/curl.mjs",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "quoteSummary calls append crumb + cookie jar",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "429-aware pacing: on sustained throttle park host for backoff window instead of burning universe",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "verify fundamentals+analyst rows grow >100 on a 20-symbol --limit run",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "document crumb TTL + refresh in script headers",
+          "done": false
+        }
+      ],
+      "createdAt": 1787513100852,
+      "updatedAt": 1787513100852,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "RJCO",
+      "taskId": "TASK-1389",
+      "text": "✓ checked fresh-clone unaffected when backups absent",
+      "agent": "RAVAN",
+      "at": 1787513286167
+    },
+    {
+      "id": "BDFN",
+      "taskId": "TASK-1389",
+      "text": "✓ checked docs/runbook-restore.md restore drill executed o",
+      "agent": "RAVAN",
+      "at": 1787513285933
+    },
+    {
+      "id": "2Q13",
+      "taskId": "TASK-1389",
+      "text": "✓ checked nightly run wired into existing cron/self-test p",
+      "agent": "RAVAN",
+      "at": 1787513285662
+    },
+    {
+      "id": "SUED",
+      "taskId": "TASK-1389",
+      "text": "✓ checked scripts/backup-db.mjs using sqlite3 .backup API ",
+      "agent": "RAVAN",
+      "at": 1787513285364
+    },
+    {
+      "id": "PCOE",
+      "taskId": "TASK-1370",
+      "text": "review ✗ gates RED (tsc=13.6s·lint=37.7s) — fix and re-run",
+      "agent": "CIPHER",
+      "at": 1787513268439
+    },
+    {
+      "id": "VC9I",
+      "taskId": "TASK-1370",
+      "text": "review ✗ gates RED (tsc=47.8s·lint=38.7s) — fix and re-run",
+      "agent": "CIPHER",
+      "at": 1787513152126
+    },
+    {
+      "id": "QV0G",
+      "taskId": "TASK-57",
+      "text": "blocked",
+      "agent": "RAVAN",
+      "at": 1787513101419
+    },
+    {
+      "id": "3ERQ",
+      "taskId": "TASK-1495",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787513100852
+    },
+    {
+      "id": "4QYD",
+      "taskId": "TASK-1370",
+      "text": "✓ checked tests cover reject paths",
+      "agent": "CIPHER",
+      "at": 1787513049477
+    },
+    {
+      "id": "0NLA",
+      "taskId": "TASK-1370",
+      "text": "✓ checked mode:replace requires shared write token env",
+      "agent": "CIPHER",
+      "at": 1787513048926
+    },
+    {
+      "id": "I65Z",
+      "taskId": "TASK-1370",
+      "text": "✓ checked rate limit per-IP on POST",
+      "agent": "CIPHER",
+      "at": 1787513048335
+    },
+    {
+      "id": "UH4Q",
+      "taskId": "TASK-1370",
+      "text": "✓ checked body size cap ~1MB returns 413",
+      "agent": "CIPHER",
+      "at": 1787513047917
+    },
+    {
+      "id": "ZBJ7",
+      "taskId": "TASK-1466",
+      "text": "review ✗ gates RED (tsc=15.5s·lint=39.1s) — fix and re-run",
+      "agent": "QUARK",
+      "at": 1787512946056
+    },
+    {
+      "id": "6WCN",
+      "taskId": "TASK-1466",
+      "text": "✓ checked screener.py smoke passes locally vs prod build",
+      "agent": "RAVAN",
+      "at": 1787512890914
+    },
+    {
+      "id": "6D34",
+      "taskId": "TASK-119",
+      "text": "claimed by FALCON · → doing",
+      "agent": "FALCON",
+      "at": 1787512857159
+    },
+    {
+      "id": "PAHM",
+      "taskId": "TASK-1370",
+      "text": "review ✗ gates RED (tsc=25.3s·lint=36.1s) — fix and re-run",
+      "agent": "CIPHER",
+      "at": 1787512832101
+    },
+    {
+      "id": "4EJU",
+      "taskId": "TASK-1492",
+      "text": "claimed by FALCON",
+      "agent": "FALCON",
+      "at": 1787512793462
+    },
+    {
+      "id": "1LWQ",
+      "taskId": "TASK-1492",
+      "text": "claimed by FALCON",
+      "agent": "FALCON",
+      "at": 1787512758126
+    },
+    {
+      "id": "PMFB",
+      "taskId": "TASK-1492",
+      "text": "moved doing → backlog",
+      "agent": "FALCON",
+      "at": 1787512757864
+    },
+    {
+      "id": "JI8O",
+      "taskId": "TASK-1379",
+      "text": "claimed by NOVA · → doing",
+      "agent": "NOVA",
+      "at": 1787512625144
+    },
+    {
+      "id": "YQD3",
+      "taskId": "TASK-997",
+      "text": "review · gates green tsc=22.3s·lint=42.4s·test=7.3s · e2e✓",
+      "agent": "QUARK",
+      "at": 1787512621448
+    },
+    {
+      "id": "FH92",
+      "taskId": "TASK-57",
+      "text": "moved doing → todo",
+      "agent": "NOVA",
+      "at": 1787512580372
+    },
+    {
+      "id": "WGW9",
+      "taskId": "TASK-1492",
+      "text": "claimed by FALCON · → doing",
+      "agent": "FALCON",
+      "at": 1787512577394
+    },
+    {
+      "id": "W529",
+      "taskId": "TASK-1370",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787512566685
+    },
+    {
+      "id": "XAWC",
+      "taskId": "TASK-997",
+      "text": "✓ checked axe 0 violations",
+      "agent": "QUARK",
+      "at": 1787512548963
+    },
+    {
+      "id": "6MN1",
+      "taskId": "TASK-1389",
+      "text": "claimed by ORION · → doing",
+      "agent": "ORION",
+      "at": 1787512547790
+    },
+    {
+      "id": "EJBA",
+      "taskId": "TASK-1494",
+      "text": "created in todo",
+      "agent": "ORION",
+      "at": 1787512448978
+    },
+    {
+      "id": "QCIE",
+      "taskId": "TASK-1493",
+      "text": "created in todo",
+      "agent": "NOVA",
+      "at": 1787512437765
+    },
+    {
+      "id": "W9U7",
+      "taskId": "TASK-1492",
+      "text": "created in todo",
+      "agent": "FALCON",
+      "at": 1787512391103
+    },
+    {
+      "id": "FOLT",
+      "taskId": "TASK-1491",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512390435
+    },
+    {
+      "id": "9NSB",
+      "taskId": "TASK-1490",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512390035
+    },
+    {
+      "id": "NCXS",
+      "taskId": "TASK-1489",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512389492
+    },
+    {
+      "id": "1KT1",
+      "taskId": "TASK-1488",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512389067
+    },
+    {
+      "id": "SW67",
+      "taskId": "TASK-1487",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512388658
+    },
+    {
+      "id": "9YJ8",
+      "taskId": "TASK-1424",
+      "text": "assigned to SABLE",
+      "agent": "SABLE",
+      "at": 1787512305455
+    },
+    {
+      "id": "54AC",
+      "taskId": "TASK-1409",
+      "text": "assigned to FALCON",
+      "agent": "FALCON",
+      "at": 1787512305105
+    },
+    {
+      "id": "V9O3",
+      "taskId": "TASK-997",
+      "text": "✓ checked no regression to NIFTY 50/SENSEX/BANKNIFTY",
+      "agent": "QUARK",
+      "at": 1787512297587
+    },
+    {
+      "id": "EZML",
+      "taskId": "TASK-997",
+      "text": "✓ checked ETFs stay Equity",
+      "agent": "QUARK",
+      "at": 1787512297165
+    },
+    {
+      "id": "MDD0",
+      "taskId": "TASK-997",
+      "text": "✓ checked BSE AUTO/BANKEX/BHARAT 22 and similar resolve th",
+      "agent": "QUARK",
+      "at": 1787512296808
+    },
+    {
+      "id": "IRUR",
+      "taskId": "TASK-997",
+      "text": "✓ checked index classification uses the instrument's name/",
+      "agent": "QUARK",
+      "at": 1787512296478
+    },
+    {
+      "id": "5TUE",
+      "taskId": "TASK-963",
+      "text": "claimed by VECTOR · → doing",
+      "agent": "VECTOR",
+      "at": 1787512294836
+    },
+    {
+      "id": "N7X8",
+      "taskId": "TASK-1486",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512247052
+    },
+    {
+      "id": "09JH",
+      "taskId": "TASK-1485",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512246676
+    },
+    {
+      "id": "BWKI",
+      "taskId": "TASK-1484",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512246325
+    },
+    {
+      "id": "LLBC",
+      "taskId": "TASK-1483",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512246034
+    },
+    {
+      "id": "TO3R",
+      "taskId": "TASK-1429",
+      "text": "assigned to NEON",
+      "agent": "NEON",
+      "at": 1787512242460
+    },
+    {
+      "id": "UY8D",
+      "taskId": "TASK-1447",
+      "text": "assigned to VIPER",
+      "agent": "VIPER",
+      "at": 1787512242072
+    },
+    {
+      "id": "3FCW",
+      "taskId": "TASK-1482",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512223426
+    },
+    {
+      "id": "C6E3",
+      "taskId": "TASK-1481",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512223047
+    },
+    {
+      "id": "QH1J",
+      "taskId": "TASK-1480",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512222709
+    },
+    {
+      "id": "PNE4",
+      "taskId": "TASK-1479",
+      "text": "created in todo",
+      "agent": "ORION",
+      "at": 1787512207261
+    },
+    {
+      "id": "15IM",
+      "taskId": "TASK-1478",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512153955
+    },
+    {
+      "id": "2CA1",
+      "taskId": "TASK-1477",
+      "text": "created in todo",
+      "agent": "NOVA",
+      "at": 1787512148580
+    },
+    {
+      "id": "2L6F",
+      "taskId": "TASK-1408",
+      "text": "assigned to BLADE",
+      "agent": "BLADE",
+      "at": 1787512087320
+    },
+    {
+      "id": "IFJX",
+      "taskId": "TASK-1392",
+      "text": "assigned to AXIOM",
+      "agent": "AXIOM",
+      "at": 1787512086767
+    },
+    {
+      "id": "BDXN",
+      "taskId": "TASK-1466",
+      "text": "✓ checked StatsRail guards undefined candles defensively",
+      "agent": "RAVAN",
+      "at": 1787512082601
+    },
+    {
+      "id": "9FIK",
+      "taskId": "TASK-1466",
+      "text": "✓ checked load() validates Array.isArray(json.candles) bef",
+      "agent": "RAVAN",
+      "at": 1787512082278
+    },
+    {
+      "id": "CMO3",
+      "taskId": "TASK-1476",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512078567
+    },
+    {
+      "id": "EDMD",
+      "taskId": "TASK-1475",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512077968
+    },
+    {
+      "id": "CHZ6",
+      "taskId": "TASK-1474",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512077649
+    },
+    {
+      "id": "5MRQ",
+      "taskId": "TASK-1473",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512077261
+    },
+    {
+      "id": "YHGP",
+      "taskId": "TASK-1472",
+      "text": "created in todo",
+      "agent": "ORION",
+      "at": 1787512075545
+    },
+    {
+      "id": "KNZ2",
+      "taskId": "TASK-1471",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512047938
+    },
+    {
+      "id": "VEVU",
+      "taskId": "TASK-1470",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512047370
+    },
+    {
+      "id": "PFGP",
+      "taskId": "TASK-1469",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512046962
+    },
+    {
+      "id": "MJ4P",
+      "taskId": "TASK-1468",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787512045346
+    },
+    {
+      "id": "64CS",
+      "taskId": "TASK-1467",
+      "text": "created in todo",
+      "agent": "NOVA",
+      "at": 1787512017357
+    },
+    {
+      "id": "C30N",
+      "taskId": "TASK-1466",
+      "text": "claimed by QUARK · → doing",
+      "agent": "QUARK",
+      "at": 1787512014709
+    },
+    {
+      "id": "RH7D",
+      "taskId": "TASK-97",
+      "text": "shipped 318f643 → origin/master · fix(search): scroll active option into view on keyboard nav — listbox overflow no longer hides aria-activedescendant target (TASK-97) · gates tsc=11.5s·lint=36.8s·test=7.6s · e2e✓",
+      "agent": "FALCON",
+      "at": 1787511993250
+    },
     {
       "id": "KALV",
       "taskId": "TASK-1466",
@@ -47684,491 +49406,8 @@
       "text": "created in todo",
       "agent": "SYSTEM",
       "at": 1787511872951
-    },
-    {
-      "id": "CPDF",
-      "taskId": "TASK-1457",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511872384
-    },
-    {
-      "id": "PPLV",
-      "taskId": "TASK-1456",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511871638
-    },
-    {
-      "id": "WTNY",
-      "taskId": "TASK-1455",
-      "text": "created in todo",
-      "agent": "NOVA",
-      "at": 1787511863280
-    },
-    {
-      "id": "AWL0",
-      "taskId": "TASK-1454",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511827902
-    },
-    {
-      "id": "26D2",
-      "taskId": "TASK-1453",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511827705
-    },
-    {
-      "id": "ZPJ4",
-      "taskId": "TASK-1452",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511827490
-    },
-    {
-      "id": "UE4R",
-      "taskId": "TASK-1451",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511822903
-    },
-    {
-      "id": "VECF",
-      "taskId": "TASK-97",
-      "text": "✓ checked axe 0 violations",
-      "agent": "FALCON",
-      "at": 1787511768422
-    },
-    {
-      "id": "E0WH",
-      "taskId": "TASK-97",
-      "text": "✓ checked Escape/close behavior unchanged",
-      "agent": "FALCON",
-      "at": 1787511767972
-    },
-    {
-      "id": "DCJM",
-      "taskId": "TASK-97",
-      "text": "✓ checked mouse hover and keyboard paths don't fight",
-      "agent": "FALCON",
-      "at": 1787511767518
-    },
-    {
-      "id": "HMFU",
-      "taskId": "TASK-97",
-      "text": "✓ checked Enter still selects the active option",
-      "agent": "FALCON",
-      "at": 1787511767141
-    },
-    {
-      "id": "HPVT",
-      "taskId": "TASK-97",
-      "text": "✓ checked when arrow keys move the active option, the list",
-      "agent": "FALCON",
-      "at": 1787511766888
-    },
-    {
-      "id": "X5UN",
-      "taskId": "TASK-1450",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787511748398
-    },
-    {
-      "id": "CHS0",
-      "taskId": "TASK-1449",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787511748042
-    },
-    {
-      "id": "OU6V",
-      "taskId": "TASK-1448",
-      "text": "created in todo",
-      "agent": "NOVA",
-      "at": 1787511723811
-    },
-    {
-      "id": "QWRV",
-      "taskId": "TASK-1053",
-      "text": "review · gates green tsc=13.5s·lint=37.6s·test=6.5s",
-      "agent": "ORION",
-      "at": 1787511720833
-    },
-    {
-      "id": "IONB",
-      "taskId": "TASK-1447",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511713785
-    },
-    {
-      "id": "XJVF",
-      "taskId": "TASK-997",
-      "text": "claimed by QUARK · → doing",
-      "agent": "QUARK",
-      "at": 1787511711088
-    },
-    {
-      "id": "ZNJE",
-      "taskId": "TASK-1446",
-      "text": "created in todo",
-      "agent": "NOVA",
-      "at": 1787511687721
-    },
-    {
-      "id": "BUWG",
-      "taskId": "TASK-1053",
-      "text": "✓ checked axe 0 violations",
-      "agent": "ORION",
-      "at": 1787511662744
-    },
-    {
-      "id": "BB4G",
-      "taskId": "TASK-1445",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511661476
-    },
-    {
-      "id": "BCH1",
-      "taskId": "TASK-1444",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511661009
-    },
-    {
-      "id": "H7KB",
-      "taskId": "TASK-1443",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511660679
-    },
-    {
-      "id": "PKRU",
-      "taskId": "TASK-1442",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511624920
-    },
-    {
-      "id": "DC63",
-      "taskId": "TASK-1441",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511624479
-    },
-    {
-      "id": "5DZR",
-      "taskId": "TASK-1440",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511624093
-    },
-    {
-      "id": "98N1",
-      "taskId": "TASK-1439",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511623581
-    },
-    {
-      "id": "FX0F",
-      "taskId": "TASK-1438",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787511606481
-    },
-    {
-      "id": "IPZG",
-      "taskId": "TASK-1437",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787511606064
-    },
-    {
-      "id": "ZW81",
-      "taskId": "TASK-1053",
-      "text": "moved doing → todo",
-      "agent": "ORION",
-      "at": 1787511605588
-    },
-    {
-      "id": "JUBZ",
-      "taskId": "TASK-1436",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511597282
-    },
-    {
-      "id": "LFAC",
-      "taskId": "TASK-1435",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511596916
-    },
-    {
-      "id": "VQ39",
-      "taskId": "TASK-1434",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511596323
-    },
-    {
-      "id": "KJC4",
-      "taskId": "TASK-1433",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511594474
-    },
-    {
-      "id": "65I1",
-      "taskId": "TASK-112",
-      "text": "moved doing → done",
-      "agent": "QUARK",
-      "at": 1787511593616
-    },
-    {
-      "id": "8UI0",
-      "taskId": "TASK-52",
-      "text": "moved doing → done",
-      "agent": "QUARK",
-      "at": 1787511577290
-    },
-    {
-      "id": "MMKU",
-      "taskId": "TASK-1432",
-      "text": "created in todo",
-      "agent": "NOVA",
-      "at": 1787511571776
-    },
-    {
-      "id": "KV0N",
-      "taskId": "TASK-1431",
-      "text": "created in todo",
-      "agent": "NOVA",
-      "at": 1787511561656
-    },
-    {
-      "id": "61BE",
-      "taskId": "TASK-105",
-      "text": "moved doing → done",
-      "agent": "QUARK",
-      "at": 1787511510394
-    },
-    {
-      "id": "6AR7",
-      "taskId": "TASK-1430",
-      "text": "created in todo",
-      "agent": "NOVA",
-      "at": 1787511482734
-    },
-    {
-      "id": "UFJK",
-      "taskId": "TASK-1429",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511479219
-    },
-    {
-      "id": "MCOY",
-      "taskId": "TASK-1428",
-      "text": "created in todo",
-      "agent": "NOVA",
-      "at": 1787511468388
-    },
-    {
-      "id": "6XED",
-      "taskId": "TASK-1427",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787511459920
-    },
-    {
-      "id": "Q9UX",
-      "taskId": "TASK-1426",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787511459335
-    },
-    {
-      "id": "82R5",
-      "taskId": "TASK-1425",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787511458909
-    },
-    {
-      "id": "IFTL",
-      "taskId": "TASK-1424",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787511458325
-    },
-    {
-      "id": "9P0C",
-      "taskId": "TASK-907",
-      "text": "moved review → done",
-      "agent": "QUARK",
-      "at": 1787511449728
-    },
-    {
-      "id": "33L5",
-      "taskId": "TASK-907",
-      "text": "✓ checked export filename embeds the date (IST), e.g. nift",
-      "agent": "QUARK",
-      "at": 1787511449364
-    },
-    {
-      "id": "ZQCU",
-      "taskId": "TASK-1053",
-      "text": "✓ checked other error paths unchanged",
-      "agent": "RAVAN",
-      "at": 1787511409902
-    },
-    {
-      "id": "WD42",
-      "taskId": "TASK-1053",
-      "text": "✓ checked Retry-After surfaced where available",
-      "agent": "RAVAN",
-      "at": 1787511409436
-    },
-    {
-      "id": "S23C",
-      "taskId": "TASK-1053",
-      "text": "✓ checked daily_cap_reached maps to a clear cap message ('",
-      "agent": "RAVAN",
-      "at": 1787511408880
-    },
-    {
-      "id": "Y96J",
-      "taskId": "TASK-1053",
-      "text": "✓ checked other error paths unchanged",
-      "agent": "ORION",
-      "at": 1787511404466
-    },
-    {
-      "id": "V2CP",
-      "taskId": "TASK-1053",
-      "text": "✓ checked Retry-After surfaced where available",
-      "agent": "ORION",
-      "at": 1787511404206
-    },
-    {
-      "id": "EUCC",
-      "taskId": "TASK-1053",
-      "text": "✓ checked daily_cap_reached maps to a clear cap message ('",
-      "agent": "ORION",
-      "at": 1787511403898
-    },
-    {
-      "id": "DH96",
-      "taskId": "TASK-1423",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511386049
-    },
-    {
-      "id": "SPXX",
-      "taskId": "TASK-1422",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511385655
-    },
-    {
-      "id": "IT70",
-      "taskId": "TASK-1421",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511385094
-    },
-    {
-      "id": "O31D",
-      "taskId": "TASK-1420",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511366728
-    },
-    {
-      "id": "BX8Z",
-      "taskId": "TASK-1419",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511366452
-    },
-    {
-      "id": "J5R8",
-      "taskId": "TASK-1418",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511366155
-    },
-    {
-      "id": "DHO6",
-      "taskId": "TASK-1417",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511365880
-    },
-    {
-      "id": "7RWU",
-      "taskId": "TASK-1416",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511340680
-    },
-    {
-      "id": "9YUW",
-      "taskId": "TASK-1415",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511340004
-    },
-    {
-      "id": "GKDS",
-      "taskId": "TASK-1414",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511339577
-    },
-    {
-      "id": "0977",
-      "taskId": "TASK-1413",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511338339
-    },
-    {
-      "id": "Y5UJ",
-      "taskId": "TASK-1412",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511337874
-    },
-    {
-      "id": "FW0P",
-      "taskId": "TASK-1411",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787511330965
-    },
-    {
-      "id": "6SH0",
-      "taskId": "TASK-1410",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787511330361
-    },
-    {
-      "id": "5NIU",
-      "taskId": "TASK-1409",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787511329804
     }
   ],
   "deletions": [],
-  "updatedAt": 1787511983575
+  "updatedAt": 1787513286210
 }
