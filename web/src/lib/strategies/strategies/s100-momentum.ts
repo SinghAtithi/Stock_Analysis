@@ -86,11 +86,28 @@ function momentumPair(closes: number[]): { m12: number; m1: number } | null {
   };
 }
 
-async function loadDistribution(ctx: StrategyContext, universe: "nifty50" | "nifty500") {
+const pending = new WeakMap<StrategyContext, Promise<Distribution>>();
+
+async function loadDistribution(
+  ctx: StrategyContext,
+  universe: "nifty50" | "nifty500"
+): Promise<Distribution> {
   const day = Math.floor(Date.now() / 86_400_000);
   const hit = cache.get(ctx);
   if (hit && hit.day === day && hit.universe === universe) return hit;
+  const inflight = pending.get(ctx);
+  if (inflight) return inflight;
+  const build = loadDistributionBuild;
+  const p = build(ctx, universe, day);
+  pending.set(ctx, p);
+  return p;
+}
 
+async function loadDistributionBuild(
+  ctx: StrategyContext,
+  universe: "nifty50" | "nifty500",
+  day: number
+): Promise<Distribution> {
   const symbols = ctx.getUniverse ? ctx.getUniverse(universe) ?? [] : [];
   const momentum12 = new Map<string, number | null>();
   const momentum1 = new Map<string, number | null>();
@@ -121,6 +138,7 @@ async function loadDistribution(ctx: StrategyContext, universe: "nifty50" | "nif
 
   const dist: Distribution = { day, universe, momentum12, momentum1 };
   cache.set(ctx, dist);
+  pending.delete(ctx);
   return dist;
 }
 

@@ -379,12 +379,27 @@ interface Distribution {
 }
 
 const cache = new WeakMap<StrategyContext, Distribution>();
+const pending = new WeakMap<StrategyContext, Promise<Distribution>>();
 
-async function loadRows(ctx: StrategyContext, universe: "nifty50" | "nifty500"): Promise<Distribution> {
+async function loadRows(
+  ctx: StrategyContext,
+  universe: "nifty50" | "nifty500"
+): Promise<Distribution> {
   const day = Math.floor(Date.now() / 86_400_000);
   const hit = cache.get(ctx);
   if (hit && hit.day === day && hit.universe === universe) return hit;
+  const inflight = pending.get(ctx);
+  if (inflight) return inflight;
+  const p = loadRowsBuild(ctx, universe, day);
+  pending.set(ctx, p);
+  return p;
+}
 
+async function loadRowsBuild(
+  ctx: StrategyContext,
+  universe: "nifty50" | "nifty500",
+  day: number
+): Promise<Distribution> {
   const symbols = ctx.getUniverse ? ctx.getUniverse(universe) ?? [] : [];
   const rows = new Map<string, QualityMetrics>();
 
@@ -412,6 +427,7 @@ async function loadRows(ctx: StrategyContext, universe: "nifty50" | "nifty500"):
 
   const dist: Distribution = { day, universe, rows };
   cache.set(ctx, dist);
+  pending.delete(ctx);
   return dist;
 }
 

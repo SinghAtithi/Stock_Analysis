@@ -59,12 +59,20 @@ interface Snapshot {
 }
 
 const cache = new WeakMap<StrategyContext, Snapshot>();
+const pending = new WeakMap<StrategyContext, Promise<Snapshot>>();
 
 async function loadSnapshot(ctx: StrategyContext): Promise<Snapshot> {
   const day = Math.floor(Date.now() / 86_400_000);
   const hit = cache.get(ctx);
   if (hit && hit.day === day) return hit;
+  const inflight = pending.get(ctx);
+  if (inflight) return inflight;
+  const p = loadSnapshotBuild(ctx, day);
+  pending.set(ctx, p);
+  return p;
+}
 
+async function loadSnapshotBuild(ctx: StrategyContext, day: number): Promise<Snapshot> {
   const stats = new Map<string, AssetTsm>();
   for (const symbol of ASSETS) {
     let candles: Awaited<ReturnType<StrategyContext["getCandles"]>> = [];
@@ -83,6 +91,7 @@ async function loadSnapshot(ctx: StrategyContext): Promise<Snapshot> {
 
   const snap: Snapshot = { day, stats };
   cache.set(ctx, snap);
+  pending.delete(ctx);
   return snap;
 }
 

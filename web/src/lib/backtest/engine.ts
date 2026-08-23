@@ -19,9 +19,10 @@ import type { Strategy, StrategyContext } from "../strategies/types";
  *   slippagePct), deducted from equity on the rebalance day.
  * - No snapshot on a rebalance date -> hold the previous portfolio. No
  *   portfolio ever formed -> cash (flat equity).
- * - Benchmark = buy-and-hold equal-weight universe: fixed 1/N weights over
- *   symbols priced on the first window day; forward-filled prices; symbols
- *   not yet listed contribute zero.
+ * - Benchmark = fixed-weight equal-weight universe: 1/N over symbols priced
+ *   on the first window day, held FIXED (weights never drift), daily return
+ *   = weight-averaged constituent returns — i.e. an equal-weight index that
+ *   recenters daily, NOT share-count buy&hold. See docs/backtest.md.
  * - A symbol must have a price on the rebalance date to be holdable; scored
  *   symbols without data (unlisted / missing series) are skipped.
  */
@@ -319,11 +320,15 @@ export async function runBacktest(
 
     if (rebalanceSet.has(d)) {
       const asOf = dateToAsOf(d);
+      /* batch all symbol scores for this rebalance date; scorers cache
+         per-asOf context (and strategies memoize in-flight builds), so the
+         concurrent calls share one cross-sectional build */
+      const eligible = symbols.filter((sym) => aligned.get(sym)?.[i] !== null);
+      const scores = await Promise.all(eligible.map((sym) => scorer.score(sym, asOf)));
       const scored: { symbol: string; score: number }[] = [];
-      for (const sym of symbols) {
-        if (aligned.get(sym)?.[i] === null) continue; // no price yet — unholdable
-        const s = await scorer.score(sym, asOf);
-        if (s !== null && Number.isFinite(s)) scored.push({ symbol: sym, score: s });
+      for (let k = 0; k < eligible.length; k++) {
+        const s = scores[k];
+        if (s !== null && Number.isFinite(s)) scored.push({ symbol: eligible[k], score: s });
       }
       scored.sort((a, b) => b.score - a.score || a.symbol.localeCompare(b.symbol));
       const chosen = scored.slice(0, config.topN);

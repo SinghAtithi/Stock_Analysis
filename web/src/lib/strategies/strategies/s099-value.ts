@@ -149,6 +149,7 @@ interface ValueDistribution {
 }
 
 const cache = new WeakMap<StrategyContext, ValueDistribution>();
+const pending = new WeakMap<StrategyContext, Promise<ValueDistribution>>();
 
 /** Mean of the available z-scores for a symbol; null when fewer than `min` are valid. */
 function averageZ(
@@ -175,7 +176,18 @@ async function loadDistribution(
   const day = Math.floor(Date.now() / 86_400_000);
   const hit = cache.get(ctx);
   if (hit && hit.day === day && hit.universe === universe) return hit;
+  const inflight = pending.get(ctx);
+  if (inflight) return inflight;
+  const p = loadDistributionBuild(ctx, universe, day);
+  pending.set(ctx, p);
+  return p;
+}
 
+async function loadDistributionBuild(
+  ctx: StrategyContext,
+  universe: "nifty50" | "nifty500",
+  day: number
+): Promise<ValueDistribution> {
   const symbols = ctx.getUniverse ? ctx.getUniverse(universe) ?? [] : [];
   const raw = new Map<string, RawMetrics>();
   const empty: RawMetrics = { bm: null, ncav: null, ey: null, ebitEv: null, roic: null, ev: null };
@@ -226,6 +238,7 @@ async function loadDistribution(
 
   const dist: ValueDistribution = { day, universe, raw, zs, sampleSize };
   cache.set(ctx, dist);
+  pending.delete(ctx);
   return dist;
 }
 

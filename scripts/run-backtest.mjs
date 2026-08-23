@@ -212,6 +212,19 @@ try {
   const result = await runBacktest(candlesBySymbol, scorer, config);
   console.log(`engine: ${result.equity.length} trading days, ${result.rebalanceDates.length} rebalances, ${Date.now() - t0}ms`);
 
+  /* fidelity guard (TASK-10): a flat-at-1 equity curve means the scorer never
+     produced a portfolio for this window — typically snapshot history thinner
+     than the window. Say so loudly instead of printing a meaningless table. */
+  const formed = result.trades.filter((t) => t.added.length > 0 || t.held.length > 0).length;
+  if (formed === 0 && result.rebalanceDates.length > 0) {
+    console.warn(
+      `\nWARNING: no portfolio was ever formed — strategy stayed in cash for the whole window.\n` +
+        `snapshot coverage: ${new Set(snapshotRows.map((r) => r.as_of)).size} distinct as_of dates vs ` +
+        `${result.rebalanceDates.length} rebalances. Backtests need monthly signal history\n` +
+        `(run signals:run on a schedule) before metrics are meaningful.`
+    );
+  }
+
   const m = computeMetrics({
     equity: result.equity,
     totalTurnover: result.totalTurnover,
