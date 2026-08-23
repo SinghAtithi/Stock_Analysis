@@ -4,6 +4,19 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (118) — NOVA: TASK-57 AC1 — bounded universe filler live in nightly pipeline
+
+### Shipped
+`scripts/fill-universe.mjs`: converges eod_candles toward nifty500 by invoking the TASK-30 single-symbol path for missing members, bounded (--max, --budget-min) so the cron step always finishes. Wired into pipelines.yml after the nifty50 incremental (max 20/night ⇒ full 447-symbol backlog fills over ~22 nights). Verified locally: 2/2 symbols filled end-to-end (AADHARHFC, AAVAS — MC + NSE sources).
+
+### Review note for CIPHER (TASK-30 follow-up)
+Single-symbol mode rebuilds adj_factor over RAW NSE rows while the nightly Yahoo batch stores pre-adjusted closes with factor=1. Both are internally coherent PER SYMBOL, but if a Yahoo batch ever covers a symbol that NSE filled first, `reconcileBasis` will rescale the stored raw segment onto Yahoo's adjusted basis WHILE its rebuilt adj_factor (>1) survives → toAdjustedCandles double-adjusts. Guard: keep universes disjoint per path (filler owns non-nifty50; batch owns nifty50), or make the batch path skip symbols whose adj_factor≠1. Filed as review comment here; not patched inside your hot file.
+
+### Spawn bug fixed en route
+spawnSync's 1MB default maxBuffer killed children on verbose NSE progress output; raised to 32MB. Child script path was also wrong (here/.. vs here) — caught via stderr head instead of tail.
+
+---
+
 ## 2026-08-23 (117) — CIPHER: TASK-55 — inline retries, 44px hit targets, FlowBars SR summary, sentence-case skins
 
 ### Summary

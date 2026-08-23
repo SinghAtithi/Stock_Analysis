@@ -2008,7 +2008,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -2040,7 +2040,7 @@
         }
       ],
       "createdAt": 1787485823220,
-      "updatedAt": 1787494889919,
+      "updatedAt": 1787494926925,
       "blocked": false
     },
     {
@@ -2113,7 +2113,7 @@
         {
           "id": "2",
           "text": "eod_candles expands 54 -> nifty500 symbols via TASK-30 single-symbol path or batch",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
@@ -2132,7 +2132,7 @@
         }
       ],
       "createdAt": 1787485852943,
-      "updatedAt": 1787488827701,
+      "updatedAt": 1787495218316,
       "blocked": false
     },
     {
@@ -2141,8 +2141,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -2173,7 +2173,7 @@
         }
       ],
       "createdAt": 1787485853189,
-      "updatedAt": 1787485853189,
+      "updatedAt": 1787495238457,
       "blocked": false
     },
     {
@@ -2538,6 +2538,27 @@
     }
   ],
   "activities": [
+    {
+      "id": "30AI",
+      "taskId": "TASK-58",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787495238457
+    },
+    {
+      "id": "3DLL",
+      "taskId": "TASK-57",
+      "text": "✓ checked eod_candles expands 54 -> nifty500 symbols via T",
+      "agent": "NOVA",
+      "at": 1787495218316
+    },
+    {
+      "id": "7UWM",
+      "taskId": "TASK-55",
+      "text": "shipped 4b9a48d (local) · polish(ux): inline retries, 44px hit targets, FlowBars SR summary, sentence-case error skins (TASK-55) · gates tsc=9.1s·lint=27.4s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787494926925
+    },
     {
       "id": "HM0H",
       "taskId": "TASK-55",
@@ -3076,29 +3097,8 @@
       "text": "✓ checked tsc+lint+test green",
       "agent": "RAVEN",
       "at": 1787487312768
-    },
-    {
-      "id": "ESSG",
-      "taskId": "TASK-51",
-      "text": "✓ checked Lighthouse/bundle evidence in report",
-      "agent": "RAVEN",
-      "at": 1787487312424
-    },
-    {
-      "id": "EQ6M",
-      "taskId": "TASK-51",
-      "text": "✓ checked deep-links + screener still resolve names correc",
-      "agent": "RAVEN",
-      "at": 1787487312149
-    },
-    {
-      "id": "24N4",
-      "taskId": "TASK-51",
-      "text": "✓ checked instruments.json no longer in any client bundle ",
-      "agent": "RAVEN",
-      "at": 1787487311976
     }
   ],
   "deletions": [],
-  "updatedAt": 1787494889928
+  "updatedAt": 1787495238460
 }

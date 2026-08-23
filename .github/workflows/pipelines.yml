@@ -55,6 +55,11 @@ jobs:
       - name: eod ingest (nifty50, incremental)
         run: node --experimental-strip-types scripts/ingest-eod.mjs --universe nifty50
 
+      # TASK-57 AC1: converge eod_candles toward nifty500 — bounded per night,
+      # NSE raw-basis path owns new symbols exclusively (no basis mixing)
+      - name: fill universe toward nifty500
+        run: node scripts/fill-universe.mjs --universe nifty500 --max 20 --budget-min 25
+
       - name: report failure
         if: failure()
         env:
