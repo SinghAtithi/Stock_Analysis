@@ -29,7 +29,7 @@ public bind or shared-host deployment:
 | `POST /api/board` | full-state JSON | rate limit → 1MB body cap (413) → shape validation → `mode:"replace"` requires `x-board-token` matching `BOARD_WRITE_TOKEN` (timing-safe). Payloads are allowlist-rebuilt (`MAX_TASKS=5000`) so `__proto__`/junk keys never persist. TASK-1370/1394. |
 | `GET /api/chart`, `/api/analysis` | symbol/exchange/range | symbol charset allowlist + NSE/BSE exchange closed-set before any upstream call (TASK-1371); per-key token bucket (TASK-1403); three cache layers collapse repeats. |
 | `GET /api/ticker`, `/api/tracker`, `/api/watchlist-quotes` | symbols lists | token bucket / sliding window + micro-caches; tracker applies its own strict `SYMBOL_RE`. TASK-1403. |
-| `GET /api/alerts/evaluate` | none (cron-style) | **CRON_SECRET gate tracked as TASK-1429 — not yet merged.** Until it ships, keep the server off public interfaces. |
+| `GET /api/alerts/evaluate` | none (cron-style) | **CRON_SECRET bearer gate** (fail-closed when unset, timing-safe compare) + overlap lock → 429. Set `CRON_SECRET` on the server process and send `Authorization: Bearer <secret>`. TASK-1429. |
 | Watchlists / alerts writes | deviceId + entries | deviceId regex `^[a-zA-Z0-9_-]{8,64}$`, entry sanitizer, per-device tier caps. |
 | Backtests | config JSON | rate limit + tier cap (3 runs/24h free), strategy/universe allowlists, clamped numerics, single-flight engine lock. |
 | Upstream fetches | third-party responses | `execFile` curl (no shell), `-m 20`, `--max-redirs 3`, 8MB buffer, host-scoped concurrency + circuit breaker backoff. TASK-1451. |

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { timingSafeEqual } from "node:crypto";
 import path from "node:path";
 import { getTicker } from "@/lib/marketData";
 import { evaluatePass, membershipDiff, membershipEvents, isMembershipType } from "@/lib/alerts";
@@ -93,16 +92,9 @@ function deliverDigest(fired: { deviceId: string; detail?: string; symbol?: stri
 
 /* TASK-1429: cron-style endpoint — unauthenticated callers must not be able
  * to run write-mode evaluation passes (or fire email digests). Fail closed:
- * if CRON_SECRET is unset the route is disabled entirely. */
-
-function authorizedBearer(header: string | null): boolean {
-  const expected = process.env.CRON_SECRET ?? "";
-  if (!expected) return false;
-  const provided = header?.startsWith("Bearer ") ? header.slice(7) : "";
-  const a = Buffer.from(expected, "utf8");
-  const b = Buffer.from(provided, "utf8");
-  return a.length === b.length && timingSafeEqual(a, b);
-}
+ * if CRON_SECRET is unset the route is disabled entirely. Gate logic lives
+ * in @/lib/cronAuth so the adversarial suite pins it. */
+import { authorizedBearer } from "@/lib/cronAuth";
 
 let evalBusy = false;
 
