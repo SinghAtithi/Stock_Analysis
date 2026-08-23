@@ -12,10 +12,33 @@
 
 export const MAX_ACTIVITIES = 80;
 export const MAX_DELETIONS = 200;
+/** TASK-1394: full-board payloads above this are rejected (413 at the route). */
+export const MAX_TASKS = 5000;
 
 const COLUMNS = new Set(["backlog", "todo", "doing", "review", "done"]);
 const PHASES = new Set(["A", "B", "C", "D", "E"]);
 const PRIORITIES = new Set(["P0", "P1", "P2", "P3"]);
+
+/* Canonical persisted fields (types.ts Task). Anything else arriving over
+   the wire is junk at best and a prototype-pollution vector at worst —
+   `__proto__` arrives as an OWN key from JSON.parse and survives {...spread}. */
+const TASK_FIELDS = new Set([
+  "id", "title", "desc", "phase", "priority", "status", "assignee",
+  "labels", "estimate", "checklist", "createdAt", "updatedAt",
+  "rank", "edge", "blocked",
+]);
+const ACTIVITY_FIELDS = new Set(["id", "taskId", "text", "agent", "at"]);
+const TOMBSTONE_FIELDS = new Set(["id", "at"]);
+
+/** Rebuild an object keeping only allowlisted own keys — never spreads, so
+    `__proto__`/`constructor` own-keys from hostile JSON cannot survive. */
+function pickAllowed(obj, allowed) {
+  const out = {};
+  for (const k of allowed) {
+    if (Object.hasOwn(obj, k)) out[k] = obj[k];
+  }
+  return out;
+}
 
 function isObj(v) {
   return typeof v === "object" && v !== null && !Array.isArray(v);
@@ -48,6 +71,7 @@ function isTask(v) {
 export function validateBoardPayload(body) {
   if (!isObj(body)) return { ok: false, error: "body must be a JSON object" };
   if (!Array.isArray(body.tasks)) return { ok: false, error: "tasks must be an array" };
+  if (body.tasks.length > MAX_TASKS) return { ok: false, error: "too_many_tasks" };
   for (const t of body.tasks) {
     if (!isTask(t)) return { ok: false, error: `malformed task ${isObj(t) && isStr(t.id) ? t.id : "(no id)"}` };
   }
@@ -73,7 +97,13 @@ export function validateBoardPayload(body) {
   }
   return {
     ok: true,
-    value: { tasks: body.tasks.map((t) => ({ ...t })), activities, deletions },
+    value: {
+      /* TASK-1394: allowlist-rebuild instead of {...spread} — strips unknown
+         keys and any __proto__/constructor own-keys from untrusted JSON */
+      tasks: body.tasks.map((t) => pickAllowed(t, TASK_FIELDS)),
+      activities: activities.map((a) => pickAllowed(a, ACTIVITY_FIELDS)),
+      deletions: deletions.map((d) => pickAllowed(d, TOMBSTONE_FIELDS)),
+    },
   };
 }
 

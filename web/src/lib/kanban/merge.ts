@@ -16,6 +16,7 @@ import {
   replaceBoard as replaceBoardJs,
   MAX_ACTIVITIES as MAX_ACTIVITIES_JS,
   MAX_DELETIONS as MAX_DELETIONS_JS,
+  MAX_TASKS as MAX_TASKS_JS,
 } from "./board-merge.mjs";
 
 import type { Task } from "./types";
@@ -49,6 +50,7 @@ type Validated<T> = { ok: true; value: T } | { ok: false; error: string };
 
 export const MAX_ACTIVITIES: number = MAX_ACTIVITIES_JS;
 export const MAX_DELETIONS: number = MAX_DELETIONS_JS;
+export const MAX_TASKS: number = MAX_TASKS_JS;
 
 /** Validate a POST body; returns the normalized payload or an error message. */
 export function validateBoardPayload(body: unknown): Validated<BoardPayload> {

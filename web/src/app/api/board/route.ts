@@ -82,7 +82,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "invalid JSON" }, { status: 400 });
   }
   const v = validateBoardPayload(body);
-  if (!v.ok) return NextResponse.json({ error: v.error }, { status: 400 });
+  if (!v.ok) {
+    /* TASK-1394: oversized boards are a size problem, not a shape problem */
+    return NextResponse.json(
+      { error: v.error },
+      { status: v.error === "too_many_tasks" ? 413 : 400 }
+    );
+  }
 
   if (isObjWithMode(body) && body.mode === "replace") {
     const auth = replaceAuthorized(body.mode, req.headers.get("x-board-token"));
