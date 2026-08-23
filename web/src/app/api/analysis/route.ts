@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getChart } from "@/lib/marketData";
 import { analyzeChart } from "@/lib/analysis";
+import { validExchange, validSymbol } from "@/lib/symbolGuard";
 
 /* /api/analysis — single-stock analysis (example API).
  * GET /api/analysis?symbol=RELIANCE&range=1y&interval=1d
@@ -32,8 +33,11 @@ export async function GET(request: NextRequest) {
   const interval = request.nextUrl.searchParams.get("interval") ?? "1d";
   const key = `${range}/${interval}`;
 
-  if (!symbol || !/^[A-Z0-9 .^=&_-]{1,32}$/.test(symbol)) {
+  if (!symbol || !validSymbol(symbol)) {
     return NextResponse.json({ error: "invalid_symbol" }, { status: 400 });
+  }
+  if (!validExchange(exchange)) {
+    return NextResponse.json({ error: "invalid_exchange" }, { status: 400 });
   }
   if (!VALID.has(key)) {
     return NextResponse.json({ error: "invalid_range" }, { status: 400 });
