@@ -1,4 +1,7 @@
 from playwright.sync_api import sync_playwright
+
+import sys
+BASE = sys.argv[sys.argv.index("--url") + 1] if "--url" in sys.argv else f"{BASE}"
 import json, math, time
 
 def make_payload(symbol, n=120, degraded=None, stale=False):
@@ -39,7 +42,7 @@ with sync_playwright() as p:
         route.fulfill(json=payload)
 
     pg.route("**/api/chart*", route_chart)
-    pg.goto("http://localhost:3000/?s=MOCKA&e=NSE&r=1y", wait_until="networkidle")
+    pg.goto(f"{BASE}/?s=MOCKA&e=NSE&r=1y", wait_until="networkidle")
     pg.wait_for_timeout(5000)
 
     print("h1:", pg.locator("h1").text_content())
@@ -65,10 +68,10 @@ with sync_playwright() as p:
     print("range 5 active:", pg.locator('button[aria-pressed="true"]').nth(1).text_content())
 
     # degraded + stale chips on other symbols
-    pg.goto("http://localhost:3000/?s=MOCKB&e=NSE&r=1y", wait_until="networkidle")
+    pg.goto(f"{BASE}/?s=MOCKB&e=NSE&r=1y", wait_until="networkidle")
     pg.wait_for_timeout(4000)
     print("MOCKB DAILY chip:", pg.locator("text=DAILY").count() > 0)
-    pg.goto("http://localhost:3000/?s=MOCKC&e=NSE&r=1y", wait_until="networkidle")
+    pg.goto(f"{BASE}/?s=MOCKC&e=NSE&r=1y", wait_until="networkidle")
     pg.wait_for_timeout(4000)
     print("MOCKC STALE chip:", pg.locator("text=STALE").count() > 0)
 

@@ -18,3 +18,4 @@ tmp/
 nohup.out
 opencode.json
 .opencode/
+__pycache__/

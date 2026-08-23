@@ -168,7 +168,7 @@ export default function ScreenerPage() {
           )}
         </div>
 
-        <div role="group" aria-label="Strategy" className="flex flex-wrap gap-2">
+        <div role="group" aria-label="Strategy" className="flex flex-wrap items-center gap-2">
           {strategies.map((s) => (
             <button
               key={s.id}
@@ -180,6 +180,12 @@ export default function ScreenerPage() {
               {s.name}
             </button>
           ))}
+          <Link
+            href={`/backtest?strategy=${encodeURIComponent(strategy)}`}
+            className="ml-1 rounded-full border border-dashed border-line px-3.5 py-1.5 text-sm text-muted transition-colors hover:border-line-strong hover:text-paper"
+          >
+            Backtest →
+          </Link>
         </div>
 
         {error && (
