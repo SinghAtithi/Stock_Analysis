@@ -155,7 +155,7 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "doing",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -187,7 +187,7 @@
         }
       ],
       "createdAt": 1787471664791,
-      "updatedAt": 1787479182032,
+      "updatedAt": 1787479341950,
       "blocked": false
     },
     {
@@ -423,7 +423,7 @@
         }
       ],
       "createdAt": 1787471747254,
-      "updatedAt": 1787479045130,
+      "updatedAt": 1787479373573,
       "blocked": false
     },
     {
@@ -581,8 +581,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -613,7 +613,7 @@
         }
       ],
       "createdAt": 1787472243516,
-      "updatedAt": 1787472243516,
+      "updatedAt": 1787479408465,
       "blocked": false
     },
     {
@@ -1126,7 +1126,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P0",
-      "status": "doing",
+      "status": "review",
       "assignee": "wraith",
       "labels": [
         "ci",
@@ -1137,17 +1137,17 @@
         {
           "id": "1",
           "text": "s100-real + s172/174 regime suites skip gracefully when db/data/app.db is absent/empty (fresh checkout)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "npm test green with no local DB (simulate CI env)",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "tsc + lint + test gates all green",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
@@ -1156,7 +1156,7 @@
         }
       ],
       "createdAt": 1787478868951,
-      "updatedAt": 1787478884553,
+      "updatedAt": 1787479406390,
       "blocked": false
     },
     {
@@ -1165,8 +1165,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "vector",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -1192,11 +1192,102 @@
         }
       ],
       "createdAt": 1787478913029,
-      "updatedAt": 1787478913029,
+      "updatedAt": 1787479267635,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "FQFW",
+      "taskId": "TASK-16",
+      "text": "re-started by CIPHER",
+      "agent": "CIPHER",
+      "at": 1787479408465
+    },
+    {
+      "id": "1CF6",
+      "taskId": "TASK-16",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787479407360
+    },
+    {
+      "id": "OGLE",
+      "taskId": "TASK-32",
+      "text": "review · gates green tsc=28.8s·lint=24.7s·test=6.3s",
+      "agent": "WRAITH",
+      "at": 1787479406391
+    },
+    {
+      "id": "Y8WN",
+      "taskId": "TASK-11",
+      "text": "shipped 83edb43 (local) · [TASK-11] feat(ui): shared AppShell — one SiteHeader + useISTClock for home/screener/breadth · gates tsc=12.7s·lint=33.1s·test=6.5s · e2e✓",
+      "agent": "RAVEN",
+      "at": 1787479373573
+    },
+    {
+      "id": "WYYY",
+      "taskId": "TASK-05",
+      "text": "shipped 8f28cf9 (local) · [TASK-05] refactor(data): getChart 210->22 lines — shared fallbackPayload builder, singleflight coalescing, 12s upstream budget; byte-exact parity on 5 live captures · gates tsc=14.6s·lint=28.9s·test=6.5s",
+      "agent": "CIPHER",
+      "at": 1787479341950
+    },
+    {
+      "id": "HPMG",
+      "taskId": "TASK-11",
+      "text": "moved review → done",
+      "agent": "CIPHER",
+      "at": 1787479331491
+    },
+    {
+      "id": "NH24",
+      "taskId": "TASK-32",
+      "text": "✓ checked tsc + lint + test gates all green",
+      "agent": "RAVAN",
+      "at": 1787479322171
+    },
+    {
+      "id": "AG7O",
+      "taskId": "TASK-32",
+      "text": "✓ checked npm test green with no local DB (simulate CI env",
+      "agent": "RAVAN",
+      "at": 1787479322012
+    },
+    {
+      "id": "HJAI",
+      "taskId": "TASK-32",
+      "text": "✓ checked s100-real + s172/174 regime suites skip graceful",
+      "agent": "RAVAN",
+      "at": 1787479321656
+    },
+    {
+      "id": "6U1F",
+      "taskId": "TASK-11",
+      "text": "review · gates green tsc=11.2s·lint=28.1s·test=8.1s · e2e✓",
+      "agent": "RAVEN",
+      "at": 1787479294481
+    },
+    {
+      "id": "FC2G",
+      "taskId": "TASK-05",
+      "text": "review · gates green tsc=10.3s·lint=30.1s·test=6.3s",
+      "agent": "CIPHER",
+      "at": 1787479291296
+    },
+    {
+      "id": "JQDZ",
+      "taskId": "TASK-33",
+      "text": "claimed by VECTOR · → doing",
+      "agent": "VECTOR",
+      "at": 1787479267635
+    },
+    {
+      "id": "MLCI",
+      "taskId": "TASK-11",
+      "text": "shipped 5dd6093 (local) · refactor(ui): shared SiteHeader + useISTClock, CSS-var FlowBars theming (TASK-11) · gates tsc=12.8s·lint=27.1s·test=7.0s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787479224171
+    },
     {
       "id": "ZO78",
       "taskId": "TASK-05",
@@ -1665,99 +1756,8 @@
       "text": "✓ checked workflow runs web gates (tsc --noEmit, eslint, n",
       "agent": "CIPHER",
       "at": 1787477361244
-    },
-    {
-      "id": "X6T7",
-      "taskId": "TASK-25",
-      "text": "moved review → done",
-      "agent": "SABLE",
-      "at": 1787477348420
-    },
-    {
-      "id": "RVS5",
-      "taskId": "TASK-29",
-      "text": "re-started by CIPHER",
-      "agent": "CIPHER",
-      "at": 1787477288265
-    },
-    {
-      "id": "E3S0",
-      "taskId": "TASK-25",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "SABLE",
-      "at": 1787477271269
-    },
-    {
-      "id": "FGM2",
-      "taskId": "TASK-29",
-      "text": "claimed by NOVA · → doing",
-      "agent": "NOVA",
-      "at": 1787477268298
-    },
-    {
-      "id": "GUD3",
-      "taskId": "TASK-25",
-      "text": "shipped cd639b3 (local) · [TASK-25] ops(board): :3000 rebuilt at HEAD — merge/cache semantics live and verified; restart-after-route-changes rule documented in BOARD.md + AGENTS.md",
-      "agent": "CIPHER",
-      "at": 1787477254142
-    },
-    {
-      "id": "7EN9",
-      "taskId": "TASK-25",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "CIPHER",
-      "at": 1787477217779
-    },
-    {
-      "id": "COFS",
-      "taskId": "TASK-25",
-      "text": "✓ checked document rule in docs/BOARD.md + AGENTS.md: rest",
-      "agent": "RAVAN",
-      "at": 1787477211598
-    },
-    {
-      "id": "SL02",
-      "taskId": "TASK-25",
-      "text": "✓ checked document rule in docs/BOARD.md + AGENTS.md: rest",
-      "agent": "CIPHER",
-      "at": 1787477154901
-    },
-    {
-      "id": "1453",
-      "taskId": "TASK-29",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787477151257
-    },
-    {
-      "id": "D8RU",
-      "taskId": "TASK-28",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787477151135
-    },
-    {
-      "id": "4GY6",
-      "taskId": "TASK-26",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "NOVA",
-      "at": 1787477085615
-    },
-    {
-      "id": "G7WK",
-      "taskId": "TASK-25",
-      "text": "re-started by SABLE",
-      "agent": "SABLE",
-      "at": 1787476992775
-    },
-    {
-      "id": "MMB5",
-      "taskId": "TASK-03",
-      "text": "moved todo → done",
-      "agent": "SABLE",
-      "at": 1787476975962
     }
   ],
   "deletions": [],
-  "updatedAt": 1787479182034
+  "updatedAt": 1787479469148
 }

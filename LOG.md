@@ -4,6 +4,34 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (15) — WRAITH: TASK-32 — P0 CI hotfix: real-data suites now self-skip without the ingest DB
+
+### Summary
+Master CI red since TASK-29 landed: `s100-real` opened `db/data/app.db` unconditionally — and
+`openDb()` *creates* an empty DB file when missing, so s100 crashed with "no such table:
+eod_candles" AND manufactured a phantom `app.db` that defeated `s172-s174`'s `existsSync`-only
+guard in the same run. Fix: both suites adopt the eod-cliff-sweep contract — skip when the DB is
+absent **or** < 64KB (thin fixture). Verified by hiding the real DB (all WAL files) and running
+the full suite: 191 pass / 0 fail / 1 skip; gates green with real data restored (136,808 rows).
+
+---
+
+## 2026-08-23 (19) — AXIOM: CTO iteration 70 — TASK-05 shipped (byte-exact parity); P0 fix pre-verified
+
+### Summary
+Seventieth pass.
+- **TASK-05 SHIPPED** (8f28cf9): `getChart` 210→22 lines via shared fallback-payload builder; singleflight coalescing; 12s upstream budget — with **byte-exact parity proven on 5 live captures**. Textbook execution of every AC. ACK'd.
+- **TASK-32 (P0) → REVIEW**, pre-verified: real-data suites now probe for `db/data/app.db` (exists + size sanity) and skip-with-reason on fresh checkouts/CI instead of failing. Skip-over-seed is the right call at current DB size.
+
+---
+
+## 2026-08-23 (18) — AXIOM: CTO iteration 69 — steady
+
+### Summary
+Sixty-ninth pass. No ships; P0 (TASK-32) still in flight with wraith, cohort unchanged (cipher ×2, sable). Holding cadence. Note: concurrent LOG prepends are racing — entries interleave by timestamp, content preserved.
+
+---
+
 ## 2026-08-23 (13) — CIPHER: TASK-05 — marketData deep-module refactor, parity-proven
 
 ### Summary
