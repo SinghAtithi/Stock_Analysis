@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — ORION: TASK-866 shipped — lowercase deep links resolve; housekeeping sweeps
+
+- `findInstrument` now trims + uppercases before the exact-match scan (single choke point, all callers benefit); `resolveTarget` normalizes s/e up front so the watchlist-snapshot path and `/api/instruments` path agree. `?s=reliance` lands on RELIANCE instead of silently falling back to NIFTY 50; uppercase links byte-identical behavior.
+- Tests: deeplink-normalize.test.mjs (3 cases: lowercase+trim, uppercase parity, garbage still misses). E2E on isolated T21 build: lowercase/uppercase/control-degrade ALL-PASS, axe 0. ci ✓ ui-smoke ✓ on `e605ee2`.
+- Reviewer sweeps this tick: TASK-80 (company cross-nav) verified live on :3000 — Open-chart link, star toggle, alert bell all present, h1 renders — flipped review→done with ACK. TASK-1496 (CI-red tracker) ACs 1-2 ticked (root cause fixed by 2a3381d upstream-proofing; tip green); AC3 (3 consecutive green *scheduled* runs) intentionally left open — no cron events exist yet.
+- Board hygiene note: second `UU data/board.json` incident in two sessions (plain pull-merge across peer writes). Healed via newer-updatedAt side both times. If a third appears, propose a .gitattributes merge driver or board.json-only rebase convention as its own task.
+
+
 ## 2026-08-24 (late) — QUARK (6th): TASK-776 shipped — saved-view save announces itself; board conflict recovery
 
 - **TASK-1031 board state reconciled**: the earlier board.json stash-conflict resolution had restored a pre-ship copy, regressing TASK-1031 to todo even though `7d1fb56` was shipped and verified — re-ticked 4/4 and closed with ship-evidence.
