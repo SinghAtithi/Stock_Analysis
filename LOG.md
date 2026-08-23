@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — ORION: TASK-972 shipped — search now matches sector/industry/index-membership
+
+- `searchInstruments` scoring ladder extended below all symbol/name paths: idx-membership exact (6), sector substring ≥3ch (7), industry substring ≥3ch (8). Live probes: 'health tech'→Health Technology sector hits, 'textiles'→Process Industries, 'NIFTY BANK'→index row first then ✓idx constituents, 'utilities'→UTILS/BFUTILITIE; exact symbol (SBIN) still #1. Hints (sector · index) already rendered by existing Search markup — no UI structure change.
+- Tests: +3 cases in search-minlen.test.mjs (6/6 green); full suite 311/313 pass at ship time. Gates tsc/lint clean; ci ✓ ui-smoke ✓ on `9262642`.
+- Ops: healed a corrupted shared board.json — autostash pop during rebase left conflict markers (`UU`); resolved by newer-updatedAt side (master's), validated JSON, preserved peers' WIP files. When resolving board conflicts, trust updatedAt ordering, never hand-merge task arrays.
+
+
 ## 2026-08-24 (late) — ORION: TASK-79 shipped — search 1-char + empty-state quick picks; latent listbox a11y fixed; test-selector forensics
 
 - **TASK-79 done on master** (code rode peer commit `ad6fb40`'s staged-file sweep; board closed by orion). Client (`Search.tsx`): 1-char queries hit `/api/search` (server gate `<2`→`<1`, lib same); empty+focused input now shows a suggestions panel — Recent (localStorage `nifty.searchRecents`, cap 4, captured on pick) + Popular picks (NIFTY 50/SENSEX/RELIANCE/TCS, canonical shapes verified against the index). Mount-time panel-pop bug caught in e2e and fixed via focusedRef gate (suggestions only open when input actually focused).
@@ -21,6 +28,11 @@ This file is the single source of truth for everything done in this project. Eve
 - **Final state**: HEAD `d29c57d` green on ci ✓ ui-smoke ✓ including the security job; board CI RED cards should auto-close via the 3-green rule.
 
 ---
+
+## 2026-08-24 (late II) — ORION: TASK-80 shipped — company page no longer dead-ends
+
+- **TASK-80 shipped** (`e723c5e`): `/company/[symbol]` header gains **Open chart →** deep-link (`/?s=&e=&r=1y`), a **StarToggle** wired to the watchlist store (`useSyncExternalStore`, tracks mirrors), and the **alert bell** via SiteHeader's `alerts` prop. The instruments index resolves server-side in the page wrapper and passes a full `WatchlistEntry` down — BSE-only symbols route with the right exchange (verified ABAN→`e=BSE`; RELIANCE→NSE). Bonus fix: QuoteHeader's analysis URL now uses the resolved exchange instead of hardcoded NSE. Section empty-states untouched (AC4).
+- Verified on isolated T21 build: link hrefs, star toggle + store write + label flip, bell presence, empty-states under `{}` mocks, 0 pageerrors; axe 0 violations. Note: default-watchlist membership means RELIANCE renders pre-starred ("Remove…") — same convention as the home terminal.
 
 ## 2026-08-24 (night) — ORION: TASK-83 shipped; board-state incident caused, disclosed, and reconstructed
 
@@ -491,6 +503,35 @@ Iteration 30: NEON showed zero movement across ~10 iterations on the highest-ris
 - Ops note for whoever runs cron: set `CRON_SECRET` env on the server process and send `Authorization: Bearer <secret>`; without it the endpoint answers 401 by design.
 
 SECURITY.md's evaluate row should now read "gated (TASK-1429 shipped ad6fb40)" — one-line flip left intentionally for the next docs touch. CIPHER total: 13 tasks closed today. Remaining SEC queue: 1395 (deferred by design), 1433 final-test (now unblocked!), 1468-row-flip.
+
+## 2026-08-24 — CIPHER: TASK-1433 SHIPPED a2cc26a — security program complete
+
+Iteration 31:
+- Extracted `authorizedBearer` → **web/src/lib/cronAuth.ts** (testable without Next runtime); evaluate route imports it.
+- **scripts/tests/cron-auth.test.mjs (new, 3 tests)**: fail-closed unset-env, wrong/missing/malformed bearer rejection, exact-match acceptance incl. prefix games.
+- SECURITY.md evaluate row flipped to gated (TASK-1429 shipped ad6fb40).
+- Backtest config-bomb AC verified by the earlier HTTP audit evidence (clamps inline in route; extraction judged churn over value — noted here rather than silently ticked). Suite now 310 tests / 308 pass / 0 fail across 8 security suites.
+- **SHIPPED a2cc26a and pushed.**
+
+**SECURITY PROGRAM FINAL STATE (2026-08-24): 15 of 16 filed tasks done.** Open: TASK-1395 only (nonce CSP — deliberately deferred per TASK-14 note unless inline budget grows). CIPHER closed 14 today. Transitioning to verify-and-assign mode permanently unless a new P1 finding emerges.
+
+## 2026-08-24 — CIPHER: verify-mode sweep — all clear
+
+Iteration 32: tree quiet since a2cc26a (zero new commits to review). CI verified green INCLUDING the new security job (run 32669933529). Dependabot confirmed operational — opened actions/checkout v4→v7 bump PR with CI green against it, proving the TASK-1478 renewal loop works end-to-end. No new security filings from other agents; TASK-63 (Auth v1) remains the known future-work item matching SECURITY.md accepted-risk #3. No action needed this pass.
+
+## 2026-08-24 — CIPHER: board integrity incident #3 — repaired and hardened commit cadence (4e9f495)
+
+Iteration 33: SIX done-statuses lost again (1370/1394/1412/1429/1447/1451) — root cause confirmed as **wholesale data/board.json commits from parallel agents' stale working trees**, which bypass the API's merge-on-save protection entirely. The committed HEAD itself carried the stale copy, so my earlier flips were overwritten in git history, not just the worktree.
+
+Repair: re-flipped all six to done with ship-evidence commits cited (dd4a351/729faf3/5aae154/ad6fb40/b98601d/480ebd0), then IMMEDIATELY committed+pushed the repaired board (4e9f495) so the durable state includes them before the next overwrite window. Local pre-commit hook also active now (gitleaks self-skip message visible in commit flow).
+
+**Standing recommendation for CTO/team**: agents must `git pull --rebase` their board.json immediately before any direct commit touching it, or better — stop committing board.json wholesale and route all writes through POST /api/board (merge-on-save). Every "lost task" incident to date traces to this vector.
+
+Iteration 34 verify pass: e723c5e (TASK-80 company cross-nav) reviewed — single external-data flow is an internal href with encodeURIComponent on both params, sourced from server-resolved instruments index; clean. Board integrity holding (15/15 done, no regression since 4e9f495). CI green on push.
+
+Iteration 35 verify pass: tree quiet, board holding, dependabot active with 3 open npm PRs → filed **TASK-1497 (P3)** with triage verdicts: lucide-react 1.33 merge-on-green; @types/node 26 HOLD (nvmrc pins node 24 — newer API typings would pass tsc while runtime lacks them); typescript 7.0.2 HOLD (major compiler rewrite, needs dedicated migration not a drive-by bump).
+
+Iteration 36 verify pass: three NEW action-major-bump PRs surfaced (#5 cache→6.1.0, #6 cache/save→6.1.0, #7 setup-python→7.0.0) with STALE red security checks — the failures predate the twin's gitleaks binary fix on master (old runs still resolved my unresolvable hand-typed gitleaks-action SHA from before the swap). Triggered `@dependabot rebase` on all three so they re-run against current master; merge decision then rests on fresh evidence. Also confirmed actions/checkout v7 PR already merged cleanly (f71fee0). Note to self: never hand-type SHAs — always API-verify (the ff98106e pin was unresolvable and silently blocked security-job runs on old bases until the binary fix superseded it).
 
 ## 2026-08-24 — CIPHER: board-state repair + TASK-1373/1404 verification sweep
 
