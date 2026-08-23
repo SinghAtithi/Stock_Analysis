@@ -1770,7 +1770,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -1802,7 +1802,7 @@
         }
       ],
       "createdAt": 1787483673579,
-      "updatedAt": 1787489668192,
+      "updatedAt": 1787489936113,
       "blocked": false
     },
     {
@@ -1931,8 +1931,8 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "raven",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -1958,7 +1958,7 @@
         }
       ],
       "createdAt": 1787485797694,
-      "updatedAt": 1787485797694,
+      "updatedAt": 1787490068654,
       "blocked": false
     },
     {
@@ -2049,8 +2049,8 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "nova",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -2091,7 +2091,7 @@
         }
       ],
       "createdAt": 1787485823449,
-      "updatedAt": 1787485823449,
+      "updatedAt": 1787489909769,
       "blocked": false
     },
     {
@@ -2182,7 +2182,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "sable",
       "labels": [],
       "estimate": 3,
@@ -2214,7 +2214,7 @@
         }
       ],
       "createdAt": 1787485853306,
-      "updatedAt": 1787489679046,
+      "updatedAt": 1787489732857,
       "blocked": false
     },
     {
@@ -2472,7 +2472,7 @@
       "desc": "",
       "phase": "C",
       "priority": "P1",
-      "status": "review",
+      "status": "done",
       "assignee": null,
       "labels": [
         "data",
@@ -2497,7 +2497,7 @@
         }
       ],
       "createdAt": 1787488827566,
-      "updatedAt": 1787489657799,
+      "updatedAt": 1787489723206,
       "blocked": false
     },
     {
@@ -2506,7 +2506,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -2533,11 +2533,60 @@
         }
       ],
       "createdAt": 1787488980755,
-      "updatedAt": 1787489688321,
+      "updatedAt": 1787489836319,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "NDJ1",
+      "taskId": "TASK-53",
+      "text": "claimed by RAVEN · → doing",
+      "agent": "RAVEN",
+      "at": 1787490068654
+    },
+    {
+      "id": "B9UG",
+      "taskId": "TASK-49",
+      "text": "review · gates green tsc=10.9s·lint=36.8s·test=6.9s",
+      "agent": "CIPHER",
+      "at": 1787489936113
+    },
+    {
+      "id": "UYN6",
+      "taskId": "TASK-56",
+      "text": "claimed by NOVA · → doing",
+      "agent": "NOVA",
+      "at": 1787489909770
+    },
+    {
+      "id": "SHJ7",
+      "taskId": "TASK-67",
+      "text": "shipped 76e12f2 (local) · perf(ingest): NSE sweeper starts at listing year via getHistoricalPeriodicDataYears — young listings skip empty pre-IPO windows (ETERNAL 290s→88s) (TASK-67) · gates tsc=14.3s·lint=40.8s·test=7.5s",
+      "agent": "CIPHER",
+      "at": 1787489836319
+    },
+    {
+      "id": "PS2J",
+      "taskId": "TASK-67",
+      "text": "review · gates green tsc=14.5s·lint=38.3s·test=7.8s",
+      "agent": "CIPHER",
+      "at": 1787489773330
+    },
+    {
+      "id": "EQ5I",
+      "taskId": "TASK-59",
+      "text": "review · gates green tsc=10.7s·lint=34.9s·test=8.0s",
+      "agent": "SABLE",
+      "at": 1787489732858
+    },
+    {
+      "id": "KK0U",
+      "taskId": "TASK-66",
+      "text": "shipped efbaf77 → origin/master · [TASK-66] docs(adr): ADR-0003 fundamentals source — keyless paths empirically dead, paid vendor recommendation; probe tool kept · gates tsc=10.7s·lint=31.8s·test=7.3s",
+      "agent": "NOVA",
+      "at": 1787489723206
+    },
     {
       "id": "HA8H",
       "taskId": "TASK-67",
@@ -3048,57 +3097,8 @@
       "text": "claimed by RAVEN · → doing",
       "agent": "RAVEN",
       "at": 1787486165592
-    },
-    {
-      "id": "9KA5",
-      "taskId": "TASK-60",
-      "text": "claimed by NOVA · → doing",
-      "agent": "NOVA",
-      "at": 1787486123758
-    },
-    {
-      "id": "27MN",
-      "taskId": "TASK-50",
-      "text": "shipped e2bfc0e → origin/master · [TASK-50] feat(quant): wire S105 Analyst Revision Drift (jury #11) — revisionTrend momentum, cross-sectional pctRank, 9 unit tests + skip-guarded real-data smoke · gates tsc=12.5s·lint=30.1s·test=6.4s",
-      "agent": "RAVEN",
-      "at": 1787485959987
-    },
-    {
-      "id": "D0VE",
-      "taskId": "TASK-47",
-      "text": "shipped eb1a81d (local) · [TASK-47] ci(pipelines): scheduled eod ingest → signals chain + morning breadth — cached DB, failure issues · gates tsc=9.5s·lint=30.2s·test=6.9s",
-      "agent": "SABLE",
-      "at": 1787485922403
-    },
-    {
-      "id": "A4F6",
-      "taskId": "TASK-64",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485890061
-    },
-    {
-      "id": "1T2Z",
-      "taskId": "TASK-63",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485889877
-    },
-    {
-      "id": "NAT3",
-      "taskId": "TASK-62",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485889758
-    },
-    {
-      "id": "JUQS",
-      "taskId": "TASK-61",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485889555
     }
   ],
   "deletions": [],
-  "updatedAt": 1787489688324
+  "updatedAt": 1787490068657
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 /* FundamentalsPanel — T49. PE / PB / ROE / D:E / margins from
  * /api/fundamentals?symbol=, with as-of stamp + source tag and an empty
@@ -35,21 +35,32 @@ const fmt = (v: number | null, digits = 2): string =>
 const pct = (v: number | null): string =>
   v === null || !Number.isFinite(v) ? "—" : `${(v * 100).toFixed(1)}%`;
 
+function Shell({ children }: { children: ReactNode }) {
+  return (
+    <section aria-label="Fundamentals" className="rounded-2xl border border-line bg-surface px-4 py-3 shadow-sm">
+      {children}
+    </section>
+  );
+}
+
 export default function FundamentalsPanel({ symbol }: { symbol: string }) {
   const [data, setData] = useState<Payload | null>(null);
+  const [loadedFor, setLoadedFor] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     const tick = async () => {
-      setFailed(false);
       try {
         const res = await fetch(`/api/fundamentals?symbol=${encodeURIComponent(symbol)}`, {
           cache: "no-store",
         });
         if (!res.ok) throw new Error(String(res.status));
         const json: Payload = await res.json();
-        if (!cancelled) setData(json);
+        if (!cancelled) {
+          setData(json);
+          setLoadedFor(symbol);
+        }
       } catch {
         if (!cancelled) setFailed(true);
       }
@@ -60,23 +71,33 @@ export default function FundamentalsPanel({ symbol }: { symbol: string }) {
     };
   }, [symbol]);
 
-  const m = data?.metrics ?? null;
+  if (failed) {
+    return (
+      <Shell>
+        <p className="text-sm text-muted">Fundamentals unavailable right now.</p>
+      </Shell>
+    );
+  }
+
+  const fresh = loadedFor === symbol;
+  const m = fresh ? (data?.metrics ?? null) : null;
+
+  if (!fresh) {
+    return (
+      <Shell>
+        <span
+          aria-hidden
+          className="inline-block h-[0.9em] w-40 animate-pulse rounded bg-panel-2 align-baseline"
+        />
+      </Shell>
+    );
+  }
 
   if (!m) {
-    if (failed) {
-      return (
-        <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
-          <p className="text-sm text-muted">Fundamentals unavailable right now.</p>
-        </div>
-      );
-    }
     return (
-      <div className="rounded-2xl border border-dashed border-line bg-canvas px-4 py-6 text-center">
-        <p className="text-sm font-medium text-paper">No fundamentals yet</p>
-        <p className="mt-1 text-xs leading-relaxed text-muted">
-          The nightly fundamentals ingest has not covered {symbol} so far — ratios appear after its first run.
-        </p>
-      </div>
+      <Shell>
+        <p className="text-sm text-muted">No fundamentals on file for this symbol.</p>
+      </Shell>
     );
   }
 
@@ -93,7 +114,15 @@ export default function FundamentalsPanel({ symbol }: { symbol: string }) {
     { label: "Div yield", value: m.dividendYield === null ? "—" : `${(m.dividendYield * 100).toFixed(2)}%` },
     { label: "Current ratio", value: fmt(m.currentRatio) },
     { label: "P/S", value: fmt(m.priceToSales) },
-  ];
+  ].filter((c) => c.value !== "—");
+
+  if (cells.length === 0) {
+    return (
+      <Shell>
+        <p className="text-sm text-muted">No fundamentals on file for this symbol.</p>
+      </Shell>
+    );
+  }
 
   const asOf = data?.meta.as_of ? new Date(data.meta.as_of) : null;
   const asOfLabel = asOf
@@ -101,7 +130,17 @@ export default function FundamentalsPanel({ symbol }: { symbol: string }) {
     : null;
 
   return (
-    <section aria-label="Fundamental ratios">
+    <section aria-label="Fundamentals">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-1 pb-2">
+        <span className="text-xs font-medium tracking-wide text-muted">Fundamentals</span>
+        {(asOfLabel || data?.meta.source) && (
+          <span className="font-mono text-[11px] tabular-nums text-faint">
+            {asOfLabel ? `as of ${asOfLabel} IST` : null}
+            {asOfLabel && data?.meta.source ? " · " : ""}
+            {data?.meta.source ?? ""}
+          </span>
+        )}
+      </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         {cells.map((c) => (
           <div
@@ -113,12 +152,9 @@ export default function FundamentalsPanel({ symbol }: { symbol: string }) {
           </div>
         ))}
       </div>
-      {(asOfLabel || m.sector) && (
+      {(m.sector || m.industry) && (
         <p className="mt-2 px-1 text-[11px] text-faint">
-          {m.sector ?? ""}
-          {m.sector && m.industry ? " · " : ""}
-          {m.industry ?? ""}
-          {asOfLabel ? ` · as of ${asOfLabel} IST · ${data?.meta.source ?? "—"}` : ""}
+          {[m.sector, m.industry].filter(Boolean).join(" · ")}
         </p>
       )}
     </section>

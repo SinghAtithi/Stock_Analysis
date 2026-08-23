@@ -4,6 +4,23 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (101) — CIPHER: TASK-49 reopened — fundamentals panel verified live + hardened
+
+### Summary
+TASK-49 had a prior ship (c403fab: panel + route together); board card was reopened, so this pass verified the whole chain end-to-end and closed spec gaps in `web/src/components/FundamentalsPanel.tsx` (route untouched per brief). Panel now: visible "Fundamentals" header with mono as-of/source stamp (`as of 23 Aug IST · yahoo`, JetBrains Mono tabular 11px faint); show-only-available metric rows (null ratios dropped, all-null ⇒ empty state); exact empty-state copy "No fundamentals on file for this symbol." inside a persistent bordered shell (no layout jump); muted inline error message; stale-symbol guard (payload tagged with fetched symbol — no cross-symbol flash while switching); first-load pulse skeleton instead of empty-state flash. Metrics displayed: P/E, Fwd P/E, P/B, D/E, ROE, ROA, gross/op/net margin, div yield, current ratio, P/S + sector/industry footer.
+
+### Verification
+- `npx tsc --noEmit` clean; `npm run lint` 0 errors / 6 pre-existing warnings (kalyan, foreign); node:test fails only in `scripts/tests/alerts.test.mjs` — foreign mid-write churn (uncommitted `web/src/lib/alerts.ts` adds strategy_enter/exit; test expects closed list). Retried once after 60s per protocol, persists; unrelated to this task (alerts are off-limits to CIPHER).
+- Playwright sanity on own :3009 dev server: RELIANCE deep link → 12 metric cells, stamp + source visible, no em-dash rows; WIPRO (real instrument, no fund row) → empty-state line + shell rendered; screenshots `/tmp/opencode/fund-reliance.png` / `fund-empty.png`. Only console errors are the known dev-mode React-eval-vs-CSP noise (reproduces on /disclaimer).
+- API probed live: `GET /api/fundamentals?symbol=RELIANCE.NS` → normalized metrics + `X-Fetched-At: 2026-08-23T12:18:03.000Z`.
+
+### Deviations
+- Panel keeps `{ symbol }` prop only (no `exchange`) — endpoint normalizes suffixes server-side; an exchange prop would be dead code.
+- page.tsx untouched this pass (already mounts panel below StatsRail at both breakpoints); avoids dragging a foreign uncommitted `tabIndex` hunk into this ship.
+- Commit will carry foreign uncommitted LOG.md journal lines (96–100) and shared board state — shared-file reality of the pipeline.
+
+---
+
 ## 2026-08-23 (100) — NOVA: TASK-66 — fundamentals source ADR; keyless paths empirically dead
 
 ### Probes
@@ -14,6 +31,25 @@ Keep Yahoo path intact (self-heals on clean IPs); refuse shallow substitutes tha
 
 ### Status
 TASK-60's S101 live; TASK-57 blocked at AC0/AC2-full pending owner source decision (TASK-66 → done-pending-decision: probes + ADR delivered, wiring ready).
+
+---
+
+## 2026-08-23 (103) — AXIOM: CTO iteration 147 — steady
+
+### Summary
+Hundred-forty-seventh pass. No ships; 49 reopened-iteration/52/56/57/59 in various stages. Holding cadence.
+
+---
+
+## 2026-08-23 (102) — AXIOM: CTO iteration 146 — ADR-0003 accepted; sweeper perf shipped; strategy-entry alerts in REVIEW
+
+### Summary
+Hundred-forty-sixth pass. Three movements:
+- **TASK-67 SHIPPED** (76e12f2): NSE sweeper starts at listing year — ETERNAL ingest 290s→88s.
+- **TASK-66 SHIPPED** (efbaf77): **ADR-0003** — fundamentals source verdict: keyless paths empirically dead (probed locally + runners), paid vendor recommended with kept probe tool. Resolves the TASK-57 blocker decision.
+- **TASK-59 → REVIEW**: strategy-entry alerts + notification delivery.
+
+52/56/57 doing. Holding cadence.
 
 ---
 
