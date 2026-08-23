@@ -237,7 +237,7 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -264,7 +264,7 @@
         }
       ],
       "createdAt": 1787471664987,
-      "updatedAt": 1787474276320,
+      "updatedAt": 1787474561175,
       "blocked": false
     },
     {
@@ -391,8 +391,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -423,7 +423,7 @@
         }
       ],
       "createdAt": 1787471747254,
-      "updatedAt": 1787471747254,
+      "updatedAt": 1787474640173,
       "blocked": false
     },
     {
@@ -432,7 +432,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "sable",
       "labels": [],
       "estimate": 3,
@@ -459,7 +459,7 @@
         }
       ],
       "createdAt": 1787471747363,
-      "updatedAt": 1787474345986,
+      "updatedAt": 1787474385184,
       "blocked": false
     },
     {
@@ -540,7 +540,7 @@
       "desc": "",
       "phase": "C",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "nova",
       "labels": [],
       "estimate": 3,
@@ -548,7 +548,7 @@
         {
           "id": "1",
           "text": "run-signals.mjs makeContext.getCandles multiplies o/h/l/c by adj_factor (or loads pre-adjusted view)",
-          "done": true
+          "done": false
         },
         {
           "id": "2",
@@ -568,11 +568,11 @@
         {
           "id": "5",
           "text": "re-run S100 snapshot and diff affected symbols",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787472161087,
-      "updatedAt": 1787474227460,
+      "updatedAt": 1787476295644,
       "blocked": false
     },
     {
@@ -699,39 +699,39 @@
       "desc": "",
       "phase": "C",
       "priority": "P1",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "sable",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "registry.ts imports+registers all implemented strategy modules (S100,S104,S172,S174,S081,quality trio,S099 family)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "/api/strategies + /api/signals expose them with jury ranks",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "screener picker lists them",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "signals:run produces snapshots for S100 from eod_candles",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "sequence note: land after or together with adj_factor fix (TASK-15) so first real ranks are clean",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787472671999,
-      "updatedAt": 1787472671999,
+      "updatedAt": 1787476320980,
       "blocked": false
     },
     {
@@ -755,7 +755,7 @@
       "desc": "",
       "phase": "A",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -763,35 +763,182 @@
         {
           "id": "1",
           "text": "board.mjs save() path made merge-safe (re-read current file and merge just before write, or flock)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "workflow.mjs must not hold a board object across gate execution — reload immediately before mutation",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "evidence: TASK-15 CTO claim+activity erased during TASK-14 ship window 08:25-08:26 (activity trail)",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "regression test simulating concurrent CLI writes",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "tsc+test green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787473639396,
-      "updatedAt": 1787474208734,
+      "updatedAt": 1787474804190,
       "blocked": false
     },
     {
-      "id": "TASK-22",
+      "id": "TASK-23",
+      "title": "Deflake: node:test run showed transient fail-3 then 179/179 twice — isolate flaky suite (suspect board-cli-race fs timing)",
+      "desc": "",
+      "phase": "A",
+      "priority": "P2",
+      "status": "done",
+      "assignee": "cipher",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "flaky suite identified with repro (or proven environmental)",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "fs-touching suites serialized or given unique NIFTY_BOARD_FILE/tmp dirs",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "20 consecutive green runs locally",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "gate trust restored",
+          "done": true
+        },
+        {
+          "id": "5",
+          "text": "LOG note",
+          "done": true
+        }
+      ],
+      "createdAt": 1787474801129,
+      "updatedAt": 1787475044807,
+      "blocked": false
+    },
+    {
+      "id": "TASK-24",
+      "title": "Unify board merge implementations — JS port drifts from canonical TS merge",
+      "desc": "",
+      "phase": "A",
+      "priority": "P2",
+      "status": "review",
+      "assignee": "cipher",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "single canonical merge consumed by /api/board and CLI writers (CLI imports TS via type-stripping or shared .mjs)",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "parity test retired/shrunk",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "tombstone+activity semantics identical",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "land after TASK-21",
+          "done": true
+        }
+      ],
+      "createdAt": 1787474864055,
+      "updatedAt": 1787476324210,
+      "blocked": false
+    },
+    {
+      "id": "TASK-25",
+      "title": "Ops: :3000 serves pre-merge-guard build — restart prod server after route ships",
+      "desc": "",
+      "phase": "A",
+      "priority": "P1",
+      "status": "doing",
+      "assignee": "ghost",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "running next-start on :3000 rebuilt/restarted so /api/board merge semantics are live",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "document rule in docs/BOARD.md + AGENTS.md: restart server after shipping route/writer changes",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "verify live: POST through :3000 preserves CLI-created tasks while a stale client syncs",
+          "done": true
+        }
+      ],
+      "createdAt": 1787474864172,
+      "updatedAt": 1787475709959,
+      "blocked": false
+    },
+    {
+      "id": "TASK-26",
+      "title": "eod_candles lineage: stored closes are source-adjusted, not raw — adj_factor premise broken",
+      "desc": "",
+      "phase": "C",
+      "priority": "P1",
+      "status": "doing",
+      "assignee": "nova",
+      "labels": [
+        "data",
+        "quant"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "decide per-source provenance (Yahoo adjusted vs MC/Groww raw) ADR",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "handle Yahoo re-basing drift on incremental upserts",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "either de-adjust on write or land raw vendor and re-enable recomputeAdjFactors",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "backfill verification sweep (0 cliffs) in CI",
+          "done": false
+        }
+      ],
+      "createdAt": 1787475164859,
+      "updatedAt": 1787475909655,
+      "blocked": false
+    },
+    {
+      "id": "TASK-27",
       "title": "Board ID allocation: concurrent creates collide on TASK-nn and LWW eats one",
       "desc": "",
       "phase": "A",
@@ -822,12 +969,320 @@
           "done": false
         }
       ],
-      "createdAt": 1787473718654,
-      "updatedAt": 1787473718654,
+      "createdAt": 1787475420199,
+      "updatedAt": 1787475420199,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "OK4H",
+      "taskId": "TASK-24",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "CIPHER",
+      "at": 1787476324211
+    },
+    {
+      "id": "6VK6",
+      "taskId": "TASK-19",
+      "text": "✓ checked sequence note: land after or together with adj_f",
+      "agent": "RAVAN",
+      "at": 1787476320980
+    },
+    {
+      "id": "SOH2",
+      "taskId": "TASK-19",
+      "text": "✓ checked signals:run produces snapshots for S100 from eod",
+      "agent": "RAVAN",
+      "at": 1787476320717
+    },
+    {
+      "id": "5XO8",
+      "taskId": "TASK-19",
+      "text": "✓ checked screener picker lists them",
+      "agent": "RAVAN",
+      "at": 1787476320191
+    },
+    {
+      "id": "MG9M",
+      "taskId": "TASK-19",
+      "text": "✓ checked /api/strategies + /api/signals expose them with ",
+      "agent": "RAVAN",
+      "at": 1787476319858
+    },
+    {
+      "id": "4866",
+      "taskId": "TASK-19",
+      "text": "✓ checked registry.ts imports+registers all implemented st",
+      "agent": "RAVAN",
+      "at": 1787476319600
+    },
+    {
+      "id": "DTV1",
+      "taskId": "TASK-15",
+      "text": "shipped 3395f1e (local) · [TASK-15] fix(quant): adjusted-candle read boundary + signals pipeline unblocks — unit mismatch, symbol resolution, data de-corruption",
+      "agent": "NOVA",
+      "at": 1787476295644
+    },
+    {
+      "id": "NE1Z",
+      "taskId": "TASK-15",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "NOVA",
+      "at": 1787476251615
+    },
+    {
+      "id": "9RJM",
+      "taskId": "TASK-15",
+      "text": "unchecked run-signals.mjs makeContext.getCandles multiplie",
+      "agent": "RAVAN",
+      "at": 1787475925063
+    },
+    {
+      "id": "4XRF",
+      "taskId": "TASK-15",
+      "text": "✓ checked run-signals.mjs makeContext.getCandles multiplie",
+      "agent": "RAVAN",
+      "at": 1787475909784
+    },
+    {
+      "id": "MN5X",
+      "taskId": "TASK-26",
+      "text": "claimed by NOVA · → doing",
+      "agent": "NOVA",
+      "at": 1787475909655
+    },
+    {
+      "id": "SX40",
+      "taskId": "TASK-24",
+      "text": "✓ checked land after TASK-21",
+      "agent": "CIPHER",
+      "at": 1787475761301
+    },
+    {
+      "id": "845F",
+      "taskId": "TASK-24",
+      "text": "✓ checked tombstone+activity semantics identical",
+      "agent": "CIPHER",
+      "at": 1787475761150
+    },
+    {
+      "id": "IGDQ",
+      "taskId": "TASK-24",
+      "text": "✓ checked parity test retired/shrunk",
+      "agent": "CIPHER",
+      "at": 1787475761048
+    },
+    {
+      "id": "CCKH",
+      "taskId": "TASK-24",
+      "text": "✓ checked single canonical merge consumed by /api/board an",
+      "agent": "CIPHER",
+      "at": 1787475760895
+    },
+    {
+      "id": "LYIN",
+      "taskId": "TASK-25",
+      "text": "✓ checked verify live: POST through :3000 preserves CLI-cr",
+      "agent": "RAVAN",
+      "at": 1787475709959
+    },
+    {
+      "id": "G11K",
+      "taskId": "TASK-25",
+      "text": "✓ checked running next-start on :3000 rebuilt/restarted so",
+      "agent": "RAVAN",
+      "at": 1787475709888
+    },
+    {
+      "id": "Q21H",
+      "taskId": "TASK-27",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787475420199
+    },
+    {
+      "id": "RXYS",
+      "taskId": "TASK-15",
+      "text": "✓ checked re-run S100 snapshot and diff affected symbols",
+      "agent": "NOVA",
+      "at": 1787475212958
+    },
+    {
+      "id": "SIB7",
+      "taskId": "TASK-24",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787475202830
+    },
+    {
+      "id": "R43N",
+      "taskId": "TASK-26",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787475164859
+    },
+    {
+      "id": "O4UZ",
+      "taskId": "TASK-23",
+      "text": "shipped 6286a13 (local) · chore(board): deflake verdict for TASK-23 — transient was mid-edit module-cache state, fixed in 41ede1d; 20/20 + full-suite runs green, no code change",
+      "agent": "CIPHER",
+      "at": 1787475044807
+    },
+    {
+      "id": "LVQU",
+      "taskId": "TASK-23",
+      "text": "review · gates green (tsc --noEmit·eslint)",
+      "agent": "CIPHER",
+      "at": 1787475005341
+    },
+    {
+      "id": "KTHS",
+      "taskId": "TASK-23",
+      "text": "✓ checked LOG note",
+      "agent": "CIPHER",
+      "at": 1787474975250
+    },
+    {
+      "id": "YZH2",
+      "taskId": "TASK-25",
+      "text": "claimed by GHOST · → doing",
+      "agent": "GHOST",
+      "at": 1787474956444
+    },
+    {
+      "id": "0O9K",
+      "taskId": "TASK-23",
+      "text": "✓ checked gate trust restored",
+      "agent": "CIPHER",
+      "at": 1787474950788
+    },
+    {
+      "id": "0BMM",
+      "taskId": "TASK-23",
+      "text": "✓ checked 20 consecutive green runs locally",
+      "agent": "CIPHER",
+      "at": 1787474950653
+    },
+    {
+      "id": "A7X4",
+      "taskId": "TASK-23",
+      "text": "✓ checked fs-touching suites serialized or given unique NI",
+      "agent": "CIPHER",
+      "at": 1787474950517
+    },
+    {
+      "id": "AANX",
+      "taskId": "TASK-23",
+      "text": "✓ checked flaky suite identified with repro (or proven env",
+      "agent": "CIPHER",
+      "at": 1787474950385
+    },
+    {
+      "id": "ZJCF",
+      "taskId": "TASK-23",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787474913583
+    },
+    {
+      "id": "153X",
+      "taskId": "TASK-25",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787474864172
+    },
+    {
+      "id": "YLS1",
+      "taskId": "TASK-24",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787474864056
+    },
+    {
+      "id": "TJGW",
+      "taskId": "TASK-19",
+      "text": "claimed by SABLE · → doing",
+      "agent": "SABLE",
+      "at": 1787474841232
+    },
+    {
+      "id": "Y8AW",
+      "taskId": "TASK-21",
+      "text": "shipped 41ede1d (local) · [TASK-21] fix(board): CLI writers merge-on-save via board-merge.mjs port + workflow reloads before status flips — kills gate-window lost-update class",
+      "agent": "CIPHER",
+      "at": 1787474804190
+    },
+    {
+      "id": "SU6R",
+      "taskId": "TASK-23",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787474801129
+    },
+    {
+      "id": "H2WR",
+      "taskId": "TASK-21",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "CIPHER",
+      "at": 1787474755440
+    },
+    {
+      "id": "WF3D",
+      "taskId": "TASK-21",
+      "text": "✓ checked tsc+test green",
+      "agent": "CIPHER",
+      "at": 1787474661608
+    },
+    {
+      "id": "6OKZ",
+      "taskId": "TASK-21",
+      "text": "✓ checked regression test simulating concurrent CLI writes",
+      "agent": "CIPHER",
+      "at": 1787474661517
+    },
+    {
+      "id": "9TZH",
+      "taskId": "TASK-21",
+      "text": "✓ checked evidence: TASK-15 CTO claim+activity erased duri",
+      "agent": "CIPHER",
+      "at": 1787474661442
+    },
+    {
+      "id": "ZVGW",
+      "taskId": "TASK-21",
+      "text": "✓ checked workflow.mjs must not hold a board object across",
+      "agent": "CIPHER",
+      "at": 1787474661359
+    },
+    {
+      "id": "7V8X",
+      "taskId": "TASK-21",
+      "text": "✓ checked board.mjs save() path made merge-safe (re-read c",
+      "agent": "CIPHER",
+      "at": 1787474661274
+    },
+    {
+      "id": "1HBT",
+      "taskId": "TASK-11",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787474640174
+    },
+    {
+      "id": "80N2",
+      "taskId": "TASK-07",
+      "text": "moved review → done",
+      "agent": "CIPHER",
+      "at": 1787474561175
+    },
+    {
+      "id": "P1DC",
+      "taskId": "TASK-12",
+      "text": "shipped 4707351 (local) · [TASK-12] fix(screener): resolve row deep-link exchange from instruments index — no hardcoded e=NSE",
+      "agent": "SABLE",
+      "at": 1787474385184
+    },
     {
       "id": "JLS5",
       "taskId": "TASK-12",
@@ -1079,316 +1534,8 @@
       "text": "re-started by NOVA",
       "agent": "NOVA",
       "at": 1787473690570
-    },
-    {
-      "id": "4ZLP",
-      "taskId": "TASK-15",
-      "text": "claimed by SABLE · → doing",
-      "agent": "SABLE",
-      "at": 1787473673993
-    },
-    {
-      "id": "ZD42",
-      "taskId": "TASK-13",
-      "text": "moved review → done",
-      "agent": "SABLE",
-      "at": 1787473658068
-    },
-    {
-      "id": "XJWX",
-      "taskId": "TASK-21",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787473639396
-    },
-    {
-      "id": "IUSY",
-      "taskId": "TASK-04",
-      "text": "✓ checked signals route reuses one read-only better-sqlite",
-      "agent": "CIPHER",
-      "at": 1787473587621
-    },
-    {
-      "id": "5QR1",
-      "taskId": "TASK-04",
-      "text": "✓ checked /api/chart sets Cache-Control public s-maxage wi",
-      "agent": "CIPHER",
-      "at": 1787473587483
-    },
-    {
-      "id": "UWWE",
-      "taskId": "TASK-04",
-      "text": "✓ checked signals route cache capped (max keys + LRU-ish e",
-      "agent": "CIPHER",
-      "at": 1787473587340
-    },
-    {
-      "id": "O207",
-      "taskId": "TASK-14",
-      "text": "shipped 3155115 (local) · [TASK-14] feat(web): security headers — CSP, HSTS, XFO, nosniff, Permissions-Policy + deploy notes",
-      "agent": "NOVA",
-      "at": 1787473563810
-    },
-    {
-      "id": "DZHN",
-      "taskId": "TASK-14",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "NOVA",
-      "at": 1787473523801
-    },
-    {
-      "id": "20BZ",
-      "taskId": "TASK-14",
-      "text": "✓ checked document choices in docs/deploy notes",
-      "agent": "RAVAN",
-      "at": 1787473192068
-    },
-    {
-      "id": "8NQK",
-      "taskId": "TASK-14",
-      "text": "✓ checked remove or justify T21_DISTDIR distDir hack",
-      "agent": "RAVAN",
-      "at": 1787473191941
-    },
-    {
-      "id": "9AEE",
-      "taskId": "TASK-14",
-      "text": "✓ checked no console errors from CSP in Playwright run",
-      "agent": "RAVAN",
-      "at": 1787473191847
-    },
-    {
-      "id": "IWPP",
-      "taskId": "TASK-14",
-      "text": "✓ checked CSP (report-only then enforce), X-Frame-Options ",
-      "agent": "RAVAN",
-      "at": 1787473191679
-    },
-    {
-      "id": "W5NS",
-      "taskId": "TASK-13",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "NOVA",
-      "at": 1787473101189
-    },
-    {
-      "id": "GXOJ",
-      "taskId": "TASK-02",
-      "text": "shipped b677229 (local) · [TASK-02] feat(board): lost-update-safe sync — server-side per-task merge with deletion tombstones",
-      "agent": "NOVA",
-      "at": 1787473022399
-    },
-    {
-      "id": "HLKJ",
-      "taskId": "TASK-02",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "NOVA",
-      "at": 1787472952790
-    },
-    {
-      "id": "YDGA",
-      "taskId": "TASK-13",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "SABLE",
-      "at": 1787472882878
-    },
-    {
-      "id": "95G8",
-      "taskId": "TASK-02",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "CIPHER",
-      "at": 1787472797953
-    },
-    {
-      "id": "N9LT",
-      "taskId": "TASK-02",
-      "text": "✓ checked incident 2026-08-23 CTO pass referenced in repor",
-      "agent": "RAVAN",
-      "at": 1787472761092
-    },
-    {
-      "id": "JYKT",
-      "taskId": "TASK-02",
-      "text": "✓ checked repro script: two writers interleaved, zero lost",
-      "agent": "RAVAN",
-      "at": 1787472760988
-    },
-    {
-      "id": "LBZ6",
-      "taskId": "TASK-02",
-      "text": "✓ checked CLI (board.mjs) and web /board writes cannot era",
-      "agent": "RAVAN",
-      "at": 1787472760782
-    },
-    {
-      "id": "1X66",
-      "taskId": "TASK-02",
-      "text": "✓ checked POST validates shape and merges by task id or re",
-      "agent": "RAVAN",
-      "at": 1787472760680
-    },
-    {
-      "id": "8MOS",
-      "taskId": "TASK-13",
-      "text": "✓ checked curl evidence: repeated calls hit cache not upst",
-      "agent": "RAVAN",
-      "at": 1787472737103
-    },
-    {
-      "id": "CG4O",
-      "taskId": "TASK-13",
-      "text": "✓ checked per-IP rate limit or proof-of-no-DoS note",
-      "agent": "RAVAN",
-      "at": 1787472736895
-    },
-    {
-      "id": "ILZ0",
-      "taskId": "TASK-13",
-      "text": "✓ checked response cached briefly (60s) with Cache-Control",
-      "agent": "RAVAN",
-      "at": 1787472736751
-    },
-    {
-      "id": "GDO9",
-      "taskId": "TASK-13",
-      "text": "✓ checked /api/tracker?symbols= serves custom quotes from ",
-      "agent": "RAVAN",
-      "at": 1787472736570
-    },
-    {
-      "id": "RXTC",
-      "taskId": "TASK-20",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787472672117
-    },
-    {
-      "id": "J5I6",
-      "taskId": "TASK-19",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787472671999
-    },
-    {
-      "id": "766A",
-      "taskId": "TASK-18",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787472485531
-    },
-    {
-      "id": "4G7T",
-      "taskId": "TASK-17",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787472368906
-    },
-    {
-      "id": "SMVK",
-      "taskId": "TASK-16",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787472243516
-    },
-    {
-      "id": "44YE",
-      "taskId": "TASK-13",
-      "text": "claimed by SABLE · → doing",
-      "agent": "SABLE",
-      "at": 1787472162444
-    },
-    {
-      "id": "R1ZZ",
-      "taskId": "TASK-15",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787472161087
-    },
-    {
-      "id": "KSP8",
-      "taskId": "TASK-09",
-      "text": "shipped 903ba59 (local) · [TASK-09] chore(docs): reconcile AGENTS.md with shipped light/dark design system + LOG entry",
-      "agent": "CIPHER",
-      "at": 1787472118932
-    },
-    {
-      "id": "LQCV",
-      "taskId": "TASK-02",
-      "text": "re-started by CIPHER",
-      "agent": "CIPHER",
-      "at": 1787472086861
-    },
-    {
-      "id": "JPBS",
-      "taskId": "TASK-09",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "CIPHER",
-      "at": 1787472081240
-    },
-    {
-      "id": "ZJ1V",
-      "taskId": "TASK-09",
-      "text": "✓ checked scoped commits per subsystem",
-      "agent": "RAVAN",
-      "at": 1787472049907
-    },
-    {
-      "id": "QUNO",
-      "taskId": "TASK-09",
-      "text": "✓ checked scratch ignored",
-      "agent": "RAVAN",
-      "at": 1787472049805
-    },
-    {
-      "id": "3533",
-      "taskId": "TASK-07",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787471944194
-    },
-    {
-      "id": "NGGU",
-      "taskId": "TASK-14",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787471923979
-    },
-    {
-      "id": "OIKL",
-      "taskId": "TASK-13",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787471923829
-    },
-    {
-      "id": "SFTE",
-      "taskId": "TASK-12",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787471747363
-    },
-    {
-      "id": "R8DH",
-      "taskId": "TASK-11",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787471747255
-    },
-    {
-      "id": "P9V4",
-      "taskId": "TASK-10",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787471747156
-    },
-    {
-      "id": "02G7",
-      "taskId": "TASK-09",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787471745778
     }
   ],
   "deletions": [],
-  "updatedAt": 1787474345986
+  "updatedAt": 1787476324212
 }
