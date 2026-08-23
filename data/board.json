@@ -2049,7 +2049,7 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "nova",
       "labels": [],
       "estimate": 3,
@@ -2091,7 +2091,7 @@
         }
       ],
       "createdAt": 1787485823449,
-      "updatedAt": 1787496078161,
+      "updatedAt": 1787498388908,
       "blocked": false
     },
     {
@@ -2141,7 +2141,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -2173,7 +2173,7 @@
         }
       ],
       "createdAt": 1787485853189,
-      "updatedAt": 1787496669266,
+      "updatedAt": 1787496802999,
       "blocked": false
     },
     {
@@ -2305,39 +2305,39 @@
       "desc": "",
       "phase": "D",
       "priority": "P3",
-      "status": "todo",
-      "assignee": null,
+      "status": "review",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "named screener configs (strategy/filters/sort) persist device-scoped and reload via URL or picker",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "watchlists table wired as optional cloud mirror of localStorage watchlist",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "merge-on-read with localStorage",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "migration path documented toward auth claim",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "tests green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787485889758,
-      "updatedAt": 1787485889758,
+      "updatedAt": 1787498906268,
       "blocked": false
     },
     {
@@ -2552,25 +2552,137 @@
         {
           "id": "1",
           "text": "every eod write path funnels through scripts/lib/basis.mjs storeCandlesReconciled (grep-audited)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "cliff sweep green across full local DB",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "repair tool no longer needed for regressions",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787496267866,
-      "updatedAt": 1787496777326,
+      "updatedAt": 1787497737493,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "6K0I",
+      "taskId": "TASK-62",
+      "text": "review · gates green tsc=30.7s·lint=39.5s·test=7.5s",
+      "agent": "CIPHER",
+      "at": 1787498906268
+    },
+    {
+      "id": "G7I1",
+      "taskId": "TASK-62",
+      "text": "✓ checked tests green",
+      "agent": "CIPHER",
+      "at": 1787498726863
+    },
+    {
+      "id": "1H5M",
+      "taskId": "TASK-62",
+      "text": "✓ checked migration path documented toward auth claim",
+      "agent": "CIPHER",
+      "at": 1787498726630
+    },
+    {
+      "id": "GT2Z",
+      "taskId": "TASK-62",
+      "text": "✓ checked merge-on-read with localStorage",
+      "agent": "CIPHER",
+      "at": 1787498726363
+    },
+    {
+      "id": "WEXA",
+      "taskId": "TASK-62",
+      "text": "✓ checked watchlists table wired as optional cloud mirror ",
+      "agent": "CIPHER",
+      "at": 1787498726035
+    },
+    {
+      "id": "MYIO",
+      "taskId": "TASK-62",
+      "text": "✓ checked named screener configs (strategy/filters/sort) p",
+      "agent": "CIPHER",
+      "at": 1787498725542
+    },
+    {
+      "id": "R5RJ",
+      "taskId": "TASK-56",
+      "text": "review · gates green tsc=13.2s·lint=37.0s·test=6.7s",
+      "agent": "NOVA",
+      "at": 1787498388908
+    },
+    {
+      "id": "S4QN",
+      "taskId": "TASK-56",
+      "text": "review ✗ gates RED (tsc=13.3s·lint=40.0s) — fix and re-run",
+      "agent": "NOVA",
+      "at": 1787497762740
+    },
+    {
+      "id": "ZANN",
+      "taskId": "TASK-68",
+      "text": "review ✗ gates RED (tsc=15.8s·lint=37.1s) — fix and re-run",
+      "agent": "RAVEN",
+      "at": 1787497737493
+    },
+    {
+      "id": "PXYQ",
+      "taskId": "TASK-68",
+      "text": "review ✗ gates RED (tsc=12.6s) — fix and re-run",
+      "agent": "RAVEN",
+      "at": 1787497626693
+    },
+    {
+      "id": "NWXO",
+      "taskId": "TASK-68",
+      "text": "✓ checked repair tool no longer needed for regressions",
+      "agent": "RAVEN",
+      "at": 1787497515666
+    },
+    {
+      "id": "2PVJ",
+      "taskId": "TASK-68",
+      "text": "✓ checked cliff sweep green across full local DB",
+      "agent": "RAVEN",
+      "at": 1787497515390
+    },
+    {
+      "id": "AOFX",
+      "taskId": "TASK-68",
+      "text": "✓ checked every eod write path funnels through scripts/lib",
+      "agent": "RAVEN",
+      "at": 1787497515192
+    },
+    {
+      "id": "DTOO",
+      "taskId": "TASK-56",
+      "text": "review · gates green tsc=22.4s·lint=35.9s·test=8.8s",
+      "agent": "NOVA",
+      "at": 1787497502034
+    },
+    {
+      "id": "0C5D",
+      "taskId": "TASK-62",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787496991339
+    },
+    {
+      "id": "W98X",
+      "taskId": "TASK-58",
+      "text": "shipped cddcd8d (local) · feat(company): /company/[symbol] profile — metrics, memberships, corp actions, SEO + share-card (TASK-58) · gates tsc=8.7s·lint=26.6s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787496802999
+    },
     {
       "id": "PME9",
       "taskId": "TASK-68",
@@ -3018,120 +3130,8 @@
       "text": "✓ checked togglable per alert in AlertCenter",
       "agent": "RAVAN",
       "at": 1787489678825
-    },
-    {
-      "id": "W21P",
-      "taskId": "TASK-59",
-      "text": "✓ checked delivery via logged digest now, Resend-shaped ad",
-      "agent": "RAVAN",
-      "at": 1787489678631
-    },
-    {
-      "id": "SV4A",
-      "taskId": "TASK-59",
-      "text": "✓ checked evaluation wired to scheduled runs",
-      "agent": "RAVAN",
-      "at": 1787489678478
-    },
-    {
-      "id": "KZH5",
-      "taskId": "TASK-59",
-      "text": "✓ checked alert type strategy-membership: fires on top-N e",
-      "agent": "RAVAN",
-      "at": 1787489678293
-    },
-    {
-      "id": "U9IJ",
-      "taskId": "TASK-65",
-      "text": "shipped 9ef7703 → origin/master · [TASK-65] fix(harness): mock /api/alerts in screener.py — AlertCenter bell 503s in DB-less CI and tripped the strict console gate; failed-request URLs now self-report · gates tsc=14.3s·lint=40.0s",
-      "agent": "RAVEN",
-      "at": 1787489678264
-    },
-    {
-      "id": "9U1Y",
-      "taskId": "TASK-49",
-      "text": "✓ checked Playwright sanity",
-      "agent": "CIPHER",
-      "at": 1787489668193
-    },
-    {
-      "id": "WRYL",
-      "taskId": "TASK-49",
-      "text": "✓ checked tsc+lint+test green",
-      "agent": "CIPHER",
-      "at": 1787489667893
-    },
-    {
-      "id": "8W78",
-      "taskId": "TASK-49",
-      "text": "✓ checked empty state when no data",
-      "agent": "CIPHER",
-      "at": 1787489667606
-    },
-    {
-      "id": "BBHG",
-      "taskId": "TASK-49",
-      "text": "✓ checked terminal gains a stats section (PE, PB, ROE, deb",
-      "agent": "CIPHER",
-      "at": 1787489667275
-    },
-    {
-      "id": "2MFE",
-      "taskId": "TASK-49",
-      "text": "✓ checked GET /api/fundamentals?symbol= returns normalized",
-      "agent": "CIPHER",
-      "at": 1787489667076
-    },
-    {
-      "id": "CND5",
-      "taskId": "TASK-66",
-      "text": "review · gates green tsc=14.4s·lint=40.3s·test=7.4s",
-      "agent": "NOVA",
-      "at": 1787489657799
-    },
-    {
-      "id": "IS9G",
-      "taskId": "TASK-65",
-      "text": "review · gates green tsc=12.4s·lint=38.3s",
-      "agent": "RAVEN",
-      "at": 1787489620751
-    },
-    {
-      "id": "7NOY",
-      "taskId": "TASK-66",
-      "text": "✓ checked if none viable, document paid-source decision AD",
-      "agent": "NOVA",
-      "at": 1787489563565
-    },
-    {
-      "id": "5A4X",
-      "taskId": "TASK-66",
-      "text": "✓ checked evaluate keyless alternatives (NSE financial res",
-      "agent": "NOVA",
-      "at": 1787489563278
-    },
-    {
-      "id": "NDBE",
-      "taskId": "TASK-65",
-      "text": "review ✗ gates RED (tsc=13.4s·lint=35.0s·test=8.2s) — fix and re-run",
-      "agent": "RAVEN",
-      "at": 1787489480915
-    },
-    {
-      "id": "68GL",
-      "taskId": "TASK-65",
-      "text": "review ✗ gates RED (tsc=12.7s·lint=35.8s·test=8.5s) — fix and re-run",
-      "agent": "RAVEN",
-      "at": 1787489227671
-    },
-    {
-      "id": "2GS3",
-      "taskId": "TASK-65",
-      "text": "✓ checked ui-smoke green again",
-      "agent": "RAVEN",
-      "at": 1787489170419
     }
   ],
   "deletions": [],
-  "updatedAt": 1787496777330
+  "updatedAt": 1787498906271
 }

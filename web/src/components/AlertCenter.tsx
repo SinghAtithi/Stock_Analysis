@@ -4,9 +4,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Modal from "@/components/Modal";
 import { ALERT_TYPES } from "@/lib/alerts";
+import { getDeviceId } from "@/lib/device";
 import { timeAgo } from "@/lib/format";
 
-const DEVICE_KEY = "niftyterm.deviceId";
 const POLL_MS = 30_000;
 
 interface AlertRecord {
@@ -41,18 +41,6 @@ const alertTitle = (a: AlertRecord): string =>
   a.strategyId
     ? `${a.strategyId} top-${a.topN ?? "N"} ${a.type === "strategy_enter" ? "entry" : "exit"}`
     : `${a.symbol ?? "Symbol"} · ${TYPE_LABELS[a.type] ?? a.type}`;
-
-function getDeviceId(): string {
-  try {
-    const existing = window.localStorage.getItem(DEVICE_KEY);
-    if (existing) return existing;
-    const id = crypto.randomUUID();
-    window.localStorage.setItem(DEVICE_KEY, id);
-    return id;
-  } catch {
-    return "nifty-local-device";
-  }
-}
 
 function BellIcon() {
   return (

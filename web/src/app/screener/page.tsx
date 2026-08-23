@@ -5,7 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 import DataTable from "@/components/DataTable";
-import type { Column } from "@/components/DataTable";
+import type { Column, SortDir } from "@/components/DataTable";
+import ScreenerPresets from "@/components/ScreenerPresets";
+import type { ScreenerPreset } from "@/lib/screenerPresets";
 
 interface SignalItem {
   rank: number;
@@ -53,8 +55,31 @@ const FALLBACK_STRATEGIES: StrategyMeta[] = [
   { id: "demo-roc20", name: "ROC(20) Momentum", category: "momentum", juryRank: null, edgeScore: null, universe: "nifty500", inputs: [] },
 ];
 
+/* column keys eligible for ?sort= deep links + saved views */
+const SORTABLE_KEYS = new Set(["rank", "symbol", "name", "sector", "score", "price", "changePct"]);
+
+const readSortParams = (): { sortKey: string | null; sortDir: SortDir } => {
+  const params = new URLSearchParams(window.location.search);
+  const key = params.get("sort");
+  const dir = params.get("dir");
+  return {
+    sortKey: key && SORTABLE_KEYS.has(key) ? key : null,
+    sortDir: dir === "desc" ? "desc" : dir === "asc" ? "asc" : "asc",
+  };
+};
+
 export default function ScreenerPage() {
+  // ?sort=&dir= deep links (saved views sync these) — read once in lazy
+  // initializers instead of a setState-in-effect (React 19 compiler rule);
+  // SSR prerender has no location, so defaults hold server-side and the
+  // client's first render picks the URL values up pre-paint.
   const [strategy, setStrategy] = useState<string>(FALLBACK_STRATEGIES[0].id);
+  const [sortKey, setSortKey] = useState<string | null>(() =>
+    typeof window === "undefined" ? null : readSortParams().sortKey
+  );
+  const [sortDir, setSortDir] = useState<SortDir>(() =>
+    typeof window === "undefined" ? "asc" : readSortParams().sortDir
+  );
   const [strategies, setStrategies] = useState<StrategyMeta[]>(FALLBACK_STRATEGIES);
   const [data, setData] = useState<SignalsResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -79,6 +104,15 @@ export default function ScreenerPage() {
         }
       } catch {
         /* fallback list stays */
+      } finally {
+        if (!cancelled) {
+          /* ?sort=&dir= deep links (saved views sync these) */
+          const { sortKey: k, sortDir: d } = readSortParams();
+          if (k) {
+            setSortKey(k);
+            setSortDir(d);
+          }
+        }
       }
     };
     tick();
@@ -117,6 +151,32 @@ export default function ScreenerPage() {
 
   const items = data?.items ?? [];
   const meta = data?.strategy;
+
+  /* keep ?strategy=&sort=&dir= in step with view state (saved views + deep links) */
+  const syncUrl = (nextStrategy: string, nextSortKey: string | null, nextSortDir: SortDir): void => {
+    const params = new URLSearchParams();
+    params.set("strategy", nextStrategy);
+    if (nextSortKey) {
+      params.set("sort", nextSortKey);
+      params.set("dir", nextSortDir);
+    }
+    window.history.replaceState(null, "", `/screener?${params.toString()}`);
+  };
+  const changeStrategy = (id: string): void => {
+    setStrategy(id);
+    syncUrl(id, sortKey, sortDir);
+  };
+  const changeSort = (key: string | null, dir: SortDir): void => {
+    setSortKey(key);
+    setSortDir(dir);
+    syncUrl(strategy, key, dir);
+  };
+  const applyPreset = (p: ScreenerPreset): void => {
+    setStrategy(p.strategy);
+    setSortKey(p.sortKey);
+    setSortDir(p.sortDir);
+    syncUrl(p.strategy, p.sortKey, p.sortDir);
+  };
 
   const columns: Column<SignalItem>[] = [
     { key: "rank", label: "Rank", rank: true, width: "w-14", sticky: true, widthPx: 56 },
@@ -187,7 +247,7 @@ export default function ScreenerPage() {
           {strategies.map((s) => (
             <button
               key={s.id}
-              onClick={() => setStrategy(s.id)}
+              onClick={() => changeStrategy(s.id)}
               aria-pressed={strategy === s.id}
               title={s.juryRank ? `${s.name} · jury #${s.juryRank} · edge ${s.edgeScore ?? "—"}/10` : `${s.name} · unranked`}
               className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${strategy === s.id ? "border-paper bg-paper text-ink shadow-sm" : "border-line bg-surface text-muted hover:border-line-strong hover:text-paper"}`}
@@ -201,6 +261,12 @@ export default function ScreenerPage() {
           >
             Backtest →
           </Link>
+          <ScreenerPresets
+            strategy={strategy}
+            sortKey={sortKey}
+            sortDir={sortDir}
+            onApply={applyPreset}
+          />
         </div>
 
         {error && (
@@ -221,6 +287,9 @@ export default function ScreenerPage() {
           rows={items}
           rowKey={(r) => r.symbol}
           selectedKey={selected}
+          sortKey={sortKey}
+          sortDir={sortDir}
+          onSort={changeSort}
           onRowClick={(r) => {
             setSelected(r.symbol);
             /* exchange/type resolved server-side (TASK-51): the instruments

@@ -87,3 +87,15 @@ export function searchInstruments(q: string, limit = 8): SearchHit[] {
 export function findInstrument(symbol: string): Instrument | undefined {
   return LIST.find((i) => i.s === symbol);
 }
+
+/* Exact symbol+exchange listing first, else the first listing of the symbol
+   (dual-listed names like SENSEX exist under both NSE and BSE). Used by the
+   watchlist mirror route to validate client-supplied entries. */
+export function findInstrumentListing(
+  symbol: string,
+  exchange: string
+): Instrument | undefined {
+  const exact = LIST.find((i) => i.s === symbol && i.e === exchange);
+  if (exact) return exact;
+  return LIST.find((i) => i.s === symbol);
+}

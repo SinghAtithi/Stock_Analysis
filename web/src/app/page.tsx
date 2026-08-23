@@ -37,6 +37,7 @@ import {
   removeFromWatchlist,
   subscribeWatchlist,
 } from "@/lib/watchlist";
+import { useWatchlistMirror } from "@/lib/watchlistMirror";
 
 const chartUrl = (
   r: { symbol: string; exchange: string; type: string },
@@ -82,6 +83,7 @@ const resolveTarget = async (
 };
 
 export default function Home() {
+  useWatchlistMirror();
   const watchlist = useSyncExternalStore(
     subscribeWatchlist,
     getWatchlistSnapshot,

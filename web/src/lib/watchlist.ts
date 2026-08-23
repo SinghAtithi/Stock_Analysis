@@ -143,6 +143,21 @@ export function importWatchlist(json: string): boolean {
   }
 }
 
+/** Union-merge cloud-mirror entries into localStorage (TASK-62). Existing
+ *  local entries win conflicts; matching is by exchange|symbol. Returns how
+ *  many entries were actually added (0 when nothing changed). */
+export function mergeIntoWatchlist(incoming: WatchlistEntry[]): number {
+  if (typeof window === "undefined") return 0;
+  const valid = unique(incoming.filter(isEntry).map(normalize));
+  if (valid.length === 0) return 0;
+  const current = read();
+  const have = new Set(current.map(keyOf));
+  const fresh = valid.filter((e) => !have.has(keyOf(e)));
+  if (fresh.length === 0) return 0;
+  write(unique([...current, ...fresh]));
+  return fresh.length;
+}
+
 export function subscribeWatchlist(cb: () => void): () => void {
   if (typeof window === "undefined") return () => {};
   const onStorage = (e: StorageEvent) => {

@@ -4,6 +4,37 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (122) — CIPHER: TASK-62 — saved screener views + optional cloud watchlist mirror w/ merge-on-read
+
+- **Saved views (AC1)**: `lib/screenerPresets.ts` (device-scoped localStorage `niftyterm.screener-presets.v1`, cap 20, name-dedupe) + `components/ScreenerPresets.tsx` ("Save view" → inline name input, picker with apply/delete, Escape/outside-click close). Screener page now lifts sort state into controlled DataTable props; view changes sync `?strategy=&sort=&dir=` via `history.replaceState` and deep-links are consumed on load (sort keys validated against sortable columns).
+- **Cloud mirror (AC2)**: new `api/watchlist/route.ts` over the existing `watchlists` table (`id="device:<deviceId>"`, `scope='device'`). GET → `{entries, updatedAt}`; PUT replace-set validated against the instruments index via new `findInstrumentListing` (exact symbol+exchange pair first), unknown symbols dropped, cap 100.
+- **Client wiring**: extracted `lib/device.ts` from AlertCenter's deviceId logic (AlertCenter refactored to import it — behavior unchanged). New `lib/watchlistMirror.ts` `useWatchlistMirror()` hook on the home page: debounced 1.5 s fire-and-forget PUT on watchlist change; all failures silent; localStorage stays source of truth.
+- **Merge-on-read (AC3)**: one-shot per session on home mount — `mergeIntoWatchlist()` unions mirror entries by `exchange|symbol`, localStorage wins conflicts verbatim, re-merge is a no-op; union pushed back once to converge the mirror.
+- **Docs (AC4)**: `docs/task-reports/TASK-62-watchlist-mirror.md` — device-scoped model + TASK-63 auth-claim migration path (claim rows by deviceId → `scope='user'`, same union rule).
+- **Gates**: `tsc --noEmit` clean; lint 0 errors (6 pre-existing warnings in foreign kalyan/page.tsx); `npm test` 262/262 pass incl. new `scripts/tests/screener-presets.test.mjs` (preset sanitization, save dedupe/cap, merge rules).
+- **Sanity** (:3017 dev server): preset save→reload→apply flips strategy + URL ✓; sort click syncs `?sort=score&dir=asc` ✓; delete preset ✓; axe 0 violations on /screener ✓; curl PUT/GET round-trip with bogus-symbol drop ✓; star toggle → row in mirror after debounce ✓; seeded mirror merged into localStorage as union (INFY+RELIANCE added alongside local TCS) ✓.
+
+## 2026-08-23 (121) — RAVEN: TASK-68 — every eod write path reconciled; cliff-sweep regressions closed at the root
+
+### Summary
+Root cause of the recurring cliff-sweep reds: two production write paths bypassed
+`storeCandlesReconciled`. (1) `ingest-eod.mjs` NSE single-symbol branch did delete-then-raw-
+upsert — fixing MC's stamp interleave but writing raw vendor closes whose real
+corporate-action gaps then read as basis splices (AARTIIND 2005/2006/2014 reproduced twice
+within minutes of a verified-clean repair). (2) `fetch-assets.mjs` wrote asset ETFs raw.
+Both now funnel through the reconciled write path; the manual DELETE block is gone —
+basis.mjs's calendar-day dedup supersedes it. Grep audit: only remaining `INSERT INTO
+eod_candles` sites are inside basis.mjs itself and test fixtures.
+
+### Verification
+Live end-to-end: `ingest-eod.mjs --symbol AARTIIND --force` via the fixed path (315s, nse
+source), then full `npm test` — **cliff sweep green across the entire local DB** for the first
+time since the pipelines activated; suite exit 0. Repair tool remains for legacy one-offs but
+is no longer part of the regression loop.
+
+---
+
+
 ## 2026-08-23 (120) — CIPHER: TASK-58 — /company/[symbol] profile page
 
 ### Summary
