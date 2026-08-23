@@ -3,6 +3,7 @@ import { getChart } from "@/lib/marketData";
 import { istSessionOpen } from "@/lib/session";
 import { validExchange, validSymbol } from "@/lib/symbolGuard";
 import { cacheGet, cacheSet, retryAfterSec, takeToken } from "@/lib/upstreamGuards";
+import { clientKeyFrom } from "@/lib/clientKey";
 
 const VALID = new Set([
   "1d/1m",
@@ -24,10 +25,7 @@ const VALID = new Set([
 export async function GET(request: NextRequest) {
   /* upstream guard (TASK-1403): shed per-IP floods before any work —
      every miss here costs a marketData chain with real circuit budget */
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    request.headers.get("x-real-ip") ??
-    "local";
+  const ip = clientKeyFrom(request.headers);
   if (!takeToken(`chart:${ip}`)) {
     return NextResponse.json(
       { error: "rate_limited" },
