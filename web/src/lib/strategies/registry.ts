@@ -1,8 +1,8 @@
-import type { Strategy } from "./types";
-import { register, listStrategies } from "./store";
+import { register } from "./store";
 /* store first — strategy modules self-register into it on import */
 import "./strategies/s100-momentum";
 import "./strategies/s104-pead";
+import "./strategies/s105-analyst-revision";
 import "./strategies/s172-dual";
 import "./strategies/s174-tsm";
 import "./strategies/s081-fscore";
