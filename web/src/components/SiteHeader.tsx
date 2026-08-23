@@ -81,6 +81,12 @@ export default function SiteHeader({
         {!nav && (
           <>
             <Link
+              href="/help"
+              className="rounded-full border border-line bg-surface px-3 py-1.5 text-sm font-medium text-paper hover:bg-panel-2"
+            >
+              Help
+            </Link>
+            <Link
               href="/board"
               className="rounded-full bg-paper px-3 py-1.5 text-sm font-medium text-ink shadow-sm"
             >
