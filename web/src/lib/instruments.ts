@@ -56,11 +56,12 @@ export interface SearchHit {
 
 export function searchInstruments(q: string, limit = 8): SearchHit[] {
   const needle = q.trim().toUpperCase();
-  if (needle.length < 2) return [];
+  if (needle.length < 1) return [];
 
   const scored: { hit: SearchHit; score: number }[] = [];
-  const max = 1200;
 
+  /* full scan, no early break (TASK-79): truncating the window let obscure
+     early-list substring hits crowd out prefix majors for short needles */
   for (let i = 0; i < LIST.length; i++) {
     const inst = LIST[i];
     const sym = inst.s;
@@ -85,7 +86,6 @@ export function searchInstruments(q: string, limit = 8): SearchHit[] {
       if (inst.ind) hit.industry = inst.ind;
       if (inst.idx?.length) hit.indices = inst.idx;
       scored.push({ hit, score });
-      if (scored.length >= max) break;
     }
   }
 

@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { timingSafeEqual } from "node:crypto";
 import path from "node:path";
 import { getTicker } from "@/lib/marketData";
 import { evaluatePass, membershipDiff, membershipEvents, isMembershipType } from "@/lib/alerts";
@@ -90,7 +91,41 @@ function deliverDigest(fired: { deviceId: string; detail?: string; symbol?: stri
   );
 }
 
-export async function GET() {
+/* TASK-1429: cron-style endpoint — unauthenticated callers must not be able
+ * to run write-mode evaluation passes (or fire email digests). Fail closed:
+ * if CRON_SECRET is unset the route is disabled entirely. */
+
+function authorizedBearer(header: string | null): boolean {
+  const expected = process.env.CRON_SECRET ?? "";
+  if (!expected) return false;
+  const provided = header?.startsWith("Bearer ") ? header.slice(7) : "";
+  const a = Buffer.from(expected, "utf8");
+  const b = Buffer.from(provided, "utf8");
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
+let evalBusy = false;
+
+export async function GET(request: NextRequest) {
+  /* overlap lock first: even authorized double-fires must queue out */
+  if (evalBusy) {
+    return NextResponse.json(
+      { error: "eval_in_progress" },
+      { status: 429, headers: { "Retry-After": "30" } }
+    );
+  }
+  if (!authorizedBearer(request.headers.get("authorization"))) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+  evalBusy = true;
+  try {
+    return await evaluateAll();
+  } finally {
+    evalBusy = false;
+  }
+}
+
+async function evaluateAll() {
   const db = openDb(false);
   if (!db) return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
   let rows: AlertRow[];

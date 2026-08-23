@@ -8,12 +8,57 @@ interface Props {
   onSelect: (r: SearchResult) => void;
 }
 
+/* TASK-79: first-time users shouldn't face a dead input. Popular picks use
+   the app's canonical shapes (page.tsx FALLBACK_ENTRY convention); recents
+   are a light capture in localStorage — deeper recents UX is TASK-229. */
+const POPULAR: SearchResult[] = [
+  { symbol: "NIFTY 50", name: "NIFTY 50", shortName: "NIFTY 50", exchange: "NSE", type: "Index", sector: "" },
+  { symbol: "SENSEX", name: "SENSEX", shortName: "SENSEX", exchange: "BSE", type: "Index", sector: "" },
+  { symbol: "RELIANCE", name: "Reliance Industries", shortName: "RELIANCE", exchange: "NSE", type: "Equity", sector: "Energy Minerals" },
+  { symbol: "TCS", name: "Tata Consultancy Services", shortName: "TCS", exchange: "NSE", type: "Equity", sector: "Technology Services" },
+];
+
+const RECENTS_KEY = "nifty.searchRecents";
+const RECENTS_MAX = 4;
+
+function readRecents(): SearchResult[] {
+  try {
+    const raw = window.localStorage.getItem(RECENTS_KEY);
+    const parsed = raw ? (JSON.parse(raw) as unknown) : [];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (r): r is SearchResult =>
+        !!r && typeof r === "object" &&
+        typeof (r as SearchResult).symbol === "string" &&
+        typeof (r as SearchResult).exchange === "string",
+    );
+  } catch {
+    return [];
+  }
+}
+
+function saveRecent(r: SearchResult): void {
+  try {
+    const rest = readRecents().filter(
+      (x) => !(x.symbol === r.symbol && x.exchange === r.exchange),
+    );
+    window.localStorage.setItem(
+      RECENTS_KEY,
+      JSON.stringify([r, ...rest].slice(0, RECENTS_MAX)),
+    );
+  } catch {
+    /* private mode / quota — recents are best-effort */
+  }
+}
+
 export default function Search({ onSelect }: Props) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
   const [searching, setSearching] = useState(false);
+  const [recents, setRecents] = useState<SearchResult[]>([]);
+  const focusedRef = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
   const resultsRef = useRef<SearchResult[]>([]);
@@ -31,9 +76,13 @@ export default function Search({ onSelect }: Props) {
 
   const runSearch = useCallback(async (q: string) => {
     abortRef.current?.abort();
-    if (q.trim().length < 2) {
+    if (q.trim().length < 1) {
       setResults([]);
-      setOpen(false);
+      /* TASK-79: empty+focused shows suggestions — but not on page load */
+      if (focusedRef.current) {
+        setRecents(readRecents());
+        setOpen(true);
+      }
       return;
     }
     const ac = new AbortController();
@@ -76,6 +125,7 @@ export default function Search({ onSelect }: Props) {
 
   const pick = (r: SearchResult) => {
     onSelect(r);
+    saveRecent(r);
     setQuery("");
     setResults([]);
     setOpen(false);
@@ -104,8 +154,15 @@ export default function Search({ onSelect }: Props) {
           ref={inputRef}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onFocus={() => results.length && setOpen(true)}
-          onBlur={() => setTimeout(() => setOpen(false), 150)}
+          onFocus={() => {
+            focusedRef.current = true;
+            setRecents(readRecents());
+            setOpen(true);
+          }}
+          onBlur={() => {
+            focusedRef.current = false;
+            setTimeout(() => setOpen(false), 150);
+          }}
           onKeyDown={onKeyDown}
           placeholder="Search symbol or company"
           className="w-full bg-transparent text-sm text-paper placeholder:text-faint outline-none"
@@ -114,7 +171,7 @@ export default function Search({ onSelect }: Props) {
           aria-label="Search Indian stocks"
           role="combobox"
           aria-expanded={open}
-          aria-controls="search-results"
+          aria-controls={query.trim().length === 0 ? "search-suggestions" : "search-results"}
           aria-activedescendant={
             open && results.length > 0 ? `search-opt-${active}` : undefined
           }
@@ -125,12 +182,66 @@ export default function Search({ onSelect }: Props) {
         </kbd>
       </div>
 
-      {open && (
+      {open && query.trim().length === 0 && (
+        <div
+          id="search-suggestions"
+          aria-label="Search suggestions"
+          className="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-line bg-surface shadow-md"
+        >
+          {recents.length > 0 && (
+            <>
+              <p className="px-4 pt-3 pb-1 text-xs font-medium tracking-wide text-faint">Recent</p>
+              <ul className="py-1">
+                {recents.map((r) => (
+                  <li key={`recent-${r.exchange}-${r.symbol}`}>
+                    <button
+                      type="button"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => pick(r)}
+                      className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left transition-colors hover:bg-canvas"
+                    >
+                      <span className="min-w-0 truncate text-sm">
+                        <span className="font-medium text-paper">{r.symbol}</span>{" "}
+                        <span className="ml-2 text-muted">{r.name}</span>
+                      </span>
+                      <span className="shrink-0 rounded-full border border-line bg-surface px-2 py-0.5 font-mono text-[10px] leading-none text-faint">{r.exchange}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          <p className="px-4 pt-3 pb-1 text-xs font-medium tracking-wide text-faint">
+            {recents.length > 0 ? "Popular" : "Try one of these"}
+          </p>
+          <ul className="py-1 pb-2">
+            {POPULAR.map((r) => (
+              <li key={`popular-${r.exchange}-${r.symbol}`}>
+                <button
+                  type="button"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => pick(r)}
+                  className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left transition-colors hover:bg-canvas"
+                >
+                  <span className="min-w-0 truncate text-sm">
+                    <span className="font-medium text-paper">{r.symbol}</span>{" "}
+                    <span className="ml-2 text-muted">{r.name}</span>
+                  </span>
+                  <span className="shrink-0 rounded-full border border-line bg-surface px-2 py-0.5 font-mono text-[10px] leading-none text-faint">{r.type}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {open && query.trim().length > 0 && (
         <div
           id="search-results"
           role="listbox"
           aria-label="Search results"
-          className="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-line bg-surface shadow-md"
+          tabIndex={0}
+          className="absolute inset-x-0 top-full z-50 mt-2 max-h-72 overflow-y-auto rounded-2xl border border-line bg-surface shadow-md"
         >
           {searching && results.length === 0 && (
             <div role="status" className="px-4 py-3 text-sm text-faint">
@@ -140,43 +251,42 @@ export default function Search({ onSelect }: Props) {
           {!searching && results.length === 0 && (
             <div className="px-4 py-3 text-sm text-faint">No match for “{query}”</div>
           )}
-          <ul className="max-h-72 overflow-y-auto py-1">
-            {results.map((r, i) => {
+          {results.map((r, i) => {
               const hint = [r.sector, r.indices?.[0]].filter(Boolean).join(" · ");
               const q = query.trim().toUpperCase();
               const at = r.symbol.toUpperCase().indexOf(q);
               return (
-                <li key={`${r.exchange}-${r.symbol}`} role="none">
-                  <button
-                    id={`search-opt-${i}`}
-                    role="option"
-                    aria-selected={i === active}
-                    onMouseEnter={() => setActive(i)}
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => pick(r)}
-                    className={`flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left transition-colors ${i === active ? "bg-panel-2" : "hover:bg-canvas"}`}
-                  >
-                    <span className="min-w-0 truncate text-sm">
-                      <span className="font-medium text-paper">
-                        {at >= 0 ? (
-                          <>
-                            {r.symbol.slice(0, at)}
-                            <span className="underline decoration-paper/30 underline-offset-2">{r.symbol.slice(at, at + q.length)}</span>
-                            {r.symbol.slice(at + q.length)}
-                          </>
-                        ) : (
-                          r.symbol
-                        )}
-                      </span>
-                      <span className="ml-2 text-muted">{r.name}</span>
-                      {hint && <span className="ml-2 hidden text-xs text-faint sm:inline">· {hint}</span>}
+                /* option directly under listbox — intermediate ul/li wrappers
+                   sever the required option/listbox a11y ancestry (TASK-79) */
+                <div
+                  key={`${r.exchange}-${r.symbol}`}
+                  role="option"
+                  id={`search-opt-${i}`}
+                  aria-selected={i === active}
+                  onMouseEnter={() => setActive(i)}
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => pick(r)}
+                  className={`flex w-full cursor-pointer items-center justify-between gap-3 px-4 py-2.5 text-left transition-colors ${i === active ? "bg-panel-2" : "hover:bg-canvas"}`}
+                >
+                  <span className="min-w-0 truncate text-sm">
+                    <span className="font-medium text-paper">
+                      {at >= 0 ? (
+                        <>
+                          {r.symbol.slice(0, at)}
+                          <span className="underline decoration-paper/30 underline-offset-2">{r.symbol.slice(at, at + q.length)}</span>
+                          {r.symbol.slice(at + q.length)}
+                        </>
+                      ) : (
+                        r.symbol
+                      )}
                     </span>
-                    <span className="shrink-0 rounded-full border border-line bg-surface px-2 py-0.5 font-mono text-[10px] leading-none text-faint">{r.exchange}</span>
-                  </button>
-                </li>
+                    <span className="ml-2 text-muted">{r.name}</span>
+                    {hint && <span className="ml-2 hidden text-xs text-faint sm:inline">· {hint}</span>}
+                  </span>
+                  <span className="shrink-0 rounded-full border border-line bg-surface px-2 py-0.5 font-mono text-[10px] leading-none text-faint">{r.exchange}</span>
+                </div>
               );
             })}
-          </ul>
         </div>
       )}
     </div>

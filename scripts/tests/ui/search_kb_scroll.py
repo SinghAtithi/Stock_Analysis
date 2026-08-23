@@ -15,6 +15,8 @@ def open_search(pg, q="in"):
     inp.fill(q)
     lb = pg.get_by_role("listbox", name="Search results")
     lb.wait_for(state="visible", timeout=10000)
+    # TASK-79 restructure: container can paint one commit ahead of rows
+    pg.locator('#search-results [role="option"]').first.wait_for(timeout=10000)
     return inp, lb
 
 
@@ -34,7 +36,7 @@ with sync_playwright() as p:
     print("options:", n)
     assert n > 5, f"need enough rows to overflow, got {n}"
 
-    ul_box = pg.locator("#search-results ul").bounding_box()
+    ul_box = pg.locator("#search-results").bounding_box()  # TASK-79: listbox div is now the scroller
 
     def visible(i):
         ob = opts.nth(i).bounding_box()
