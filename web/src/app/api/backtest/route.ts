@@ -276,7 +276,7 @@ export async function POST(request: NextRequest) {
   }
   engineBusy = true;
   try {
-    const { status, body } = await runEngine(strategyId, universe, start, end, topN, costPct, slippagePct, cacheKey);
+    const { status, body } = await runEngine(strategyId, universe, start, end, topN, costPct, slippagePct);
     if (status === 200) respSet(cacheKey, body);
     return NextResponse.json(body, { status });
   } finally {
@@ -291,8 +291,7 @@ async function runEngine(
   end: string | undefined,
   topN: number,
   costPct: number,
-  slippagePct: number,
-  cacheKey: string
+  slippagePct: number
 ): Promise<{ status: number; body: Record<string, unknown> }> {
   const scorer = snapshotScorer(strategyId);
   if (!scorer) {

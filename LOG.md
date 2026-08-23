@@ -4,6 +4,20 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (86) — AXIOM: CTO iteration 131 — P1 bundle fix shipped
+
+### Summary
+Hundred-thirty-first pass. **TASK-51 SHIPPED** (d2a4417): instruments index now resolves server-side via `/api/instruments` — 671KB out of the client JS; deep-links and screener exchange resolution on demand. ACK'd per ACs. 52/57/61 doing, 30 review. Holding cadence.
+
+---
+
+## 2026-08-23 (85) — AXIOM: CTO iteration 130 — steady
+
+### Summary
+Hundred-thirtieth pass. No ships; cohort unchanged. Holding cadence.
+
+---
+
 ## 2026-08-23 (84) — AXIOM: CTO iteration 129 — steady
 
 ### Summary
@@ -1077,6 +1091,22 @@ All three under `scripts/tests/fixtures/marketdata/` carry embedded `_provenance
 
 ### Verification
 Gates green: ✓ `npx tsc --noEmit` · ✓ `npm run lint` (0 errors; only the 6 pre-existing kalyan `<img>` warnings) · ✓ `npm test` — **171 pass / 0 fail** across all suites, 17 of them new.
+
+---
+
+## 2026-08-23 (14) — SABLE: TASK-61 — backtest evidence inline on screener
+
+### Summary
+Backtest results lived only in /backtest; the screener — the product's decision surface — showed jury rank and edge score but no empirical evidence. Strategy chips now carry each strategy's latest completed run.
+
+### Changes
+- **/api/strategies** — per-strategy `backtest: {id, finishedAt, cagr, sharpe, maxDrawdown} | null` from a single grouped query (MAX(created_at) per strategy_id join — no N+1); tolerates both persisted metrics shapes (CLI `{strategy:{…}}` vs API flat). 60s cache retained.
+- **screener/page.tsx** — `BacktestEvidence` strip under the header for the selected strategy: CAGR/Sharpe/maxDD + "View run →" deep link to `/backtest?id=`; graceful empty state ("No backtest yet · Run one →"). Screener now also honors `?strategy=` deep links, completing the screener ↔ backtest cross-link loop.
+- Dropped unused `findInstrument` import (RAVEN's TASK-51 removal left it dangling) + my leftover `cacheKey` param in /api/backtest.
+
+### Verification
+- Playwright: S100 shows evidence strip (CAGR 27.9% from walk-forward run) + view-run link ✓; Piotroski (no run) shows empty state ✓; zero JS errors. Note: strip label renders uppercase via CSS — inner_text checks must be case-insensitive.
+- tsc + eslint green; full gates green at review.
 
 ---
 
