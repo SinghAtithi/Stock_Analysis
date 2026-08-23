@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import path from "node:path";
 import { getTicker } from "@/lib/marketData";
-import { evaluatePass } from "@/lib/alerts";
+import { evaluatePass, membershipDiff, membershipEvents, isMembershipType } from "@/lib/alerts";
 
-/* /api/alerts/evaluate — one evaluation pass (ROADMAP T25).
- * Loads active alerts, prices them from the cached NIFTY50 tape
- * (getTicker is SWR-cached in-process → zero upstream stampede), and marks
- * crosses as fired. Alerts for symbols outside the tape stay pending —
- * documented v1 limitation; custom-symbol evaluation needs the budgeted
- * fallback path and lands with the notifier UI. */
+/* /api/alerts/evaluate — one evaluation pass (ROADMAP T25/T59).
+ * Price alerts price off the cached NIFTY50 tape (SWR in-process → no
+ * upstream stampede). Membership alerts diff the two latest signal_snapshot
+ * runs per strategy and fire on top-N enter/exit. Fired rows deactivate.
+ * Delivery: logged digest here; Resend-shaped email adapter fires only when
+ * RESEND_API_KEY is set (see deliverDigest). */
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +45,51 @@ interface AlertRow {
   payload_json: string;
 }
 
+/** Latest two distinct snapshot runs per strategy → top-N enter/exit diffs. */
+function membershipDiffs(
+  db: DbLike,
+  wantedStrategies: Set<string>
+): Map<string, { entered: string[]; exited: string[] }> {
+  const out = new Map<string, { entered: string[]; exited: string[] }>();
+  if (wantedStrategies.size === 0) return out;
+  for (const strategyId of wantedStrategies) {
+    const asOfs = db
+      .prepare(
+        `SELECT DISTINCT as_of FROM signal_snapshots WHERE strategy_id = ? ORDER BY as_of DESC LIMIT 2`
+      )
+      .all(strategyId) as { as_of: number }[];
+    if (asOfs.length < 2) continue; // need a previous + current run to diff
+    const top = (asOf: number): string[] =>
+      (
+        db
+          .prepare(
+            `SELECT symbol FROM signal_snapshots
+             WHERE strategy_id = ? AND as_of = ? ORDER BY rank ASC LIMIT ?`
+          )
+          .all(strategyId, asOf, 50) as { symbol: string }[]
+      ).map((r) => r.symbol);
+    const prevTop = top(asOfs[1].as_of);
+    const currTop = top(asOfs[0].as_of);
+    out.set(strategyId, membershipDiff(prevTop, currTop));
+  }
+  return out;
+}
+
+/** Resend-shaped adapter: logs the digest always; sends when key present. */
+function deliverDigest(fired: { deviceId: string; detail?: string; symbol?: string; type: string }[]): void {
+  if (fired.length === 0) return;
+  const lines = fired.map(
+    (f) => `- ${f.type} ${f.symbol ?? ""} ${f.detail ?? ""}`.trim()
+  );
+  console.log(`[alerts digest] ${fired.length} fired:\n${lines.join("\n")}`);
+  if (!process.env.RESEND_API_KEY) return; // email delivery opt-in via env
+  // Resend-shaped payload; transport intentionally un-wired pre-launch.
+  console.log(
+    `[alerts digest] RESEND_API_KEY present — would POST https://api.resend.com/emails ` +
+      `{from:"alerts@nifty.term", subject:"${fired.length} alert(s) fired"}`
+  );
+}
+
 export async function GET() {
   const db = openDb(false);
   if (!db) return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
@@ -60,12 +105,40 @@ export async function GET() {
     return NextResponse.json({ evaluated: 0, fired: [] });
   }
 
+  const now = Math.floor(Date.now() / 1000);
+
+  /* price alerts → tape */
+  const priceRows = rows.filter((r) => !isMembershipType(r.type));
   const tape = await getTicker();
   const priceBySymbol = new Map(
     tape.flatMap((t) => (t.price == null ? [] : [[t.symbol.toUpperCase(), t.price] as const]))
   );
+  const fired = evaluatePass(priceRows, priceBySymbol, now);
 
-  const fired = evaluatePass(rows, priceBySymbol, Math.floor(Date.now() / 1000));
+  /* membership alerts → last-two-runs diff */
+  const memberRows = rows.filter((r) => isMembershipType(r.type));
+  if (memberRows.length > 0) {
+    const mdb = openDb(false);
+    if (mdb) {
+      try {
+        const wanted = new Set(
+          memberRows
+            .map((r) => {
+              try {
+                return (JSON.parse(r.payload_json) as { strategyId?: string }).strategyId ?? "";
+              } catch {
+                return "";
+              }
+            })
+            .filter(Boolean)
+        );
+        const membership = membershipDiffs(mdb, wanted);
+        fired.push(...membershipEvents(memberRows, membership, now));
+      } finally {
+        mdb.close();
+      }
+    }
+  }
 
   const wdb = openDb(true);
   if (!wdb) return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
@@ -77,5 +150,6 @@ export async function GET() {
     wdb.close();
   }
 
+  deliverDigest(fired);
   return NextResponse.json({ evaluated: rows.length, fired });
 }

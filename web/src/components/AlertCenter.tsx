@@ -12,6 +12,8 @@ const POLL_MS = 30_000;
 interface AlertRecord {
   id: string;
   symbol: string | null;
+  strategyId: string | null;
+  topN: number | null;
   exchange: string;
   type: string;
   price: number | null;
@@ -28,10 +30,17 @@ interface Props {
 const TYPE_LABELS: Record<string, string> = {
   price_above: "Price crosses above",
   price_below: "Price crosses below",
+  strategy_enter: "Enters strategy top-N",
+  strategy_exit: "Leaves strategy top-N",
 };
 
 const firedVerb = (type: string): string =>
   type === "price_below" ? "crossed below" : "crossed above";
+
+const alertTitle = (a: AlertRecord): string =>
+  a.strategyId
+    ? `${a.strategyId} top-${a.topN ?? "N"} ${a.type === "strategy_enter" ? "entry" : "exit"}`
+    : `${a.symbol ?? "Symbol"} · ${TYPE_LABELS[a.type] ?? a.type}`;
 
 function getDeviceId(): string {
   try {
@@ -158,6 +167,24 @@ export default function AlertCenter({ symbol, exchange }: Props) {
     }
   };
 
+  const toggleAlert = async (id: string, next: boolean): Promise<void> => {
+    setBusyId(id);
+    setListError(null);
+    try {
+      const res = await fetch("/api/alerts", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deviceId: getDeviceId(), id, active: next }),
+      });
+      if (!res.ok) throw new Error("patch_failed");
+      setAlerts((prev) => prev.map((a) => (a.id === id ? { ...a, active: next } : a)));
+    } catch {
+      setListError("Could not update alert");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
   const active = alerts.filter((a) => a.active);
   const fired = alerts.filter((a) => !a.active && a.firedAt != null);
 
@@ -173,7 +200,7 @@ export default function AlertCenter({ symbol, exchange }: Props) {
         }
         aria-haspopup="dialog"
         title="Alerts"
-        className="relative inline-flex h-8 w-8 items-center justify-center rounded-full border border-line bg-surface text-muted transition-colors hover:text-paper"
+        className="relative inline-flex h-8 w-8 items-center justify-center rounded-full border border-line bg-surface text-muted transition-colors hover:text-paper after:absolute after:-inset-1.5 after:content-['']"
       >
         <BellIcon />
         {active.length > 0 && (
@@ -236,24 +263,30 @@ export default function AlertCenter({ symbol, exchange }: Props) {
                       className="flex items-center justify-between gap-3 rounded-xl border border-line bg-panel-2 px-3 py-2"
                     >
                       <div className="min-w-0">
-                        <p className="truncate text-sm text-paper">
-                          <span className="font-mono text-xs font-medium">{a.symbol}</span>
-                          <span className="mx-1.5 text-faint">·</span>
-                          {TYPE_LABELS[a.type] ?? a.type}
-                        </p>
-                        <p className="mt-0.5 font-mono text-xs tabular-nums text-muted">
-                          @ {a.price ?? "—"} · {a.exchange}
-                        </p>
+                        <p className="truncate text-sm text-paper">{alertTitle(a)}</p>
+                        {!a.strategyId && (
+                          <p className="mt-0.5 font-mono text-xs tabular-nums text-muted">
+                            @ {a.price ?? "—"} · {a.exchange}
+                          </p>
+                        )}
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => void removeAlert(a.id)}
-                        disabled={busyId === a.id}
-                        aria-label={`Delete alert for ${a.symbol}`}
-                        className="shrink-0 rounded-full border border-line bg-surface px-2.5 py-1 text-xs text-muted transition-colors hover:text-down disabled:opacity-50"
-                      >
-                        Delete
-                      </button>
+                      <div className="flex shrink-0 items-center gap-1.5">
+                        <ToggleAlert
+                          id={a.id}
+                          active={a.active}
+                          busy={busyId === a.id}
+                          onToggle={(tid, next) => void toggleAlert(tid, next)}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => void removeAlert(a.id)}
+                          disabled={busyId === a.id}
+                          aria-label={`Delete alert for ${a.strategyId ?? a.symbol}`}
+                          className="shrink-0 rounded-full border border-line bg-surface px-2.5 py-1 text-xs text-muted transition-colors hover:text-down disabled:opacity-50"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -477,5 +510,31 @@ function CreateAlertDialog({
         </div>
       </form>
     </Modal>
+  );
+}
+
+/* TASK-59 — per-alert pause/resume via PATCH; parent owns list state */
+function ToggleAlert({
+  id,
+  active,
+  busy,
+  onToggle,
+}: {
+  id: string;
+  active: boolean;
+  busy: boolean;
+  onToggle: (id: string, next: boolean) => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => onToggle(id, !active)}
+      disabled={busy}
+      aria-pressed={!active}
+      aria-label={active ? "Pause alert" : "Resume alert"}
+      className="rounded-full border border-line bg-surface px-2.5 py-1 text-xs text-muted transition-colors hover:text-paper disabled:opacity-50"
+    >
+      {active ? "Pause" : "Resume"}
+    </button>
   );
 }

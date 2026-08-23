@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
-import { validateAlertInput } from "@/lib/alerts";
+import { isMembershipType, validateAlertInput } from "@/lib/alerts";
 
 /* /api/alerts — anonymous device-scoped price alerts (ROADMAP T25 v1).
  * GET    ?deviceId=...           → alerts for the device (newest first)
@@ -62,6 +62,8 @@ export async function GET(request: NextRequest) {
         return {
           id: r.id,
           symbol: payload.symbol ?? null,
+          strategyId: payload.strategyId ?? null,
+          topN: payload.topN ?? null,
           exchange: payload.exchange ?? "NSE",
           type: r.type,
           price: payload.price ?? null,
@@ -87,18 +89,29 @@ export async function POST(request: NextRequest) {
   if (!parsed.ok) {
     return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
-  const { deviceId, symbol, exchange, type, price } = parsed.value;
+  const { deviceId, exchange, type } = parsed.value;
+  const isMembership = isMembershipType(type);
 
   const db = openDb(true);
   if (!db) return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
   try {
     const id = randomUUID();
     const now = Math.floor(Date.now() / 1000);
+    const payload = isMembership
+      ? { strategyId: parsed.value.strategyId, topN: parsed.value.topN }
+      : { symbol: parsed.value.symbol, exchange, price: parsed.value.price };
     db.prepare(
       `INSERT INTO alerts (id, device_id, type, payload_json, active, created_at)
        VALUES (?, ?, ?, ?, 1, ?)`
-    ).run(id, deviceId, type, JSON.stringify({ symbol, exchange, price }), now);
-    return NextResponse.json({ id, symbol, exchange, type, price, active: true, createdAt: now });
+    ).run(id, deviceId, type, JSON.stringify(payload), now);
+    return NextResponse.json({
+      id,
+      deviceId,
+      type,
+      ...payload,
+      active: true,
+      createdAt: now,
+    });
   } finally {
     db.close();
   }
@@ -117,7 +130,7 @@ export async function DELETE(request: NextRequest) {
   if (!db) return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
   try {
     const res = db
-      .prepare(`UPDATE alerts SET active = 0 WHERE id = ? AND device_id = ? AND active = 1`)
+      .prepare(`DELETE FROM alerts WHERE id = ? AND device_id = ?`)
       .run(id, deviceId) as unknown as { changes?: number };
     if (!res.changes) {
       return NextResponse.json({ error: "not_found" }, { status: 404 });
@@ -128,10 +141,40 @@ export async function DELETE(request: NextRequest) {
   }
 }
 
-function safeParse(json: string | null): { symbol?: string; exchange?: string; price?: number } | null {
+function safeParse(
+  json: string | null
+): { symbol?: string; exchange?: string; price?: number; strategyId?: string; topN?: number } | null {
   try {
     return JSON.parse(json ?? "") as { symbol?: string; exchange?: string; price?: number };
   } catch {
     return null;
+  }
+}
+
+/** Toggle an owned alert without deleting it (AlertCenter switch). */
+export async function PATCH(request: NextRequest) {
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "invalid_json" }, { status: 400 });
+  }
+  const b = (body ?? {}) as Record<string, unknown>;
+  const deviceId = typeof b.deviceId === "string" ? b.deviceId : "";
+  const id = typeof b.id === "string" ? b.id : "";
+  if (!DEVICE_RE.test(deviceId)) return NextResponse.json({ error: "invalid_device_id" }, { status: 400 });
+  if (!/^[a-zA-Z0-9_-]{1,64}$/.test(id)) return NextResponse.json({ error: "invalid_id" }, { status: 400 });
+  if (typeof b.active !== "boolean") return NextResponse.json({ error: "invalid_active" }, { status: 400 });
+
+  const db = openDb(true);
+  if (!db) return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
+  try {
+    const res = db
+      .prepare(`UPDATE alerts SET active = ? WHERE id = ? AND device_id = ?`)
+      .run(b.active ? 1 : 0, id, deviceId) as unknown as { changes?: number };
+    if (!res.changes) return NextResponse.json({ error: "not_found" }, { status: 404 });
+    return NextResponse.json({ ok: true, active: b.active });
+  } finally {
+    db.close();
   }
 }

@@ -95,6 +95,9 @@ jobs:
       - name: signal snapshots (all strategies)
         run: node --experimental-strip-types scripts/run-signals.mjs --backfill-months 1
 
+      - name: evaluate membership alerts
+        run: node --experimental-strip-types scripts/run-alerts.mjs
+
       # persist refreshed tables for tomorrow's restore-prefix; keep a
       # short-lived artifact so humans can verify row counts without shell access
       - name: save candle + factor store
