@@ -40,7 +40,12 @@ export default function MarketStatus() {
   const isOpen = isWeekday && mins >= SESSION_OPEN && mins < SESSION_CLOSE;
 
   let countdown: string | null = null;
-  if (!isOpen) {
+  if (isOpen) {
+    const diff = SESSION_CLOSE - mins;
+    const h = Math.floor(diff / 60);
+    const m = diff % 60;
+    countdown = h > 0 ? `closes in ${h}h ${String(m).padStart(2, "0")}m` : `closes in ${m}m`;
+  } else {
     const now = mins;
     let diff: number;
     if (isWeekday && now < SESSION_OPEN) diff = SESSION_OPEN - now;
@@ -50,7 +55,7 @@ export default function MarketStatus() {
     else diff = 1440 - now + SESSION_OPEN;
     const h = Math.floor(diff / 60);
     const m = diff % 60;
-    countdown = h > 0 ? `in ${h}h ${String(m).padStart(2, "0")}m` : `in ${String(m).padStart(2, "0")}m`;
+    countdown = h > 0 ? `in ${h}h ${String(m).padStart(2, "0")}m` : `in ${m}m`;
   }
 
   return (
@@ -64,7 +69,7 @@ export default function MarketStatus() {
     >
       <span className={`h-1.5 w-1.5 rounded-full ${isOpen ? "bg-up" : "bg-faint"}`} aria-hidden />
       {isOpen ? "Market open" : "Market closed"}
-      {countdown && <span className="hidden font-normal tabular-nums text-faint sm:inline">· {countdown}</span>}
+      {countdown && <span className="whitespace-nowrap font-normal tabular-nums text-faint">· {countdown}</span>}
     </span>
   );
 }
