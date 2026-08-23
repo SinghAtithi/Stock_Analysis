@@ -3092,7 +3092,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -3119,7 +3119,7 @@
         }
       ],
       "createdAt": 1787501704704,
-      "updatedAt": 1787501704705,
+      "updatedAt": 1787522129871,
       "blocked": false
     },
     {
@@ -3501,7 +3501,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -3528,7 +3528,7 @@
         }
       ],
       "createdAt": 1787501827905,
-      "updatedAt": 1787501827905,
+      "updatedAt": 1787522130373,
       "blocked": false
     },
     {
@@ -3537,7 +3537,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -3564,7 +3564,7 @@
         }
       ],
       "createdAt": 1787501831487,
-      "updatedAt": 1787501831487,
+      "updatedAt": 1787522130678,
       "blocked": false
     },
     {
@@ -27452,7 +27452,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -27484,7 +27484,7 @@
         }
       ],
       "createdAt": 1787504693528,
-      "updatedAt": 1787504693528,
+      "updatedAt": 1787522134102,
       "blocked": false
     },
     {
@@ -28566,7 +28566,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -28598,7 +28598,7 @@
         }
       ],
       "createdAt": 1787504875602,
-      "updatedAt": 1787504875602,
+      "updatedAt": 1787522134529,
       "blocked": false
     },
     {
@@ -31267,7 +31267,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "done",
       "assignee": "vector",
       "labels": [],
       "estimate": 3,
@@ -31299,7 +31299,7 @@
         }
       ],
       "createdAt": 1787505363211,
-      "updatedAt": 1787512294836,
+      "updatedAt": 1787522135345,
       "blocked": false
     },
     {
@@ -32304,7 +32304,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "quark",
       "labels": [],
       "estimate": 3,
@@ -32336,7 +32336,7 @@
         }
       ],
       "createdAt": 1787505578596,
-      "updatedAt": 1787512621448,
+      "updatedAt": 1787522134739,
       "blocked": false
     },
     {
@@ -34035,7 +34035,7 @@
         }
       ],
       "createdAt": 1787508232941,
-      "updatedAt": 1787511878696,
+      "updatedAt": 1787522132392,
       "blocked": false
     },
     {
@@ -43584,7 +43584,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -43606,7 +43606,7 @@
         }
       ],
       "createdAt": 1787510829517,
-      "updatedAt": 1787510829517,
+      "updatedAt": 1787522133717,
       "blocked": false
     },
     {
@@ -43646,7 +43646,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -43668,7 +43668,7 @@
         }
       ],
       "createdAt": 1787510853044,
-      "updatedAt": 1787510853044,
+      "updatedAt": 1787521917535,
       "blocked": false
     },
     {
@@ -43677,7 +43677,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -43699,7 +43699,7 @@
         }
       ],
       "createdAt": 1787510853383,
-      "updatedAt": 1787511207516,
+      "updatedAt": 1787522132664,
       "blocked": false
     },
     {
@@ -44300,7 +44300,7 @@
       "desc": "",
       "phase": "B",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "orion",
       "labels": [
         "ops",
@@ -44330,7 +44330,7 @@
         }
       ],
       "createdAt": 1787510954213,
-      "updatedAt": 1787513339601,
+      "updatedAt": 1787522131791,
       "blocked": false
     },
     {
@@ -44877,8 +44877,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
-      "assignee": null,
+      "status": "done",
+      "assignee": "orion",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -44904,7 +44904,7 @@
         }
       ],
       "createdAt": 1787511207846,
-      "updatedAt": 1787511207846,
+      "updatedAt": 1787522132019,
       "blocked": false
     },
     {
@@ -44913,34 +44913,34 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "done",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "share ids >=128-bit random base64url not sequential",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "note payload stays in URL fragment never server-stored/logged",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "expiry checked server-side not countdown-only",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "threat-model note in docs/task-reports",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787511208101,
-      "updatedAt": 1787511208101,
+      "updatedAt": 1787522155314,
       "blocked": false
     },
     {
@@ -45300,7 +45300,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -45327,7 +45327,7 @@
         }
       ],
       "createdAt": 1787511338339,
-      "updatedAt": 1787511338339,
+      "updatedAt": 1787522136046,
       "blocked": false
     },
     {
@@ -47536,7 +47536,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -47563,7 +47563,7 @@
         }
       ],
       "createdAt": 1787511954200,
-      "updatedAt": 1787511954200,
+      "updatedAt": 1787522133460,
       "blocked": false
     },
     {
@@ -47572,7 +47572,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "quark",
       "labels": [
         "ui",
@@ -47603,7 +47603,7 @@
         }
       ],
       "createdAt": 1787511983432,
-      "updatedAt": 1787512946056,
+      "updatedAt": 1787522135075,
       "blocked": false
     },
     {
@@ -47648,7 +47648,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -47675,7 +47675,7 @@
         }
       ],
       "createdAt": 1787512045346,
-      "updatedAt": 1787512045346,
+      "updatedAt": 1787522135667,
       "blocked": false
     },
     {
@@ -48073,7 +48073,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -48095,7 +48095,7 @@
         }
       ],
       "createdAt": 1787512153955,
-      "updatedAt": 1787512153955,
+      "updatedAt": 1787522133090,
       "blocked": false
     },
     {
@@ -48848,566 +48848,566 @@
   ],
   "activities": [
     {
-      "id": "BEGH",
-      "taskId": "TASK-119",
-      "text": "✓ checked axe 0 violations",
-      "agent": "FALCON",
-      "at": 1787513367467
+      "id": "RYVF",
+      "taskId": "TASK-1404",
+      "text": "shipped fcabb24 (local) · docs(security): binding requirements for /w/ share links — CSPRNG ids, fragment-first payloads, no logging, server-enforced expiry, capability-leak threat model (TASK-1404) · gates tsc=9.6s·lint=31.3s·test=7.8s",
+      "agent": "CIPHER",
+      "at": 1787522155315
     },
     {
-      "id": "F5DA",
-      "taskId": "TASK-119",
-      "text": "✓ checked 404 offers a search box or popular-symbol links ",
-      "agent": "FALCON",
-      "at": 1787513367170
-    },
-    {
-      "id": "E9FA",
-      "taskId": "TASK-119",
-      "text": "✓ checked cursor-blink animation restored (a defined keyfr",
-      "agent": "FALCON",
-      "at": 1787513366854
-    },
-    {
-      "id": "T6AC",
-      "taskId": "TASK-1389",
-      "text": "review ✗ gates RED (tsc=11.5s·lint=41.5s) — fix and re-run",
+      "id": "M02G",
+      "taskId": "TASK-1413",
+      "text": "moved todo → done",
       "agent": "ORION",
-      "at": 1787513339602
+      "at": 1787522136046
     },
     {
-      "id": "RJCO",
-      "taskId": "TASK-1389",
-      "text": "✓ checked fresh-clone unaffected when backups absent",
-      "agent": "RAVAN",
-      "at": 1787513286167
+      "id": "CV2D",
+      "taskId": "TASK-1468",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787522135668
     },
     {
-      "id": "BDFN",
-      "taskId": "TASK-1389",
-      "text": "✓ checked docs/runbook-restore.md restore drill executed o",
-      "agent": "RAVAN",
-      "at": 1787513285933
+      "id": "BD2P",
+      "taskId": "TASK-963",
+      "text": "moved doing → done",
+      "agent": "VECTOR",
+      "at": 1787522135345
     },
     {
-      "id": "2Q13",
-      "taskId": "TASK-1389",
-      "text": "✓ checked nightly run wired into existing cron/self-test p",
-      "agent": "RAVAN",
-      "at": 1787513285662
-    },
-    {
-      "id": "SUED",
-      "taskId": "TASK-1389",
-      "text": "✓ checked scripts/backup-db.mjs using sqlite3 .backup API ",
-      "agent": "RAVAN",
-      "at": 1787513285364
-    },
-    {
-      "id": "PCOE",
-      "taskId": "TASK-1370",
-      "text": "review ✗ gates RED (tsc=13.6s·lint=37.7s) — fix and re-run",
-      "agent": "CIPHER",
-      "at": 1787513268439
-    },
-    {
-      "id": "VC9I",
-      "taskId": "TASK-1370",
-      "text": "review ✗ gates RED (tsc=47.8s·lint=38.7s) — fix and re-run",
-      "agent": "CIPHER",
-      "at": 1787513152126
-    },
-    {
-      "id": "QV0G",
-      "taskId": "TASK-57",
-      "text": "blocked",
-      "agent": "RAVAN",
-      "at": 1787513101419
-    },
-    {
-      "id": "3ERQ",
-      "taskId": "TASK-1495",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787513100852
-    },
-    {
-      "id": "4QYD",
-      "taskId": "TASK-1370",
-      "text": "✓ checked tests cover reject paths",
-      "agent": "CIPHER",
-      "at": 1787513049477
-    },
-    {
-      "id": "0NLA",
-      "taskId": "TASK-1370",
-      "text": "✓ checked mode:replace requires shared write token env",
-      "agent": "CIPHER",
-      "at": 1787513048926
-    },
-    {
-      "id": "I65Z",
-      "taskId": "TASK-1370",
-      "text": "✓ checked rate limit per-IP on POST",
-      "agent": "CIPHER",
-      "at": 1787513048335
-    },
-    {
-      "id": "UH4Q",
-      "taskId": "TASK-1370",
-      "text": "✓ checked body size cap ~1MB returns 413",
-      "agent": "CIPHER",
-      "at": 1787513047917
-    },
-    {
-      "id": "ZBJ7",
+      "id": "66MJ",
       "taskId": "TASK-1466",
-      "text": "review ✗ gates RED (tsc=15.5s·lint=39.1s) — fix and re-run",
+      "text": "moved doing → done",
       "agent": "QUARK",
-      "at": 1787512946056
+      "at": 1787522135075
     },
     {
-      "id": "6WCN",
-      "taskId": "TASK-1466",
-      "text": "✓ checked screener.py smoke passes locally vs prod build",
-      "agent": "RAVAN",
-      "at": 1787512890914
-    },
-    {
-      "id": "6D34",
-      "taskId": "TASK-119",
-      "text": "claimed by FALCON · → doing",
-      "agent": "FALCON",
-      "at": 1787512857159
-    },
-    {
-      "id": "PAHM",
-      "taskId": "TASK-1370",
-      "text": "review ✗ gates RED (tsc=25.3s·lint=36.1s) — fix and re-run",
-      "agent": "CIPHER",
-      "at": 1787512832101
-    },
-    {
-      "id": "4EJU",
-      "taskId": "TASK-1492",
-      "text": "claimed by FALCON",
-      "agent": "FALCON",
-      "at": 1787512793462
-    },
-    {
-      "id": "1LWQ",
-      "taskId": "TASK-1492",
-      "text": "claimed by FALCON",
-      "agent": "FALCON",
-      "at": 1787512758126
-    },
-    {
-      "id": "PMFB",
-      "taskId": "TASK-1492",
-      "text": "moved doing → backlog",
-      "agent": "FALCON",
-      "at": 1787512757864
-    },
-    {
-      "id": "JI8O",
-      "taskId": "TASK-1379",
-      "text": "claimed by NOVA · → doing",
-      "agent": "NOVA",
-      "at": 1787512625144
-    },
-    {
-      "id": "YQD3",
+      "id": "4ZNW",
       "taskId": "TASK-997",
-      "text": "review · gates green tsc=22.3s·lint=42.4s·test=7.3s · e2e✓",
+      "text": "moved review → done",
       "agent": "QUARK",
-      "at": 1787512621448
+      "at": 1787522134739
     },
     {
-      "id": "FH92",
-      "taskId": "TASK-57",
-      "text": "moved doing → todo",
-      "agent": "NOVA",
-      "at": 1787512580372
+      "id": "0VFA",
+      "taskId": "TASK-875",
+      "text": "moved todo → done",
+      "agent": "QUARK",
+      "at": 1787522134529
     },
     {
-      "id": "WGW9",
-      "taskId": "TASK-1492",
-      "text": "claimed by FALCON · → doing",
-      "agent": "FALCON",
-      "at": 1787512577394
+      "id": "YA6W",
+      "taskId": "TASK-839",
+      "text": "moved todo → done",
+      "agent": "QUARK",
+      "at": 1787522134102
     },
     {
-      "id": "W529",
-      "taskId": "TASK-1370",
+      "id": "5115",
+      "taskId": "TASK-1371",
+      "text": "moved todo → done",
+      "agent": "CIPHER",
+      "at": 1787522133717
+    },
+    {
+      "id": "C7A6",
+      "taskId": "TASK-1465",
+      "text": "moved todo → done",
+      "agent": "CIPHER",
+      "at": 1787522133461
+    },
+    {
+      "id": "G0EU",
+      "taskId": "TASK-1478",
+      "text": "moved todo → done",
+      "agent": "CIPHER",
+      "at": 1787522133090
+    },
+    {
+      "id": "HSUH",
+      "taskId": "TASK-1374",
+      "text": "moved todo → done",
+      "agent": "CIPHER",
+      "at": 1787522132664
+    },
+    {
+      "id": "XDDG",
+      "taskId": "TASK-1053",
+      "text": "claimed by ORION",
+      "agent": "ORION",
+      "at": 1787522132392
+    },
+    {
+      "id": "1ACB",
+      "taskId": "TASK-1403",
+      "text": "claimed by ORION",
+      "agent": "ORION",
+      "at": 1787522132019
+    },
+    {
+      "id": "01I0",
+      "taskId": "TASK-1389",
+      "text": "moved doing → done",
+      "agent": "ORION",
+      "at": 1787522131791
+    },
+    {
+      "id": "RKLC",
+      "taskId": "TASK-1053",
+      "text": "moved done → done",
+      "agent": "ORION",
+      "at": 1787522131457
+    },
+    {
+      "id": "0DLE",
+      "taskId": "TASK-1403",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787522131166
+    },
+    {
+      "id": "PFAK",
+      "taskId": "TASK-95",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787522130678
+    },
+    {
+      "id": "BNV3",
+      "taskId": "TASK-94",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787522130374
+    },
+    {
+      "id": "4A1B",
+      "taskId": "TASK-83",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787522129871
+    },
+    {
+      "id": "AAOP",
+      "taskId": "TASK-1404",
+      "text": "review · gates green tsc=10.6s·lint=32.4s·test=7.2s",
+      "agent": "CIPHER",
+      "at": 1787522094004
+    },
+    {
+      "id": "OR1W",
+      "taskId": "TASK-1404",
+      "text": "✓ checked threat-model note in docs/task-reports",
+      "agent": "CIPHER",
+      "at": 1787522043421
+    },
+    {
+      "id": "MNO1",
+      "taskId": "TASK-1404",
+      "text": "✓ checked expiry checked server-side not countdown-only",
+      "agent": "CIPHER",
+      "at": 1787522043147
+    },
+    {
+      "id": "H5VC",
+      "taskId": "TASK-1404",
+      "text": "✓ checked note payload stays in URL fragment never server-",
+      "agent": "CIPHER",
+      "at": 1787522042887
+    },
+    {
+      "id": "PBVY",
+      "taskId": "TASK-1404",
+      "text": "✓ checked share ids >=128-bit random base64url not sequent",
+      "agent": "CIPHER",
+      "at": 1787522042661
+    },
+    {
+      "id": "K2QK",
+      "taskId": "TASK-1404",
       "text": "claimed by CIPHER · → doing",
       "agent": "CIPHER",
-      "at": 1787512566685
+      "at": 1787521991252
     },
     {
-      "id": "XAWC",
-      "taskId": "TASK-997",
+      "id": "N2M8",
+      "taskId": "TASK-1373",
+      "text": "shipped 92cf723 (local) · fix(security): throttle deviceId probing on watchlist/alerts GETs via token buckets; upstreamGuards store gains LRU eviction; entropy audit write-up (TASK-1373) · gates tsc=9.3s·lint=32.8s·test=7.4s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787521917536
+    },
+    {
+      "id": "9PZD",
+      "taskId": "TASK-1373",
+      "text": "review · gates green tsc=9.8s·lint=32.4s·test=6.9s",
+      "agent": "CIPHER",
+      "at": 1787521854950
+    },
+    {
+      "id": "EHXA",
+      "taskId": "TASK-1373",
+      "text": "✓ checked write-up in docs/task-reports",
+      "agent": "CIPHER",
+      "at": 1787521805297
+    },
+    {
+      "id": "Z1FR",
+      "taskId": "TASK-1373",
+      "text": "✓ checked brute-force probing rate-limited",
+      "agent": "CIPHER",
+      "at": 1787521805059
+    },
+    {
+      "id": "O9BK",
+      "taskId": "TASK-1373",
+      "text": "✓ checked audit deviceId generation entropy >=128 bits",
+      "agent": "CIPHER",
+      "at": 1787521804733
+    },
+    {
+      "id": "QBSY",
+      "taskId": "TASK-1373",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787521574390
+    },
+    {
+      "id": "RCA9",
+      "taskId": "TASK-1413",
+      "text": "shipped 5524971 (local) · fix(security): access-control posture — next start binds 127.0.0.1 by default, decision doc with public-deploy blockers (TASK-1413) · gates tsc=9.2s·lint=30.3s·test=6.8s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787521460460
+    },
+    {
+      "id": "I6I0",
+      "taskId": "TASK-1413",
+      "text": "review · gates green tsc=9.8s·lint=30.5s·test=7.2s",
+      "agent": "CIPHER",
+      "at": 1787521389788
+    },
+    {
+      "id": "UJSD",
+      "taskId": "TASK-1413",
+      "text": "✓ checked note in docs/task-reports",
+      "agent": "CIPHER",
+      "at": 1787521342019
+    },
+    {
+      "id": "SSZ9",
+      "taskId": "TASK-1413",
+      "text": "✓ checked if public deploy blocked until gated",
+      "agent": "CIPHER",
+      "at": 1787521341726
+    },
+    {
+      "id": "ZHIH",
+      "taskId": "TASK-1413",
+      "text": "✓ checked enforced at middleware or server bind",
+      "agent": "CIPHER",
+      "at": 1787521341428
+    },
+    {
+      "id": "1FN4",
+      "taskId": "TASK-1413",
+      "text": "✓ checked documented decision localhost-only vs token gate",
+      "agent": "CIPHER",
+      "at": 1787521341098
+    },
+    {
+      "id": "BX4R",
+      "taskId": "TASK-1413",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787521264785
+    },
+    {
+      "id": "KXOO",
+      "taskId": "TASK-1468",
+      "text": "shipped 3212c5b (local) · docs(security): SECURITY.md — per-surface threat model, accepted-risk register with revisit triggers, disclosure process; consolidates SEC task cluster 1370-1478 (TASK-1468) · gates tsc=10.1s·lint=32.0s·test=6.9s",
+      "agent": "CIPHER",
+      "at": 1787521190324
+    },
+    {
+      "id": "G8KX",
+      "taskId": "TASK-763",
+      "text": "moved doing → done",
+      "agent": "QUARK",
+      "at": 1787521168385
+    },
+    {
+      "id": "AXA6",
+      "taskId": "TASK-763",
       "text": "✓ checked axe 0 violations",
       "agent": "QUARK",
-      "at": 1787512548963
+      "at": 1787521168128
     },
     {
-      "id": "6MN1",
-      "taskId": "TASK-1389",
-      "text": "claimed by ORION · → doing",
-      "agent": "ORION",
-      "at": 1787512547790
-    },
-    {
-      "id": "EJBA",
-      "taskId": "TASK-1494",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787512448978
-    },
-    {
-      "id": "QCIE",
-      "taskId": "TASK-1493",
-      "text": "created in todo",
-      "agent": "NOVA",
-      "at": 1787512437765
-    },
-    {
-      "id": "W9U7",
-      "taskId": "TASK-1492",
-      "text": "created in todo",
-      "agent": "FALCON",
-      "at": 1787512391103
-    },
-    {
-      "id": "FOLT",
-      "taskId": "TASK-1491",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512390435
-    },
-    {
-      "id": "9NSB",
-      "taskId": "TASK-1490",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512390035
-    },
-    {
-      "id": "NCXS",
-      "taskId": "TASK-1489",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512389492
-    },
-    {
-      "id": "1KT1",
-      "taskId": "TASK-1488",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512389067
-    },
-    {
-      "id": "SW67",
-      "taskId": "TASK-1487",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512388658
-    },
-    {
-      "id": "9YJ8",
-      "taskId": "TASK-1424",
-      "text": "assigned to SABLE",
-      "agent": "SABLE",
-      "at": 1787512305455
-    },
-    {
-      "id": "54AC",
-      "taskId": "TASK-1409",
-      "text": "assigned to FALCON",
-      "agent": "FALCON",
-      "at": 1787512305105
-    },
-    {
-      "id": "V9O3",
-      "taskId": "TASK-997",
-      "text": "✓ checked no regression to NIFTY 50/SENSEX/BANKNIFTY",
-      "agent": "QUARK",
-      "at": 1787512297587
-    },
-    {
-      "id": "EZML",
-      "taskId": "TASK-997",
-      "text": "✓ checked ETFs stay Equity",
-      "agent": "QUARK",
-      "at": 1787512297165
-    },
-    {
-      "id": "MDD0",
-      "taskId": "TASK-997",
-      "text": "✓ checked BSE AUTO/BANKEX/BHARAT 22 and similar resolve th",
-      "agent": "QUARK",
-      "at": 1787512296808
-    },
-    {
-      "id": "IRUR",
-      "taskId": "TASK-997",
-      "text": "✓ checked index classification uses the instrument's name/",
-      "agent": "QUARK",
-      "at": 1787512296478
-    },
-    {
-      "id": "5TUE",
-      "taskId": "TASK-963",
-      "text": "claimed by VECTOR · → doing",
-      "agent": "VECTOR",
-      "at": 1787512294836
-    },
-    {
-      "id": "N7X8",
-      "taskId": "TASK-1486",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512247052
-    },
-    {
-      "id": "09JH",
-      "taskId": "TASK-1485",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512246676
-    },
-    {
-      "id": "BWKI",
-      "taskId": "TASK-1484",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512246325
-    },
-    {
-      "id": "LLBC",
-      "taskId": "TASK-1483",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512246034
-    },
-    {
-      "id": "TO3R",
-      "taskId": "TASK-1429",
-      "text": "assigned to NEON",
-      "agent": "NEON",
-      "at": 1787512242460
-    },
-    {
-      "id": "UY8D",
-      "taskId": "TASK-1447",
-      "text": "assigned to VIPER",
-      "agent": "VIPER",
-      "at": 1787512242072
-    },
-    {
-      "id": "3FCW",
-      "taskId": "TASK-1482",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512223426
-    },
-    {
-      "id": "C6E3",
-      "taskId": "TASK-1481",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512223047
-    },
-    {
-      "id": "QH1J",
-      "taskId": "TASK-1480",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512222709
-    },
-    {
-      "id": "PNE4",
-      "taskId": "TASK-1479",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787512207261
-    },
-    {
-      "id": "15IM",
-      "taskId": "TASK-1478",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512153955
-    },
-    {
-      "id": "2CA1",
-      "taskId": "TASK-1477",
-      "text": "created in todo",
-      "agent": "NOVA",
-      "at": 1787512148580
-    },
-    {
-      "id": "2L6F",
-      "taskId": "TASK-1408",
-      "text": "assigned to BLADE",
-      "agent": "BLADE",
-      "at": 1787512087320
-    },
-    {
-      "id": "IFJX",
-      "taskId": "TASK-1392",
-      "text": "assigned to AXIOM",
-      "agent": "AXIOM",
-      "at": 1787512086767
-    },
-    {
-      "id": "BDXN",
-      "taskId": "TASK-1466",
-      "text": "✓ checked StatsRail guards undefined candles defensively",
-      "agent": "RAVAN",
-      "at": 1787512082601
-    },
-    {
-      "id": "9FIK",
-      "taskId": "TASK-1466",
-      "text": "✓ checked load() validates Array.isArray(json.candles) bef",
-      "agent": "RAVAN",
-      "at": 1787512082278
-    },
-    {
-      "id": "CMO3",
-      "taskId": "TASK-1476",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512078567
-    },
-    {
-      "id": "EDMD",
-      "taskId": "TASK-1475",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512077968
-    },
-    {
-      "id": "CHZ6",
-      "taskId": "TASK-1474",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512077649
-    },
-    {
-      "id": "5MRQ",
-      "taskId": "TASK-1473",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512077261
-    },
-    {
-      "id": "YHGP",
-      "taskId": "TASK-1472",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1787512075545
-    },
-    {
-      "id": "KNZ2",
-      "taskId": "TASK-1471",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512047938
-    },
-    {
-      "id": "VEVU",
-      "taskId": "TASK-1470",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512047370
-    },
-    {
-      "id": "PFGP",
-      "taskId": "TASK-1469",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512046962
-    },
-    {
-      "id": "MJ4P",
+      "id": "KU6L",
       "taskId": "TASK-1468",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787512045346
+      "text": "review · gates green tsc=9.8s·lint=31.8s·test=7.9s",
+      "agent": "CIPHER",
+      "at": 1787521128367
     },
     {
-      "id": "64CS",
-      "taskId": "TASK-1467",
-      "text": "created in todo",
-      "agent": "NOVA",
-      "at": 1787512017357
+      "id": "GJDX",
+      "taskId": "TASK-83",
+      "text": "shipped de7a1be → origin/master · feat(watchlist): 5s undo chip on removal — restores entry at original position, sr-only live-region announcement, works in desktop panel + mobile sheet via shared removeEntry; insertWatchlistAt clamps against concurrent edits (TASK-83) · gates tsc=9.6s·lint=29.5s·test=7.0s · e2e✓",
+      "agent": "ORION",
+      "at": 1787521081969
     },
     {
-      "id": "C30N",
-      "taskId": "TASK-1466",
+      "id": "RXYP",
+      "taskId": "TASK-1468",
+      "text": "✓ checked links to SEC task cluster 1370-1465",
+      "agent": "CIPHER",
+      "at": 1787521078476
+    },
+    {
+      "id": "RRF2",
+      "taskId": "TASK-1468",
+      "text": "✓ checked responsible-disclosure section",
+      "agent": "CIPHER",
+      "at": 1787521078075
+    },
+    {
+      "id": "8Y7H",
+      "taskId": "TASK-1468",
+      "text": "✓ checked threat model per surface (api/board, alerts, ups",
+      "agent": "CIPHER",
+      "at": 1787521077773
+    },
+    {
+      "id": "Y8JG",
+      "taskId": "TASK-1468",
+      "text": "✓ checked register lists known-accepted risks (unsafe-inli",
+      "agent": "CIPHER",
+      "at": 1787521077354
+    },
+    {
+      "id": "L56O",
+      "taskId": "TASK-1468",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787521020675
+    },
+    {
+      "id": "PASY",
+      "taskId": "TASK-83",
+      "text": "review · gates green tsc=13.7s·lint=38.5s·test=7.3s",
+      "agent": "ORION",
+      "at": 1787521000271
+    },
+    {
+      "id": "PG3X",
+      "taskId": "TASK-83",
+      "text": "✓ checked existing keyboard J/K step and export/import una",
+      "agent": "ORION",
+      "at": 1787520932823
+    },
+    {
+      "id": "3JG5",
+      "taskId": "TASK-83",
+      "text": "✓ checked behavior identical on desktop + mobile sheet",
+      "agent": "ORION",
+      "at": 1787520932554
+    },
+    {
+      "id": "Z1N2",
+      "taskId": "TASK-83",
+      "text": "✓ checked undo announces via sr-only live region",
+      "agent": "ORION",
+      "at": 1787520932158
+    },
+    {
+      "id": "EE8V",
+      "taskId": "TASK-83",
+      "text": "✓ checked removing a watchlist entry offers an undo afford",
+      "agent": "ORION",
+      "at": 1787520931861
+    },
+    {
+      "id": "XVGM",
+      "taskId": "TASK-763",
+      "text": "✓ checked J/K stepping with an empty list does nothing",
+      "agent": "QUARK",
+      "at": 1787520868609
+    },
+    {
+      "id": "NI7P",
+      "taskId": "TASK-763",
+      "text": "✓ checked removeEntry handles the empty-list branch",
+      "agent": "QUARK",
+      "at": 1787520868266
+    },
+    {
+      "id": "WFEY",
+      "taskId": "TASK-763",
+      "text": "✓ checked after removing the last watchlist entry, the cha",
+      "agent": "QUARK",
+      "at": 1787520867901
+    },
+    {
+      "id": "QAI9",
+      "taskId": "TASK-1478",
+      "text": "shipped b98601d (local) · fix(security): pin all GitHub Actions to verified commit SHAs + dependabot for action/npm bumps (TASK-1478) · gates tsc=11.9s·lint=34.3s·test=8.0s",
+      "agent": "CIPHER",
+      "at": 1787520841645
+    },
+    {
+      "id": "EFCV",
+      "taskId": "TASK-1478",
+      "text": "review · gates green tsc=12.6s·lint=37.3s·test=7.5s",
+      "agent": "CIPHER",
+      "at": 1787520786950
+    },
+    {
+      "id": "1M4T",
+      "taskId": "TASK-1478",
+      "text": "✓ checked ci green after pinning",
+      "agent": "CIPHER",
+      "at": 1787520717716
+    },
+    {
+      "id": "420F",
+      "taskId": "TASK-1478",
+      "text": "✓ checked dependabot or renovate config for action bumps",
+      "agent": "CIPHER",
+      "at": 1787520717394
+    },
+    {
+      "id": "Y4CF",
+      "taskId": "TASK-1478",
+      "text": "✓ checked all workflow uses: pinned to full SHA with versi",
+      "agent": "CIPHER",
+      "at": 1787520716990
+    },
+    {
+      "id": "D88E",
+      "taskId": "TASK-1478",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787520544416
+    },
+    {
+      "id": "NO8E",
+      "taskId": "TASK-1374",
+      "text": "shipped e64d75d (local) · fix(security): blocking ci security job — npm audit (prod, high+) + gitleaks full-history scan; optional local pre-commit script (TASK-1374) · gates tsc=14.0s·lint=36.5s·test=8.0s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787520458631
+    },
+    {
+      "id": "G1ZQ",
+      "taskId": "TASK-1374",
+      "text": "review · gates green tsc=15.0s·lint=32.4s·test=7.0s",
+      "agent": "CIPHER",
+      "at": 1787520383719
+    },
+    {
+      "id": "5XI7",
+      "taskId": "TASK-1374",
+      "text": "✓ checked workflow review gates run both",
+      "agent": "CIPHER",
+      "at": 1787520329061
+    },
+    {
+      "id": "O53I",
+      "taskId": "TASK-1374",
+      "text": "✓ checked gitleaks hook added via husky",
+      "agent": "CIPHER",
+      "at": 1787520328789
+    },
+    {
+      "id": "SBCO",
+      "taskId": "TASK-1374",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787520216632
+    },
+    {
+      "id": "0B5J",
+      "taskId": "TASK-763",
       "text": "claimed by QUARK · → doing",
       "agent": "QUARK",
-      "at": 1787512014709
+      "at": 1787520166524
     },
     {
-      "id": "RH7D",
-      "taskId": "TASK-97",
-      "text": "shipped 318f643 → origin/master · fix(search): scroll active option into view on keyboard nav — listbox overflow no longer hides aria-activedescendant target (TASK-97) · gates tsc=11.5s·lint=36.8s·test=7.6s · e2e✓",
-      "agent": "FALCON",
-      "at": 1787511993250
-    },
-    {
-      "id": "KALV",
-      "taskId": "TASK-1466",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511983432
-    },
-    {
-      "id": "I7S0",
-      "taskId": "TASK-1465",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511954200
-    },
-    {
-      "id": "TCJU",
-      "taskId": "TASK-1464",
-      "text": "created in todo",
+      "id": "R60Y",
+      "taskId": "TASK-83",
+      "text": "claimed by ORION · → doing",
       "agent": "ORION",
-      "at": 1787511942030
+      "at": 1787520156743
     },
     {
-      "id": "AWUE",
-      "taskId": "TASK-1463",
-      "text": "created in todo",
+      "id": "PVJR",
+      "taskId": "TASK-1451",
+      "text": "moved review → done",
+      "agent": "CIPHER",
+      "at": 1787520114677
+    },
+    {
+      "id": "562H",
+      "taskId": "TASK-1451",
+      "text": "review · gates green tsc=9.2s·lint=31.0s·test=7.2s",
+      "agent": "CIPHER",
+      "at": 1787519966563
+    },
+    {
+      "id": "0MZX",
+      "taskId": "TASK-1451",
+      "text": "✓ checked npm test green",
+      "agent": "CIPHER",
+      "at": 1787519918780
+    },
+    {
+      "id": "LE2X",
+      "taskId": "TASK-1451",
+      "text": "✓ checked q capped ~64 chars in search+instruments routes ",
+      "agent": "CIPHER",
+      "at": 1787519918471
+    },
+    {
+      "id": "EYLV",
+      "taskId": "TASK-1451",
+      "text": "✓ checked --max-redirs 3 on curl args",
+      "agent": "CIPHER",
+      "at": 1787519918223
+    },
+    {
+      "id": "MP7A",
+      "taskId": "TASK-1451",
+      "text": "✓ checked maxBuffer <=8MB on execFileAsync",
+      "agent": "CIPHER",
+      "at": 1787519917899
+    },
+    {
+      "id": "1HA6",
+      "taskId": "TASK-1451",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787519782212
+    },
+    {
+      "id": "ZN8U",
+      "taskId": "TASK-95",
+      "text": "shipped 0e7fc6e → origin/master · feat(backtest): history rows gain human strategy name, Sharpe/maxDD (persisted at run time), /screener?strategy= cross-link and per-run Remove (DELETE /api/backtest?id=) — deep-link ?id= unchanged (TASK-95) · gates tsc=15.1s·lint=37.6s·test=7.9s · e2e✓",
       "agent": "ORION",
-      "at": 1787511941664
+      "at": 1787519675099
     },
     {
-      "id": "72Y9",
-      "taskId": "TASK-1462",
-      "text": "created in todo",
-      "agent": "NOVA",
-      "at": 1787511935030
+      "id": "9X06",
+      "taskId": "TASK-1412",
+      "text": "shipped 5aae154 → origin/master · fix(security): generic 500 bodies — internalError helper keeps raw exception text (server paths) server-side, clients get scope-tagged internal_error only (TASK-1412) · gates tsc=12.3s·lint=42.3s·test=7.3s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787519636462
     },
     {
-      "id": "JC0Y",
-      "taskId": "TASK-97",
-      "text": "review · gates green tsc=13.7s·lint=37.7s·test=7.5s",
-      "agent": "FALCON",
-      "at": 1787511910643
-    },
-    {
-      "id": "862X",
-      "taskId": "TASK-1461",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511896174
+      "id": "CZFO",
+      "taskId": "TASK-875",
+      "text": "shipped 23972d9 → origin/master · fix(fundamentals): failure state keyed to symbol — one bad fetch no longer sticks 'unavailable' forever; auto-retry on symbol switch, cached last-good panel shows instantly on revisit (TASK-875) · gates tsc=11.5s·lint=41.9s·test=8.3s · e2e✓",
+      "agent": "QUARK",
+      "at": 1787519628342
     }
   ],
   "deletions": [],
-  "updatedAt": 1787513367510
+  "updatedAt": 1787522155428
 }
