@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import MarketStatus from "@/components/MarketStatus";
 import ThemeToggle from "@/components/ThemeToggle";
 import DataTable from "@/components/DataTable";
+import { findInstrument } from "@/lib/instruments";
 import type { Column } from "@/components/DataTable";
 
 interface SignalItem {
@@ -229,7 +230,13 @@ export default function ScreenerPage() {
           selectedKey={selected}
           onRowClick={(r) => {
             setSelected(r.symbol);
-            router.push(`/?s=${encodeURIComponent(r.symbol)}&e=NSE&r=1y`);
+            /* exchange/type come from the instruments index, never hardcoded:
+               a BSE-listed row must route as BSE and indices resolve through
+               INDEX_MAP on load (TASK-12). */
+            const exchange = findInstrument(r.symbol)?.e ?? "NSE";
+            router.push(
+              `/?s=${encodeURIComponent(r.symbol)}&e=${encodeURIComponent(exchange)}&r=1y`
+            );
           }}
           loading={loading}
           empty="No snapshots for this strategy yet"
