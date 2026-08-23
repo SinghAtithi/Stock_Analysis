@@ -231,18 +231,34 @@ const MC_SPEC: Record<string, { res: string; cb: number; days: number; label: st
   max: { res: "1M", cb: 300, days: 9500, label: "1mo" },
 };
 
+/* Moneycontrol intraday resolutions (keyless 5m/15m/1h, ~500 bars each,
+   live-verified 2026-08-17). Serves real intraday for the short ranges even
+   while Yahoo throttles; 1m isn't available, so 1D degrades to 5m (honest via
+   the payload interval). */
+const MC_INTRADAY_SPEC: Record<
+  string,
+  { res: number; days: number; label: string } | null
+> = {
+  "1d": { res: 5, days: 2, label: "5m" },
+  "5d": { res: 5, days: 8, label: "5m" },
+  "1mo": { res: 15, days: 35, label: "15m" },
+  "3mo": { res: 60, days: 95, label: "1h" },
+  "6mo": { res: 60, days: 100, label: "1h" },
+};
+
 async function fetchMoneycontrolChart(
   tradingSymbol: string,
-  range: string
+  range: string,
+  intraday?: { res: number; days: number; label: string }
 ): Promise<{ candles: Candle[]; interval: string } | null> {
-  const spec = MC_SPEC[range];
+  const spec = intraday ?? MC_SPEC[range];
   if (!spec) return null;
   const now = Math.floor(Date.now() / 1000);
   const from = now - spec.days * 86400;
   const url =
     `https://priceapi.moneycontrol.com/techCharts/indianMarket/stock/history` +
     `?symbol=${encodeURIComponent(tradingSymbol)}&resolution=${spec.res}` +
-    `&from=${from}&to=${now}&countback=${spec.cb}&currencyCode=INR`;
+    `&from=${from}&to=${now}&countback=${intraday ? 500 : (spec as { cb: number }).cb}&currencyCode=INR`;
   try {
     const { data, status } = await curlJson(url);
     if (status !== 200) return null;
@@ -505,6 +521,46 @@ export async function getChart(
     if (y) {
       const p = yahooToPayload(y, range, interval);
       if (p) {
+        cacheSet(cacheKey, p, ttl);
+        return p;
+      }
+    }
+  }
+
+  /* Moneycontrol intraday (1d/5d/1mo/3mo/6mo): keyless 5m/15m/1h — richer
+     than Google's 74-bar 1D series, so it comes first for equities. */
+  if (!isIndex && !symbol.includes(".") && MC_INTRADAY_SPEC[range]) {
+    const spec = MC_INTRADAY_SPEC[range];
+    if (spec) {
+      const mc = await fetchMoneycontrolChart(symbol, range, spec);
+      if (mc) {
+        /* MC occasionally seeds the upcoming session's bars; drop anything
+           after now so intraday matches the daily view */
+        const now = Math.floor(Date.now() / 1000);
+        mc.candles = mc.candles.filter((c) => c.time <= now);
+        if (!mc.candles.length) return null;
+        const inst = findInstrument(symbol);
+        const last = mc.candles[mc.candles.length - 1].close;
+        const prevClose = previousCloseFromCandles(mc.candles);
+        const { change, changePct } = dayChange(last, prevClose);
+        const p: ChartPayload = {
+          symbol,
+          name: inst?.n ?? symbol,
+          exchange,
+          fullExchangeName: exchange === "NSE" ? "National Stock Exchange" : "BSE",
+          currency: "INR",
+          regularMarketPrice: last,
+          regularMarketTime: mc.candles[mc.candles.length - 1].time,
+          previousClose: prevClose,
+          fiftyTwoWeekHigh: null,
+          fiftyTwoWeekLow: null,
+          change,
+          changePct,
+          range,
+          interval: mc.interval,
+          candles: mc.candles,
+          source: "moneycontrol",
+        };
         cacheSet(cacheKey, p, ttl);
         return p;
       }
@@ -967,7 +1023,8 @@ export async function getTicker(): Promise<TickerItem[]> {
       arr.slice(i * size, i * size + size)
     );
 
-  for (const group of chunk(TAPE_UNIVERSE, 24)) {
+  /* spark endpoint caps at 20 symbols per request (verified: 21+ → 400) */
+  for (const group of chunk(TAPE_UNIVERSE, 20)) {
     const symbols = group.map((t) => t.s).join(",");
     const url = `https://query1.finance.yahoo.com/v7/finance/spark?symbols=${encodeURIComponent(
       symbols

@@ -2,10 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { getChart } from "@/lib/marketData";
 
 const VALID = new Set([
+  "1d/1m",
   "1d/5m",
+  "5d/5m",
   "5d/15m",
+  "1mo/15m",
   "1mo/1h",
+  "3mo/1h",
   "3mo/1d",
+  "6mo/1h",
   "6mo/1d",
   "1y/1d",
   "2y/1wk",
@@ -40,7 +45,7 @@ export async function GET(request: NextRequest) {
         error: isIndex
           ? "index_unavailable"
           : interval.endsWith("m") || interval.endsWith("h")
-            ? "Intraday data temporarily unavailable — try 1M or longer"
+            ? "intraday data temporarily unavailable — try a longer range"
             : "not_found",
       },
       { status: 404 }
