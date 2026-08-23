@@ -7,6 +7,7 @@
  */
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   NSE_FLOOR,
   fmtDmy,
@@ -195,4 +196,21 @@ test("parseNseFirstYear filters junk and clamps to the archive floor", () => {
   assert.equal(parseNseFirstYear([]), null);
   assert.equal(parseNseFirstYear(null), null);
   assert.equal(parseNseFirstYear({ error: "boom" }), null);
+});
+
+test("REAL WIRE: captured Dec-1996 payload parses end-to-end (format-drift canary)", () => {
+  const raw = JSON.parse(
+    readFileSync(new URL("./fixtures/nse-trade-reliance-1996-12.json", import.meta.url), "utf8")
+  );
+  const parsed = parseNseTradeRows(raw, "RELIANCE");
+  assert.ok(parsed, "real payload must parse");
+  assert.equal(parsed.candles.length, raw.length, "every real row survives");
+  /* wire arrives NEWEST-FIRST and the parser preserves order — fetchNseHistory owns sorting */
+  const oldest = parsed.candles.at(-1), newest = parsed.candles[0];
+  assert.equal(oldest.ts, epochSecForDate("1996-12-02"));
+  assert.equal(newest.ts, epochSecForDate("1996-12-31"));
+  /* spot-check against values verified live on 2026-08-23 */
+  assert.equal(oldest.o, 180.25);
+  assert.equal(oldest.c, 180.85);
+  assert.equal(newest.c, 206.65);
 });
