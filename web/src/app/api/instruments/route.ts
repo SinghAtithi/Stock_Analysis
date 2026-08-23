@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { findInstrument } from "@/lib/instruments";
+import { findInstrument, isIndexSymbol } from "@/lib/instruments";
 
 /**
  * Single-instrument resolution for client deep-links. Replaces static
@@ -20,9 +20,7 @@ export async function GET(request: NextRequest) {
       name: hit.n,
       shortName: hit.s,
       exchange: hit.e,
-      type: /(NIFTY|SENSEX|INDIA VIX|BANKNIFTY|FINNIFTY|MIDCAP|SME|INDIA 10)/.test(hit.s)
-        ? "Index"
-        : "Equity",
+      type: isIndexSymbol(hit.s, hit.n) ? "Index" : "Equity",
       sector: hit.sec ?? "",
       ...(hit.idx?.length ? { indices: hit.idx } : {}),
     },

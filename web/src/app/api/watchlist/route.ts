@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import path from "node:path";
-import { findInstrumentListing } from "@/lib/instruments";
+import { findInstrumentListing, isIndexSymbol } from "@/lib/instruments";
 
 /* /api/watchlist — OPTIONAL cloud mirror of the localStorage watchlist
    (TASK-62). localStorage stays the source of truth; this only mirrors.
@@ -41,7 +41,6 @@ function openDb(write: boolean): DbLike | null {
 
 const DEVICE_RE = /^[a-zA-Z0-9_-]{8,64}$/;
 const MAX_SYMBOLS = 100;
-const IS_INDEX_RE = /(NIFTY|SENSEX|INDIA VIX|BANKNIFTY|FINNIFTY|MIDCAP|SME|INDIA 10)/;
 
 interface MirrorEntry {
   symbol: string;
@@ -74,7 +73,7 @@ function sanitizeEntries(input: unknown): MirrorEntry[] | null {
       exchange: inst.e,
       name: inst.n,
       shortName: typeof e.shortName === "string" && e.shortName ? e.shortName : inst.s,
-      type: IS_INDEX_RE.test(symbol) ? "Index" : "Equity",
+      type: isIndexSymbol(symbol, inst.n) ? "Index" : "Equity",
       sector: inst.sec ?? "",
     };
     const k = rowKey(entry);

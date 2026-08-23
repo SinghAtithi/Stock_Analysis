@@ -28,6 +28,22 @@ export interface Instrument {
 
 const LIST = instruments as Instrument[];
 
+/* Index detection shared by search, /api/instruments and watchlist mirroring.
+   Symbol tokens alone misfiled 63 BSE indices whose symbols are opaque
+   (AUTO, 200EQW, BANKEX, TECK — TASK-997): their listing names carry the
+   "BSE " prefix instead. BSE LIMITED is the exchange's own listed stock,
+   not an index. Name matching stays prefix-only on purpose — token-matching
+   names would misfile ETFs like "DSP Nifty Bank ETF" as indices. */
+export const INDEX_SYMBOL_RE =
+  /(NIFTY|SENSEX|INDIA VIX|BANKNIFTY|FINNIFTY|MIDCAP|SME|INDIA 10)/;
+
+export function isIndexSymbol(symbol: string, name?: string): boolean {
+  if (INDEX_SYMBOL_RE.test(symbol.toUpperCase())) return true;
+  if (!name) return false;
+  const n = name.toUpperCase();
+  return n.startsWith("BSE ") && !n.startsWith("BSE LIMITED");
+}
+
 export interface SearchHit {
   symbol: string;
   name: string;
@@ -63,9 +79,7 @@ export function searchInstruments(q: string, limit = 8): SearchHit[] {
         symbol: sym,
         name: inst.n,
         exchange: inst.e,
-        isIndex: /(NIFTY|SENSEX|INDIA VIX|BANKNIFTY|FINNIFTY|MIDCAP|SME|INDIA 10)/.test(
-          sym
-        ),
+        isIndex: isIndexSymbol(sym, inst.n),
       };
       if (inst.sec) hit.sector = inst.sec;
       if (inst.ind) hit.industry = inst.ind;
