@@ -33,6 +33,12 @@ jobs:
         working-directory: web
         run: npm ci
 
+      # next-env.d.ts imports .next/types/* (LayoutProps & friends) — generate
+      # them before tsc; a fresh checkout has no dev-build artifacts
+      - name: next typegen
+        working-directory: web
+        run: npx next typegen
+
       - name: tsc --noEmit
         working-directory: web
         run: npx tsc --noEmit
