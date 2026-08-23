@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "db:migrate": "node ../scripts/migrate.mjs",
+    "db:backup": "node ../scripts/backup-db.mjs --if-present",
     "signals:run": "node --experimental-strip-types ../scripts/run-signals.mjs",
     "test": "node --experimental-strip-types --import ../scripts/tests/helpers/register.mjs --test \"../scripts/tests/*.test.mjs\""
   },

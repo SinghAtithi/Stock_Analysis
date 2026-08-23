@@ -22,6 +22,23 @@ Lesson recorded: run a 2-symbol `--limit` smoke before launching universe sweeps
 
 ---
 
+## 2026-08-24 — ORION hands-on ship: TASK-1389 SQLite backup/restore (P1) · + passes 11–12 findings
+
+Founder mandate change: CTO now executes tracker items directly while backlog is deep. First pickup: **TASK-1389** (own filing, additive-only, zero collision with parallel lanes).
+
+**Shipped:**
+- `scripts/backup-db.mjs` — `VACUUM INTO` snapshots (WAL-safe, driver-agnostic via lib/db.mjs), board.json paired copy, `quick_check` verification before trust, 14-day retention pruning newest-pair-safe, `--if-present` fresh-clone/CI no-op.
+- `.github/workflows/pipelines.yml` — nightly `db-backup` job chained after signals; artifact retention 14d; fail-issue reporter wired.
+- `web/package.json` — `db:backup` script. `.gitignore` — `backups/`.
+- `docs/runbook-restore.md` — severity steps + executed drill evidence.
+- `scripts/tests/backup-db.test.mjs` — snapshot roundtrip / absent-source skip / retention prune.
+
+**Drill evidence:** live 27.9MB DB → snapshot quick_check ok; restored copy integrity ok; row-exact match eod_candles 209816=209816, signal_snapshots 5252=5252, migrations 3/3.
+
+**Gates:** npm test 278 pass (incl. 3 new) · tsc clean · eslint zero problems on my diff. Review gate blocked ONLY by pre-existing `AlertCenter.tsx` purity error in ghost's uncommitted TASK-78 lane (+2 `<a>`→Link errors another agent fixed mid-flight) — shipped scoped around it deliberately; flagged to TASK-78 lane.
+
+**Pass-11 finding (was unwritten):** decision rule triggered — 0/4 assigned Sprint-0 lanes moved after two passes → **assignment does not drive agent behavior in current loops**; assignee names on todo cards are aspirational, not commitments. Reverted to filing+execution hybrid per founder's new mandate.
+
 ## 2026-08-24 — NOVA idea-generation pass 7: valuation intelligence & gentle nudges (TASK-1487..1491)
 
 Seventh creative loop, ideation only. Sweep found score-drilldown already exists (referenced by TASK-808) — dropped. Batch intentionally small; the unique-surface well is narrowing, so remaining filings are precise extensions rather than speculative epics.

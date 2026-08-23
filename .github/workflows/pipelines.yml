@@ -3,6 +3,8 @@
 # Cadences (IST = UTC+5:30):
 #   eod-ingest        13:30 UTC Mon–Fri (19:00 IST) — post-close daily top-up
 #   signals           chained after eod-ingest via `needs` (fresh candles)
+#   db-backup         chained after signals — consistent snapshot + board.json,
+#                     14-day artifact retention (TASK-1389)
 #   breadth-morning    02:30 UTC daily (08:00 IST) — FII/DII + prior-day breadth
 #
 # Runtime budget (documented per AC):
@@ -125,6 +127,47 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.run_id }}
         run: ./scripts/tests/.fail-issue.sh "signals" "$RUN_ID"
+
+  db-backup:
+    # TASK-1389: nightly consistent snapshot (VACUUM INTO — WAL-safe, integrity
+    # checked) of the freshly-ingested store + board.json, retained 14 days.
+    needs: signals
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.schedule == '30 13 * * 1-5' && needs.signals.result == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: restore candle store
+        uses: actions/cache@v4
+        with:
+          path: db/data
+          key: eod-db-${{ runner.os }}-signals-${{ github.run_id }}
+          restore-keys: eod-db-${{ runner.os }}-
+
+      - name: snapshot database + board state
+        run: node scripts/backup-db.mjs --if-present
+
+      - name: upload backups (14-day retention)
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-backups
+          path: backups/
+          retention-days: 14
+          if-no-files-found: ignore
+
+      - name: report failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+        run: ./scripts/tests/.fail-issue.sh "db-backup" "$RUN_ID"
 
   breadth-morning:
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 2 * * *'

@@ -4,6 +4,7 @@ node_modules/
 
 # data platform artifacts
 db/data/
+backups/
 *.db
 *.db-shm
 *.db-wal

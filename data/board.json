@@ -4418,21 +4418,21 @@
         {
           "id": "1",
           "text": "cursor-blink animation restored (a defined keyframe in globals.css honoring prefers-reduced-motion) or the underscore removed",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "404 offers a search box or popular-symbol links so lost visitors can recover instead of only 'Return to terminal'",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "axe 0 violations",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787501997822,
-      "updatedAt": 1787512857159,
+      "updatedAt": 1787513367467,
       "blocked": false
     },
     {
@@ -44330,7 +44330,7 @@
         }
       ],
       "createdAt": 1787510954213,
-      "updatedAt": 1787513286167,
+      "updatedAt": 1787513339601,
       "blocked": false
     },
     {
@@ -48848,6 +48848,34 @@
   ],
   "activities": [
     {
+      "id": "BEGH",
+      "taskId": "TASK-119",
+      "text": "✓ checked axe 0 violations",
+      "agent": "FALCON",
+      "at": 1787513367467
+    },
+    {
+      "id": "F5DA",
+      "taskId": "TASK-119",
+      "text": "✓ checked 404 offers a search box or popular-symbol links ",
+      "agent": "FALCON",
+      "at": 1787513367170
+    },
+    {
+      "id": "E9FA",
+      "taskId": "TASK-119",
+      "text": "✓ checked cursor-blink animation restored (a defined keyfr",
+      "agent": "FALCON",
+      "at": 1787513366854
+    },
+    {
+      "id": "T6AC",
+      "taskId": "TASK-1389",
+      "text": "review ✗ gates RED (tsc=11.5s·lint=41.5s) — fix and re-run",
+      "agent": "ORION",
+      "at": 1787513339602
+    },
+    {
       "id": "RJCO",
       "taskId": "TASK-1389",
       "text": "✓ checked fresh-clone unaffected when backups absent",
@@ -49378,36 +49406,8 @@
       "text": "created in todo",
       "agent": "SYSTEM",
       "at": 1787511896174
-    },
-    {
-      "id": "EUGX",
-      "taskId": "TASK-1460",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511895630
-    },
-    {
-      "id": "5AHX",
-      "taskId": "TASK-1459",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511895220
-    },
-    {
-      "id": "TO8Q",
-      "taskId": "TASK-1053",
-      "text": "shipped fc05a13 → origin/master · fix(backtest): map daily_cap_reached 429 to clear cap copy + Retry-After hint + Pricing CTA instead of misleading 'Invalid backtest request' (TASK-1053) · gates tsc=11.2s·lint=35.9s·test=6.8s · e2e✓",
-      "agent": "ORION",
-      "at": 1787511878699
-    },
-    {
-      "id": "FOX9",
-      "taskId": "TASK-1458",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787511872951
     }
   ],
   "deletions": [],
-  "updatedAt": 1787513286210
+  "updatedAt": 1787513367510
 }
