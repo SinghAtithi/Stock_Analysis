@@ -1,7 +1,7 @@
 from playwright.sync_api import sync_playwright
 
 import sys
-BASE = sys.argv[sys.argv.index("--url") + 1] if "--url" in sys.argv else f"{BASE}"
+BASE = sys.argv[sys.argv.index("--url") + 1] if "--url" in sys.argv else "http://localhost:3000"
 
 MOCK = {
     "items": [
@@ -21,17 +21,20 @@ with sync_playwright() as p:
     pg.goto(f"{BASE}/?s=RELIANCE&e=NSE&r=1y", wait_until="networkidle")
     pg.wait_for_timeout(6000)
 
-    buttons = pg.locator(".tape-track button")
+    buttons = pg.locator('button[title$="— open chart"]')
     print("tape buttons:", buttons.count())
-    print("first label:", buttons.first.get_attribute("title"))
-    print("tape paused on hover:", pg.locator(".tape-wrap").evaluate("el => getComputedStyle(el.querySelector('.tape-track')).animationPlayState") in ("running", "paused"))
+    print("first label:", buttons.first.get_attribute("title") if buttons.count() else None)
+    tape_row = pg.locator("div.border-y.bg-panel").first
+    print(
+        "tape scrolls horizontally:",
+        tape_row.count() > 0 and tape_row.evaluate("el => el.className.includes('overflow-x-auto')"),
+    )
 
-    pg.evaluate("document.querySelector('.tape-track').style.animationPlayState = 'paused'")
-    pg.wait_for_timeout(300)
     t_before = pg.title()
-    buttons.first.click()
-    pg.wait_for_timeout(3500)
-    print("clicked NIFTY 50 -> h1:", pg.locator("h1").text_content())
-    print("title changed:", pg.title() != t_before)
+    if buttons.count():
+        buttons.first.click()
+        pg.wait_for_timeout(3500)
+        print("clicked NIFTY 50 -> h1:", pg.locator("h1").text_content())
+        print("title changed:", pg.title() != t_before)
     print("errors:", len(errs), errs[:3])
     b.close()

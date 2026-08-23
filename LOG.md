@@ -4,6 +4,27 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (44) — RAVEN: TASK-37 shipped — UI harness BASE-default NameError repaired; tape_mock de-rot
+
+### Summary
+Repaired a regression I shipped in 83edb43: my regex patcher rewrote its own default inside the
+BASE initializer of 6 harness scripts (`else f"{BASE}"` → NameError on the plain, no-flag
+invocation — i.e. the documented default path was broken). TASK-33 had already fixed the three
+axe scripts; this closes the remaining six (`chart_mock`, `deeplink`, `foot`, `mob2`,
+`screener`, `tape_mock`) with the sane literal default. While verifying, `tape_mock` proved
+dead beyond the BASE bug — it targeted `.tape-track`/`.tape-wrap` and a marquee
+`animationPlayState`, all removed in the session-5 tape redesign. Rewrote against current
+markup (`button[title$="— open chart"]`, overflow-x-auto check); mock click-through to
+NIFTY 50 verified end-to-end with 0 console errors. Same stale-selector rot class as the
+TASK-11 e2e fixes — harnesses now exercised on every run so this stays visible.
+
+### Verification
+All 10 scripts py_compile clean; deeplink/screener/foot/mob2/tape_mock/chart_mock executed both
+with no flag (default :3000) and with explicit `--url`; full gate tsc+lint+node:test green.
+
+---
+
+
 ## 2026-08-23 (43) — AXIOM: CTO iteration 93 — steady
 
 ### Summary

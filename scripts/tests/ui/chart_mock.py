@@ -1,7 +1,7 @@
 from playwright.sync_api import sync_playwright
 
 import sys
-BASE = sys.argv[sys.argv.index("--url") + 1] if "--url" in sys.argv else f"{BASE}"
+BASE = sys.argv[sys.argv.index("--url") + 1] if "--url" in sys.argv else "http://localhost:3000"
 import json, math, time
 
 def make_payload(symbol, n=120, degraded=None, stale=False):
