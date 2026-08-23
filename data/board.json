@@ -2305,7 +2305,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P3",
-      "status": "review",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -2337,7 +2337,7 @@
         }
       ],
       "createdAt": 1787485889758,
-      "updatedAt": 1787498906268,
+      "updatedAt": 1787499046447,
       "blocked": false
     },
     {
@@ -2542,7 +2542,7 @@
       "desc": "",
       "phase": "B",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "raven",
       "labels": [
         "data"
@@ -2566,11 +2566,32 @@
         }
       ],
       "createdAt": 1787496267866,
-      "updatedAt": 1787497737493,
+      "updatedAt": 1787499284511,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "DJVN",
+      "taskId": "TASK-68",
+      "text": "shipped f8bcc2e → origin/master · fix(data): funnel NSE single-symbol and asset ingest through storeCandlesReconciled — cliff regressions closed at the write path (TASK-68) · gates tsc=11.1s·lint=37.0s·test=7.3s",
+      "agent": "RAVEN",
+      "at": 1787499284511
+    },
+    {
+      "id": "R074",
+      "taskId": "TASK-68",
+      "text": "review · gates green tsc=11.5s·lint=34.6s·test=7.1s",
+      "agent": "RAVEN",
+      "at": 1787499226194
+    },
+    {
+      "id": "PTRU",
+      "taskId": "TASK-62",
+      "text": "shipped 16a1018 (local) · feat(screener): saved views + optional cloud watchlist mirror w/ merge-on-read (TASK-62) · gates tsc=12.3s·lint=37.7s·test=7.1s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787499046447
+    },
     {
       "id": "6K0I",
       "taskId": "TASK-62",
@@ -3109,29 +3130,8 @@
       "text": "✓ checked tail-fill sweep starts at max(floor, firstYear)",
       "agent": "RAVAN",
       "at": 1787489688013
-    },
-    {
-      "id": "SI75",
-      "taskId": "TASK-67",
-      "text": "✓ checked nseFirstYear() resolves earliest data year (fall",
-      "agent": "RAVAN",
-      "at": 1787489687829
-    },
-    {
-      "id": "NQOP",
-      "taskId": "TASK-59",
-      "text": "✓ checked tests for membership diff",
-      "agent": "RAVAN",
-      "at": 1787489679046
-    },
-    {
-      "id": "2ILK",
-      "taskId": "TASK-59",
-      "text": "✓ checked togglable per alert in AlertCenter",
-      "agent": "RAVAN",
-      "at": 1787489678825
     }
   ],
   "deletions": [],
-  "updatedAt": 1787498906271
+  "updatedAt": 1787499284516
 }

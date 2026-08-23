@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 import DataTable from "@/components/DataTable";
 import type { Column, SortDir } from "@/components/DataTable";
@@ -69,16 +69,25 @@ const readSortParams = (): { sortKey: string | null; sortDir: SortDir } => {
 };
 
 export default function ScreenerPage() {
-  // ?sort=&dir= deep links (saved views sync these) — read once in lazy
-  // initializers instead of a setState-in-effect (React 19 compiler rule);
-  // SSR prerender has no location, so defaults hold server-side and the
-  // client's first render picks the URL values up pre-paint.
-  const [strategy, setStrategy] = useState<string>(FALLBACK_STRATEGIES[0].id);
-  const [sortKey, setSortKey] = useState<string | null>(() =>
-    typeof window === "undefined" ? null : readSortParams().sortKey
+  return (
+    <Suspense fallback={<div className="p-6 text-muted">Loading…</div>}>
+      <ScreenerInner />
+    </Suspense>
   );
-  const [sortDir, setSortDir] = useState<SortDir>(() =>
-    typeof window === "undefined" ? "asc" : readSortParams().sortDir
+}
+
+function ScreenerInner() {
+  // ?sort=&dir= deep links (saved views sync these) — useSearchParams keeps
+  // server and client first-render identical (no hydration mismatch, no
+  // setState-in-effect); requires the Suspense boundary below.
+  const searchParams = useSearchParams();
+  const [strategy, setStrategy] = useState<string>(FALLBACK_STRATEGIES[0].id);
+  const [sortKey, setSortKey] = useState<string | null>(() => {
+    const k = searchParams.get("sort");
+    return k && SORTABLE_KEYS.has(k) ? k : null;
+  });
+  const [sortDir, setSortDir] = useState<SortDir>(
+    searchParams.get("dir") === "desc" ? "desc" : "asc"
   );
   const [strategies, setStrategies] = useState<StrategyMeta[]>(FALLBACK_STRATEGIES);
   const [data, setData] = useState<SignalsResponse | null>(null);
