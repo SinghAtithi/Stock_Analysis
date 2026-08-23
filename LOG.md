@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 — QUARK: TASK-997 shipped (BSE index misclassification) + reviewer sweep unblocked 4 stale tasks; CI green
+
+- **TASK-997 shipped** (`11861b0`): index detection no longer symbol-tokens-only. New shared `isIndexSymbol(symbol, name)` in `web/src/lib/instruments.ts`; `/api/instruments`, `/api/watchlist` mirror and `searchInstruments` all consume it. Name rule is deliberately **prefix-only** (`BSE …` except `BSE LIMITED`) after an audit showed token-matching names would misfile 28 ETFs ("DSP Nifty Bank ETF"…) as indices. Recovers 63 opaque BSE indices (AUTO, 200EQW, BANKEX, TECK, BHRT22…125 rows) to the caret chart path. 6 new tests incl. dataset-wide invariant (`scripts/tests/index-symbol.test.mjs`). Live-verified post-rebuild: `?s=AUTO`→Index, `?s=BSE`→Equity, `?s=NIFTY 50`→Index.
+- **Reviewer sweep**: verified + closed TASK-105/52/112 (work already committed in `71224c5` etc., board never updated) and TASK-907 (dated export filename landed in `71224c5`). Independently e2e-validated vertex's TASK-659 MarketStatus fix at 390px before their concurrent ship landed.
+- **Multi-agent notes**: ship was blocked twice by tree-wide eslint catching another agent's mid-edit `AlertCenter.tsx` (react-hooks/purity) — polled until clean rather than touching their WIP; both my commit's CI runs got cancelled by orion's racing push seconds later, so CI was confirmed green on HEAD instead (cumulative). Yahoo is hard-429ing this IP right now (curl too) — upstream ticker probing deferred; classification/routing is this task's scope.
+
+---
+
 ## 2026-08-24 — ORION: TASK-1053 completed end-to-end — backtest tier cap wired server-side + verified live; CI green
 
 - **TASK-1053 backend half shipped** (commit `905fc1c`): `gateBacktestRun(deviceKeyFor(body.deviceId, ip))` wired into POST /api/backtest AFTER the 60s resp cache (identical resubmits never burn quota) and BEFORE engineBusy. Returns 429 `{error:'daily_cap_reached', tier, limit, retryAfterSec, upgrade:'/pricing'}` + `Retry-After` header. Client half (`fc05a13`, landed concurrently by peer agent) maps it to "Free plan allows N runs per 24h — next slot in ~Xh" + See Pricing CTA; I added the missing `deviceId: getDeviceId()` to the POST body so caps are per-device (without it every consumer behind an IP shared one bucket).
@@ -290,6 +298,20 @@ Iteration 12 (same day): regression-reviewed fc05a13 — touches only client bac
 Iteration 13 (same day): reviewed 318f643 (search listbox scrollIntoView on keyboard nav) — internal numeric index, DOM traversal only, no injection surface; clean. VIPER/NEON assignments still pending pickup (0 ACs, todo). Monitoring mode continues: audit surface exhausted, next SEC work is verify-as-reviewer when fixes ship.
 
 Iteration 14 (same day): client storage audit closed — all localStorage writes guarded: watchlist/screenerPresets/page.tsx have try/catch + quota comments; board page's FULL-STATE writes (page.tsx:163/:183) also try/catch-wrapped → QuotaExceededError degrades gracefully, remote sync unaffected despite board.json size growth (+14.9k lines today). Clean bill, no task filed (no filler). No new commits since 318f643; TASK-1447/1429 still awaiting VIPER/NEON pickup.
+
+## 2026-08-24 — CIPHER takes implementation duty: TASK-1370 SHIPPED-PENDING-GATE
+
+Mandate change from operator: with a fat backlog I now claim SEC tasks and implement; SDEs keep parallel work.
+
+**TASK-1370 (P1) — gate POST /api/board.** Claimed --force at WIP 9/6 (directed P1).
+- **web/src/lib/boardGuards.ts (new)**: `MAX_BODY_BYTES=1MB` cap (`bodyTooLarge`, utf8-byte true), per-key sliding-window limiter (`postRateLimited`, 60/min, injectable clock, 5000-key bounded store like tiers.ts), `replaceAuthorized` — mode:"replace" requires `x-board-token` matching env `BOARD_WRITE_TOKEN` via length-check + `timingSafeEqual`; token unset ⇒ replace hard-disabled with `replace_disabled_set_board_write_token` hint.
+- **web/src/app/api/board/route.ts**: guard order 429 → 413 (declared content-length fast path, then actual byte check) → 400 shape → 403 replace gate → merge/atomicWrite unchanged.
+- **scripts/tests/board-guards.test.mjs (new)**: 6 tests pinning boundary bytes/multibyte counting, 61st-post shedding, key independence, window slide, store bound, merge-needs-no-token, replace dead-until-configured, wrong/right/exact-mode contract. Suite: 275 pass / 0 fail.
+- **Sanity over real HTTP** (T21 isolated build :3001): merge 200 · oversized buffered 413 · declared-oversized fast-path 413 · replace no-token/env-unset 403+hint · flood 61st 429 · invalid JSON 400 · wrong token 403 · right token 200. Playwright-equivalent API attestation for the --e2e flag; no visual UI touched.
+
+**INCIDENT (self-inflicted, contained, disclosed):** the "replace right token → 200" sanity probe wiped shared `data/board.json` — the isolated server resolves the same file as production tooling. Recovered same-minute via `git checkout HEAD -- data/board.json` (b23ec4e, minutes old): 1494 tasks / 10 doing restored; loss limited to uncommitted activity-log noise since that commit. Lesson encoded: replace-gate probes must run against a temp BOARD_FILE copy, never the live one.
+
+**Status:** gates green once (tsc/eslint/test ✓, flipped REVIEW), then re-redded by a NEIGHBOR's untracked WIP suite (`scripts/tests/ci-board-sync.test.mjs` invokes `node scripts/ci-board-sync.mjs` from web/ cwd → MODULE_NOT_FOUND — their cwd bug, not mine). TASK-1370 parked DOING 4/4 ACs; retry review→ship (--files scoped, --e2e) next iteration when tree quiets. Multi-agent lesson recorded: repo-wide gates + shared tree = agents block each other transiently; ship windows must be taken when green.
 
 ---
 
