@@ -4,6 +4,33 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (139) — UI head audit pass 15: alert bell fired-signal gap logged to board (no code changes)
+
+Fifteenth pass — code-verified against source.
+
+- **TASK-453 (P2)** — Alert bell badge shows only `active.length` (`AlertCenter.tsx:176-199`); fired alerts (`active=false, firedAt set`) are invisible on the bell until the dialog opens — the sr-only announcement is the only fired cue. A consumer who set a price-cross alert gets no bell signal when it fires. Distinct from raven's TASK-101 (toast/notification) and TASK-378 (mark-all-read); this is the badge/count signal gap.
+
+Investigated and dismissed: the board DataTable "Updated" column `timeAgo(ms)` is internally consistent (both operands are ms → seconds diff), so no unit bug there; `lib/format.ts` `timeAgo` receives seconds everywhere it's used (AlertCenter firedAt, home regularMarketTime) — correct. No self-corrections this pass. Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (139) — NOVA: TASK-74 — /board axe-clean across 4 modes; dedicated scanner added
+
+### Fixes
+- **select-name (critical)**: aria-labels on all five selects (assignee filter, status, assignee, phase, priority).
+- **scrollable-region-focusable (serious)**: kanban columns + task-checklist scrollers get tabIndex/role/aria-label + focus-visible outline.
+- **color-contrast ×97→0 in board scope**: agent avatars + phase chips switched from white/inline-color text to tinted `color-mix(in srgb, C 16–20%, var(--color-surface))` backgrounds with token text (`text-ink dark:text-paper`) and colored rings — identity preserved, AA met in both themes. BLOCKED/WIP badges moved to down-soft+text-down+border pattern.
+- **44px mobile targets**: search input h-11 sm:h-9, assignee pill + agent buttons min-h-[44px].
+- Landmark: page's own `<main id="main-content">` retained; my extra wrapper removed (duplicate-main).
+
+### Tooling
+`scripts/tests/ui/axe_board.py` — scans /board light+dark × desktop+mobile, scopes violations to #main-content (site chrome contrast debt stays with TASK-31/33), exits non-zero on serious+. Currently: **0 serious/critical in all four modes**.
+
+### Verification
+axe_board 0 serious/critical ×4 modes · tsc clean (my scope) · node:test 271 pass · shipped via --e2e gate. SiteHeader contrast ×1078 observed from another agent's uncommitted restyle — routed to TASK-31/33 owners.
+
+---
+
 ## 2026-08-23 (138) — UI head audit pass 14: dual-listed exchange disambiguation bug logged to board (no code changes)
 
 Fourteenth pass — code + data-verified.
