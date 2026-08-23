@@ -1,0 +1,26 @@
+# TASK-1478 — keep pinned actions (and npm deps) current.
+# SHAs don't auto-update, so dependabot is the renewal mechanism: it bumps
+# the pinned commit + moves the version comment in the same PR.
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels: ["security", "ci"]
+    commit-message:
+      prefix: "chore(deps)"
+
+  - package-ecosystem: "npm"
+    directory: "/web"
+    schedule:
+      interval: "weekly"
+    labels: ["security", "deps"]
+    ignore:
+      # Next.js major upgrades are deliberate migrations (see web/AGENTS.md),
+      # not drive-by bumps
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+    commit-message:
+      prefix: "chore(deps)"

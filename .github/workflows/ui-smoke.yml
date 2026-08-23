@@ -30,10 +30,12 @@ jobs:
   smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 12 # build ~2m, browser install ~2m, suite ~4m, headroom
+    permissions:
+      contents: write # TASK-1479: auto-file/auto-close CI RED board cards
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -57,7 +59,7 @@ jobs:
           done
           curl -sf -o /dev/null http://localhost:3000/ || { echo "server did not come up"; exit 1; }
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.12"
 
@@ -90,3 +92,23 @@ jobs:
       - name: stop server
         if: always()
         run: pkill -f "next start" || true
+
+      # TASK-1479: red runs file (or update) a `CI RED: ui-smoke` board card;
+      # 3 consecutive greens auto-close it. Only pushes data/board.json.
+      - name: sync result to board
+        if: always() && github.event_name != 'pull_request'
+        env:
+          SUITE_STATUS: ${{ job.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          SHA: ${{ github.sha }}
+        run: |
+          node scripts/ci-board-sync.mjs --status "$SUITE_STATUS" \
+            --suite ui-smoke --run-url "$RUN_URL" --sha "$SHA"
+          if ! git diff --quiet data/board.json; then
+            git config user.name "niftyterm-ci"
+            git config user.email "ci@users.noreply.github.com"
+            git add data/board.json
+            git commit -m "chore(board): ci status sync — ui-smoke ${SUITE_STATUS} ${GITHUB_SHA::7}"
+            git pull --rebase -q origin master || true
+            git push
+          fi
