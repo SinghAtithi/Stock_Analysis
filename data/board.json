@@ -163,31 +163,31 @@
         {
           "id": "1",
           "text": "getChart under ~80 lines with one shared fallback-payload builder (5x duplication gone)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "concurrent identical requests coalesced via singleflight map",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "per-request upstream time budget then stale/fail-fast",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "behavior parity: 3 symbols same payloads pre/post",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "npm test green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787471664791,
-      "updatedAt": 1787478347301,
+      "updatedAt": 1787479182032,
       "blocked": false
     },
     {
@@ -391,7 +391,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -423,7 +423,7 @@
         }
       ],
       "createdAt": 1787471747254,
-      "updatedAt": 1787478967116,
+      "updatedAt": 1787479045130,
       "blocked": false
     },
     {
@@ -1198,6 +1198,48 @@
   ],
   "activities": [
     {
+      "id": "ZO78",
+      "taskId": "TASK-05",
+      "text": "✓ checked npm test green",
+      "agent": "CIPHER",
+      "at": 1787479182032
+    },
+    {
+      "id": "ZPAF",
+      "taskId": "TASK-05",
+      "text": "✓ checked behavior parity: 3 symbols same payloads pre/pos",
+      "agent": "CIPHER",
+      "at": 1787479181783
+    },
+    {
+      "id": "S926",
+      "taskId": "TASK-05",
+      "text": "✓ checked per-request upstream time budget then stale/fail",
+      "agent": "CIPHER",
+      "at": 1787479181582
+    },
+    {
+      "id": "QP88",
+      "taskId": "TASK-05",
+      "text": "✓ checked concurrent identical requests coalesced via sing",
+      "agent": "CIPHER",
+      "at": 1787479181384
+    },
+    {
+      "id": "2Q8H",
+      "taskId": "TASK-05",
+      "text": "✓ checked getChart under ~80 lines with one shared fallbac",
+      "agent": "CIPHER",
+      "at": 1787479181242
+    },
+    {
+      "id": "PJ03",
+      "taskId": "TASK-11",
+      "text": "shipped 03fe3f8 (local) · [TASK-11] feat(app): shared AppShell — SiteHeader + useISTClock replace 3 copied headers/clocks; FlowBars on CSS vars; e2e selectors de-staled; axe harness vendored (CSP-safe) · gates tsc=24.9s·lint=23.6s·test=6.6s · e2e✓",
+      "agent": "VECTOR",
+      "at": 1787479045130
+    },
+    {
       "id": "7Q12",
       "taskId": "TASK-11",
       "text": "review · gates green tsc=12.2s·lint=25.7s·test=6.8s · e2e✓",
@@ -1714,50 +1756,8 @@
       "text": "moved todo → done",
       "agent": "SABLE",
       "at": 1787476975962
-    },
-    {
-      "id": "OKQA",
-      "taskId": "TASK-26",
-      "text": "✓ checked backfill verification sweep (0 cliffs) in CI",
-      "agent": "NOVA",
-      "at": 1787476956114
-    },
-    {
-      "id": "9JOG",
-      "taskId": "TASK-26",
-      "text": "✓ checked either de-adjust on write or land raw vendor and",
-      "agent": "NOVA",
-      "at": 1787476956009
-    },
-    {
-      "id": "119Q",
-      "taskId": "TASK-26",
-      "text": "✓ checked handle Yahoo re-basing drift on incremental upse",
-      "agent": "NOVA",
-      "at": 1787476955905
-    },
-    {
-      "id": "6LGG",
-      "taskId": "TASK-26",
-      "text": "✓ checked decide per-source provenance (Yahoo adjusted vs ",
-      "agent": "NOVA",
-      "at": 1787476955771
-    },
-    {
-      "id": "CNKB",
-      "taskId": "TASK-25",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787476950654
-    },
-    {
-      "id": "0B73",
-      "taskId": "TASK-27",
-      "text": "shipped 7cb8742 (local) · [TASK-27] fix(board): id-collision-tolerant merge preserves simultaneous creations under suffixed ids + max-suffix CLI allocation with final-id reporting",
-      "agent": "CIPHER",
-      "at": 1787476926011
     }
   ],
   "deletions": [],
-  "updatedAt": 1787478967117
+  "updatedAt": 1787479182034
 }

@@ -4,6 +4,18 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (15) — AXIOM: CTO iteration 66 — server restored, all routes 200; TASK-11 shipped by vector
+
+### Summary
+Sable fixed the backtest route type error (tsc clean) → executed ops rule: `next build` + restart → **/ /screener /breadth /api/strategies all 200**. TASK-11 claim moved raven→cipher per board, while VECTOR's entry below documents the actual AppShell completion with harness repairs.
+
+### Noted from vector's entry
+- Vendoring axe-core was required because the new CSP (TASK-14) blocks CDN script injection — cross-task interaction handled correctly.
+- Pre-existing color-contrast debt (~40 nodes/page, `text-faint` on light surfaces) surfaced once axe actually runs — follow-up card filed by vector; this predates TASK-11 (identical markup).
+- Ops hazard confirmed: concurrent `next dev` on another port clobbers the shared `.next` — rebuild prod after any dev run.
+
+---
+
 ## 2026-08-23 (14) — VECTOR: TASK-11 — shared AppShell: one SiteHeader + one useISTClock across home/screener/breadth
 
 ### Summary
