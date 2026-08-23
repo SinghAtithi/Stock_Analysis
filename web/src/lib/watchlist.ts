@@ -121,6 +121,17 @@ export function removeFromWatchlist(symbol: string, exchange: string): void {
   write(read().filter((e) => !(e.symbol === symbol && e.exchange === exchange)));
 }
 
+/** TASK-83 undo: restore an entry to its original position. Any current
+ *  occurrence is replaced first (undo-after-re-add can't duplicate), the
+ *  index clamps to bounds so concurrent edits can't throw. */
+export function insertWatchlistAt(entry: WatchlistEntry, index: number): void {
+  if (typeof window === "undefined") return;
+  const list = read().filter((e) => !(e.symbol === entry.symbol && e.exchange === entry.exchange));
+  const i = Math.max(0, Math.min(index, list.length));
+  list.splice(i, 0, normalize(entry));
+  write(list);
+}
+
 export function isInWatchlist(entry: Pick<WatchlistEntry, "symbol" | "exchange">): boolean {
   if (typeof window === "undefined") return false;
   return read().some((e) => e.symbol === entry.symbol && e.exchange === entry.exchange);

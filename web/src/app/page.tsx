@@ -35,6 +35,7 @@ import {
   DEFAULT_WATCHLIST,
   getServerWatchlistSnapshot,
   getWatchlistSnapshot,
+  insertWatchlistAt,
   removeFromWatchlist,
   subscribeWatchlist,
   WATCHLIST_EVENT,
@@ -120,6 +121,14 @@ export default function Home() {
   const [tickerNonce, setTickerNonce] = useState(0);
   const [watchQuotes, setWatchQuotes] = useState<Map<string, WatchQuote>>(new Map());
   const reqId = useRef(0);
+  /* TASK-83 undo slot — one pending removal, 5s window */
+  const [pendingUndo, setPendingUndo] = useState<{ entry: WatchlistEntry; index: number } | null>(null);
+  const undoTimer = useRef<number | null>(null);
+  useEffect(() => {
+    return () => {
+      if (undoTimer.current !== null) window.clearTimeout(undoTimer.current);
+    };
+  }, []);
 
   const load = useCallback(
     async (
@@ -305,18 +314,50 @@ export default function Home() {
   }, [selected, load, retry, watchlist, pick]);
 
   const removeEntry = (e: { symbol: string; exchange: string }) => {
-    const wasDerivedHead =
-      picked == null &&
+    /* TASK-83: stash the full entry + position for a 5s undo before the
+       store drops it — both the desktop panel and mobile sheet funnel
+       through here, so one chip serves both. */
+    const idx = watchlist.findIndex(
+      (x) => x.symbol === e.symbol && x.exchange === e.exchange,
+    );
+    const victim = idx >= 0 ? watchlist[idx] : null;
+    removeFromWatchlist(e.symbol, e.exchange);
+    if (victim) {
+      if (undoTimer.current !== null) window.clearTimeout(undoTimer.current);
+      setPendingUndo({ entry: victim, index: idx });
+      undoTimer.current = window.setTimeout(() => {
+        setPendingUndo(null);
+        undoTimer.current = null;
+      }, 5000);
+    }
+    /* displayed-symbol check must not require picked==null — after mount
+       picked is always set, so derive from selected instead (TASK-763) */
+    const displayed =
       selected != null &&
       selected.symbol === e.symbol &&
       selected.exchange === e.exchange;
-    removeFromWatchlist(e.symbol, e.exchange);
-    if (wasDerivedHead) {
+    const wasPicked =
+      picked != null &&
+      picked.symbol === e.symbol &&
+      picked.exchange === e.exchange;
+    if (displayed) {
+      if (wasPicked) setPicked(null);
+      /* next head if any; on empty, re-derive to the fallback so chart,
+         header and URL agree instead of showing the removed symbol (TASK-763) */
       const next = getWatchlistSnapshot().find(
         (x) => !(x.symbol === e.symbol && x.exchange === e.exchange),
       );
       if (next) load(next, "1y");
+      else load(FALLBACK_ENTRY, range);
     }
+  };
+
+  const undoRemove = () => {
+    if (!pendingUndo) return;
+    insertWatchlistAt(pendingUndo.entry, pendingUndo.index);
+    if (undoTimer.current !== null) window.clearTimeout(undoTimer.current);
+    undoTimer.current = null;
+    setPendingUndo(null);
   };
 
   const changeRange = useCallback(
@@ -634,6 +675,33 @@ export default function Home() {
         </div>
         <Watchlist items={watchlist} selected={selected} onPick={pickFromSheet} onRemove={removeEntry} bare quotes={watchQuotes} />
       </Modal>
+
+      {/* TASK-83: undo chip floats above desktop panel and mobile sheet alike;
+          the sr-only region announces removals for screen readers */}
+      <p className="sr-only" role="status" aria-live="polite">
+        {pendingUndo
+          ? `Removed ${pendingUndo.entry.shortName || pendingUndo.entry.symbol} from watchlist. Undo available for 5 seconds.`
+          : ""}
+      </p>
+      {pendingUndo && (
+        <div className="pointer-events-none fixed inset-x-0 bottom-5 z-[60] flex justify-center px-4">
+          <div className="pointer-events-auto flex items-center gap-3 rounded-full border border-line bg-surface py-1.5 pl-4 pr-1.5 shadow-md text-sm">
+            <span className="text-muted">
+              Removed{" "}
+              <span className="font-medium text-paper">
+                {pendingUndo.entry.shortName || pendingUndo.entry.symbol}
+              </span>
+            </span>
+            <button
+              type="button"
+              onClick={undoRemove}
+              className="rounded-full bg-paper px-3 py-1 text-xs font-medium text-ink transition-colors hover:bg-accent"
+            >
+              Undo
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
