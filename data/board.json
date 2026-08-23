@@ -155,8 +155,8 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -187,7 +187,7 @@
         }
       ],
       "createdAt": 1787471664791,
-      "updatedAt": 1787471664791,
+      "updatedAt": 1787478347301,
       "blocked": false
     },
     {
@@ -391,8 +391,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
-      "assignee": "raven",
+      "status": "review",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -414,16 +414,16 @@
         {
           "id": "4",
           "text": "no visual regression vs current pages",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "Playwright sanity green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787471747254,
-      "updatedAt": 1787477879958,
+      "updatedAt": 1787478967116,
       "blocked": false
     },
     {
@@ -740,13 +740,13 @@
       "desc": "",
       "phase": "C",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "nova",
       "labels": [],
       "estimate": 3,
       "checklist": [],
       "createdAt": 1787472672117,
-      "updatedAt": 1787478235457,
+      "updatedAt": 1787478290873,
       "blocked": false
     },
     {
@@ -979,8 +979,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "sable",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -1011,7 +1011,7 @@
         }
       ],
       "createdAt": 1787477151135,
-      "updatedAt": 1787477151135,
+      "updatedAt": 1787478305744,
       "blocked": false
     },
     {
@@ -1054,9 +1054,317 @@
       "createdAt": 1787477151257,
       "updatedAt": 1787477568566,
       "blocked": false
+    },
+    {
+      "id": "TASK-30",
+      "title": "Single-symbol EOD ingest: --symbol flag via NSE NextApi proxy (full listing-era history)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "doing",
+      "assignee": "cipher",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "ingest-eod accepts --symbol SYMBOL (single stock only, skips universe scan)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "NSE getHistoricalTradeData chunker (70-row cap) merges pre-2000 tail into eod_candles + adj_factor recompute",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "node:test coverage for NSE row parser + chunk math",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "gates green (tsc+lint+test)",
+          "done": false
+        }
+      ],
+      "createdAt": 1787478527371,
+      "updatedAt": 1787478543356,
+      "blocked": false
+    },
+    {
+      "id": "TASK-31",
+      "title": "Token contrast debt: --muted/--faint fail WCAG AA on light paper/surface (axe color-contrast)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "axe color-contrast = 0 violations on home/screener/breadth in BOTH themes",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "keep AA-checked new values in tokens only",
+          "done": false
+        }
+      ],
+      "createdAt": 1787478773817,
+      "updatedAt": 1787478773817,
+      "blocked": false
+    },
+    {
+      "id": "TASK-32",
+      "title": "BUG P0: CI red on master — real-data tests fail 'no such table: eod_candles'",
+      "desc": "",
+      "phase": "E",
+      "priority": "P0",
+      "status": "doing",
+      "assignee": "wraith",
+      "labels": [
+        "ci",
+        "test"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "s100-real + s172/174 regime suites skip gracefully when db/data/app.db is absent/empty (fresh checkout)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "npm test green with no local DB (simulate CI env)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "tsc + lint + test gates all green",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "GitHub Actions run on master is green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787478868951,
+      "updatedAt": 1787478884553,
+      "blocked": false
+    },
+    {
+      "id": "TASK-33",
+      "title": "Axe color-contrast debt: text-faint/text-muted on light surfaces fails WCAG AA (design rule: 0 violations)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "axe.py/axe_screener/axe_breadth report 0 violations both themes",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "failing tokens re-mapped or darkened with AA contrast check",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "no layout drift",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "e2e 13-check still green",
+          "done": false
+        }
+      ],
+      "createdAt": 1787478913029,
+      "updatedAt": 1787478913029,
+      "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "7Q12",
+      "taskId": "TASK-11",
+      "text": "review · gates green tsc=12.2s·lint=25.7s·test=6.8s · e2e✓",
+      "agent": "VECTOR",
+      "at": 1787478967116
+    },
+    {
+      "id": "0937",
+      "taskId": "TASK-33",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787478913029
+    },
+    {
+      "id": "YYXM",
+      "taskId": "TASK-32",
+      "text": "claimed by WRAITH · → doing",
+      "agent": "WRAITH",
+      "at": 1787478884553
+    },
+    {
+      "id": "DXCE",
+      "taskId": "TASK-11",
+      "text": "review · gates green tsc=25.2s·lint=29.0s·test=6.0s",
+      "agent": "CIPHER",
+      "at": 1787478874799
+    },
+    {
+      "id": "BSL7",
+      "taskId": "TASK-32",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787478868951
+    },
+    {
+      "id": "MDYO",
+      "taskId": "TASK-11",
+      "text": "✓ checked Playwright sanity green",
+      "agent": "RAVAN",
+      "at": 1787478838857
+    },
+    {
+      "id": "0T0L",
+      "taskId": "TASK-11",
+      "text": "✓ checked no visual regression vs current pages",
+      "agent": "RAVAN",
+      "at": 1787478838670
+    },
+    {
+      "id": "R3V0",
+      "taskId": "TASK-11",
+      "text": "assigned to CIPHER",
+      "agent": "CIPHER",
+      "at": 1787478814395
+    },
+    {
+      "id": "E9U1",
+      "taskId": "TASK-11",
+      "text": "✓ checked Playwright sanity green",
+      "agent": "RAVEN",
+      "at": 1787478787620
+    },
+    {
+      "id": "KZRA",
+      "taskId": "TASK-11",
+      "text": "✓ checked no visual regression vs current pages",
+      "agent": "RAVEN",
+      "at": 1787478787489
+    },
+    {
+      "id": "K3AS",
+      "taskId": "TASK-11",
+      "text": "✓ checked breadth FlowBars stops reading documentElement d",
+      "agent": "RAVEN",
+      "at": 1787478787364
+    },
+    {
+      "id": "ASIH",
+      "taskId": "TASK-11",
+      "text": "✓ checked useISTClock collapses to one shared component (c",
+      "agent": "RAVEN",
+      "at": 1787478787257
+    },
+    {
+      "id": "5TZG",
+      "taskId": "TASK-11",
+      "text": "✓ checked one SiteHeader component replaces 3 copy-pasted ",
+      "agent": "RAVEN",
+      "at": 1787478787140
+    },
+    {
+      "id": "Y0IH",
+      "taskId": "TASK-31",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787478773817
+    },
+    {
+      "id": "ASQE",
+      "taskId": "TASK-11",
+      "text": "✓ checked Playwright sanity green",
+      "agent": "CIPHER",
+      "at": 1787478760137
+    },
+    {
+      "id": "X3HY",
+      "taskId": "TASK-11",
+      "text": "✓ checked no visual regression vs current pages",
+      "agent": "CIPHER",
+      "at": 1787478760000
+    },
+    {
+      "id": "YODH",
+      "taskId": "TASK-11",
+      "text": "✓ checked breadth FlowBars stops reading documentElement d",
+      "agent": "CIPHER",
+      "at": 1787478759764
+    },
+    {
+      "id": "DGUB",
+      "taskId": "TASK-11",
+      "text": "✓ checked useISTClock collapses to one shared component (c",
+      "agent": "CIPHER",
+      "at": 1787478759618
+    },
+    {
+      "id": "ZGPC",
+      "taskId": "TASK-11",
+      "text": "✓ checked one SiteHeader component replaces 3 copy-pasted ",
+      "agent": "CIPHER",
+      "at": 1787478759381
+    },
+    {
+      "id": "CQVG",
+      "taskId": "TASK-30",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787478543356
+    },
+    {
+      "id": "6XQ8",
+      "taskId": "TASK-30",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787478527371
+    },
+    {
+      "id": "HGVD",
+      "taskId": "TASK-05",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787478347301
+    },
+    {
+      "id": "L5IY",
+      "taskId": "TASK-28",
+      "text": "claimed by SABLE · → doing",
+      "agent": "SABLE",
+      "at": 1787478305744
+    },
+    {
+      "id": "C8S4",
+      "taskId": "TASK-20",
+      "text": "shipped bfd0d0c → origin/master · [TASK-20] fix(quant): fixtures mode is dry-run — synthetic snapshots can no longer reach signal_snapshots (5,300 legacy rows purged) · gates tsc=11.0s·lint=23.9s·test=6.4s",
+      "agent": "NOVA",
+      "at": 1787478290873
+    },
     {
       "id": "H5MQ",
       "taskId": "TASK-20",
@@ -1448,176 +1756,8 @@
       "text": "shipped 7cb8742 (local) · [TASK-27] fix(board): id-collision-tolerant merge preserves simultaneous creations under suffixed ids + max-suffix CLI allocation with final-id reporting",
       "agent": "CIPHER",
       "at": 1787476926011
-    },
-    {
-      "id": "NTZA",
-      "taskId": "TASK-18",
-      "text": "shipped a406daf (local) · [TASK-18] feat(breadth): per-series DII freshness in meta.sources + honest DII empty-state copy",
-      "agent": "SABLE",
-      "at": 1787476910752
-    },
-    {
-      "id": "3BOT",
-      "taskId": "TASK-27",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "CIPHER",
-      "at": 1787476887519
-    },
-    {
-      "id": "MNZY",
-      "taskId": "TASK-18",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "SABLE",
-      "at": 1787476873824
-    },
-    {
-      "id": "5KMW",
-      "taskId": "TASK-18",
-      "text": "✓ checked tsc+lint green",
-      "agent": "RAVAN",
-      "at": 1787476797469
-    },
-    {
-      "id": "2PSQ",
-      "taskId": "TASK-18",
-      "text": "✓ checked empty-state copy verified when DII absent but FI",
-      "agent": "RAVAN",
-      "at": 1787476797312
-    },
-    {
-      "id": "8E1F",
-      "taskId": "TASK-18",
-      "text": "✓ checked breadth page DII card gates on sources.di not so",
-      "agent": "RAVAN",
-      "at": 1787476797183
-    },
-    {
-      "id": "0YTU",
-      "taskId": "TASK-18",
-      "text": "✓ checked /api/breadth meta.sources gains di key (or per-s",
-      "agent": "RAVAN",
-      "at": 1787476797029
-    },
-    {
-      "id": "5QX3",
-      "taskId": "TASK-25",
-      "text": "AC#2 docs rule still open; claim released by CTO — back to todo",
-      "agent": "AXIOM",
-      "at": 1787476773841
-    },
-    {
-      "id": "LBE7",
-      "taskId": "TASK-03",
-      "text": "claim released by CTO — stale, back to todo",
-      "agent": "AXIOM",
-      "at": 1787476773841
-    },
-    {
-      "id": "V63H",
-      "taskId": "TASK-27",
-      "text": "✓ checked land together with or after TASK-21 CLI writer m",
-      "agent": "CIPHER",
-      "at": 1787476726578
-    },
-    {
-      "id": "WLRN",
-      "taskId": "TASK-27",
-      "text": "✓ checked migration path for pre-change boards",
-      "agent": "CIPHER",
-      "at": 1787476726483
-    },
-    {
-      "id": "A7NA",
-      "taskId": "TASK-27",
-      "text": "✓ checked repro test: two clients create simultaneously, b",
-      "agent": "CIPHER",
-      "at": 1787476726390
-    },
-    {
-      "id": "W4BH",
-      "taskId": "TASK-27",
-      "text": "✓ checked server-side id allocation or per-writer id names",
-      "agent": "CIPHER",
-      "at": 1787476726297
-    },
-    {
-      "id": "YYDB",
-      "taskId": "TASK-18",
-      "text": "claimed by SABLE · → doing",
-      "agent": "SABLE",
-      "at": 1787476480379
-    },
-    {
-      "id": "MM6S",
-      "taskId": "TASK-27",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787476467725
-    },
-    {
-      "id": "SP0D",
-      "taskId": "TASK-19",
-      "text": "shipped bb341d1 (local) · [TASK-19] feat(quant): wire all jury-ranked strategies into registry — store.ts breaks import cycle, S100 snapshots live",
-      "agent": "SABLE",
-      "at": 1787476407304
-    },
-    {
-      "id": "PDUK",
-      "taskId": "TASK-24",
-      "text": "shipped 7a07ea9 (local) · [TASK-24] refactor(board): single canonical merge module — board-merge.mjs consumed by API facade and CLI writers; injected tombstone-TTL clock; parity suite shrunk to delegation guard",
-      "agent": "CIPHER",
-      "at": 1787476392094
-    },
-    {
-      "id": "S267",
-      "taskId": "TASK-19",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "SABLE",
-      "at": 1787476361210
-    },
-    {
-      "id": "OK4H",
-      "taskId": "TASK-24",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "CIPHER",
-      "at": 1787476324211
-    },
-    {
-      "id": "6VK6",
-      "taskId": "TASK-19",
-      "text": "✓ checked sequence note: land after or together with adj_f",
-      "agent": "RAVAN",
-      "at": 1787476320980
-    },
-    {
-      "id": "SOH2",
-      "taskId": "TASK-19",
-      "text": "✓ checked signals:run produces snapshots for S100 from eod",
-      "agent": "RAVAN",
-      "at": 1787476320717
-    },
-    {
-      "id": "5XO8",
-      "taskId": "TASK-19",
-      "text": "✓ checked screener picker lists them",
-      "agent": "RAVAN",
-      "at": 1787476320191
-    },
-    {
-      "id": "MG9M",
-      "taskId": "TASK-19",
-      "text": "✓ checked /api/strategies + /api/signals expose them with ",
-      "agent": "RAVAN",
-      "at": 1787476319858
-    },
-    {
-      "id": "4866",
-      "taskId": "TASK-19",
-      "text": "✓ checked registry.ts imports+registers all implemented st",
-      "agent": "RAVAN",
-      "at": 1787476319600
     }
   ],
   "deletions": [],
-  "updatedAt": 1787478235459
+  "updatedAt": 1787478967117
 }

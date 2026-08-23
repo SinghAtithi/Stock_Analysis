@@ -15,8 +15,7 @@ import TickerTape from "@/components/TickerTape";
 import Odometer from "@/components/Odometer";
 import Watchlist from "@/components/Watchlist";
 import StarToggle from "@/components/StarToggle";
-import MarketStatus from "@/components/MarketStatus";
-import ThemeToggle from "@/components/ThemeToggle";
+import SiteHeader from "@/components/SiteHeader";
 import Modal from "@/components/Modal";
 import type {
   ChartData,
@@ -35,29 +34,6 @@ import {
   removeFromWatchlist,
   subscribeWatchlist,
 } from "@/lib/watchlist";
-
-function useISTClock() {
-  const [time, setTime] = useState<{ hhmm: string; ss: string } | null>(null);
-  useEffect(() => {
-    const fmt = () => {
-      const now = new Date();
-      const p = new Intl.DateTimeFormat("en-IN", {
-        timeZone: "Asia/Kolkata",
-        hour12: false,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }).formatToParts(now);
-      const get = (t: string) => p.find((x) => x.type === t)?.value ?? "00";
-      return { hhmm: `${get("hour")}:${get("minute")}`, ss: get("second") };
-    };
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- IST clock hydration requires initial tick
-    setTime(fmt());
-    const t = setInterval(() => setTime(fmt()), 1000);
-    return () => clearInterval(t);
-  }, []);
-  return time;
-}
 
 const chartUrl = (
   r: { symbol: string; exchange: string; type: string },
@@ -122,7 +98,6 @@ export default function Home() {
   const [ticker, setTicker] = useState<TickerItem[]>([]);
   const [tickerNonce, setTickerNonce] = useState(0);
   const reqId = useRef(0);
-  const clock = useISTClock();
 
   const load = useCallback(
     async (
@@ -410,45 +385,12 @@ export default function Home() {
         Skip to chart
       </a>
 
-      {/* header */}
-      <header className="sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-line bg-surface/80 px-4 py-3 backdrop-blur sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-paper text-[11px] font-bold tracking-widest text-ink">
-            N
-          </span>
-          <span className="text-sm font-semibold tracking-tight text-paper">
-            NIFTY
-            <span className="ml-1 hidden text-xs font-normal text-muted sm:inline">Indian Market</span>
-          </span>
-        </Link>
-
-        <nav className="hidden items-center gap-1 text-sm sm:flex">
-          <Link href="/screener" className="rounded-full px-3 py-1.5 text-muted transition-colors hover:bg-panel-2 hover:text-paper">
-            Screener
-          </Link>
-          <Link href="/breadth" className="rounded-full px-3 py-1.5 text-muted transition-colors hover:bg-panel-2 hover:text-paper">
-            Breadth
-          </Link>
-          <Link href="/board" className="rounded-full bg-paper px-3 py-1.5 text-sm font-medium text-ink shadow-sm">
-            Board
-          </Link>
-        </nav>
-
-        <div className="flex items-center gap-2 sm:gap-3">
-          <span className="hidden font-mono text-xs tabular-nums text-faint sm:inline">
-            {clock ? `${clock.hhmm}:${clock.ss} IST` : "—"}
-          </span>
-          <MarketStatus />
-          <ThemeToggle />
-          <button
-            onClick={() => setHelpOpen(true)}
-            aria-label="Keyboard shortcuts"
-            className="hidden h-8 w-8 items-center justify-center rounded-full border border-line bg-surface text-muted transition-colors hover:text-paper sm:inline-flex"
-          >
-            ?
-          </button>
-        </div>
-      </header>
+      <SiteHeader
+        subtitle="Indian Market"
+        sticky
+        nav
+        onHelp={() => setHelpOpen(true)}
+      />
 
       <TickerTape items={ticker} onSelect={pick} />
 

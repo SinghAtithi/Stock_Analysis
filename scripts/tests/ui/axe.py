@@ -1,13 +1,16 @@
 from playwright.sync_api import sync_playwright
 
-AXE = "https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js"
+import sys
+BASE = sys.argv[sys.argv.index("--url") + 1] if "--url" in sys.argv else f"{BASE}"
+
+AXE = "scripts/tests/ui/vendor/axe.min.js"
 
 with sync_playwright() as p:
     b = p.chromium.launch()
     pg = b.new_page(viewport={"width": 1440, "height": 900})
-    pg.goto("http://localhost:3000/?s=RELIANCE&e=NSE&r=1y", wait_until="networkidle")
+    pg.goto(f"{BASE}/?s=RELIANCE&e=NSE&r=1y", wait_until="networkidle")
     pg.wait_for_timeout(7000)
-    pg.add_script_tag(url=AXE)
+    pg.add_script_tag(path=AXE)
     pg.wait_for_timeout(1500)
     res = pg.evaluate("""async () => {
       const r = await window.axe.run(document, {

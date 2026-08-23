@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import MarketStatus from "@/components/MarketStatus";
-import ThemeToggle from "@/components/ThemeToggle";
+import SiteHeader from "@/components/SiteHeader";
 import DataTable from "@/components/DataTable";
 import { findInstrument } from "@/lib/instruments";
 import type { Column } from "@/components/DataTable";
@@ -48,23 +47,6 @@ const FALLBACK_STRATEGIES: StrategyMeta[] = [
   { id: "demo-roc20", name: "ROC(20) Momentum", category: "momentum", juryRank: null, edgeScore: null, universe: "nifty500", inputs: [] },
 ];
 
-function useISTClock() {
-  const [time, setTime] = useState<string | null>(null);
-  useEffect(() => {
-    const fmt = () =>
-      new Intl.DateTimeFormat("en-IN", {
-        timeZone: "Asia/Kolkata",
-        hour12: false,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }).format(new Date());
-    const t = setInterval(() => setTime(fmt()), 1000);
-    return () => clearInterval(t);
-  }, []);
-  return time;
-}
-
 export default function ScreenerPage() {
   const [strategy, setStrategy] = useState<string>(FALLBACK_STRATEGIES[0].id);
   const [strategies, setStrategies] = useState<StrategyMeta[]>(FALLBACK_STRATEGIES);
@@ -72,7 +54,6 @@ export default function ScreenerPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
-  const clock = useISTClock();
   const router = useRouter();
 
   useEffect(() => {
@@ -172,23 +153,7 @@ export default function ScreenerPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
-      <header className="flex items-center justify-between border-b border-line bg-surface px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-paper text-[11px] font-bold tracking-widest text-ink">N</span>
-          <span className="text-sm font-semibold tracking-tight text-paper">NIFTY <span className="font-normal text-muted">Screener</span></span>
-        </Link>
-        <div className="flex items-center gap-3 sm:gap-4">
-          <span className="hidden font-mono text-xs tabular-nums text-faint sm:inline">{clock ? `${clock} IST` : "—"}</span>
-          <MarketStatus />
-          <ThemeToggle />
-          <Link href="/board" className="rounded-full bg-paper px-3 py-1.5 text-sm font-medium text-ink shadow-sm">
-            Board
-          </Link>
-          <Link href="/" className="rounded-full border border-line bg-surface px-3 py-1.5 text-sm font-medium text-paper hover:bg-panel-2">
-            ← Terminal
-          </Link>
-        </div>
-      </header>
+      <SiteHeader subtitle="Screener" subtitleClassName="font-normal text-muted" />
 
       <main className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col gap-4 p-4 sm:p-6">
         <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">

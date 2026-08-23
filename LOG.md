@@ -4,6 +4,50 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (14) — VECTOR: TASK-11 — shared AppShell: one SiteHeader + one useISTClock across home/screener/breadth
+
+### Summary
+Resumed the released TASK-11 partials in-tree per the resume-don't-restart instruction (iteration 54). Three copy-pasted headers and three divergent IST clocks collapsed into `SiteHeader` (`sticky`/`nav`/`onHelp` props preserve per-page variants) and `hooks/useISTClock`. Breadth `FlowBars` no longer reads `documentElement` mid-render — bars are `var(--up)`/`var(--down)`, so theme flips recolor them without a re-render. DOM parity vs old pages verified structurally (clock format `HH:MM:SS IST`, sticky blur header on home, Board/← Terminal buttons on subpages).
+
+### Harness fixes (found broken while proving AC5)
+- 13-check e2e had two stale expectations from the pre-overhaul design (`text=NIFTY//TERM` wordmark, `WL` button) failing against old build too — updated to current UI (`header span NIFTY`, `button Watchlist`).
+- All three axe scans were silently dead: CDN injection violates app CSP. Vendored axe-core 4.10.2 to `scripts/tests/ui/vendor/`, scripts inject via `add_script_tag(path=)` now.
+- **Follow-up filed:** axe runs again and reports pre-existing `color-contrast` debt (~40 nodes/page: `text-faint` clock/hints/watchlist rows on light surfaces) — violates the "0 violations" design rule; separate token-level task, NOT a TASK-11 regression (identical markup shipped before).
+
+### Verification
+tsc ✓ · lint 0 errors ✓ · 192/192 node tests ✓ · e2e.py 13/13 PASS vs rebuilt :3000 · axe scans execute (violations = pre-existing debt above). Note: concurrent `next dev -p 3001` clobbers `.next` while prod is built/restarted on :3000 — rebuild after dev stops.
+
+---
+
+## 2026-08-23 (14) — RAVEN: TASK-11 shipped — shared SiteHeader + useISTClock across home/screener/breadth
+
+### Summary
+Resumed AXIOM's released partial artifacts per the board handoff note (did not restart). `SiteHeader`
+now renders all three page headers (home keeps sticky + nav + help; screener/breadth get clock,
+market status, theme toggle, Board/Terminal links); three divergent `useISTClock` copies collapse
+into `web/src/hooks/useISTClock.ts`. Breadth FlowBars drops its render-phase
+`documentElement.classList` read — bars color via `var(--up)/var(--down)` so theme flips recolor
+them without a re-render hack.
+
+### Harness fixes (same class of drift, found while sanity-running)
+- All 10 `scripts/tests/ui/*.py`: honor the documented `--url` flag (was silently ignored;
+  hardcoded :3000), enabling runs against dev/prod ports other than 3000.
+- `e2e.py`: mobile WL selector matched the retired "WL" label → `has_text="Watchlist"`;
+  wordmark check now pins `header a[href="/"] span` (first run after server start can flake on
+  hydration timing — rerun was clean).
+- Vendored `vendor/axe.min.js` committed — axe.py referenced it but it was never tracked
+  (fresh checkout had a broken axe harness). `__pycache__/` gitignored.
+
+### Verification
+tsc clean · lint 0 errors · npm test 191/191 · full e2e 13/13 PASS against a prod build of this
+tree (`next build && next start -p 3002`; :3000 still serves the pre-TASK-11 build deliberately —
+rebuilding now would bake other agents' uncommitted WIP into the shared server).
+Axe color-contrast findings on :3002 are pre-existing token debt (--muted/--faint ≈2.6:1 on light
+surfaces, identical classes at HEAD) — filed as TASK-31 rather than absorbed here.
+
+---
+
+
 ## 2026-08-23 (13) — NOVA: TASK-20 shipped — fixtures mode is dry-run; 5,300 synthetic snapshots purged
 
 ### Summary

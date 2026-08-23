@@ -1,5 +1,8 @@
 from playwright.sync_api import sync_playwright
 
+import sys
+BASE = sys.argv[sys.argv.index("--url") + 1] if "--url" in sys.argv else "http://localhost:3000"
+
 fails = []
 def check(name, cond):
     print(("PASS " if cond else "FAIL ") + name)
@@ -11,11 +14,11 @@ with sync_playwright() as p:
     pg = b.new_page(viewport={"width": 1440, "height": 900})
     pg.on("console", lambda m: errs.append(f"{m.type}: {m.text[:150]}") if m.type in ("error",) else None)
     pg.on("pageerror", lambda e: errs.append(f"pageerror: {str(e)[:150]}"))
-    pg.goto("http://localhost:3000/", wait_until="networkidle")
+    pg.goto(f"{BASE}/", wait_until="networkidle")
     pg.wait_for_timeout(8000)
 
     check("0 console/page errors", len(errs) == 0)
-    check("wordmark present", pg.locator("text=NIFTY//TERM").count() > 0)
+    check("wordmark present", pg.locator("header span", has_text="NIFTY").count() > 0)
     check("market status (OPEN/CLOSED)", pg.locator("text=OPEN").count() + pg.locator("text=CLOSED").count() >= 1)
     check("price rendered (₹)", pg.locator("text=₹").count() > 0)
     check("stats rail 6 cells", pg.locator("section .grid > div").count() == 6)
@@ -52,10 +55,10 @@ with sync_playwright() as p:
     m = b.new_page(viewport={"width": 390, "height": 844})
     merrs = []
     m.on("console", lambda x: merrs.append(x.text[:150]) if x.type == "error" else None)
-    m.goto("http://localhost:3000/", wait_until="networkidle")
+    m.goto(f"{BASE}/", wait_until="networkidle")
     m.wait_for_timeout(5000)
     check("mobile no errors", len(merrs) == 0)
-    m.locator("button", has_text="WL").click()
+    m.locator("button", has_text="Watchlist").first.click()
     m.wait_for_timeout(600)
     check("mobile sheet opens", m.locator('[role="dialog"][aria-label="Watchlist"]').is_visible())
     m.keyboard.press("Escape")
@@ -65,7 +68,7 @@ with sync_playwright() as p:
 
     # reduced motion
     rm = b.new_page(viewport={"width": 1280, "height": 800}, reduced_motion="reduce")
-    rm.goto("http://localhost:3000/")
+    rm.goto(f"{BASE}/")
     rm.wait_for_timeout(4000)
     anims = rm.evaluate("""() => {
       const all = [...document.querySelectorAll('*')];

@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import MarketStatus from "@/components/MarketStatus";
-import ThemeToggle from "@/components/ThemeToggle";
+import SiteHeader from "@/components/SiteHeader";
 import Sparkline from "@/components/Sparkline";
 
 interface Day {
@@ -30,28 +29,8 @@ interface Breadth {
   };
 }
 
-function useISTClock() {
-  const [time, setTime] = useState<string | null>(null);
-  useEffect(() => {
-    const fmt = () =>
-      new Intl.DateTimeFormat("en-IN", {
-        timeZone: "Asia/Kolkata",
-        hour12: false,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }).format(new Date());
-    const t = setInterval(() => setTime(fmt()), 1000);
-    return () => clearInterval(t);
-  }, []);
-  return time;
-}
-
 function FlowBars({ values }: { values: (number | null)[] }) {
   const max = Math.max(...values.map((v) => Math.abs(v ?? 0)), 1);
-  const isDark = typeof document !== "undefined" && document.documentElement.classList.contains("dark");
-  const up = isDark ? "#8ec9a8" : "#0e7a3a";
-  const down = isDark ? "#e8a09a" : "#c4362b";
   return (
     <div className="flex h-16 items-end gap-1">
       {values.map((v, i) => {
@@ -64,8 +43,8 @@ function FlowBars({ values }: { values: (number | null)[] }) {
             title={n.toFixed(0)}
             style={{
               height: `${h}px`,
-              background: n >= 0 ? up : down,
-              opacity: isDark ? 0.9 : 0.85,
+              background: n >= 0 ? "var(--color-up)" : "var(--color-down)",
+              opacity: 0.85,
             }}
           />
         );
@@ -78,7 +57,6 @@ export default function BreadthPage() {
   const [data, setData] = useState<Breadth | null>(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const clock = useISTClock();
 
   useEffect(() => {
     let cancelled = false;
@@ -123,23 +101,7 @@ export default function BreadthPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
-      <header className="flex items-center justify-between border-b border-line bg-surface px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-paper text-[11px] font-bold tracking-widest text-ink">N</span>
-          <span className="text-sm font-semibold tracking-tight text-paper">NIFTY <span className="font-normal text-muted">Breadth</span></span>
-        </Link>
-        <div className="flex items-center gap-3 sm:gap-4">
-          <span className="hidden font-mono text-xs tabular-nums text-faint sm:inline">{clock ? `${clock} IST` : "—"}</span>
-          <MarketStatus />
-          <ThemeToggle />
-          <Link href="/board" className="rounded-full bg-paper px-3 py-1.5 text-sm font-medium text-ink shadow-sm">
-            Board
-          </Link>
-          <Link href="/" className="rounded-full border border-line bg-surface px-3 py-1.5 text-sm font-medium text-paper hover:bg-panel-2">
-            ← Terminal
-          </Link>
-        </div>
-      </header>
+      <SiteHeader subtitle="Breadth" subtitleClassName="font-normal text-muted" />
 
       <main className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col gap-4 p-4 sm:p-6">
         <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
