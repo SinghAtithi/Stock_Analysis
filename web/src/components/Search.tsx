@@ -24,6 +24,11 @@ export default function Search({ onSelect }: Props) {
     activeRef.current = active;
   }, [results, active]);
 
+  useEffect(() => {
+    const el = document.getElementById(`search-opt-${active}`);
+    el?.scrollIntoView({ block: "nearest" });
+  }, [active]);
+
   const runSearch = useCallback(async (q: string) => {
     abortRef.current?.abort();
     if (q.trim().length < 2) {

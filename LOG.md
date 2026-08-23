@@ -4,6 +4,257 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 — ORION (CTO) strategy pass 7: ops resilience + portfolio audit → TASK-1463/1464
+
+Governance sweep of all 21 open ORION filings: metadata 100% well-formed (priority/phase/checklist), all todo, zero true dups vs other agents' batches (4 flagged title-overlaps = generic-word false positives; 1450↔462 intentional root-cause link). New filings:
+
+- **TASK-1463 (P2, A)** — No incident runbook: severity ladder + four scripted worst-day scenarios (source dead at open, DB corrupt, app down, webhook fail) with detect/mitigate/escalate; tabletop drill required. Sequences after 1408/1409 which it references.
+- **TASK-1464 (P2, B)** — SQLite on library defaults: rg confirms zero WAL/busy_timeout sites in db scripts/lib — concurrent market-hours traffic can SQLITE_BUSY-freeze routes. Shared pragma helper + concurrency test.
+
+Portfolio status (23 open): instrument 1388 · promise 1398 · ship 1408/1409 · charge 1424 · order 1437 · humans 1449 · resilience 1463/1464 — strategic surface now saturated; future passes shift fully to unblocking + verification unless new evidence emerges.
+
+## 2026-08-24 — NOVA idea-generation pass 4: edge & integrity surfaces (TASK-1452..1461)
+
+Fourth creative loop, ideation only. Dedupe sweep first: chart drawing tools dropped (TASK-1405 exists); walk-forward idea verified distinct from TASK-34 (--as-of backfill). Deliberately smaller batch — remaining whitespace is narrower, favoring research-spike framing over speculative epics.
+
+| ID | Idea | Angle |
+|---|---|---|
+| TASK-1452 | Index rebalance radar (S111/S112 surface + inclusion-effect history) | Moat; review-date countdown |
+| TASK-1453 | Seasonality explorer — monthly heat + day-of-week stats | Data-fun from eod_candles |
+| TASK-1454 | ASM/GSM surveillance badge + source spike | India-specific retail safety; never fake the flag |
+| TASK-1456 | Strategy templates gallery (publish/fork Mixer composites) | Creator loop extending 1377/493 |
+| TASK-1457 | Telegram alert delivery channel | India-native channel via hub 1444 |
+| TASK-1458 | Walk-forward robustness score for backtests | Integrity moat: overfit flags |
+| TASK-1459 | "Since you added" story panel per watched symbol | Retention digest; precursors 701/743/921 |
+| TASK-1460 | Chart sonification accessibility spike | A11y + PR; WebAudio, off by default |
+| TASK-1461 | Community sentiment pulse spike (aggregate-only) | Growth exploration, CIPHER-gated |
+
+All `todo`, ACs inline. ID 1455 consumed by concurrent writer — merge-on-save clean.
+
+---
+
+## 2026-08-24 — ORION (CTO) strategy pass 6: human-only dependencies + calendar root cause → TASK-1449/1450
+
+Board health: WIP draining (doing 9→6), done 78, review empty; SPRINT-0 card live but todo still climbing (NOVA pass 3 took 1434–1445). Two filings:
+
+- **TASK-1449 (P1)** — FOUNDER BLOCKERS register: Razorpay KYC/entity, VPS account, domain+DNS, SMTP decision — human-only prerequisites that 1408/1424/1426/1390 silently depend on. Agents barred from attempting; decisions recorded in LOG as cleared.
+- **TASK-1450 (P2)** — Root cause behind TASK-462: no canonical NSE/BSE trading-calendar source; istSessionOpen/alert gating/backtests each guess holidays. Curated 2026–27 store + muhurat handling + shared consumers.
+
+Dedupe: description-level sweep for founder/kyc/calendar keywords clean before filing. FALCON shipped TASK-97 above — first strategic-adjacent ship this session; pull discipline working.
+
+## 2026-08-24 — FALCON fix: search listbox keyboard scroll-into-view (TASK-97)
+
+Arrow-navigating the search dropdown could move `aria-activedescendant` to an option scrolled out of the `max-h-72` overflow area — sighted keyboard users lost their place. Fix: one `useEffect` keyed on `active` calling `scrollIntoView({ block: "nearest" })` on the active option (Search.tsx). No state writes, no motion beyond instant scroll, mouse-hover path untouched.
+
+Verified: red-green via new harness `scripts/tests/ui/search_kb_scroll.py` — without the fix option 7 of 8 is off-view after ArrowDown; with it every step keeps the active row in view, activedescendant tracks, hover→keyboard handoff continues from hovered index, Escape clears + new query reopens, Enter picks. axe home run: 0 violations. Gates tsc/lint/test green.
+
+## 2026-08-24 — NOVA idea-generation pass 3: risk, trust & growth surfaces (TASK-1434..1445)
+
+Third creative loop, ideation only. Dedupe sweep first: command-palette idea dropped (TASK-104 exists), pledge data folded into TASK-1415 boundary. IDs 1437-38/1432-33 consumed by concurrent ORION/CIPHER passes — merge-on-save clean.
+
+| ID | Idea | Angle |
+|---|---|---|
+| TASK-1434 | Position sizer (risk-% ÷ stop distance → qty) | Trader utility, feeds journal |
+| TASK-1435 | Governance red-flag scorer v0 (auditor/SEBI/RPT flags) | India-specific trust moat; research spike → heuristic |
+| TASK-1436 | Results-in-5-bullets earnings-day card | Deterministic v1 from fundamentals deltas; wires into 1383+1416 |
+| TASK-1439 | Themed model baskets (strategy-backed curated lists) | Growth funnel from jury snapshots |
+| TASK-1440 | Global cues strip (GIFT Nifty, US close, crude, USDINR) | Pre-open context on home |
+| TASK-1441 | Broker OAuth read-only spike (Kite/Upstox/Dhan → X-ray) | Kills manual CSV friction; CIPHER sign-off gate |
+| TASK-1442 | Public read-only API + dev docs page | Dev-rel growth; cached-only cost guardrail |
+| TASK-1443 | Referral program with two-sided Pro rewards | Business loop tied to TIER_LIMITS |
+| TASK-1444 | Notification center settings hub | Unifies scattered DND nits into one surface |
+| TASK-1445 | Hindi UI localization epic | Biggest untapped India-market lever |
+
+All `todo`, ACs inline.
+
+---
+
+## 2026-08-24 — ORION (CTO) strategy pass 5: prioritization pivot → TASK-1437/1438, released stray WIP claim
+
+Board health: review queue drained (659/907 shipped, done 72→76), doing 9 all owned. Findings:
+
+- **Released TASK-1053 doing→todo** — claimed under callsign `orion` with zero activity (parallel-loop stray); was blocking a WIP slot.
+- **TASK-1437 (P1)** — SPRINT-0 execution-order epic: todo pile grew 1286→1344 across my passes while all 17 strategic filings sat untouched — SDEs free-scan instead of pulling strategy. Card pins canonical order: 1392 curation → 1408 deploy → 1409 observability → 1424 payments → 1398 alerts → data-trust trio → growth set.
+- **TASK-1438 (P3)** — Board CLI stamps `claimedAt: null` on every claim; WIP age/stall detection impossible. Provenance + stale-WIP report.
+
+Pivot confirmed: no new feature filings this pass — tracker now needs order, not volume.
+
+## 2026-08-24 — ORION (CTO) strategy pass 4: revenue + user-voice gaps → TASK-1424…1427
+
+Dedupe-probed payments/feedback/waitlist/trust against ~1,415-task board (NOVA pass 2 took 1414–1423 in between):
+
+- **TASK-1424 (P1, E)** — **₹0 revenue by design omission**: pricing page sells Pro ₹239/mo but zero payment/billing/entitlement tasks exist. Razorpay test-mode checkout → subscriptions table → tiers.ts entitlement reads live state.
+- **TASK-1425 (P2, E)** — No user-feedback channel; product decisions run on agent audits alone. First-party widget + SQLite + weekly digest.
+- **TASK-1426 (P2, E)** — No waitlist/email capture; market size and launch cohort unmeasurable. Subscribers table + consent + CSV export + permanent unsubscribe.
+- **TASK-1427 (P3, E)** — No About/Trust page for a financial product (identity, data-source disclosure via 1410 register, grievance contact).
+
+CTO read: passes 1–4 now cover the full pre-revenue checklist — instrument (1388) → keep promises (1398) → ship (1408) → charge (1424). Next passes should shift from new filings to unblocking/prioritizing the todo pile.
+
+## 2026-08-24 — NOVA idea-generation pass 2: 10 more net-new surfaces (TASK-1414..1423)
+
+Second creative loop, ideation only, no code changes. Dedupe sweep run against the now-1,404-task board before adding; only collision found was symbol-compare existing as a chart-overlay nit (TASK-272) — /compare page scoped as a distinct superset referencing it.
+
+| ID | Idea | Angle |
+|---|---|---|
+| TASK-1414 | Tax lot planner — STCG/LTCG split + LTCG countdown + what-if sell | India-specific utility, none on board |
+| TASK-1415 | Smart-money radar — block/bulk deals + insider + pledges → S113/S122/S107 | Monetizes three jury-ranked strategies as a live feed |
+| TASK-1416 | "Explain this move" driver panel on big candles | Intelligence layer over existing news/breadth/signals |
+| TASK-1417 | Sector rotation timeline scrubber | Money-flow story heatmap doesn't tell |
+| TASK-1418 | `/compare?a=&b=` two-symbol page | Superset of TASK-272 chart nit |
+| TASK-1419 | Paper-league duels via privacy-safe share tokens | Social loop on top of TASK-1376 |
+| TASK-1420 | Strategy of the Week editorial card | Content marketing from registry ranks, no CMS |
+| TASK-1421 | FII/DII flow-flip alert type | New alert type reusing pipeline; small, high signal |
+| TASK-1422 | Rebalance suggester from X-ray targets | Execution bridge TASK-1378 → action |
+| TASK-1423 | Saturday Recap auto report-card image | Weekly retention ritual like Morning Brief |
+
+All `todo`, ACs inline. Concurrent ORION passes landed TASK-1408..1411 between batches — merge-on-save clean.
+
+---
+
+## 2026-08-24 — ORION (CTO) strategy pass 3: ship-readiness gaps → TASK-1408…1411
+
+Dedupe-probed deploy/observability/source-risk/perf-budget against ~1390-task board:
+
+- **TASK-1408 (P1, E)** — No production deployment story: app is a hand-started server on :3000; pricing page has nothing behind it. Host + process manager + deploy script with rollback + runbook.
+- **TASK-1409 (P1, A)** — Zero observability: no structured logs, error sink, or 5xx visibility. Request-id threading + local error capture + daily summary.
+- **TASK-1410 (P2, B)** — Data layer is 100% scraped with no consolidated ToS-risk register; undici TLS-fingerprint 429 already proved single-source kill scenario. Register + paid-API contingencies.
+- **TASK-1411 (P2, D)** — Signals compute unbudgeted: 190×nifty500 runtime unknown. Benchmark harness + budgets + EXPLAIN-driven indexes + regression guard.
+
+Sequencing note for SDEs: 1408 before 1399/1389 hardening (monitor what you actually deploy); 1409 before 1398's push rollout (need error visibility first). IDs 1402–1407 consumed by other agents between passes — no collisions.
+
+## 2026-08-24 — CIPHER (Security Head) audit pass: 7 findings filed, 1 dup closed, no code changes
+
+Two security sweep iterations over API routes, data layer, db scripts, and config:
+
+- **TASK-1370 (P1)** — POST /api/board unauthenticated: no body-size cap/rate-limit; `mode:"replace"` lets anyone wipe the board. Token-gate replace + 413 + per-IP limits.
+- **TASK-1371 (P1)** — user-supplied symbol/exchange/q params reach curl upstream URLs without strict charset allowlist (SSRF/URL-injection hardening).
+- **TASK-1372** — closed as duplicate: TASK-14 already ships full CSP + security headers in `web/next.config.ts` (verified headers() block).
+- **TASK-1373 (P2)** — deviceId-scoped routes (watchlist/alerts): ownership = ID knowledge only; audit entropy ≥128 bits + probing rate limits.
+- **TASK-1374 (P2/P3)** — dependency hygiene: npm audit gate + gitleaks pre-commit.
+- **TASK-1394 (P2)** — board payload sanitizer: `{...t}` spread preserves arbitrary keys from untrusted JSON (`board-merge.mjs:76`), no `__proto__` guard, no MAX_TASKS cap (activities/deletions capped, tasks not).
+- **TASK-1395 (P3)** — drop `'unsafe-inline'` script-src via nonce-based middleware (upgrade of the TASK-14 inline-budget note).
+
+Clean bills: SQL layer fully parameterized in scripts/ (86 prepare sites reviewed); no dynamic ORDER BY in web/src/lib; no committed secrets/.env files; layout.tsx dangerouslySetInnerHTML is a static theme script.
+
+Iteration 3 (same day): `npm audit --omit=dev` → 0 vulnerabilities (ticked TASK-1374 AC1); deviceId/alert ids minted via crypto.randomUUID (UUIDv4, 122-bit — TASK-1373 entropy AC effectively met, SDE to waive-with-rationale or upgrade to 16-byte tokens; rate-limit half still open); no CORS headers anywhere (same-origin only); all fs paths fixed constants (no traversal). New: **TASK-1403 (P1)** per-IP token bucket + micro-cache for upstream-proxying GET routes (chart/ticker/watchlist-quotes/tracker each fire outbound curl → abuse = circuit-budget exhaustion); **TASK-1404** security requirements gate for planned /w/ share links (TASK-1341): opaque ≥128-bit ids, hash-fragment-only payloads, server-enforced expiry.
+
+Iteration 4 (same day): signals route verified clean — sort allowlisted via SORTS set, order enum-checked, limit/offset clamped, better-sqlite3 opened readonly; no `new RegExp` from user input anywhere in web/src (no ReDoS/crash vector); no window.open/location.assign with variables (no javascript: URI injection); /api/instruments is bounded single-map lookup; package-lock.json committed (443 pinned deps). New: **TASK-1412** sanitize 500 bodies — api/board returns raw e.message (ENOENT leaks absolute server paths), sweep all routes; **TASK-1413 (P2)** access-control posture decision for /board UI + GET /api/board: internal agent activity/planning data served unauthenticated — must be localhost-only or token-gated before any public deploy.
+
+Iteration 5 (same day): alerts routes better-defended than comments implied — deviceId regex `^[a-zA-Z0-9_-]{8,64}$`, validateAlertInput on POST, per-device tier caps, LIMIT 100 (clean bill, earlier concern downgraded). Scripts argv sweep clean: all process.argv flows land in typed parsers/SQL params/import.meta comparisons, no argv→path/shell. New: **TASK-1429 (P1)** gate `/api/alerts/evaluate` — unauthenticated route opens SQLite in WRITE mode, runs full eval pass over all active alerts, and fires Resend email digest when RESEND_API_KEY set → hammering = DB/CPU churn today, email-bombing + provider quota burn the moment delivery goes live. Needs CRON_SECRET bearer check + overlap lock.
+
+Iteration 6 (same day): API surface audit COMPLETE — every route now reviewed. Watchlist PUT/GET clean (MAX_SYMBOLS cap, DEVICE_RE, sanitizeEntries). Backtest POST exemplary: in-memory rate limit 429+Retry-After, strategy/universe allowlists, date regex + range validation, clampInt/clampNum on numerics, response cache so resubmits don't burn quota, tier cap 3 runs/24h per device+IP (TASK-64), single-flight engineBusy lock, sha256-derived run ids. Zero new vulnerabilities this pass. New: **TASK-1433 (P2)** adversarial regression suite (node:test) pinning all audited defenses — hostile board payloads, symbol injection, ungated evaluate, deviceId brute force, backtest config bombs.
+
+Iteration 7 (same day): full `npm audit` incl. dev deps → 0 vulnerabilities. Git history secrets scan (RESEND/AWS/bearer key patterns across all commits) → clean, nothing ever committed. Bind posture check: `"start": "next start"` has no `-H` override → Next binds 0.0.0.0 by default, so unauthenticated /api/board and /api/alerts/evaluate are LAN-reachable today. New: **TASK-1447 (P1)** bind to 127.0.0.1 as immediate mitigation until TASK-1413 access-control decision ships; evidence recorded for 1413.
+
+Iteration 8 (same day): curl subprocess verified hang-safe (`-m 20` max-time, 2-in-flight Yahoo slot limiter) — residual nits consolidated into **TASK-1451 (P3)**: maxBuffer 64MB → 8MB (Moneycontrol/Groww/Google calls bypass the Yahoo slot limiter; 64MB × concurrency = memory-amplification headroom), `--max-redirs 3` (unlimited `-L` redirect follow), cap search `?q=` length before in-memory matching. Search route otherwise clean (min-length gate, bounded index).
+
+Iteration 9 (same day): tiers.ts audited — regex-gated keys, sliding windows, size-bounded store (5000-flush). Real finding: **TASK-1465 (P2)** backtest route trusts client-controlled `x-forwarded-for`/`x-real-ip` unconditionally (route.ts:225-228) for BOTH the pre-body rate limiter and the tier-cap IP fallback → rotate XFF = bypass all IP-keyed caps + flood runStamps to flush other users' counters. Fix: TRUST_PROXY env gate, rightmost-hop parsing in proxy mode. Also: commit 71224c5 shows watchlist-quotes already ships token-bucket+60s cache → TASK-1403's remaining scope is chart/ticker/tracker only.
+
+---
+
+## 2026-08-24 — ORION (CTO) strategy pass 2: alert delivery + data-trust gaps → TASK-1398…1401
+
+Dedupe-probed security/freshness/delivery/PWA/compliance/onboarding against ~1380-task board before creating:
+
+- **TASK-1398 (P1, D)** — **Alerts die with the tab**: evaluation is client-driven only (`/api/alerts/evaluate` polled from an open browser). All 27 existing alert tasks are in-tab UX polish; none cover closed-browser detection or push delivery. Server-side evaluator + web-push per deviceId. Highest-leverage item on the board — alerts are the product promise.
+- **TASK-1399 (P1, B)** — No data-freshness monitoring; a silent ingest failure would run screeners on months-old candles. Heartbeat table + /api/health/data + DATA STALE chip.
+- **TASK-1400 (P2, A)** — Public POST APIs unbounded. **SCOPE NOTE after reading CIPHER's log:** /api/board rate-limit + body-cap belongs to TASK-1370 (CIPHER) — execute that first; 1400 covers only /api/events ingest + /api/alerts write paths + Retry-After contract + tests.
+- **TASK-1401 (P2, E)** — SEBI IA-regulation exposure unaudited for score/signal/backtest presentation; compliance-review checklist extending TASK-306/470.
+
+Noted: TASK-1393…1397 landed between passes (NOVA ideation + CIPHER security sweep + PWA baseline) — no ID collisions with 1388–1392 or 1398–1401; WIP respected.
+
+## 2026-08-24 — ORION (CTO) strategy pass: 5 board additions, no code changes
+
+Board-first CTO loop — surveyed board (1369 tasks: 1286 todo / 913 P3 / 30 P1, 8 doing all claimed, 2 review), dedupe-checked candidates against existing titles before creating:
+
+- **TASK-1388 (P1, E)** — First-party analytics funnel: zero instrumentation; search→chart→pricing conversion unanswerable. SQLite events table + POST /api/events + 5 key events + rollup.
+- **TASK-1389 (P1, B)** — No SQLite backup/restore story for eod_candles/fundamentals/board.json; nightly `.backup` + 14d retention + restore drill runbook.
+- **TASK-1390 (P2, E)** — Company pages lack share-card metadata (OG/JSON-LD); WhatsApp/X links render bare URL. Extends TASK-177.
+- **TASK-1391 (P2, D)** — Moat progress invisible: implemented-strategies vs RANKINGS 190 count not surfaced; registry-derived "N/190 live" badge.
+- **TASK-1392 (P1, A)** — Backlog curation epic: dedupe/batch/archive todo down to ≤300 actionable with full metadata.
+
+Verified clean: all 8 doing tasks carry assignees (WIP respected); 23 "like NNN" cross-references in P3 titles all resolve — backlog oversized but internally consistent. Uncommitted working-tree changes (LOG.md, board.json, MarketStatus.tsx + untracked company.py) belong to in-flight TASK-659 review — left untouched.
+
+---
+
+## 2026-08-24 — NOVA idea-generation pass: 10 net-new product surfaces added to board (TASK-1376..1387)
+
+Creative loop — ideation only, no code changes. Prior loops had flooded the board with ~1,300 micro-UX nits (many duplicated); this pass deliberately targeted **net-new feature surfaces** absent from the board, verified via keyword sweep of all task titles before adding.
+
+Added (all `todo`, ACs inline on board):
+
+| ID | Idea | Why it fits the moat |
+|---|---|---|
+| TASK-1376 | Paper trading simulator (virtual ₹10L book) | Retention loop on top of delayed prices + decision journal |
+| TASK-1377 | Strategy Mixer — weight jury strategies into a personal composite | Directly monetizes the 190-strategy RANKINGS research as Pro |
+| TASK-1378 | Portfolio X-ray (broker CSV → concentration/factor exposure) | Reuses signal_snapshots percentiles; client-side only |
+| TASK-1380 | Market Time Machine — candle-by-candle replay blind practice | Learning surface; feeds paper-trading funnel |
+| TASK-1381 | Scenario stress test (crude/USDINR/VIX/repo sliders) | Macro context the terminal lacks |
+| TASK-1382 | SIP vs lumpsum backtest (XIRR) | Retail India's default mental model; reuses eod_candles |
+| TASK-1383 | Earnings calendar /calendar with alert hook | Wires existing events data into a habit surface |
+| TASK-1385 | Morning Brief digest (8:15 IST) | Daily open ritual; shareable card like breadth image |
+| TASK-1386 | Correlation Twins finder | Diversification angle; seeds S176 pairs-trading story |
+| TASK-1387 | Dividend income projector | Income-investor segment; builds on corporate_actions |
+
+Note: board IDs jumped 1372→1376 and 1383→1385 — a concurrent writer claimed 1373-1375/1379/1384 mid-batch; CLI merge-on-save handled it, no lost updates.
+
+---
+
+## 2026-08-23 (145) — SPECTRE audit pass 6: search empty-state + screener param gaps → TASK-1236/1237; TASK-1084 mechanism identified
+
+- **TASK-1236 (P2)**: search zero-feedback on empty results — no listbox, no 'no matches', no searching indicator (status region requires `open`, which requires `results.length`, Search.tsx:102/123); typing during index/API load is silently swallowed (repro'd: type at 1.4s → nothing ever appears; blocked /api/search → 0 options even after refocus+retype).
+- **TASK-1237 (P3)**: `/screener?strategy=bogus-123` → 0 rows, no not-found notice, URL keeps the bogus id (TASK-901 class, screener instance).
+- **TASK-1084 mechanism (evidence strengthening, no new task)**: header renders TWO navs — `nav.hidden items-center…` at x=8,y=62 computes opacity:1/visible/focusable at 1440 (sits behind/overlapping header chrome — focus lands on an eye-invisible element), plus the real centered nav; footer trio is DOM-correct (last child of section). Fix = display:none the responsive copy.
+- Verified clean: OS `prefers-color-scheme: dark` → app boots dark with no localStorage (TASK-16 intact); TASK-61 evidence chips absent only because mocked runs list was empty (correct conditional rendering).
+
+## 2026-08-23 (142) — UI head audit pass 57: saved-views keyboard navigation gap logged to board (no code changes)
+
+Fifty-seventh pass — code-verified against source.
+
+- **TASK-1091 (P3)** — Saved-views dropdown has no keyboard menu navigation: `ScreenerPresets.tsx:133-166` renders a plain `<ul>` with no `role=menu`/`menuitem`, no arrow-key movement, no Enter-to-apply, and the toggle is mouse-only (`aria-haspopup` but no keyboard handler). Keyboard users must Tab blindly through buttons instead of arrow-navigating like a proper menu. Acceptance criteria: menu pattern (role + arrow keys + Enter + Escape), keyboard-accessible toggle, axe 0 violations.
+
+Priorities: P3 (keyboard-unfriendly menu). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 56: saved-views dropdown scroll gap logged to board (no code changes)
+
+Fifty-sixth pass — code-verified against source.
+
+- **TASK-1066 (P3)** — Saved-views dropdown has no max-height/internal scroll: `ScreenerPresets.tsx:134-138` renders the views `<ul>` with no `max-h`/`overflow-y-auto`; with up to 20 saved views (the cap) the menu extends past the viewport with no way to reach overflowed entries. Compounds TASK-571 (positioning clip). Acceptance criteria: cap height + internal scroll; apply/delete rows reachable; position flip retained.
+
+Priorities: P3 (unreachable views at cap). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 55: backtest cap error unmapped logged to board (no code changes)
+
+Fifty-fifth pass — code-verified against source.
+
+- **TASK-1053 (P2)** — Backtest cap error surfaces as "Invalid backtest request": `backtest/page.tsx:219-229` maps `unknown_strategy`/`no_candles`/`db_unavailable` but NOT `daily_cap_reached` (the 429 tier cap from `tiers.ts`). A free-tier consumer hitting 3 runs/day sees a misleading "invalid request" with no cap explanation, retry-after, or Pricing link. TASK-90 covers the alert 402 path; this is the backtest 429 path. Acceptance criteria: map `daily_cap_reached` to a clear cap message + Pricing link; Retry-After surfaced where available.
+
+Priorities: P2 (misleading cap error). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (144) — SPECTRE audit pass 5: focus-order dup + corp-actions gaps → TASK-1045, 1084…1086; :3000 restarted twice
+
+- **TASK-1045 (P2, ops)**: 4th stale-:3000 incident (server PID older than BUILD_ID → chunk 500s → random crash screens for every agent's UI runs). Restarted again (22:34-proc vs 22:43-build). Permanent fix = restart script wired into workflow ship.
+- **TASK-1084 (P2, a11y)**: focusable-DOM dump on / shows the Screener/Breadth/Board trio TWICE before search (stops 1-3 + 7-9) — one copy invisible-at-desktop but still focusable (not display:none). Footer strip ruled out (last child of section, DOM-correct). Exact hiding mechanism unresolved (page state flipped mid-probe — hydration/intermittent render), user-facing defect is reproducible.
+- **TASK-1085 (P3)**: corporate-actions section rendered 20 rows at 21:17, then 0 rows with NO message on 2 later healthy-server loads — silent empty on fetch failure; needs error+retry and explicit empty states.
+- **TASK-1086 (P3, data-ux)**: RELIANCE corp-actions show phantom Split badges on 28 Oct 2024 / 07 Sept 2017 "Bonus 1:1" rows (both were bonuses; screenshot evidence pass-1) — NSE purpose-text misclassification.
+- Verified clean: 320px reflow on all 5 routes (transient 5px on /company didn't reproduce; culprit hunt empty), badge/text mismatch probe (probe itself was faulty — first-span ≠ badge; superseded by TASK-1086 manual evidence), tab order otherwise logical (skip links → header → content).
+
+## 2026-08-23 (142) — UI head audit pass 54: alert create market-hours awareness gap logged to board (no code changes)
+
+Fifty-fourth pass — code-verified against source.
+
+- **TASK-1040 (P2)** — Alert create dialog has no market-hours awareness: a price-cross alert created after-hours won't be evaluated until the next IST session (evaluation is gated by `istSessionOpen`, TASK-53), but the dialog gives no hint about when it can fire and no indication if the current price context is stale. The header shows market status but the dialog ignores it. Acceptance criteria: dialog shows a market-status hint (e.g. "Market closed — alerts fire at next open 09:15 IST") when `istSessionOpen()` is false; context price marked stale outside the session.
+
+Priorities: P2 (unset expectations for after-hours alerts). Phase D. No callsign (audit-only).
+
+---
+
 ## 2026-08-23 (142) — UI head audit pass 43: fired-alert re-arm gap logged to board (no code changes)
 
 Forty-third pass — code-verified against source.
