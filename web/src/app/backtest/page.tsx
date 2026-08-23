@@ -4,6 +4,7 @@ import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
+import { getDeviceId } from "@/lib/device";
 import {
   createChart,
   ColorType,
@@ -49,6 +50,20 @@ interface RunSummary {
   metrics: { cagr?: number | null } | null;
 }
 
+/* structured so cap errors can carry a Pricing CTA without changing copy paths */
+interface ErrorInfo {
+  text: string;
+  showPricing?: boolean;
+}
+
+const DAY_LABEL_LIMIT = 3;
+
+function fmtWait(sec: number): string {
+  if (sec < 60) return `${Math.max(1, Math.round(sec))}s`;
+  if (sec < 3600) return `${Math.ceil(sec / 60)}m`;
+  return `${Math.ceil(sec / 3600)}h`;
+}
+
 const COST_PRESETS = [
   { label: "Zero cost", cost: 0, slippage: 0 },
   { label: "Low (10 bps)", cost: 0.05, slippage: 0.05 },
@@ -79,7 +94,7 @@ function BacktestInner() {
   const [end, setEnd] = useState("");
   const [preset, setPreset] = useState(2);
   const [running, setRunning] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ErrorInfo | null>(null);
   const [result, setResult] = useState<RunResult | null>(null);
   const [history, setHistory] = useState<RunSummary[]>([]);
   const chartRef = useRef<HTMLDivElement>(null);
@@ -107,14 +122,14 @@ function BacktestInner() {
       const res = await fetch(`/api/backtest?id=${encodeURIComponent(runId)}`);
       if (!res.ok) {
         setResult(null);
-        setError("That run could not be loaded — it may have been removed.");
+        setError({ text: "That run could not be loaded — it may have been removed." });
         return;
       }
       const json = await res.json();
       setError(null);
       setResult(json as RunResult);
     } catch {
-      setError("That run could not be loaded.");
+      setError({ text: "That run could not be loaded." });
     }
   }, [runId]);
 
@@ -204,6 +219,7 @@ function BacktestInner() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          deviceId: getDeviceId(),
           strategyId,
           universe,
           start,
@@ -215,14 +231,33 @@ function BacktestInner() {
       });
       const json = await res.json();
       if (!res.ok) {
+        /* cap 429 (tiers.ts gate): clear copy + Pricing CTA + retry hint;
+           every other path keeps its original message */
+        if (json.error === "daily_cap_reached") {
+          const header = Number(res.headers.get("Retry-After"));
+          const retryAfterSec =
+            Number.isFinite(header) && header > 0
+              ? header
+              : typeof json.retryAfterSec === "number" && json.retryAfterSec > 0
+                ? json.retryAfterSec
+                : null;
+          const limit = typeof json.limit === "number" && json.limit > 0 ? json.limit : DAY_LABEL_LIMIT;
+          setError({
+            text: `Free plan allows ${limit} backtest runs per 24h${
+              retryAfterSec !== null ? ` — next slot in ~${fmtWait(retryAfterSec)}` : " — try again later"
+            }.`,
+            showPricing: true,
+          });
+          return;
+        }
         setError(
           json.error === "unknown_strategy"
-            ? "Unknown strategy."
+            ? { text: "Unknown strategy." }
             : json.error === "no_candles"
-              ? "No candle data for this universe — run the EOD ingest first."
+              ? { text: "No candle data for this universe — run the EOD ingest first." }
               : json.error === "db_unavailable"
-                ? "Database unavailable."
-                : "Invalid backtest request."
+                ? { text: "Database unavailable." }
+                : { text: "Invalid backtest request." }
         );
         return;
       }
@@ -233,7 +268,7 @@ function BacktestInner() {
         { scroll: false }
       );
     } catch {
-      setError("Backtest failed to run.");
+      setError({ text: "Backtest failed to run." });
     } finally {
       setRunning(false);
     }
@@ -335,7 +370,20 @@ function BacktestInner() {
 
         {error && (
           <div role="alert" className="mt-4 flex flex-wrap items-center gap-3 rounded-xl border border-down/20 bg-down-soft px-4 py-3 text-sm text-down">
-            <span className="flex-1">{error}</span>
+            <span className="flex-1">
+              {error.text}
+              {error.showPricing && (
+                <>
+                  {" "}
+                  <Link
+                    href="/pricing"
+                    className="font-medium underline decoration-line underline-offset-2 hover:text-muted"
+                  >
+                    See Pricing
+                  </Link>
+                </>
+              )}
+            </span>
             <button
               type="button"
               onClick={() => void (runId ? loadRun() : runBacktest())}
