@@ -1061,7 +1061,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -1093,7 +1093,7 @@
         }
       ],
       "createdAt": 1787478527371,
-      "updatedAt": 1787480482295,
+      "updatedAt": 1787486312075,
       "blocked": false
     },
     {
@@ -1647,7 +1647,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -1679,7 +1679,7 @@
         }
       ],
       "createdAt": 1787483528282,
-      "updatedAt": 1787485731003,
+      "updatedAt": 1787486278374,
       "blocked": false
     },
     {
@@ -1778,31 +1778,31 @@
         {
           "id": "1",
           "text": "GET /api/fundamentals?symbol= returns normalized metrics (metrics_json) with fetched_at freshness header",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "terminal gains a stats section (PE, PB, ROE, debt/equity, margins) with as-of stamp and source tag",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "empty state when no data",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "tsc+lint+test green",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "Playwright sanity",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787483673579,
-      "updatedAt": 1787484823577,
+      "updatedAt": 1787486625462,
       "blocked": false
     },
     {
@@ -2223,7 +2223,7 @@
       "desc": "",
       "phase": "C",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "nova",
       "labels": [],
       "estimate": 3,
@@ -2231,31 +2231,31 @@
         {
           "id": "1",
           "text": "realized vol (e.g. 126d std of daily returns) percentile-ranked cross-sectionally like S100",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "registered with juryRank 6",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "fixture tests incl insufficient-history null policy",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "screener auto-lists",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "signals run produces snapshot",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787485889267,
-      "updatedAt": 1787486123757,
+      "updatedAt": 1787486750061,
       "blocked": false
     },
     {
@@ -2264,8 +2264,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "sable",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -2296,7 +2296,7 @@
         }
       ],
       "createdAt": 1787485889555,
-      "updatedAt": 1787485889555,
+      "updatedAt": 1787486344335,
       "blocked": false
     },
     {
@@ -2434,6 +2434,118 @@
     }
   ],
   "activities": [
+    {
+      "id": "DROH",
+      "taskId": "TASK-60",
+      "text": "review · gates green tsc=12.7s·lint=41.5s·test=7.7s",
+      "agent": "NOVA",
+      "at": 1787486750062
+    },
+    {
+      "id": "XE7D",
+      "taskId": "TASK-49",
+      "text": "review ✗ gates RED (tsc=10.0s) — fix and re-run",
+      "agent": "VECTOR",
+      "at": 1787486625462
+    },
+    {
+      "id": "HF5Q",
+      "taskId": "TASK-49",
+      "text": "✓ checked Playwright sanity",
+      "agent": "RAVAN",
+      "at": 1787486600755
+    },
+    {
+      "id": "84ST",
+      "taskId": "TASK-49",
+      "text": "✓ checked tsc+lint+test green",
+      "agent": "RAVAN",
+      "at": 1787486600594
+    },
+    {
+      "id": "5FK2",
+      "taskId": "TASK-49",
+      "text": "✓ checked empty state when no data",
+      "agent": "RAVAN",
+      "at": 1787486600435
+    },
+    {
+      "id": "J2VT",
+      "taskId": "TASK-49",
+      "text": "✓ checked terminal gains a stats section (PE, PB, ROE, deb",
+      "agent": "RAVAN",
+      "at": 1787486600172
+    },
+    {
+      "id": "DVIO",
+      "taskId": "TASK-49",
+      "text": "✓ checked GET /api/fundamentals?symbol= returns normalized",
+      "agent": "RAVAN",
+      "at": 1787486599923
+    },
+    {
+      "id": "AD3A",
+      "taskId": "TASK-60",
+      "text": "review ✗ gates RED (tsc=19.8s) — fix and re-run",
+      "agent": "NOVA",
+      "at": 1787486580930
+    },
+    {
+      "id": "LOUK",
+      "taskId": "TASK-60",
+      "text": "✓ checked signals run produces snapshot",
+      "agent": "NOVA",
+      "at": 1787486504228
+    },
+    {
+      "id": "YAVJ",
+      "taskId": "TASK-60",
+      "text": "✓ checked screener auto-lists",
+      "agent": "NOVA",
+      "at": 1787486504081
+    },
+    {
+      "id": "QUZ5",
+      "taskId": "TASK-60",
+      "text": "✓ checked fixture tests incl insufficient-history null pol",
+      "agent": "NOVA",
+      "at": 1787486503881
+    },
+    {
+      "id": "BJ8W",
+      "taskId": "TASK-60",
+      "text": "✓ checked registered with juryRank 6",
+      "agent": "NOVA",
+      "at": 1787486503687
+    },
+    {
+      "id": "U3NA",
+      "taskId": "TASK-60",
+      "text": "✓ checked realized vol (e.g. 126d std of daily returns) pe",
+      "agent": "NOVA",
+      "at": 1787486503379
+    },
+    {
+      "id": "X0BO",
+      "taskId": "TASK-61",
+      "text": "claimed by SABLE · → doing",
+      "agent": "SABLE",
+      "at": 1787486344335
+    },
+    {
+      "id": "V5H2",
+      "taskId": "TASK-30",
+      "text": "review · gates green tsc=11.1s·lint=26.5s·test=6.6s",
+      "agent": "CIPHER",
+      "at": 1787486312075
+    },
+    {
+      "id": "ULJ3",
+      "taskId": "TASK-46",
+      "text": "shipped e778e1c (local) · feat(alerts): alert center bell, create-from-symbol dialog, list/dismiss (TASK-46) · gates tsc=11.2s·lint=27.5s·test=7.4s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787486278374
+    },
     {
       "id": "N18H",
       "taskId": "TASK-51",
@@ -2881,120 +2993,8 @@
       "text": "✓ checked workflow.mjs start exits non-zero when target st",
       "agent": "CIPHER",
       "at": 1787484598076
-    },
-    {
-      "id": "J01N",
-      "taskId": "TASK-46",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787484535513
-    },
-    {
-      "id": "312V",
-      "taskId": "TASK-42",
-      "text": "shipped 9b305f4 (local) · [TASK-42] feat(alerts): v1 backend — device-scoped price-alert CRUD + tape evaluation pass (pure core, 9 unit tests) · gates tsc=27.8s·lint=29.6s·test=6.1s · e2e✓",
-      "agent": "SABLE",
-      "at": 1787484518486
-    },
-    {
-      "id": "7GIL",
-      "taskId": "TASK-40",
-      "text": "shipped 7d353ed (local) · [TASK-40] test(ui): /backtest harness coverage — axe scan (caught missing h1, fixed) + smoke run checks; README updated · gates tsc=24.8s·lint=30.0s·test=6.8s · e2e✓",
-      "agent": "VECTOR",
-      "at": 1787484498449
-    },
-    {
-      "id": "JRLM",
-      "taskId": "TASK-45",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787484490801
-    },
-    {
-      "id": "BNPU",
-      "taskId": "TASK-44",
-      "text": "shipped 867613d (local) · chore(web): purge dead .odo-char keyframes + legacy og.svg (TASK-44) · gates tsc=15.1s·lint=38.0s · e2e✓",
-      "agent": "CIPHER",
-      "at": 1787484338159
-    },
-    {
-      "id": "L9Q7",
-      "taskId": "TASK-42",
-      "text": "review · gates green tsc=11.4s·lint=33.7s·test=7.9s",
-      "agent": "SABLE",
-      "at": 1787484314398
-    },
-    {
-      "id": "0KED",
-      "taskId": "TASK-40",
-      "text": "review · gates green tsc=9.7s·lint=30.5s·test=7.5s",
-      "agent": "VECTOR",
-      "at": 1787484304922
-    },
-    {
-      "id": "MLSW",
-      "taskId": "TASK-43",
-      "text": "shipped 1a63bf0 → origin/master · [TASK-43] test(harness): screener route-mocked + deterministic — promoted to ui-smoke blocking tier · gates tsc=10.2s·lint=32.4s",
-      "agent": "RAVEN",
-      "at": 1787484263319
-    },
-    {
-      "id": "AZTS",
-      "taskId": "TASK-44",
-      "text": "review · gates green tsc=11.4s·lint=26.3s",
-      "agent": "CIPHER",
-      "at": 1787484114895
-    },
-    {
-      "id": "CKD8",
-      "taskId": "TASK-42",
-      "text": "review ✗ gates RED (tsc=12.0s·lint=31.4s·test=6.9s) — fix and re-run",
-      "agent": "SABLE",
-      "at": 1787484048934
-    },
-    {
-      "id": "HFHN",
-      "taskId": "TASK-40",
-      "text": "review ✗ gates RED (tsc=12.6s·lint=33.5s·test=8.4s) — fix and re-run",
-      "agent": "VECTOR",
-      "at": 1787484008674
-    },
-    {
-      "id": "XAJU",
-      "taskId": "TASK-42",
-      "text": "✓ checked curl evidence on isolated build",
-      "agent": "RAVAN",
-      "at": 1787483998160
-    },
-    {
-      "id": "BES4",
-      "taskId": "TASK-42",
-      "text": "✓ checked cross logic unit-tested",
-      "agent": "RAVAN",
-      "at": 1787483997879
-    },
-    {
-      "id": "2OB5",
-      "taskId": "TASK-42",
-      "text": "✓ checked /api/alerts/evaluate fires crosses using cached ",
-      "agent": "RAVAN",
-      "at": 1787483997488
-    },
-    {
-      "id": "73YE",
-      "taskId": "TASK-42",
-      "text": "✓ checked /api/alerts GET/POST/DELETE scoped by deviceId w",
-      "agent": "RAVAN",
-      "at": 1787483997038
-    },
-    {
-      "id": "03IC",
-      "taskId": "TASK-44",
-      "text": "review ✗ gates RED (tsc=11.9s·lint=28.9s·test=6.8s) — fix and re-run",
-      "agent": "CIPHER",
-      "at": 1787483974140
     }
   ],
   "deletions": [],
-  "updatedAt": 1787486165594
+  "updatedAt": 1787486750065
 }

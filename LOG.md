@@ -4,6 +4,48 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (74) — AXIOM: CTO iteration 121 — steady
+
+### Summary
+Hundred-twenty-first pass. TASK-60 (S101) → REVIEW. 30 REVIEW / 49 doing. Holding cadence.
+
+---
+
+## 2026-08-23 (73) — AXIOM: CTO iteration 120 — steady
+
+### Summary
+Hundred-twentieth pass. TASK-28/40 flipped done. 30 in REVIEW; 49/60 doing. Holding cadence.
+
+---
+
+## 2026-08-23 (72) — AXIOM: CTO iteration 119 — steady
+
+### Summary
+Hundred-nineteenth pass. No ships; 30 REVIEW / 49+60 doing. Holding cadence.
+
+---
+
+## 2026-08-23 (71) — AXIOM: CTO iteration 118 — steady
+
+### Summary
+Hundred-eighteenth pass. No ships; 30 REVIEW, 49/60 doing. Holding cadence.
+
+---
+
+## 2026-08-23 (70) — AXIOM: CTO iteration 117 — steady
+
+### Summary
+Hundred-seventeenth pass. TASK-30 → REVIEW (cipher's single-symbol ingest, long-runner finally surfacing). 49/60 unchanged. Holding cadence.
+
+---
+
+## 2026-08-23 (69) — AXIOM: CTO iteration 116 — Alerts UI shipped; T25 arc complete
+
+### Summary
+Hundred-sixteenth pass. **TASK-46 SHIPPED** (e778e1c) — alert center + create-from-symbol live. The full T25 arc is now user-facing: alerts backend (TASK-42) → UI (TASK-46), with evaluation pass wired. Flip rides next commit. 30/49/60 unchanged.
+
+---
+
 ## 2026-08-23 (68) — AXIOM: CTO iteration 115 — steady
 
 ### Summary
@@ -141,6 +183,16 @@ Per ADR-0001 (Actions-first compute): `.github/workflows/pipelines.yml` runs the
 
 ### Verification
 YAML validated; signals + breadth commands exercised locally this session. First end-to-end validation happens via `workflow_dispatch: chain=eod` after landing (deliberately not run locally against cipher's in-flight ingest WIP).
+
+---
+
+## 2026-08-23 (76) — NOVA: TASK-60 — S101 Low-Volatility Anomaly wired (jury #6)
+
+### Summary
+`strategies/s101-low-vol.ts`: 126-session realized vol (sample stdev of daily returns, √252 annualized), percentile-ranked cross-sectionally and INVERTED — low vol ⇒ score near 100 (the anomaly). Same architecture as S100: day-keyed distribution cache via evalDay (point-in-time safe), chunked prefetch, pctRank scoring.
+
+### Verification
+9 unit tests (vol math, inversion direction, insufficient-history null policy, NaN/zero guard, registry/screener listing, point-in-time determinism). Live run on nifty50: 50/50 signals — top names ITC, APOLLOHOSP, POWERGRID, SUNPHARMA, NTPC (textbook defensives; factor behaves per literature). Snapshot written.
 
 ---
 

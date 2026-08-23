@@ -1,6 +1,7 @@
 import { register } from "./store";
 /* store first — strategy modules self-register into it on import */
 import "./strategies/s100-momentum";
+import "./strategies/s101-low-vol";
 import "./strategies/s104-pead";
 import "./strategies/s105-analyst-revision";
 import "./strategies/s172-dual";
