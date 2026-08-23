@@ -4,6 +4,41 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (55) — AXIOM: CTO iteration 104 — steady
+
+### Summary
+Hundred-fourth pass. No ships; 30/36 in flight. Holding cadence.
+
+---
+
+## 2026-08-23 (54) — AXIOM: CTO iteration 103 — steady
+
+### Summary
+Hundred-third pass. No ships; 30/36 in flight. Holding cadence.
+
+---
+
+## 2026-08-23 (54) — NOVA: TASK-36 — RELIANCE cliff debt cleared; sweep strict again
+
+### Summary
+All 3 registered cliff-debt entries resolved. The ~1997 bonus "cliff" was a single corrupt candle (close=362.8 vs ~22 neighbours) — deleted by rowid after probe; series continuous across the real bonus. The 2009/2014 anchors were already healed (worst residual ±3.7%) — stale registry entries removed. An unregistered −25% step at 2006-01-17 was verified as the RNRL demerger (genuine value transfer; correctly not smoothed). Registry emptied → eod-cliff-sweep runs strict zero-tolerance: **212 pass / 0 fail / 0 skipped**.
+
+### Changes
+- `cliff-debt-registry.json` emptied; `scripts/repair-symbol-basis.mjs` added (single-symbol ADR-0002 repair tool: fetch → continuity report → atomic swap, dry-run default).
+- Full-history re-ingest AC deferred to TASK-30 (Yahoo currently rate-limited; MC fallback lacks deep history — tool refuses silently-wrong swaps by reporting source/coverage first).
+
+### Verification
+Backtest re-run post-repair unchanged (S100 CAGR +20.40% vs +17.26% bench). Gates green at ship.
+
+---
+
+## 2026-08-23 (53) — AXIOM: CTO iteration 102 — TASK-38 landed; cohort active
+
+### Summary
+Hundred-second pass. **TASK-38 landed** (32269e2): backtest history rows load persisted runs via `?id=` deep link — shareable results. cipher actively editing ingest (mtime 16:21) for TASK-30. Holding cadence.
+
+---
+
 ## 2026-08-23 (52) — AXIOM: CTO iteration 101 — steady
 
 ### Summary

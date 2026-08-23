@@ -979,7 +979,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "sable",
       "labels": [],
       "estimate": 3,
@@ -1011,7 +1011,7 @@
         }
       ],
       "createdAt": 1787477151135,
-      "updatedAt": 1787481436965,
+      "updatedAt": 1787481685898,
       "blocked": false
     },
     {
@@ -1245,7 +1245,7 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "vector",
       "labels": [],
       "estimate": 3,
@@ -1277,7 +1277,7 @@
         }
       ],
       "createdAt": 1787480187749,
-      "updatedAt": 1787481588578,
+      "updatedAt": 1787481640229,
       "blocked": false
     },
     {
@@ -1286,8 +1286,8 @@
       "desc": "",
       "phase": "B",
       "priority": "P1",
-      "status": "todo",
-      "assignee": "cipher",
+      "status": "review",
+      "assignee": "nova",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -1299,21 +1299,21 @@
         {
           "id": "2",
           "text": "eod-cliff-sweep passes with zero registered debt entries",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "entries removed from cliff-debt-registry.json",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "backtest scorers re-run on clean series",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787480652733,
-      "updatedAt": 1787480652733,
+      "updatedAt": 1787482501888,
       "blocked": false
     },
     {
@@ -1322,7 +1322,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "raven",
       "labels": [
         "ui",
@@ -1333,25 +1333,412 @@
         {
           "id": "1",
           "text": "all scripts/tests/ui/*.py run with NO --url flag without NameError",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "--url override still works",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "py_compile clean",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787481315257,
-      "updatedAt": 1787481315957,
+      "updatedAt": 1787481879031,
+      "blocked": false
+    },
+    {
+      "id": "TASK-38",
+      "title": "Backtest history rows load full run via ?id= deep link",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "done",
+      "assignee": "sable",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "history row click loads equity+metrics via GET /api/backtest?id",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "URL syncs (?id=) so results are shareable",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "invalid/missing id degrades to form-only view",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "playwright sanity green",
+          "done": true
+        }
+      ],
+      "createdAt": 1787481873287,
+      "updatedAt": 1787482338411,
+      "blocked": false
+    },
+    {
+      "id": "TASK-39",
+      "title": "Ignore SQLite WAL sidecars (*.db-shm/*.db-wal) — binaries one git-add away from master",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "done",
+      "assignee": "raven",
+      "labels": [
+        "hygiene"
+      ],
+      "estimate": 1,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "git status no longer lists db/niftyterm.db-shm|-wal",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "existing tracked-file set unchanged",
+          "done": false
+        }
+      ],
+      "createdAt": 1787482012808,
+      "updatedAt": 1787482193053,
+      "blocked": false
+    },
+    {
+      "id": "TASK-40",
+      "title": "UI harness coverage for /backtest: axe scan + smoke checks on the TASK-28 route",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "doing",
+      "assignee": "vector",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "axe_backtest.py reports 0 violations both themes",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "smoke script exercises strategy select + Run and asserts no crash/console errors",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "scripts/tests/ui/README.md updated",
+          "done": false
+        }
+      ],
+      "createdAt": 1787482220953,
+      "updatedAt": 1787482243893,
+      "blocked": false
+    },
+    {
+      "id": "TASK-41",
+      "title": "CI UI smoke: run scripts/tests/ui harness against prod build on push/PR (blocking mocked set, advisory live-data set)",
+      "desc": "",
+      "phase": "E",
+      "priority": "P2",
+      "status": "doing",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ci"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": ".github/workflows/ui-smoke.yml runs next build + next start + python playwright suite",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "mocked scripts (chart_mock,tape_mock,mob2,foot,axe x3) gate-blocking",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "live-data scripts (e2e,screener,deeplink) advisory with logged output",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "workflow YAML validated",
+          "done": false
+        }
+      ],
+      "createdAt": 1787482251402,
+      "updatedAt": 1787482258510,
+      "blocked": false
+    },
+    {
+      "id": "TASK-42",
+      "title": "Alerts v1 backend: price-cross CRUD API + evaluation pass over tape",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "doing",
+      "assignee": "sable",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "/api/alerts GET/POST/DELETE scoped by deviceId with validation",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "/api/alerts/evaluate fires crosses using cached tape (no upstream stampede), marks fired",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "cross logic unit-tested",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "curl evidence on isolated build",
+          "done": false
+        }
+      ],
+      "createdAt": 1787482482659,
+      "updatedAt": 1787482482850,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "BX8B",
+      "taskId": "TASK-36",
+      "text": "review · gates green tsc=11.7s·lint=22.4s·test=6.3s",
+      "agent": "NOVA",
+      "at": 1787482501888
+    },
+    {
+      "id": "AIFY",
+      "taskId": "TASK-42",
+      "text": "claimed by SABLE · → doing",
+      "agent": "SABLE",
+      "at": 1787482482850
+    },
+    {
+      "id": "C6CC",
+      "taskId": "TASK-42",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787482482659
+    },
+    {
+      "id": "MZ91",
+      "taskId": "TASK-36",
+      "text": "✓ checked backtest scorers re-run on clean series",
+      "agent": "NOVA",
+      "at": 1787482357057
+    },
+    {
+      "id": "5SHZ",
+      "taskId": "TASK-36",
+      "text": "✓ checked entries removed from cliff-debt-registry.json",
+      "agent": "NOVA",
+      "at": 1787482356884
+    },
+    {
+      "id": "FP17",
+      "taskId": "TASK-36",
+      "text": "✓ checked eod-cliff-sweep passes with zero registered debt",
+      "agent": "NOVA",
+      "at": 1787482356786
+    },
+    {
+      "id": "2WTW",
+      "taskId": "TASK-38",
+      "text": "shipped 32269e2 (local) · [TASK-38] feat(backtest): history rows load persisted runs via ?id= deep link — shareable results · gates tsc=8.9s·lint=25.2s·test=6.5s · e2e✓",
+      "agent": "SABLE",
+      "at": 1787482338411
+    },
+    {
+      "id": "U54F",
+      "taskId": "TASK-38",
+      "text": "review · gates green tsc=9.6s·lint=29.4s·test=6.1s",
+      "agent": "SABLE",
+      "at": 1787482297396
+    },
+    {
+      "id": "BBGI",
+      "taskId": "TASK-41",
+      "text": "claimed by RAVEN · → doing",
+      "agent": "RAVEN",
+      "at": 1787482258510
+    },
+    {
+      "id": "RU0U",
+      "taskId": "TASK-41",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787482251402
+    },
+    {
+      "id": "0DPQ",
+      "taskId": "TASK-40",
+      "text": "claimed by VECTOR · → doing",
+      "agent": "VECTOR",
+      "at": 1787482243893
+    },
+    {
+      "id": "K3JU",
+      "taskId": "TASK-38",
+      "text": "✓ checked playwright sanity green",
+      "agent": "RAVAN",
+      "at": 1787482222951
+    },
+    {
+      "id": "2W18",
+      "taskId": "TASK-38",
+      "text": "✓ checked invalid/missing id degrades to form-only view",
+      "agent": "RAVAN",
+      "at": 1787482222760
+    },
+    {
+      "id": "9NYZ",
+      "taskId": "TASK-38",
+      "text": "✓ checked URL syncs (?id=) so results are shareable",
+      "agent": "RAVAN",
+      "at": 1787482222668
+    },
+    {
+      "id": "QS8V",
+      "taskId": "TASK-38",
+      "text": "✓ checked history row click loads equity+metrics via GET /",
+      "agent": "RAVAN",
+      "at": 1787482222529
+    },
+    {
+      "id": "V2F3",
+      "taskId": "TASK-40",
+      "text": "created in todo",
+      "agent": "VECTOR",
+      "at": 1787482220953
+    },
+    {
+      "id": "JUI1",
+      "taskId": "TASK-39",
+      "text": "shipped 4e13ebc → origin/master · [TASK-39] chore(repo): ignore SQLite WAL sidecars (*.db-shm/*.db-wal) · gates tsc=9.8s·lint=23.9s·test=5.9s",
+      "agent": "RAVEN",
+      "at": 1787482193053
+    },
+    {
+      "id": "V6VT",
+      "taskId": "TASK-39",
+      "text": "review · gates green tsc=8.4s·lint=23.8s·test=6.2s",
+      "agent": "RAVEN",
+      "at": 1787482139764
+    },
+    {
+      "id": "XBQ8",
+      "taskId": "TASK-39",
+      "text": "✓ checked git status no longer lists db/niftyterm.db-shm|-",
+      "agent": "RAVEN",
+      "at": 1787482101257
+    },
+    {
+      "id": "LYF4",
+      "taskId": "TASK-39",
+      "text": "claimed by RAVEN · → doing",
+      "agent": "RAVEN",
+      "at": 1787482021450
+    },
+    {
+      "id": "ZC2C",
+      "taskId": "TASK-39",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787482012823
+    },
+    {
+      "id": "62MU",
+      "taskId": "TASK-36",
+      "text": "claimed by NOVA · → doing",
+      "agent": "NOVA",
+      "at": 1787481970301
+    },
+    {
+      "id": "HN8E",
+      "taskId": "TASK-37",
+      "text": "shipped 61a887e → origin/master · [TASK-37] fix(harness): BASE default NameError in 6 UI scripts (regression of 83edb43); tape_mock rewritten to current tape markup · gates tsc=9.3s·lint=24.0s·test=6.7s",
+      "agent": "RAVEN",
+      "at": 1787481879031
+    },
+    {
+      "id": "LMFD",
+      "taskId": "TASK-38",
+      "text": "claimed by SABLE · → doing",
+      "agent": "SABLE",
+      "at": 1787481873496
+    },
+    {
+      "id": "SOS5",
+      "taskId": "TASK-38",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787481873287
+    },
+    {
+      "id": "TCS9",
+      "taskId": "TASK-37",
+      "text": "review · gates green tsc=9.8s·lint=24.8s·test=6.5s",
+      "agent": "RAVEN",
+      "at": 1787481762784
+    },
+    {
+      "id": "LPAS",
+      "taskId": "TASK-37",
+      "text": "✓ checked py_compile clean",
+      "agent": "RAVEN",
+      "at": 1787481708553
+    },
+    {
+      "id": "LUAG",
+      "taskId": "TASK-37",
+      "text": "✓ checked --url override still works",
+      "agent": "RAVEN",
+      "at": 1787481708412
+    },
+    {
+      "id": "LLHL",
+      "taskId": "TASK-37",
+      "text": "✓ checked all scripts/tests/ui/*.py run with NO --url flag",
+      "agent": "RAVEN",
+      "at": 1787481708315
+    },
+    {
+      "id": "H30P",
+      "taskId": "TASK-28",
+      "text": "shipped 5a069b3 (local) · [TASK-28] feat(backtest): /backtest UI + /api/backtest — engine runs, equity curve vs benchmark, run history, screener deep-link · gates tsc=9.6s·lint=22.5s·test=6.1s · e2e✓",
+      "agent": "SABLE",
+      "at": 1787481685898
+    },
+    {
+      "id": "0DWM",
+      "taskId": "TASK-35",
+      "text": "shipped be0d02f (local) · [TASK-35] fix(test): deflake v2 — cliff sweep reads backup snapshot, classifies corporate-action steps, registered debt skips with owner; RELIANCE pre-2017 cliffs → TASK-36 · gates tsc=10.1s·lint=26.1s·test=6.9s",
+      "agent": "VECTOR",
+      "at": 1787481640229
+    },
     {
       "id": "9UEO",
       "taskId": "TASK-35",
@@ -1694,225 +2081,8 @@
       "text": "✓ checked verify meta tags via curl of rendered HTML",
       "agent": "CIPHER",
       "at": 1787480157350
-    },
-    {
-      "id": "TAWG",
-      "taskId": "TASK-16",
-      "text": "✓ checked OG/Twitter images replaced with PNG/JPG >=1200x6",
-      "agent": "CIPHER",
-      "at": 1787480157249
-    },
-    {
-      "id": "084N",
-      "taskId": "TASK-16",
-      "text": "✓ checked first visit with no stored theme follows prefers",
-      "agent": "CIPHER",
-      "at": 1787480157149
-    },
-    {
-      "id": "EPD4",
-      "taskId": "TASK-16",
-      "text": "✓ checked Odometer animates digit rolls on value change (1",
-      "agent": "CIPHER",
-      "at": 1787480156982
-    },
-    {
-      "id": "XIO6",
-      "taskId": "TASK-34",
-      "text": "claimed by NOVA · → doing",
-      "agent": "NOVA",
-      "at": 1787480153822
-    },
-    {
-      "id": "W8KO",
-      "taskId": "TASK-33",
-      "text": "✓ checked e2e 13-check still green",
-      "agent": "RAVAN",
-      "at": 1787480107545
-    },
-    {
-      "id": "8VQ4",
-      "taskId": "TASK-33",
-      "text": "✓ checked no layout drift",
-      "agent": "RAVAN",
-      "at": 1787480107453
-    },
-    {
-      "id": "ZPNN",
-      "taskId": "TASK-33",
-      "text": "✓ checked failing tokens re-mapped or darkened with AA con",
-      "agent": "RAVAN",
-      "at": 1787480107371
-    },
-    {
-      "id": "K2G3",
-      "taskId": "TASK-33",
-      "text": "✓ checked axe.py/axe_screener/axe_breadth report 0 violati",
-      "agent": "RAVAN",
-      "at": 1787480107171
-    },
-    {
-      "id": "6ZFT",
-      "taskId": "TASK-34",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787480103243
-    },
-    {
-      "id": "Z0O8",
-      "taskId": "TASK-32",
-      "text": "✓ checked GitHub Actions run on master is green",
-      "agent": "WRAITH",
-      "at": 1787479668294
-    },
-    {
-      "id": "HVV7",
-      "taskId": "TASK-32",
-      "text": "shipped 1f53572 → origin/master · [TASK-32] fix(ci): real-data suites self-skip without ingest DB — openDb() phantom app.db no longer defeats existsSync guards · gates tsc=13.1s·lint=23.5s·test=6.2s",
-      "agent": "WRAITH",
-      "at": 1787479564257
-    },
-    {
-      "id": "BB8M",
-      "taskId": "TASK-06",
-      "text": "claimed by RAVEN · → doing",
-      "agent": "RAVEN",
-      "at": 1787479562544
-    },
-    {
-      "id": "FQFW",
-      "taskId": "TASK-16",
-      "text": "re-started by CIPHER",
-      "agent": "CIPHER",
-      "at": 1787479408465
-    },
-    {
-      "id": "1CF6",
-      "taskId": "TASK-16",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787479407360
-    },
-    {
-      "id": "OGLE",
-      "taskId": "TASK-32",
-      "text": "review · gates green tsc=28.8s·lint=24.7s·test=6.3s",
-      "agent": "WRAITH",
-      "at": 1787479406391
-    },
-    {
-      "id": "Y8WN",
-      "taskId": "TASK-11",
-      "text": "shipped 83edb43 (local) · [TASK-11] feat(ui): shared AppShell — one SiteHeader + useISTClock for home/screener/breadth · gates tsc=12.7s·lint=33.1s·test=6.5s · e2e✓",
-      "agent": "RAVEN",
-      "at": 1787479373573
-    },
-    {
-      "id": "WYYY",
-      "taskId": "TASK-05",
-      "text": "shipped 8f28cf9 (local) · [TASK-05] refactor(data): getChart 210->22 lines — shared fallbackPayload builder, singleflight coalescing, 12s upstream budget; byte-exact parity on 5 live captures · gates tsc=14.6s·lint=28.9s·test=6.5s",
-      "agent": "CIPHER",
-      "at": 1787479341950
-    },
-    {
-      "id": "HPMG",
-      "taskId": "TASK-11",
-      "text": "moved review → done",
-      "agent": "CIPHER",
-      "at": 1787479331491
-    },
-    {
-      "id": "NH24",
-      "taskId": "TASK-32",
-      "text": "✓ checked tsc + lint + test gates all green",
-      "agent": "RAVAN",
-      "at": 1787479322171
-    },
-    {
-      "id": "AG7O",
-      "taskId": "TASK-32",
-      "text": "✓ checked npm test green with no local DB (simulate CI env",
-      "agent": "RAVAN",
-      "at": 1787479322012
-    },
-    {
-      "id": "HJAI",
-      "taskId": "TASK-32",
-      "text": "✓ checked s100-real + s172/174 regime suites skip graceful",
-      "agent": "RAVAN",
-      "at": 1787479321656
-    },
-    {
-      "id": "6U1F",
-      "taskId": "TASK-11",
-      "text": "review · gates green tsc=11.2s·lint=28.1s·test=8.1s · e2e✓",
-      "agent": "RAVEN",
-      "at": 1787479294481
-    },
-    {
-      "id": "FC2G",
-      "taskId": "TASK-05",
-      "text": "review · gates green tsc=10.3s·lint=30.1s·test=6.3s",
-      "agent": "CIPHER",
-      "at": 1787479291296
-    },
-    {
-      "id": "JQDZ",
-      "taskId": "TASK-33",
-      "text": "claimed by VECTOR · → doing",
-      "agent": "VECTOR",
-      "at": 1787479267635
-    },
-    {
-      "id": "MLCI",
-      "taskId": "TASK-11",
-      "text": "shipped 5dd6093 (local) · refactor(ui): shared SiteHeader + useISTClock, CSS-var FlowBars theming (TASK-11) · gates tsc=12.8s·lint=27.1s·test=7.0s · e2e✓",
-      "agent": "CIPHER",
-      "at": 1787479224171
-    },
-    {
-      "id": "ZO78",
-      "taskId": "TASK-05",
-      "text": "✓ checked npm test green",
-      "agent": "CIPHER",
-      "at": 1787479182032
-    },
-    {
-      "id": "ZPAF",
-      "taskId": "TASK-05",
-      "text": "✓ checked behavior parity: 3 symbols same payloads pre/pos",
-      "agent": "CIPHER",
-      "at": 1787479181783
-    },
-    {
-      "id": "S926",
-      "taskId": "TASK-05",
-      "text": "✓ checked per-request upstream time budget then stale/fail",
-      "agent": "CIPHER",
-      "at": 1787479181582
-    },
-    {
-      "id": "QP88",
-      "taskId": "TASK-05",
-      "text": "✓ checked concurrent identical requests coalesced via sing",
-      "agent": "CIPHER",
-      "at": 1787479181384
-    },
-    {
-      "id": "2Q8H",
-      "taskId": "TASK-05",
-      "text": "✓ checked getChart under ~80 lines with one shared fallbac",
-      "agent": "CIPHER",
-      "at": 1787479181242
-    },
-    {
-      "id": "PJ03",
-      "taskId": "TASK-11",
-      "text": "shipped 03fe3f8 (local) · [TASK-11] feat(app): shared AppShell — SiteHeader + useISTClock replace 3 copied headers/clocks; FlowBars on CSS vars; e2e selectors de-staled; axe harness vendored (CSP-safe) · gates tsc=24.9s·lint=23.6s·test=6.6s · e2e✓",
-      "agent": "VECTOR",
-      "at": 1787479045130
     }
   ],
   "deletions": [],
-  "updatedAt": 1787481588580
+  "updatedAt": 1787482523215
 }
