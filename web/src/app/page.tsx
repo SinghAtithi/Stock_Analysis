@@ -66,9 +66,11 @@ const errorMessage = (res: Response, json: { error?: string }): string => {
 const resolveTarget = async (
   params: URLSearchParams,
 ): Promise<WatchlistEntry | null> => {
-  const s = params.get("s");
+  /* TASK-866: normalize case up front so ?s=reliance and ?s=RELIANCE
+     resolve identically — watchlist snapshot and API both match exact */
+  const s = (params.get("s") ?? "").trim().toUpperCase();
   if (!s) return null;
-  const e = params.get("e");
+  const e = params.get("e")?.trim().toUpperCase();
   const hit = getWatchlistSnapshot().find(
     (x) => x.symbol === s && (!e || x.exchange === e),
   );

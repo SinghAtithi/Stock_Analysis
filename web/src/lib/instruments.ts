@@ -105,7 +105,11 @@ export function searchInstruments(q: string, limit = 8): SearchHit[] {
 }
 
 export function findInstrument(symbol: string): Instrument | undefined {
-  return LIST.find((i) => i.s === symbol);
+  /* TASK-866: deep links arrive lowercased (?s=reliance) — match
+     case-insensitively so pasted links resolve like typed ones */
+  const needle = symbol.trim().toUpperCase();
+  if (!needle) return undefined;
+  return LIST.find((i) => i.s === needle);
 }
 
 /* Exact symbol+exchange listing first, else the first listing of the symbol
