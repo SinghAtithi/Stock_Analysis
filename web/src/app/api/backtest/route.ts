@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { listStrategies } from "@/lib/strategies/registry";
+import { deviceKeyFor, gateBacktestRun } from "@/lib/tiers";
 import {
   runBacktest,
   SnapshotScorer,
@@ -27,7 +28,8 @@ export const dynamic = "force-dynamic";
  * pin the event loop and pile up sqlite writers. Three guards:
  *   1. per-IP sliding window (per-instance best-effort; edge owns real enforcement)
  *   2. single-flight engine lock — one run at a time, others get 429+Retry-After
- *   3. 60s config-keyed response cache — identical UI re-submits are free */
+ *   3. 60s config-keyed response cache — identical UI re-submits are free
+ *   4. per-device tier cap (TASK-64) — free = 3 runs/24h → 429 daily_cap_reached */
 
 const RATE_LIMIT = 10;
 const RATE_WINDOW_MS = 60_000;
@@ -267,6 +269,23 @@ export async function POST(request: NextRequest) {
   const cacheKey = `${strategyId}|${universe}|${start}|${end ?? ""}|${topN}|${costPct}|${slippagePct}`;
   const cached = respGet(cacheKey);
   if (cached) return NextResponse.json(cached);
+
+  /* tier cap (TASK-64/1053): free devices get 3 runs per trailing 24h; the
+     slot is reserved even if the engine fails (anti-abuse, see tiers.ts).
+     Sits after the cache so identical re-submits never burn quota. */
+  const cap = gateBacktestRun(deviceKeyFor(String(body.deviceId ?? ""), ip));
+  if (!cap.ok) {
+    return NextResponse.json(
+      {
+        error: cap.reason,
+        tier: cap.tier,
+        limit: cap.limit,
+        retryAfterSec: cap.retryAfterSec,
+        upgrade: "/pricing",
+      },
+      { status: cap.status, headers: { "Retry-After": String(cap.retryAfterSec ?? 60) } }
+    );
+  }
 
   if (engineBusy) {
     return NextResponse.json(
