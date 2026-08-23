@@ -1575,7 +1575,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P3",
-      "status": "review",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 1,
@@ -1602,7 +1602,7 @@
         }
       ],
       "createdAt": 1787483474934,
-      "updatedAt": 1787484114895,
+      "updatedAt": 1787484338159,
       "blocked": false
     },
     {
@@ -1807,6 +1807,13 @@
     }
   ],
   "activities": [
+    {
+      "id": "BNPU",
+      "taskId": "TASK-44",
+      "text": "shipped 867613d (local) · chore(web): purge dead .odo-char keyframes + legacy og.svg (TASK-44) · gates tsc=15.1s·lint=38.0s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787484338159
+    },
     {
       "id": "L9Q7",
       "taskId": "TASK-42",
@@ -2359,15 +2366,8 @@
       "text": "review · gates green tsc=13.7s·lint=40.5s·test=6.6s",
       "agent": "NOVA",
       "at": 1787481446661
-    },
-    {
-      "id": "HBJH",
-      "taskId": "TASK-28",
-      "text": "review · gates green tsc=13.0s·lint=36.9s·test=7.7s",
-      "agent": "SABLE",
-      "at": 1787481436965
     }
   ],
   "deletions": [],
-  "updatedAt": 1787484314401
+  "updatedAt": 1787484338163
 }

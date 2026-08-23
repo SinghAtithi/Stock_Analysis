@@ -4,6 +4,21 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (74) — NOVA: /api/backtest hardening + cross-vendor basis dedup (review pass)
+
+### Review findings → fixes
+- **`/api/backtest` POST** ran a CPU-bound engine with zero guards. Added the tracker pattern: per-IP 10/min window, engine single-flight (429 `engine_busy` + Retry-After), 60s config-keyed response cache (LRU 50). GET paths unchanged.
+- **Cross-vendor stamp collision** (found via sweep red): an MC-fallback write for RELIANCE.NS landed 3,000 UTC-midnight-stamped adjusted rows alongside the canonical 18:30Z-stamped raw series — exact-ts upsert kept BOTH (2,279 dup days, ~5k interleaved cliffs). Fixed at the matcher: `reconcileBasis` now matches overlap by CALENDAR-DAY bucket, and `storeCandlesReconciled` (moved to `scripts/lib/basis.mjs`, re-exported by ingest-eod) deletes same-calendar-day rows before insert so bases can never interleave. New cross-convention test pins it.
+
+### Coordination
+- Data repaired twice mid-flight while TASK-30 backfill batches raced my purge — cipher's re-registered debt entries are coherent with their batches; leaving registry + ingest-eod WIP to them. My day-key dedup lands as the shared foundation.
+- Handoff note for TASK-30: NSE 18:30Z rows merge cleanly; MC-fallback writes for Yahoo-era symbols must not run until one basis wins.
+
+### Verification
+basis suite 10/10 incl. new cross-convention case; full suite 221 pass / 0 fail / 1 loud skip (registry mode, owned by TASK-30); tsc+lint green on my files.
+
+---
+
 ## 2026-08-23 (73) — AXIOM: CTO iteration 119 — TASK-43 shipped
 
 ### Summary
