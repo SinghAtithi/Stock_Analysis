@@ -34,6 +34,10 @@ export default function ScreenerPresets({
   const [open, setOpen] = useState(false);
   const [naming, setNaming] = useState(false);
   const [name, setName] = useState("");
+  /* TASK-776: saving used to be silent — flash a visible + sr-only cue */
+  const [notice, setNotice] = useState<{ ok: boolean; text: string } | null>(
+    null,
+  );
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -61,13 +65,28 @@ export default function ScreenerPresets({
   const save = useCallback(() => {
     const trimmed = name.trim();
     if (!trimmed || !strategy) return;
-    saveScreenerPreset(trimmed, { strategy, sortKey, sortDir });
+    const persisted = saveScreenerPreset(trimmed, { strategy, sortKey, sortDir });
+    setNotice(
+      persisted
+        ? { ok: true, text: `View “${trimmed}” saved` }
+        : { ok: false, text: "Couldn't save view — storage unavailable" },
+    );
+    window.setTimeout(() => setNotice(null), 2600);
     setName("");
     setNaming(false);
   }, [name, strategy, sortKey, sortDir]);
 
   return (
     <div ref={containerRef} className="ml-auto flex items-center gap-2">
+      {notice && (
+        <span
+          role="status"
+          aria-live="polite"
+          className={`rounded-full px-2 py-0.5 text-xs ${notice.ok ? "bg-up-soft text-up" : "bg-down-soft text-down"}`}
+        >
+          {notice.text}
+        </span>
+      )}
       {naming ? (
         <form
           onSubmit={(e) => {

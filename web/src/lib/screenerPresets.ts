@@ -86,16 +86,20 @@ export function getServerPresetsSnapshot(): ScreenerPreset[] {
   return [];
 }
 
-const write = (list: ScreenerPreset[]): void => {
+const write = (list: ScreenerPreset[]): boolean => {
   const json = JSON.stringify(list);
   snapshotList = list;
   try {
     window.localStorage.setItem(SCREENER_PRESETS_KEY, json);
     snapshotRaw = json;
   } catch {
-    /* quota / private mode — keep in-memory only */
+    /* quota / private mode — keep in-memory only; caller surfaces a warning
+       (TASK-776) */
+    window.dispatchEvent(new CustomEvent(SCREENER_PRESETS_EVENT));
+    return false;
   }
   window.dispatchEvent(new CustomEvent(SCREENER_PRESETS_EVENT));
+  return true;
 };
 
 /* Save a view snapshot under `name`; an existing preset with the same name is
@@ -103,10 +107,10 @@ const write = (list: ScreenerPreset[]): void => {
 export function saveScreenerPreset(
   name: string,
   snap: ScreenerViewSnapshot,
-): ScreenerPreset[] {
-  if (typeof window === "undefined") return [];
+): boolean {
+  if (typeof window === "undefined") return false;
   const trimmed = name.trim().slice(0, MAX_NAME);
-  if (!trimmed || !snap.strategy) return getScreenerPresetsSnapshot();
+  if (!trimmed || !snap.strategy) return false;
   const current = getScreenerPresetsSnapshot().filter((p) => p.name !== trimmed);
   const preset: ScreenerPreset = {
     id:
@@ -119,8 +123,9 @@ export function saveScreenerPreset(
     sortDir: snap.sortDir,
     createdAt: Date.now(),
   };
-  write([preset, ...current].slice(0, MAX_PRESETS));
-  return getScreenerPresetsSnapshot();
+  /* true when the write persisted — false lets the UI warn about private
+     mode / quota (TASK-776) */
+  return write([preset, ...current].slice(0, MAX_PRESETS));
 }
 
 export function deleteScreenerPreset(id: string): void {
