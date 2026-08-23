@@ -13,6 +13,7 @@ import { readFileSync, writeFileSync, mkdirSync, statSync, existsSync } from "no
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { openDb, DEFAULT_DB_PATH, REPO_ROOT } from "./lib/db.mjs";
+import { reconcileBasis } from "./lib/basis.mjs";
 import { HostBackoff, defaultBackoff, isRateLimited } from "./lib/curl.mjs";
 import { applyMigrations } from "./migrate.mjs";
 
@@ -263,6 +264,31 @@ export function upsertCandles(db, symbol, candles) {
   return candles.length;
 }
 
+/**
+ * Store candles on one coherent basis (TASK-26 / ADR-0002).
+ * Vendors disagree on price basis — Yahoo serves split-adjusted closes that
+ * re-base after every split; MC/Groww serve raw. Upserting across bases
+ * splices cliffs into the series. reconcileBasis() prices a shared day on
+ * both sides and rescales the stored segment onto the incoming basis when
+ * they disagree.
+ */
+export function storeCandlesReconciled(db, symbol, incoming, log = () => {}) {
+  const stored = db
+    .prepare("SELECT ts, c FROM eod_candles WHERE symbol = ?")
+    .all(symbol);
+  const { scale, reason } = reconcileBasis(stored, incoming);
+  if (scale !== 1) {
+    const tx = db.transaction(() => {
+      db.prepare(
+        "UPDATE eod_candles SET o = o * ?, h = h * ?, l = l * ?, c = c * ? WHERE symbol = ?"
+      ).run(scale, scale, scale, scale, symbol);
+    });
+    tx();
+    log(`[basis] ${symbol}: rescaled ${stored.length} stored rows ×${scale.toFixed(4)} (${reason})`);
+  }
+  return upsertCandles(db, symbol, incoming);
+}
+
 export function epochSecForDate(dateStr) {
   const [y, m, d] = String(dateStr).split("-").map(Number);
   return Math.floor((Date.UTC(y, m - 1, d) - 5.5 * 3600_000) / 1000); // 00:00 IST
@@ -362,7 +388,7 @@ export async function ingest({ universe = "nifty500", years = 10, dbPath = DEFAU
       if (!got) { stats.failed.push(yahooSym); log(`[fail] ${yahooSym} — all sources exhausted`); continue; }
       stats.fetched += 1;
       stats.sources[got.source] = (stats.sources[got.source] ?? 0) + 1;
-      upsertCandles(db, yahooSym, got.candles);
+      storeCandlesReconciled(db, yahooSym, got.candles, log);
       stats.candles += got.candles.length;
 
       const actions = got.actions.map((a) => ({ ...a, symbol: yahooSym }));

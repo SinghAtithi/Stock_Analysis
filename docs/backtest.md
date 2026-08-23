@@ -21,8 +21,9 @@ while composing event factors on top injected 12 fake 100–950% cliffs
 - The `adj_factor` machinery (algorithm + unit tests) is kept intact for the
   day a raw-priced source is wired in; then the boundary starts multiplying
   with no consumer changes.
-- Data-lineage follow-up (raw-vs-adjusted provenance per chain source,
-  Yahoo re-basing drift on incremental fetches) is tracked on the board.
+- Data-lineage follow-up: resolved by **ADR-0002** (`docs/adr/0002-eod-price-lineage.md`) —
+  bases are now normalized empirically on every write (`scripts/lib/basis.mjs`), guarded by the
+  `eod-cliff-sweep` CI test.
 
 **Dividends are NOT adjusted** either way: backtest returns are price
 returns. For large-cap Indian universes (NIFTY 50) dividend yield averages

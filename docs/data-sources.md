@@ -161,6 +161,12 @@ Priority order per pipeline (1 = primary):
 
 ## Split-adjustment algorithm (spec for `eod_candles.adj_factor`)
 
+> **SUPERSEDED (2026-08-23) — see `docs/adr/0002-eod-price-lineage.md`.**
+> The premise "raw candles stay intact" never held: the primary chain (Yahoo v8) serves
+> *already adjusted* closes, so per-date event factors double-adjusted the series. The live
+> path now normalizes bases empirically at write time (`scripts/lib/basis.mjs`); `adj_factor`
+> sits at 1 and this spec survives only as reference for a future true-raw vendor.
+
 Goal: continuous adjusted price series across corporate actions, stored per-symbol as a
 monotonic adjustment factor so raw candles stay intact and views can switch raw↔adjusted.
 
