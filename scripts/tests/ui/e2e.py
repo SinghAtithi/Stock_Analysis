@@ -14,7 +14,10 @@ with sync_playwright() as p:
     pg = b.new_page(viewport={"width": 1440, "height": 900})
     pg.on("console", lambda m: errs.append(f"{m.type}: {m.text[:150]}") if m.type in ("error",) else None)
     pg.on("pageerror", lambda e: errs.append(f"pageerror: {str(e)[:150]}"))
-    pg.goto(f"{BASE}/", wait_until="networkidle")
+    # domcontentloaded, not networkidle: upstream throttling (Yahoo 429s) makes
+    # the app's auto-retry keep the network busy indefinitely, so idle never
+    # fires — assert on rendered elements instead of a quiet wire.
+    pg.goto(f"{BASE}/", wait_until="domcontentloaded", timeout=60000)
     pg.wait_for_timeout(8000)
 
     check("0 console/page errors", len(errs) == 0)
@@ -56,7 +59,7 @@ with sync_playwright() as p:
     m = b.new_page(viewport={"width": 390, "height": 844})
     merrs = []
     m.on("console", lambda x: merrs.append(x.text[:150]) if x.type == "error" else None)
-    m.goto(f"{BASE}/", wait_until="networkidle")
+    m.goto(f"{BASE}/", wait_until="domcontentloaded", timeout=60000)
     m.wait_for_timeout(5000)
     check("mobile no errors", len(merrs) == 0)
     m.locator("button", has_text="Watchlist").first.click()

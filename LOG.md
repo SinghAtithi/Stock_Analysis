@@ -537,9 +537,19 @@ Repair: re-flipped all six to done with ship-evidence commits cited (dd4a351/729
 
 Iteration 34 verify pass: e723c5e (TASK-80 company cross-nav) reviewed — single external-data flow is an internal href with encodeURIComponent on both params, sourced from server-resolved instruments index; clean. Board integrity holding (15/15 done, no regression since 4e9f495). CI green on push.
 
+
 Iteration 35 verify pass: tree quiet, board holding, dependabot active with 3 open npm PRs → filed **TASK-1497 (P3)** with triage verdicts: lucide-react 1.33 merge-on-green; @types/node 26 HOLD (nvmrc pins node 24 — newer API typings would pass tsc while runtime lacks them); typescript 7.0.2 HOLD (major compiler rewrite, needs dedicated migration not a drive-by bump).
 
 Iteration 36 verify pass: three NEW action-major-bump PRs surfaced (#5 cache→6.1.0, #6 cache/save→6.1.0, #7 setup-python→7.0.0) with STALE red security checks — the failures predate the twin's gitleaks binary fix on master (old runs still resolved my unresolvable hand-typed gitleaks-action SHA from before the swap). Triggered `@dependabot rebase` on all three so they re-run against current master; merge decision then rests on fresh evidence. Also confirmed actions/checkout v7 PR already merged cleanly (f71fee0). Note to self: never hand-type SHAs — always API-verify (the ff98106e pin was unresolvable and silently blocked security-job runs on old bases until the binary fix superseded it).
+
+## 2026-08-24 — CIPHER: board.json corruption incident #4 + TASK-1497 SHIPPED a61503b
+
+**Incident:** live `data/board.json` contained literal git stash-conflict markers (`>>>>>>> Stashed changes`) — a conflicting stash-pop left markers in the shared file; :3000 went 500 on all /api/board traffic. Restored same-minute from valid HEAD copy (1495 tasks, SEC cluster intact).
+
+**Hardening (TASK-1497 shipped a61503b):** pre-commit hook now rejects invalid board.json (`JSON.parse` guard in scripts/security/pre-commit-gitleaks.sh, installed locally) — torn/conflicted files can no longer be committed. During the fix, discovered the corruption had also swallowed the dependabot-triage task → re-filed as **TASK-1498** (triage verdicts preserved). Push required an autostash rebase through a genuine activities-array conflict (both-sides-appended entries merged sequentially, JSON validated programmatically).
+
+**Process lesson recorded for the team:** stash-pop conflicts on data/board.json are the recurring integrity killer (#3 was stale-overwrite, #4 is conflict markers). The pre-commit JSON gate now catches both at commit time. Agents hitting stash conflicts on board.json should take origin's copy and re-apply statuses via CLI moves, never commit marker-laden files.
+
 
 ## 2026-08-24 — CIPHER: board-state repair + TASK-1373/1404 verification sweep
 

@@ -33,6 +33,9 @@ with sync_playwright() as p:
     pg = b.new_page(viewport={"width": 1440, "height": 900})
     errs = []
     pg.on("console", lambda m: errs.append(m.text[:120]) if m.type == "error" else None)
+    # catch-all (registered first) so unmocked live APIs can't starve
+    # networkidle when upstreams stall — specifics below win (TASK-1479)
+    pg.route("**/api/**", lambda r: r.fulfill(json={}))
 
     def route_chart(route):
         q = route.request.url

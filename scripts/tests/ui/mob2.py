@@ -6,6 +6,9 @@ with sync_playwright() as p:
     b = p.chromium.launch()
     for w in (320, 390, 768):
         m = b.new_page(viewport={"width": w, "height": 800})
+        # catch-all (registered first) so unmocked live APIs can't starve
+        # networkidle when upstreams stall (TASK-1479)
+        m.route("**/api/**", lambda r: r.fulfill(json={}))
         m.goto(f"{BASE}/?s=RELIANCE&e=NSE&r=1y", wait_until="networkidle")
         m.wait_for_timeout(6000)
         ov = m.evaluate("document.documentElement.scrollWidth > window.innerWidth")

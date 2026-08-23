@@ -8,7 +8,7 @@ AXE = "scripts/tests/ui/vendor/axe.min.js"
 with sync_playwright() as p:
     b = p.chromium.launch()
     pg = b.new_page(viewport={"width": 1440, "height": 900})
-    pg.goto(f"{BASE}/?s=RELIANCE&e=NSE&r=1y", wait_until="networkidle")
+    pg.goto(f"{BASE}/?s=RELIANCE&e=NSE&r=1y", wait_until="domcontentloaded", timeout=60000)
     pg.wait_for_timeout(7000)
     pg.add_script_tag(path=AXE)
     pg.wait_for_timeout(1500)

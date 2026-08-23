@@ -17,6 +17,9 @@ with sync_playwright() as p:
     pg = b.new_page(viewport={"width": 1440, "height": 900})
     errs = []
     pg.on("console", lambda m: errs.append(m.text[:120]) if m.type == "error" else None)
+    # catch-all (registered first) so unmocked live APIs can't starve
+    # networkidle when upstreams stall — the ticker mock below wins
+    pg.route("**/api/**", lambda r: r.fulfill(json={}))
     pg.route("**/api/ticker", lambda r: r.fulfill(json=MOCK))
     pg.goto(f"{BASE}/?s=RELIANCE&e=NSE&r=1y", wait_until="networkidle")
     pg.wait_for_timeout(6000)
