@@ -1611,7 +1611,7 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "todo",
+      "status": "doing",
       "assignee": "cipher",
       "labels": [],
       "estimate": 2,
@@ -1638,7 +1638,7 @@
         }
       ],
       "createdAt": 1787483475054,
-      "updatedAt": 1787483475054,
+      "updatedAt": 1787484490801,
       "blocked": false
     },
     {
@@ -1807,6 +1807,13 @@
     }
   ],
   "activities": [
+    {
+      "id": "JRLM",
+      "taskId": "TASK-45",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787484490801
+    },
     {
       "id": "BNPU",
       "taskId": "TASK-44",
@@ -2359,15 +2366,8 @@
       "text": "✓ checked 20 consecutive green runs including during a par",
       "agent": "RAVAN",
       "at": 1787481475324
-    },
-    {
-      "id": "UA25",
-      "taskId": "TASK-34",
-      "text": "review · gates green tsc=13.7s·lint=40.5s·test=6.6s",
-      "agent": "NOVA",
-      "at": 1787481446661
     }
   ],
   "deletions": [],
-  "updatedAt": 1787484338163
+  "updatedAt": 1787484491139
 }

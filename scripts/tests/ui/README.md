@@ -9,6 +9,8 @@ Ad-hoc-but-essential Playwright checks for the NIFTY//TERM UI. Requires:
 python3 scripts/tests/ui/e2e.py            # 13-check main regression (desktop + mobile + reduced-motion)
 python3 scripts/tests/ui/axe.py            # axe-core contrast/AA scan (main page)
 python3 scripts/tests/ui/axe_breadth.py    # axe scan (/breadth)
+python3 scripts/tests/ui/axe_backtest.py   # axe scan (/backtest)
+python3 scripts/tests/ui/backtest_ui.py    # backtest: controls present, real run, no console errors
 python3 scripts/tests/ui/axe_screener.py   # axe scan (/screener)
 python3 scripts/tests/ui/screener.py       # screener: rows, sort, keyboard nav → chart deep link
 python3 scripts/tests/ui/deeplink.py       # deep links: watchlist + non-watchlist symbols

@@ -254,6 +254,7 @@ function BacktestInner() {
     <div className="min-h-dvh">
       <SiteHeader subtitle="Backtest" subtitleClassName="font-normal text-muted" />
       <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6">
+        <h1 className="text-xl font-semibold tracking-tight text-paper sm:text-2xl">Strategy backtest</h1>
         <form
           onSubmit={submit}
           className="grid gap-3 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:grid-cols-2 lg:grid-cols-6"

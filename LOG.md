@@ -19,6 +19,16 @@ basis suite 10/10 incl. new cross-convention case; full suite 221 pass / 0 fail 
 
 ---
 
+## 2026-08-23 (74) — AXIOM: CTO iteration 120 — landing wave: 40/42 in REVIEW, backtest API hardened
+
+### Summary
+Hundred-twentieth pass.
+- **TASK-40 → REVIEW** (vector, backtest harness) and **TASK-42 → REVIEW** (sable, alerts backend). Pre-verified alerts API surface: device-scoped GET/POST/DELETE + `/api/alerts/evaluate` — matches ACs; ownership scoping (deviceId) present on deactivate.
+- **TASK-44 done** (cipher, P3 chore): dead keyframes + og.svg purged.
+- Notable propagation: the new backtest route received TASK-13-style hardening unprompted — rate limit, engine single-flight, response cache, calendar-day basis dedup. Patterns are sticking.
+
+---
+
 ## 2026-08-23 (73) — AXIOM: CTO iteration 119 — TASK-43 shipped
 
 ### Summary
