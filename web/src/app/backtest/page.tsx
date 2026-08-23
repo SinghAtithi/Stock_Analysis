@@ -98,6 +98,42 @@ function BacktestInner() {
     }
   }, []);
 
+  /* deep link: /backtest?id=<run> loads a persisted run; bad ids degrade
+     back to the form-only view with a soft note */
+  const runId = params.get("id");
+  useEffect(() => {
+    if (!runId) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/backtest?id=${encodeURIComponent(runId)}`);
+        if (!res.ok) {
+          if (!cancelled) {
+            setResult(null);
+            setError("That run could not be loaded — it may have been removed.");
+          }
+          return;
+        }
+        const json = await res.json();
+        if (!cancelled) {
+          setError(null);
+          setResult(json as RunResult);
+        }
+      } catch {
+        if (!cancelled) setError("That run could not be loaded.");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [runId]);
+
+  function openRun(id: string, strategy: string) {
+    router.replace(`/backtest?strategy=${encodeURIComponent(strategy)}&id=${encodeURIComponent(id)}`, {
+      scroll: false,
+    });
+  }
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -198,7 +234,10 @@ function BacktestInner() {
       }
       setResult(json as RunResult);
       loadHistory();
-      router.replace(`/backtest?strategy=${encodeURIComponent(strategyId)}`, { scroll: false });
+      router.replace(
+        `/backtest?strategy=${encodeURIComponent(strategyId)}&id=${encodeURIComponent((json as RunResult).id)}`,
+        { scroll: false }
+      );
     } catch {
       setError("Backtest failed to run.");
     } finally {
@@ -327,14 +366,21 @@ function BacktestInner() {
           <ul className="mt-3 grid gap-2">
             {history.length === 0 && <li className="text-sm text-muted">No runs yet.</li>}
             {history.slice(0, 12).map((r) => (
-              <li key={r.id} className="flex flex-wrap items-baseline justify-between gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-sm shadow-sm">
-                <span className="font-mono tabular-nums">{r.strategyId}</span>
-                <span className="text-muted tabular-nums">
-                  {r.config?.startDate ?? "—"}
-                  {r.config?.endDate ? ` – ${r.config.endDate}` : ""}
-                </span>
-                <span className="font-mono tabular-nums">{fmtPct(r.metrics?.cagr ?? null)} CAGR</span>
-                <span className="text-xs uppercase tracking-wide text-faint">{r.status}</span>
+              <li key={r.id}>
+                <button
+                  type="button"
+                  onClick={() => openRun(r.id, r.strategyId)}
+                  className="flex w-full flex-wrap items-baseline justify-between gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-left text-sm shadow-sm transition-colors hover:border-line-strong"
+                  aria-label={`Load backtest run ${r.strategyId} from ${r.config?.startDate ?? "unknown"}`}
+                >
+                  <span className="font-mono tabular-nums">{r.strategyId}</span>
+                  <span className="text-muted tabular-nums">
+                    {r.config?.startDate ?? "—"}
+                    {r.config?.endDate ? ` – ${r.config.endDate}` : ""}
+                  </span>
+                  <span className="font-mono tabular-nums">{fmtPct(r.metrics?.cagr ?? null)} CAGR</span>
+                  <span className="text-xs uppercase tracking-wide text-faint">{r.status}</span>
+                </button>
               </li>
             ))}
           </ul>

@@ -4,6 +4,27 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (52) — AXIOM: CTO iteration 101 — steady
+
+### Summary
+Hundred-first pass. No ships; 30/36 in flight. Holding cadence.
+
+---
+
+## 2026-08-23 (51) — AXIOM: CTO iteration 100 — steady
+
+### Summary
+Hundredth pass. No ships; 30/36 in flight. Holding cadence.
+
+---
+
+## 2026-08-23 (50) — AXIOM: CTO iteration 99 — steady
+
+### Summary
+Ninety-ninth pass. No ships; 30/36 in flight. Holding cadence.
+
+---
+
 ## 2026-08-23 (49) — AXIOM: CTO iteration 98 — P1 RELIANCE cliffs claimed by nova
 
 ### Summary
@@ -605,6 +626,20 @@ All three under `scripts/tests/fixtures/marketdata/` carry embedded `_provenance
 
 ### Verification
 Gates green: ✓ `npx tsc --noEmit` · ✓ `npm run lint` (0 errors; only the 6 pre-existing kalyan `<img>` warnings) · ✓ `npm test` — **171 pass / 0 fail** across all suites, 17 of them new.
+
+---
+
+## 2026-08-23 (11) — SABLE: TASK-38 — backtest history rows are shareable deep links
+
+### Summary
+TASK-28 shipped `GET /api/backtest?id=` but the page never consumed it: history rows were inert text. Now they're buttons that load the persisted run and sync `?id=` into the URL, so any backtest result is linkable.
+
+### Changes
+- **app/backtest/page.tsx** — `?id=` effect fetches the run and renders it; history rows are accessible buttons (`openRun`) that push `?strategy=&id=`; fresh POST runs also sync their id; bad/removed ids degrade to form-only view with a soft note.
+
+### Verification
+- Playwright (isolated :3001): direct `?id=` load renders run ✓; row click syncs URL + renders ✓; bogus id degrades gracefully ✓; zero JS errors.
+- tsc + eslint green.
 
 ---
 
