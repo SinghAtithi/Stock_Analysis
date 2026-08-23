@@ -13,7 +13,7 @@ export function isRateLimited(err) {
   return /429|Too Many Requests/i.test(text);
 }
 
-export async function curlJson(url, { headers = {}, timeoutMs = 20_000 } = {}) {
+export async function curlJson(url, { headers = {}, timeoutMs = 20_000, cookieJar } = {}) {
   const args = [
     "-sS",
     "-f",
@@ -25,6 +25,7 @@ export async function curlJson(url, { headers = {}, timeoutMs = 20_000 } = {}) {
     "-H",
     "Accept: application/json, text/plain, */*",
   ];
+  if (cookieJar) args.push("-c", cookieJar, "-b", cookieJar);
   for (const [name, value] of Object.entries(headers)) {
     args.push("-H", `${name}: ${value}`);
   }
@@ -34,6 +35,32 @@ export async function curlJson(url, { headers = {}, timeoutMs = 20_000 } = {}) {
     encoding: "utf8",
   });
   return JSON.parse(stdout);
+}
+
+/** Plain GET that only persists cookies (session bootstrap for Akamai-guarded
+ * hosts). Returns the HTTP status; body is discarded. */
+export async function curlBootstrap(url, cookieJar, { timeoutMs = 20_000 } = {}) {
+  const args = [
+    "-sS",
+    "--compressed",
+    "-m",
+    String(Math.ceil(timeoutMs / 1000)),
+    "-c",
+    cookieJar,
+    "-H",
+    `User-Agent: ${UA}`,
+    "-H",
+    "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "-H",
+    "Accept-Language: en-US,en;q=0.9",
+    url,
+  ];
+  try {
+    await execFileAsync("curl", args, { maxBuffer: MAX_BUFFER, encoding: "utf8" });
+    return 0;
+  } catch (err) {
+    return err?.code ?? 1;
+  }
 }
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

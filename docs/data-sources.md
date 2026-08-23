@@ -41,6 +41,39 @@ Sample (corporates-corporateActions?symbol=TCS):
   "subject":"Interim Dividend - Rs 12 Per Share","symbol":"TCS"}, ...]
 ```
 
+### 1a. NSE NextApi proxy — full daily history from listing era (discovered 2026-08-23)
+
+**This is the way to get "everything from day one" for a single stock, keyless.**
+The revamped Next.js site routes quote-page XHRs through a server-side proxy that
+Akamai does NOT guard — plain curl/webfetch works with no cookies, no login:
+
+```
+GET https://www.nseindia.com/api/NextApi/apiClient/GetQuoteApi
+    ?functionName=getHistoricalTradeData
+    &symbol=RELIANCE&series=EQ
+    &fromDate=DD-MM-YYYY&toDate=DD-MM-YYYY
+    [&csv=true]
+```
+
+Live-verified 2026-08-23 (RELIANCE):
+
+| Probe | Result |
+|---|---|
+| `fromDate=01-01-1996&toDate=31-03-1996` | **61 daily rows from 01-Jan-1996** (₹205.75 close) — the exchange's own data floor for RELIANCE (listed 29-Nov-1995) |
+| Row fields | `chOpeningPrice/chTradeHighPrice/chTradeLowPrice/chClosingPrice`, `chTotTradedQty` (shares), `chTotTradedVal` (₹), `vwap`, `chPreviousClsPrice`, `mtimestamp` (`DD-Mon-YYYY`) |
+| Range cap | **70 rows per request**, walking backwards from `toDate`; longer windows silently truncate (1y request → last ~70 trading days) |
+| Oversized range (>~2y) | upstream error `{"error":"Unexpected end of JSON input"}` |
+| Chunking strategy | step backward ~65 trading days (~3 calendar months) per request; full 1996→today ≈ 110 requests ≈ 2 min at 0.5s delay |
+
+Companion endpoints on the same proxy (same keyless access):
+- `...GetQuoteApi?functionName=getHistoricalPeriodicDataYears&symbol=X` → list of years with data (RELIANCE: `["2026",…,"1996"]`)
+- `...GetQuoteApi?functionName=getHistoricalPeriodicData&symbol=X&type=monthly&year=Y&month=M` → month OHLC summary
+- `...GetQuoteApi?functionName=getSymbolChartData&symbol=X&days=…` → chart series
+
+Caveats: no corporate actions in trade data (pair with `/api/corporates-corporateActions`,
+which is open per §1); unadjusted prices; ToS posture same as other public NSE pages —
+keep to single-symbol, low-frequency pulls.
+
 ## 2. BSE — bseindia.com
 
 | Endpoint | Auth | Rate limits | Verdict | ToS risk | Notes |

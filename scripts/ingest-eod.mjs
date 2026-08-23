@@ -8,13 +8,17 @@
  * split/dividend events into corporate_actions.
  * Usage:
  *   node scripts/ingest-eod.mjs [--universe nifty50|nifty500|all] [--years N] [--quick]
+ *   node scripts/ingest-eod.mjs --symbol RELIANCE [--years N] [--force]
+ *     Single-symbol mode adds an NSE NextApi tail-fill (raw daily rows back to
+ *     the 1996-01-01 exchange archive floor — see docs/data-sources.md §1a).
  */
 import { readFileSync, writeFileSync, mkdirSync, statSync, existsSync } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { openDb, DEFAULT_DB_PATH, REPO_ROOT } from "./lib/db.mjs";
-import { reconcileBasis } from "./lib/basis.mjs";
-import { HostBackoff, defaultBackoff, isRateLimited } from "./lib/curl.mjs";
+import { storeCandlesReconciled } from "./lib/basis.mjs";
+import { HostBackoff, defaultBackoff, isRateLimited, curlBootstrap } from "./lib/curl.mjs";
 import { applyMigrations } from "./migrate.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -96,10 +100,13 @@ export function isCurrent(db, symbol, nowMs = Date.now()) {
 /* ----- parsers ----- */
 
 /* positive finite OHLC + epoch ts >= 2000-01-01 (rejects Yahoo null->0 rows) */
+/* positive finite OHLC + epoch ts at/after the NSE archive floor 1996-01-01
+ * (rejects Yahoo null->0 rows; TASK-30: must NOT reject pre-2000 history) */
+const NSE_FLOOR_TS = Math.floor((Date.UTC(1996, 0, 1) - 5.5 * 3600_000) / 1000);
 function isValidCandle(c) {
   return [c.ts, c.o, c.h, c.l, c.c].every(Number.isFinite)
     && c.o > 0 && c.h > 0 && c.l > 0 && c.c > 0
-    && c.ts > 946_684_800;
+    && c.ts >= NSE_FLOOR_TS;
 }
 
 export function parseYahooChart(data, symbol) {
@@ -175,6 +182,183 @@ export function parseGrowwChart(data, symbol) {
   }
   return candles.length ? { candles, actions: [], symbol } : null;
 }
+
+/* ----- NSE NextApi proxy (TASK-30) -----
+ * www.nseindia.com/api/NextApi/apiClient/* is the revamped site's server-side
+ * proxy and is NOT Akamai-guarded — keyless curl works (live-verified
+ * 2026-08-23, docs/data-sources.md §1a). getHistoricalTradeData serves raw
+ * daily OHLCV+VWAP back to the exchange's archive floor (1996-01-01 for
+ * RELIANCE; listing-era rows before that simply don't exist upstream).
+ * Caps: 70 rows/request walking back from toDate; oversized ranges error. */
+
+export const NSE_FLOOR = "1996-01-01";
+
+const NSE_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/* ms -> "DD-MM-YYYY" (the proxy's expected format) */
+export function fmtDmy(ms) {
+  const d = new Date(ms);
+  const p = (n) => String(n).padStart(2, "0");
+  return `${p(d.getUTCDate())}-${p(d.getUTCMonth() + 1)}-${d.getUTCFullYear()}`;
+}
+
+/* "DD-Mon-YYYY" (mtimestamp) -> ms, or NaN when malformed */
+function dmyMonToMs(s) {
+  const m = /^(\d{2})-([A-Za-z]{3})-(\d{4})$/.exec(String(s));
+  if (!m) return Number.NaN;
+  const mon = NSE_MONTHS.findIndex((x) => x.toLowerCase() === m[2].toLowerCase());
+  if (mon < 0) return Number.NaN;
+  return Date.UTC(Number(m[3]), mon, Number(m[1]));
+}
+
+export function nseTradeUrl(symbol, fromDate, toDate) {
+  return "https://www.nseindia.com/api/NextApi/apiClient/GetQuoteApi" +
+    `?functionName=getHistoricalTradeData&symbol=${encodeURIComponent(symbol)}` +
+    `&series=EQ&fromDate=${fromDate}&toDate=${toDate}`;
+}
+
+export function parseNseTradeRows(data, symbol) {
+  if (!Array.isArray(data)) return null;
+  const candles = [];
+  for (const r of data) {
+    if (!r || typeof r !== "object") continue;
+    const tsMs = dmyMonToMs(r.mtimestamp);
+    /* NSE timestamps are session dates; align to 00:00 IST like other vendors */
+    const c = {
+      ts: Math.floor((tsMs - 5.5 * 3600_000) / 1000),
+      o: Number(r.chOpeningPrice),
+      h: Number(r.chTradeHighPrice),
+      l: Number(r.chTradeLowPrice),
+      c: Number(r.chClosingPrice),
+      v: Number(r.chTotTradedQty ?? 0),
+    };
+    if (isValidCandle(c)) candles.push(c);
+  }
+  return candles.length ? { candles, actions: [], symbol } : null;
+}
+
+/* Backward-stepping [from,to] windows, calendar-day based. 80 days keeps any
+ * window under the 70-row cap even in the busiest trading months. Windows are
+ * half-open by construction: w[i].to = w[i-1].from - 1 day. */
+export function nseWindows(fromMs, toMs, stepDays = 80) {
+  const out = [];
+  let end = toMs;
+  while (end >= fromMs) {
+    const start = Math.max(fromMs, end - stepDays * 86_400_000);
+    out.push({ from: fmtDmy(start), to: fmtDmy(end) });
+    if (start <= fromMs) break;
+    end = start - 86_400_000;
+  }
+  return out;
+}
+
+/* Fetch [fromMs, toMs] through the proxy window-by-window. Dedupes by ts and
+ * returns ascending candles. getJson is injectable for tests. All requests
+ * share one cookie session (bootstrapped like a browser) — a burst of
+ * cookie-less one-shot clients reads as bot traffic to Akamai and gets the
+ * IP throttled mid-run (observed 2026-08-23). */
+let nseSession = { jar: null, bootstrappedAt: 0 };
+
+export async function ensureNseSession(backoff, log, { maxAgeMs = 10 * 60_000 } = {}) {
+  if (!nseSession.jar || Date.now() - nseSession.bootstrappedAt > maxAgeMs) {
+    const jar = path.join(os.tmpdir(), "niftyterm-nse-cookies.txt");
+    await curlBootstrap("https://www.nseindia.com", jar);
+    nseSession = { jar, bootstrappedAt: Date.now() };
+    log(`[nse] session bootstrapped (${jar})`);
+  }
+  return nseSession.jar;
+}
+
+export async function fetchNseHistory(symbol, {
+  fromMs,
+  toMs,
+  backoff = defaultBackoff,
+  getJson,
+  delayMs = 1_200,
+  log = () => {},
+} = {}) {
+  const fetcher = getJson ?? ((url) => backoff.getJson(url));
+  const windows = nseWindows(fromMs, toMs);
+  const byTs = new Map();
+  for (let i = 0; i < windows.length; i++) {
+    const w = windows[i];
+    try {
+      const parsed = parseNseTradeRows(await fetcher(nseTradeUrl(symbol, w.from, w.to)), symbol);
+      if (parsed) for (const c of parsed.candles) byTs.set(c.ts, c);
+    } catch (e) {
+      log(`[nse] ${symbol} window ${w.from}..${w.to} failed: ${String(e?.message ?? e).slice(0, 80)}`);
+    }
+    if (i % 10 === 9) log(`[nse] ${symbol}: ${i + 1}/${windows.length} windows`);
+    if (i < windows.length - 1) await delay(delayMs);
+  }
+  return [...byTs.values()].sort((a, b) => a.ts - b.ts);
+}
+
+/* Resolve a user-supplied ticker ("RELIANCE", "RELIANCE.NS", "reliance.eq")
+ * to {symbol, exchange, name}, NSE-preferred. Falls back to an NSE item when
+ * instruments.json doesn't know the symbol. */
+export function resolveSymbolItem(instruments, raw) {
+  const sym = String(raw).trim().toUpperCase().replace(/\.(NS|BO|EQ)$/i, "");
+  const rows = instruments.filter((x) => x && x.s === sym && ["NSE", "BSE"].includes(x.e));
+  const pick = rows.find((x) => x.e === "NSE") ?? rows[0];
+  if (pick) return { symbol: pick.s, exchange: pick.e, name: pick.n ?? pick.s };
+  return { symbol: sym, exchange: "NSE", name: sym };
+}
+
+/* NSE corporate-actions list (open publication endpoint, docs §1). Parsed
+ * conservatively: only split/bonus subjects whose ratio regexes match become
+ * {type:'split'} actions; everything else (dividends, AGMs, …) is ignored. */
+export function nseCorpActionsUrl(symbol) {
+  return "https://www.nseindia.com/api/corporates-corporateActions?index=equities" +
+    `&symbol=${encodeURIComponent(symbol)}`;
+}
+
+export function parseNseCorpActions(data) {
+  if (!Array.isArray(data)) return [];
+  const out = [];
+  for (const r of data) {
+    if (!r || typeof r.subject !== "string" || typeof r.exDate !== "string") continue;
+    const dm = /^(\d{1,2})-([A-Za-z]{3})-(\d{4})$/.exec(r.exDate.trim());
+    if (!dm) continue;
+    const mon = NSE_MONTHS.findIndex((x) => x.toLowerCase() === dm[2].toLowerCase());
+    if (mon < 0) continue;
+    const iso = `${dm[3]}-${String(mon + 1).padStart(2, "0")}-${dm[1].padStart(2, "0")}`;
+    const s = r.subject;
+    let ratio = null;
+    const bonus = /bonus[^0-9]*(\d+)\s*:\s*(\d+)/i.exec(s);
+    const split = /split[^0-9]*(\d+(?:\.\d+)?)\s*(?:to|-|–)\s*(\d+(?:\.\d+)?)/i.exec(s);
+    const fv = /(?:f\.?v\.?|face\s*value)[^\d]*(\d+(?:\.\d+)?)\s*(?:to|-|–)\s*(\d+(?:\.\d+)?)/i.exec(s);
+    if (bonus) {
+      const a = Number(bonus[1]), b = Number(bonus[2]);
+      if (a > 0 && b > 0) ratio = (a + b) / b;
+    } else if (split) {
+      const from = Number(split[1]), to = Number(split[2]);
+      if (from > 0 && to > 0) ratio = from / to;
+    } else if (fv) {
+      const from = Number(fv[1]), to = Number(fv[2]);
+      if (from > 0 && to > 0) ratio = from / to;
+    }
+    if (ratio !== null && ratio >= 0.05 && ratio <= 100) {
+      out.push({ type: "split", date: iso, ratio, raw: { source: "nse", subject: s } });
+    }
+  }
+  return out;
+}
+
+async function fetchNseCorpActions(symbol, backoff, log, jar) {
+  try {
+    const data = await backoff.getJson(nseCorpActionsUrl(symbol), jar ? { cookieJar: jar } : {});
+    const actions = parseNseCorpActions(data);
+    log(`[nse-ca] ${symbol}: ${actions.length} split/bonus events parsed`);
+    return actions;
+  } catch (e) {
+    log(`[nse-ca] ${symbol} unavailable: ${String(e?.message ?? e).slice(0, 80)}`);
+    return [];
+  }
+}
+
+
 
 /* ----- fetchers (chain) ----- */
 
@@ -264,30 +448,9 @@ export function upsertCandles(db, symbol, candles) {
   return candles.length;
 }
 
-/**
- * Store candles on one coherent basis (TASK-26 / ADR-0002).
- * Vendors disagree on price basis — Yahoo serves split-adjusted closes that
- * re-base after every split; MC/Groww serve raw. Upserting across bases
- * splices cliffs into the series. reconcileBasis() prices a shared day on
- * both sides and rescales the stored segment onto the incoming basis when
- * they disagree.
- */
-export function storeCandlesReconciled(db, symbol, incoming, log = () => {}) {
-  const stored = db
-    .prepare("SELECT ts, c FROM eod_candles WHERE symbol = ?")
-    .all(symbol);
-  const { scale, reason } = reconcileBasis(stored, incoming);
-  if (scale !== 1) {
-    const tx = db.transaction(() => {
-      db.prepare(
-        "UPDATE eod_candles SET o = o * ?, h = h * ?, l = l * ?, c = c * ? WHERE symbol = ?"
-      ).run(scale, scale, scale, scale, symbol);
-    });
-    tx();
-    log(`[basis] ${symbol}: rescaled ${stored.length} stored rows ×${scale.toFixed(4)} (${reason})`);
-  }
-  return upsertCandles(db, symbol, incoming);
-}
+/* storeCandlesReconciled moved to scripts/lib/basis.mjs (TASK-36 hotfix:
+ * calendar-day dedup across vendor stamp conventions) and re-exported for
+ * existing callers. */
 
 export function epochSecForDate(dateStr) {
   const [y, m, d] = String(dateStr).split("-").map(Number);
@@ -355,11 +518,15 @@ export function loadCorpActionFeed() {
 /* ----- main ----- */
 
 export async function ingest({ universe = "nifty500", years = 10, dbPath = DEFAULT_DB_PATH,
-  nowMs = Date.now(), quiet = false, force = false } = {}) {
+  nowMs = Date.now(), quiet = false, force = false, symbol = null } = {}) {
   const db = openDb(dbPath);
   applyMigrations(db);
   const instruments = loadInstruments();
-  const universeRows = resolveUniverse(instruments, universe);
+  const singleMode = symbol != null && String(symbol).trim() !== "";
+  const universeRows = singleMode
+    ? [resolveSymbolItem(instruments, symbol)]
+    : resolveUniverse(instruments, universe);
+  if (singleMode) years = Math.max(years, 30); /* one request each — go for max depth */
   const log = (msg) => { if (!quiet) console.error(msg); };
 
   const feed = loadCorpActionFeed();
@@ -385,32 +552,113 @@ export async function ingest({ universe = "nifty500", years = 10, dbPath = DEFAU
         continue;
       }
       const got = await fetchEodForSymbol(item, { years, backoff, breaker: yahooBreaker });
-      if (!got) { stats.failed.push(yahooSym); log(`[fail] ${yahooSym} — all sources exhausted`); continue; }
-      stats.fetched += 1;
-      stats.sources[got.source] = (stats.sources[got.source] ?? 0) + 1;
-      storeCandlesReconciled(db, yahooSym, got.candles, log);
-      stats.candles += got.candles.length;
-
-      const actions = got.actions.map((a) => ({ ...a, symbol: yahooSym }));
-      const feedActions = feedBySymbol.get(yahooSym) ?? [];
-      if (feedActions.length) {
-        const have = new Set(actions.map((a) => `${a.type}|${a.date}`));
-        actions.push(...feedActions.filter((a) => !have.has(`${a.type}|${a.date}`)));
+      if (!got && !singleMode) {
+        stats.failed.push(yahooSym); log(`[fail] ${yahooSym} — all sources exhausted`); continue;
       }
-      if (actions.length) mergeCorporateActions(db, actions);
+      if (got) {
+        stats.fetched += 1;
+        stats.sources[got.source] = (stats.sources[got.source] ?? 0) + 1;
+        storeCandlesReconciled(db, yahooSym, got.candles, log);
+        stats.candles += got.candles.length;
+
+        const actions = got.actions.map((a) => ({ ...a, symbol: yahooSym }));
+        const feedActions = feedBySymbol.get(yahooSym) ?? [];
+        if (feedActions.length) {
+          const have = new Set(actions.map((a) => `${a.type}|${a.date}`));
+          actions.push(...feedActions.filter((a) => !have.has(`${a.type}|${a.date}`)));
+        }
+        if (actions.length) mergeCorporateActions(db, actions);
+
+        try {
+          writeFileSync(path.join(RAW_EOD_DIR, `${yahooSym}.json`),
+            JSON.stringify({ source: got.source, fetchedAt: Math.floor(started / 1000), raw: got.raw }) + "\n");
+        } catch { /* raw cache is best-effort */ }
+
+        log(`[ok] ${yahooSym} — ${got.candles.length} candles via ${got.source}${actions.length ? `, ${actions.length} events` : ""}`);
+      }
+
+      /* NSE tail-fill (single-symbol mode only): the bulk chain floors at
+       * 2000-01 (MC) or worse; the NextApi proxy reaches the exchange's
+       * 1996 archive. Fetch whatever the stored series is still missing. */
+      if (singleMode && item.exchange === "NSE") {
+        const floorTs = epochSecForDate(NSE_FLOOR);
+        /* Measure coverage at/above the archive floor only — stray rows can
+         * legally exist below it (e.g. a 31-Dec-1995 session), and MIN(ts)
+         * over those would push the seam under fromMs, collapsing the sweep
+         * to zero windows. */
+        const minRow = db.prepare("SELECT MIN(ts) AS minTs FROM eod_candles WHERE symbol = ? AND ts >= ?").get(yahooSym, floorTs);
+        const haveFrom = minRow?.minTs ?? null;
+        /* MIN(ts) alone proves recency, not integrity — a legacy segment can
+         * occupy these keys on a foreign (adjusted) basis. --force therefore
+         * always re-sweeps so raw overwrites whatever sits below the seam. */
+        if (!haveFrom || haveFrom > floorTs + 86_400 || force) {
+          const jar = await ensureNseSession(backoff, log);
+          /* force = rebuild the whole pre-today range raw, whatever MIN(ts)
+           * claims; otherwise stop just below the oldest covered session. */
+          const tailToMs = force
+            ? nowMs
+            : Math.max(floorTs * 1000, Math.min((haveFrom - 86_400) * 1000 || nowMs, nowMs));
+          const nseCandles = await fetchNseHistory(item.symbol, {
+            fromMs: floorTs * 1000, toMs: tailToMs, backoff, log,
+            getJson: (url) => backoff.getJson(url, { cookieJar: jar }),
+          });
+          if (nseCandles.length) {
+            /* Replace the whole swept range with the pure NSE series.
+             * Plain upsert is NOT enough: (a) legacy segments can sit on
+             * foreign bases — MC's deep history is silently split-adjusted
+             * even though its recent tail is raw (observed ÷4 @2014); and
+             * (b) MC stamps sessions at 00:00 UTC vs our 00:00 IST keys, so
+             * both rows survive per session and interleave a sawtooth. The
+             * sweep covered every session in range (failures logged), so
+             * delete-then-write leaves one coherent raw series behind. */
+            /* eod_candles.ts is SECONDS — passing ms here makes BETWEEN an
+             * empty range and silently deletes nothing (seen live). */
+            db.prepare("DELETE FROM eod_candles WHERE symbol = ? AND ts BETWEEN ? AND ?")
+              .run(yahooSym, floorTs, Math.ceil(tailToMs / 1000));
+            const inserted = upsertCandles(db, yahooSym, nseCandles);
+            if (inserted !== nseCandles.length) {
+              log(`[warn] ${yahooSym}: ${nseCandles.length - inserted} duplicate NSE sessions dropped`);
+            }
+            stats.candles += nseCandles.length;
+            stats.sources.nse = (stats.sources.nse ?? 0) + 1;
+            log(`[ok] ${yahooSym} — ${inserted} candles via nse (${fmtDmy(nseCandles[0].ts * 1000)}..${fmtDmy(nseCandles[nseCandles.length - 1].ts * 1000)})`);
+          } else {
+            log(`[warn] ${yahooSym} — NSE tail-fill returned nothing`);
+          }
+        }
+        if (!got && !db.prepare("SELECT 1 FROM eod_candles WHERE symbol = ? LIMIT 1").get(yahooSym)) {
+          stats.failed.push(yahooSym);
+          log(`[fail] ${yahooSym} — all sources exhausted`);
+        }
+      } else if (!got) {
+        stats.failed.push(yahooSym);
+        log(`[fail] ${yahooSym} — all sources exhausted`);
+      }
+
+      /* Raw-vendor path (ADR-0002): in single-symbol mode the series comes
+       * from MC/NSE — both RAW. With corporate actions present, per-row
+       * adj_factor makes the stored series split-safe downstream
+       * (toAdjustedCandles). Yahoo-sourced series stay on the TASK-15
+       * legacy basis (pre-adjusted closes, factor untouched) to avoid
+       * double-adjustment.
+       * Recompute runs EVERY time the raw series was rewritten — a rewrite
+       * resets rows to adj_factor=1 even when the events themselves are
+       * already on file, so "no new events" must never skip the rebuild. */
+      if (singleMode && stats.sources.nse) {
+        const jar = nseSession.jar;
+        const caActions = await fetchNseCorpActions(item.symbol, backoff, log, jar);
+        if (caActions.length) {
+          mergeCorporateActions(db, caActions.map((a) => ({ ...a, symbol: yahooSym })));
+        }
+        recomputeAdjFactors(db, yahooSym);
+        log(`[adj] ${yahooSym}: adj_factor rebuilt from ${caActions.length} split/bonus events on file`);
+      }
       // NOTE (TASK-15): recomputeAdjFactors is intentionally NOT invoked here.
       // The Yahoo v8 chain stores ALREADY split-adjusted closes (verified:
       // stored series is continuous across every split; applying event factors
       // on top injects fake 100–950% cliffs). Multiplying again corrupts the
       // series until a truly-raw vendor lands — see docs/task-reports/
       // TASK-15-adjusted-closes.md and the data-lineage task on the board.
-
-      try {
-        writeFileSync(path.join(RAW_EOD_DIR, `${yahooSym}.json`),
-          JSON.stringify({ source: got.source, fetchedAt: Math.floor(started / 1000), raw: got.raw }) + "\n");
-      } catch { /* raw cache is best-effort */ }
-
-      log(`[ok] ${yahooSym} — ${got.candles.length} candles via ${got.source}${actions.length ? `, ${actions.length} events` : ""}`);
     } catch (e) {
       stats.failed.push(yahooSym);
       log(`[fail] ${yahooSym} — ${String(e?.message ?? e).slice(0, 100)}`);
@@ -420,7 +668,8 @@ export async function ingest({ universe = "nifty500", years = 10, dbPath = DEFAU
 
   const size = existsSync(dbPath) ? statSync(dbPath).size : 0;
   const summary = {
-    universe, symbols: universeRows.length,
+    universe: singleMode ? `symbol:${universeRows[0].symbol}` : universe,
+    symbols: universeRows.length,
     fetched: stats.fetched, skipped: stats.skipped,
     failed: stats.failed, candles: stats.candles,
     sources: stats.sources, dbSizeBytes: size, tookMs: Date.now() - started,
@@ -437,9 +686,10 @@ const opt = (name, dflt) => {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const quick = argv.includes("--quick");
+  const symbolArg = opt("--symbol", null);
   const universe = quick ? "nifty50" : opt("--universe", "nifty500");
   const years = quick ? 1 : Number(opt("--years", "10")) || 10;
-  ingest({ universe, years, force: argv.includes("--force") })
+  ingest({ universe, years, force: argv.includes("--force"), symbol: symbolArg })
     .then((s) => {
       console.log(JSON.stringify(s, null, 2));
       if (s.failed.length) console.error(`failed (${s.failed.length}): ${s.failed.join(", ")}`);

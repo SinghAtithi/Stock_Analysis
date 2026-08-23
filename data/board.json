@@ -1084,16 +1084,16 @@
         {
           "id": "4",
           "text": "gates green (tsc+lint+test)",
-          "done": false
+          "done": true
         },
         {
           "id": "inc-312958",
           "text": "INCIDENT (vector, 16:4x): eod_candles has TWO interleaved RELIANCE.NS rows/day since 2014-07-07 (~254 adjusted vs ~1000 raw, ×3.95) — same-day duplicate ts variants defeat reconcileBasis upsert; cliff-sweep correctly red. Diagnose ts-normalization/dedupe in --symbol NSE path before further writes.",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787478527371,
-      "updatedAt": 1787486312075,
+      "updatedAt": 1787487788249,
       "blocked": false
     },
     {
@@ -1770,7 +1770,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -1802,7 +1802,7 @@
         }
       ],
       "createdAt": 1787483673579,
-      "updatedAt": 1787486916283,
+      "updatedAt": 1787486919382,
       "blocked": false
     },
     {
@@ -1854,7 +1854,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "raven",
       "labels": [],
       "estimate": 3,
@@ -1862,31 +1862,31 @@
         {
           "id": "1",
           "text": "searchInstruments/findInstrument resolve server-side (API) or split slim client-safe module",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "instruments.json no longer in any client bundle (verify with build output analysis)",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "deep-links + screener still resolve names correctly",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "Lighthouse/bundle evidence in report",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "tsc+lint+test green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787485797320,
-      "updatedAt": 1787486165591,
+      "updatedAt": 1787487620927,
       "blocked": false
     },
     {
@@ -1895,8 +1895,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "vector",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -1922,7 +1922,7 @@
         }
       ],
       "createdAt": 1787485797533,
-      "updatedAt": 1787485797533,
+      "updatedAt": 1787487020339,
       "blocked": false
     },
     {
@@ -2100,8 +2100,8 @@
       "desc": "",
       "phase": "B",
       "priority": "P1",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "nova",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -2132,7 +2132,7 @@
         }
       ],
       "createdAt": 1787485852943,
-      "updatedAt": 1787485852943,
+      "updatedAt": 1787487222961,
       "blocked": false
     },
     {
@@ -2264,7 +2264,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "done",
       "assignee": "sable",
       "labels": [],
       "estimate": 3,
@@ -2272,31 +2272,31 @@
         {
           "id": "1",
           "text": "screener strategy chips surface latest backtest_runs metrics for the selected strategy",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "link to /backtest?id= run detail",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "graceful empty state when no run exists",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "no N+1 queries (single join or cached lookup)",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "tsc+test green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787485889555,
-      "updatedAt": 1787486344335,
+      "updatedAt": 1787487837449,
       "blocked": false
     },
     {
@@ -2434,6 +2434,139 @@
     }
   ],
   "activities": [
+    {
+      "id": "TFLC",
+      "taskId": "TASK-61",
+      "text": "shipped d52c1f7 (local) · [TASK-61] feat(screener): backtest evidence strip — latest run metrics + deep link per strategy, ?strategy= deep links honored · gates tsc=9.3s·lint=30.7s·test=7.5s · e2e✓",
+      "agent": "SABLE",
+      "at": 1787487837449
+    },
+    {
+      "id": "0UJ9",
+      "taskId": "TASK-61",
+      "text": "review · gates green tsc=10.9s·lint=27.3s·test=6.0s",
+      "agent": "SABLE",
+      "at": 1787487789259
+    },
+    {
+      "id": "323Q",
+      "taskId": "TASK-30",
+      "text": "✓ checked INCIDENT (vector, 16:4x): eod_candles has TWO in",
+      "agent": "RAVAN",
+      "at": 1787487788250
+    },
+    {
+      "id": "70MH",
+      "taskId": "TASK-30",
+      "text": "✓ checked gates green (tsc+lint+test)",
+      "agent": "RAVAN",
+      "at": 1787487650159
+    },
+    {
+      "id": "PXVY",
+      "taskId": "TASK-61",
+      "text": "✓ checked tsc+test green",
+      "agent": "RAVAN",
+      "at": 1787487628676
+    },
+    {
+      "id": "4SB2",
+      "taskId": "TASK-61",
+      "text": "✓ checked no N+1 queries (single join or cached lookup)",
+      "agent": "RAVAN",
+      "at": 1787487628511
+    },
+    {
+      "id": "0056",
+      "taskId": "TASK-61",
+      "text": "✓ checked graceful empty state when no run exists",
+      "agent": "RAVAN",
+      "at": 1787487628407
+    },
+    {
+      "id": "MWPC",
+      "taskId": "TASK-61",
+      "text": "✓ checked link to /backtest?id= run detail",
+      "agent": "RAVAN",
+      "at": 1787487628326
+    },
+    {
+      "id": "1DJP",
+      "taskId": "TASK-61",
+      "text": "✓ checked screener strategy chips surface latest backtest_",
+      "agent": "RAVAN",
+      "at": 1787487628210
+    },
+    {
+      "id": "R5QZ",
+      "taskId": "TASK-51",
+      "text": "shipped d2a4417 → origin/master · [TASK-51] perf(bundle): instruments index resolves server-side via /api/instruments — 671KB out of client JS; deep-links + screener exchange resolve on demand · gates tsc=13.7s·lint=25.6s·test=6.1s · e2e✓",
+      "agent": "RAVEN",
+      "at": 1787487620927
+    },
+    {
+      "id": "449L",
+      "taskId": "TASK-51",
+      "text": "review · gates green tsc=14.1s·lint=28.4s·test=7.0s",
+      "agent": "RAVEN",
+      "at": 1787487449576
+    },
+    {
+      "id": "X9G7",
+      "taskId": "TASK-51",
+      "text": "✓ checked tsc+lint+test green",
+      "agent": "RAVEN",
+      "at": 1787487312768
+    },
+    {
+      "id": "ESSG",
+      "taskId": "TASK-51",
+      "text": "✓ checked Lighthouse/bundle evidence in report",
+      "agent": "RAVEN",
+      "at": 1787487312424
+    },
+    {
+      "id": "EQ6M",
+      "taskId": "TASK-51",
+      "text": "✓ checked deep-links + screener still resolve names correc",
+      "agent": "RAVEN",
+      "at": 1787487312149
+    },
+    {
+      "id": "24N4",
+      "taskId": "TASK-51",
+      "text": "✓ checked instruments.json no longer in any client bundle ",
+      "agent": "RAVEN",
+      "at": 1787487311976
+    },
+    {
+      "id": "G7XR",
+      "taskId": "TASK-51",
+      "text": "✓ checked searchInstruments/findInstrument resolve server-",
+      "agent": "RAVEN",
+      "at": 1787487311642
+    },
+    {
+      "id": "DFGL",
+      "taskId": "TASK-57",
+      "text": "claimed by NOVA · → doing",
+      "agent": "NOVA",
+      "at": 1787487222961
+    },
+    {
+      "id": "2K25",
+      "taskId": "TASK-52",
+      "text": "claimed by VECTOR · → doing",
+      "agent": "VECTOR",
+      "at": 1787487020345
+    },
+    {
+      "id": "XN2C",
+      "taskId": "TASK-49",
+      "text": "shipped c403fab (local) · [TASK-49] feat(terminal): fundamentals panel + /api/fundamentals — normalized ratios with margins, freshness header, empty state; sweep detects parallel-series corruption (RELIANCE dual-basis) and routes to owner · gates tsc=13.8s·lint=32.9s·test=7.5s · e2e✓",
+      "agent": "VECTOR",
+      "at": 1787486919382
+    },
     {
       "id": "F9A4",
       "taskId": "TASK-49",
@@ -2860,141 +2993,8 @@
       "text": "✓ checked /s/[symbol] OG route renders raster share card p",
       "agent": "CIPHER",
       "at": 1787485239145
-    },
-    {
-      "id": "3OH3",
-      "taskId": "TASK-47",
-      "text": "review ✗ gates RED (tsc=21.0s·lint=24.3s) — fix and re-run",
-      "agent": "SABLE",
-      "at": 1787485134060
-    },
-    {
-      "id": "V3EO",
-      "taskId": "TASK-50",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787485065349
-    },
-    {
-      "id": "ZYA5",
-      "taskId": "TASK-47",
-      "text": "✓ checked runtime budget documented",
-      "agent": "RAVAN",
-      "at": 1787485049629
-    },
-    {
-      "id": "D03E",
-      "taskId": "TASK-47",
-      "text": "✓ checked fresh-checkout safe (self-skipping suites patter",
-      "agent": "RAVAN",
-      "at": 1787485049523
-    },
-    {
-      "id": "O6N2",
-      "taskId": "TASK-47",
-      "text": "✓ checked failure opens an issue or notifies",
-      "agent": "RAVAN",
-      "at": 1787485049419
-    },
-    {
-      "id": "9HJR",
-      "taskId": "TASK-47",
-      "text": "✓ checked concurrency groups prevent overlapping runs",
-      "agent": "RAVAN",
-      "at": 1787485049288
-    },
-    {
-      "id": "IH4I",
-      "taskId": "TASK-47",
-      "text": "✓ checked cron workflows per ADR-0001 (Actions-first): eod",
-      "agent": "RAVAN",
-      "at": 1787485049086
-    },
-    {
-      "id": "R9OJ",
-      "taskId": "TASK-47",
-      "text": "review · gates green tsc=26.6s·lint=32.1s·test=7.5s",
-      "agent": "NOVA",
-      "at": 1787484967499
-    },
-    {
-      "id": "U1Q9",
-      "taskId": "TASK-47",
-      "text": "✓ checked runtime budget documented",
-      "agent": "NOVA",
-      "at": 1787484849302
-    },
-    {
-      "id": "A1BH",
-      "taskId": "TASK-47",
-      "text": "✓ checked fresh-checkout safe (self-skipping suites patter",
-      "agent": "NOVA",
-      "at": 1787484849180
-    },
-    {
-      "id": "D7L4",
-      "taskId": "TASK-47",
-      "text": "✓ checked failure opens an issue or notifies",
-      "agent": "NOVA",
-      "at": 1787484849074
-    },
-    {
-      "id": "C8MA",
-      "taskId": "TASK-47",
-      "text": "✓ checked concurrency groups prevent overlapping runs",
-      "agent": "NOVA",
-      "at": 1787484848940
-    },
-    {
-      "id": "FFPK",
-      "taskId": "TASK-47",
-      "text": "✓ checked cron workflows per ADR-0001 (Actions-first): eod",
-      "agent": "NOVA",
-      "at": 1787484848831
-    },
-    {
-      "id": "6TYB",
-      "taskId": "TASK-49",
-      "text": "claimed by VECTOR · → doing",
-      "agent": "VECTOR",
-      "at": 1787484823578
-    },
-    {
-      "id": "RIQ6",
-      "taskId": "TASK-48",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787484770827
-    },
-    {
-      "id": "PI0P",
-      "taskId": "TASK-47",
-      "text": "claimed by SABLE · → doing",
-      "agent": "SABLE",
-      "at": 1787484715552
-    },
-    {
-      "id": "9HSH",
-      "taskId": "TASK-45",
-      "text": "shipped 58d864d (local) · [TASK-45] feat(board): claim-steal guard — start rejects tasks held by another agent (holder named), --force takeover logged; unique-active-callsign rule documented · gates tsc=10.7s·lint=24.6s·test=7.0s",
-      "agent": "CIPHER",
-      "at": 1787484712973
-    },
-    {
-      "id": "DMXE",
-      "taskId": "TASK-45",
-      "text": "review · gates green tsc=9.3s·lint=24.1s·test=7.0s",
-      "agent": "CIPHER",
-      "at": 1787484670360
-    },
-    {
-      "id": "VC31",
-      "taskId": "TASK-45",
-      "text": "✓ checked gates green + scoped ship",
-      "agent": "CIPHER",
-      "at": 1787484598661
     }
   ],
   "deletions": [],
-  "updatedAt": 1787486916286
+  "updatedAt": 1787487837452
 }
