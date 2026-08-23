@@ -23,6 +23,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { registerHooks } from "node:module";
 import { openDb, REPO_ROOT } from "./lib/db.mjs";
+import { toAdjustedCandles } from "./lib/adjust.mjs";
 
 registerHooks({
   resolve(specifier, context, nextResolve) {
@@ -160,13 +161,17 @@ try {
 
   const startTs =
     Math.floor(Date.parse(`${args.start}T00:00:00Z`) / 1000) - PRE_WINDOW_DAYS * 86_400;
+  // adj_factor included: backtests must trade the split-adjusted series (TASK-15)
   const candleRows = db
-    .prepare("SELECT symbol, ts, o, h, l, c, v FROM eod_candles WHERE ts >= ? ORDER BY ts ASC")
+    .prepare("SELECT symbol, ts, o, h, l, c, v, adj_factor FROM eod_candles WHERE ts >= ? ORDER BY ts ASC")
     .all(startTs);
   const candlesBySymbol = new Map();
   for (const r of candleRows) {
     if (!candlesBySymbol.has(r.symbol)) candlesBySymbol.set(r.symbol, []);
-    candlesBySymbol.get(r.symbol).push({ time: r.ts, open: r.o, high: r.h, low: r.l, close: r.c, volume: r.v });
+    candlesBySymbol.get(r.symbol).push(r);
+  }
+  for (const [sym, rows] of candlesBySymbol) {
+    candlesBySymbol.set(sym, toAdjustedCandles(rows));
   }
   for (const sym of universe) {
     if (!candlesBySymbol.has(sym)) {

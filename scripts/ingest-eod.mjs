@@ -292,7 +292,13 @@ export function mergeCorporateActions(db, actions) {
  * ratios with ex-date <= candle date (multiplication on/after ex-date).
  * Deviation (documented in TASK-09.md): dividends are NOT applied to
  * adj_factor (spec §5); "trivial" dividend adjustment is deferred — the
- * factor stays price-only in v1. */
+ * factor stays price-only in v1.
+ *
+ * PREMISE WARNING (TASK-15): this algorithm assumes eod_candles.c holds RAW
+ * prices. Today's chain stores Yahoo's pre-adjusted closes, so factors built
+ * here double-adjust and inject cliffs. Callers must not enable it until the
+ * storage lineage is fixed (raw vendor or de-adjust on write). Kept exported
+ * for its unit tests and the future raw path. */
 export function recomputeAdjFactors(db, symbol) {
   const splits = db
     .prepare("SELECT ts, payload_json FROM corporate_actions WHERE symbol = ? AND type = 'split' ORDER BY ts")
@@ -366,7 +372,12 @@ export async function ingest({ universe = "nifty500", years = 10, dbPath = DEFAU
         actions.push(...feedActions.filter((a) => !have.has(`${a.type}|${a.date}`)));
       }
       if (actions.length) mergeCorporateActions(db, actions);
-      recomputeAdjFactors(db, yahooSym);
+      // NOTE (TASK-15): recomputeAdjFactors is intentionally NOT invoked here.
+      // The Yahoo v8 chain stores ALREADY split-adjusted closes (verified:
+      // stored series is continuous across every split; applying event factors
+      // on top injects fake 100–950% cliffs). Multiplying again corrupts the
+      // series until a truly-raw vendor lands — see docs/task-reports/
+      // TASK-15-adjusted-closes.md and the data-lineage task on the board.
 
       try {
         writeFileSync(path.join(RAW_EOD_DIR, `${yahooSym}.json`),

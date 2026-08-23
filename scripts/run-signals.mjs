@@ -19,6 +19,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { registerHooks } from "node:module";
 import { openDb, REPO_ROOT } from "./lib/db.mjs";
+import { toAdjustedCandles } from "./lib/adjust.mjs";
 
 registerHooks({
   resolve(specifier, context, nextResolve) {
@@ -128,23 +129,25 @@ function loadDb() {
 }
 
 function makeContext(db, universeSymbols, fixtures) {
+  // universe labels are bare ("RELIANCE") but eod_candles keys are suffixed
+  // ("RELIANCE.NS") — resolve once so real candles are actually read
+  const dbSymbols = new Set(
+    db.prepare("SELECT DISTINCT symbol FROM eod_candles").all().map((r) => r.symbol)
+  );
+  const resolveCandleSymbol = (s) =>
+    dbSymbols.has(s) ? s : dbSymbols.has(`${s}.NS`) ? `${s}.NS` : s;
   const stmt = db.prepare(
-    "SELECT ts, o, h, l, c, v FROM eod_candles WHERE symbol = ? AND ts >= ? ORDER BY ts ASC"
+    "SELECT ts, o, h, l, c, v, adj_factor FROM eod_candles WHERE symbol = ? AND ts >= ? ORDER BY ts ASC"
   );
   return {
     universe: universeSymbols,
     async getCandles(symbol, lookbackDays) {
       if (fixtures) return fixtureCandles(symbol);
-      const since = Date.now() - lookbackDays * 86_400_000 * 1.6;
-      const rows = stmt.all(symbol, since);
-      return rows.map((r) => ({
-        time: r.ts,
-        open: r.o,
-        high: r.h,
-        low: r.l,
-        close: r.c,
-        volume: r.v,
-      }));
+      // eod_candles.ts is epoch SECONDS (see schema) — Date.now() is ms; mixing
+      // them filtered out every row and silently nulled all signals
+      const since = Math.floor(Date.now() / 1000) - lookbackDays * 86_400 * 1.6;
+      const rows = stmt.all(resolveCandleSymbol(symbol), since);
+      return toAdjustedCandles(rows);
     },
     getUniverse(_universe) {
       // The runner decides what is being scored; cross-sectional strategies
