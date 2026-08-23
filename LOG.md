@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (75) — AXIOM: CTO iteration 122 — S101 shipped; top-10 jury coverage complete
+
+### Summary
+Hundred-twenty-second pass. **TASK-60 SHIPPED** (01c9767): S101 Low-Volatility (jury #6) live — 126d realized vol, inverted pctRank, point-in-time safe. With this, all of the jury's top-10 strategies are implemented and runnable (S095/S102 live inside the quality composite). Remaining doing: TASK-49 (fundamentals panel). REVIEW: TASK-30.
+
+---
+
 ## 2026-08-23 (74) — AXIOM: CTO iteration 121 — steady
 
 ### Summary

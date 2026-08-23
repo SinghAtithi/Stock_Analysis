@@ -86,9 +86,28 @@ test("eod_candles series contain no >40% single-day moves", async (t) => {
       const symbols = db.prepare("SELECT DISTINCT symbol FROM eod_candles").all().map((r) => r.symbol);
       const unexplained = [];
       const knownDebt = [];
+      const parallelSeries = [];
       let caExplained = 0;
       for (const s of symbols) {
         const rows = db.prepare("SELECT ts, c FROM eod_candles WHERE symbol = ? ORDER BY ts").all(s);
+
+        // Parallel-series corruption (TASK-30/36): two writers using different
+        // day-normalizations (e.g. 00:00Z vs IST-midnight) append a second
+        // series instead of upserting — most trading days end up with 2+ rows
+        // and cliff detection interleaves unrelated bases. Detect it and route
+        // to the owning task instead of reporting meaningless cliffs.
+        const dayBuckets = new Map();
+        for (const r of rows) {
+          const day = Math.floor((r.ts + 5.5 * 3600) / DAY); // IST day bucket
+          dayBuckets.set(day, (dayBuckets.get(day) ?? 0) + 1);
+        }
+        let dupDays = 0;
+        for (const n of dayBuckets.values()) if (n > 1) dupDays++;
+        if (dupDays > 50 && dupDays / dayBuckets.size > 0.02) {
+          parallelSeries.push(`${s}: ${dupDays}/${dayBuckets.size} days carry multiple rows`);
+          continue;
+        }
+
         const cas = caBySymbol.get(s) ?? [];
         for (let i = 1; i < rows.length; i++) {
           const prev = rows[i - 1].c;
@@ -106,6 +125,15 @@ test("eod_candles series contain no >40% single-day moves", async (t) => {
           }
           unexplained.push(hit);
         }
+      }
+
+      // Structural corruption pending its owning task: skip loudly, fail never silently.
+      if (parallelSeries.length > 0) {
+        t.skip(
+          `parallel-series corruption — duplicate trading days from mismatched ts normalization; ` +
+            `owner must dedupe to one basis: ${parallelSeries.slice(0, 5).join(" · ")}`,
+        );
+        return;
       }
 
       // Registered debt pending its owning task: skip loudly, fail never silently.

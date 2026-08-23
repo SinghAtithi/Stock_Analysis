@@ -27,7 +27,6 @@ import type {
 import type { WatchlistEntry } from "@/lib/watchlist";
 import { RANGES } from "@/lib/types";
 import { timeAgo } from "@/lib/format";
-import { searchInstruments } from "@/lib/instruments";
 import {
   addToWatchlist,
   getServerWatchlistSnapshot,
@@ -56,7 +55,9 @@ const errorMessage = (res: Response, json: { error?: string }): string => {
   return "";
 };
 
-const resolveTarget = (params: URLSearchParams): WatchlistEntry | null => {
+const resolveTarget = async (
+  params: URLSearchParams,
+): Promise<WatchlistEntry | null> => {
   const s = params.get("s");
   if (!s) return null;
   const e = params.get("e");
@@ -64,18 +65,17 @@ const resolveTarget = (params: URLSearchParams): WatchlistEntry | null => {
     (x) => x.symbol === s && (!e || x.exchange === e),
   );
   if (hit) return hit;
-  const found = searchInstruments(s, 1)[0];
-  if (found && found.symbol.toUpperCase() === s.toUpperCase()) {
-    return {
-      symbol: found.symbol,
-      name: found.name,
-      shortName: found.symbol,
-      exchange: found.exchange,
-      type: found.isIndex ? "Index" : "Equity",
-      sector: found.sector ?? "",
-    };
+  /* Server-side resolution (TASK-51): the instruments index no longer ships
+     to the client; deep-links resolve through /api/instruments. */
+  try {
+    const res = await fetch(`/api/instruments?s=${encodeURIComponent(s)}`);
+    if (!res.ok) return null;
+    const json = await res.json();
+    const found = json.instrument as WatchlistEntry | null;
+    return found ?? null;
+  } catch {
+    return null;
   }
-  return null;
 };
 
 export default function Home() {
@@ -133,21 +133,30 @@ export default function Home() {
   }, [selected, range, load]);
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const target = resolveTarget(params) ?? getWatchlistSnapshot()[0] ?? null;
-    if (!target) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- no symbol to load, clear initial loading
-      setLoading(false);
-      return;
-    }
-    const rangeParam = params.get("r") as RangeKey | null;
-    const startRange: RangeKey =
-      rangeParam && RANGES.some((x) => x.range === rangeParam)
-        ? rangeParam
-        : "1y";
-    setPicked(target);
-    setRange(startRange);
-    void load(target, startRange);
+    let cancelled = false;
+    (async () => {
+      const params = new URLSearchParams(location.search);
+      const resolved = await resolveTarget(params);
+      const target = resolved ?? getWatchlistSnapshot()[0] ?? null;
+      if (!target) {
+        if (!cancelled) {
+          setLoading(false);
+        }
+        return;
+      }
+      if (cancelled) return;
+      const rangeParam = params.get("r") as RangeKey | null;
+      const startRange: RangeKey =
+        rangeParam && RANGES.some((x) => x.range === rangeParam)
+          ? rangeParam
+          : "1y";
+      setPicked(target);
+      setRange(startRange);
+      void load(target, startRange);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [load]);
 
   useEffect(() => {
@@ -337,20 +346,22 @@ export default function Home() {
       const params = new URLSearchParams(location.search);
       const s = params.get("s");
       if (!s) return;
-      const entry = resolveTarget(params);
-      if (!entry) return;
-      const targetRange =
-        (params.get("r") as RangeKey | null) &&
-        RANGES.some((x) => x.range === params.get("r"))
-          ? (params.get("r") as RangeKey)
-          : "1y";
-      const current = selectedRef.current;
-      const symbolChanged =
-        !current ||
-        current.symbol !== entry.symbol ||
-        current.exchange !== entry.exchange;
-      if (symbolChanged) popPick.current(entry);
-      else if (targetRange !== range) popRange.current(targetRange);
+      void (async () => {
+        const entry = await resolveTarget(params);
+        if (!entry) return;
+        const targetRange =
+          (params.get("r") as RangeKey | null) &&
+          RANGES.some((x) => x.range === params.get("r"))
+            ? (params.get("r") as RangeKey)
+            : "1y";
+        const current = selectedRef.current;
+        const symbolChanged =
+          !current ||
+          current.symbol !== entry.symbol ||
+          current.exchange !== entry.exchange;
+        if (symbolChanged) popPick.current(entry);
+        else if (targetRange !== range) popRange.current(targetRange);
+      })();
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);

@@ -1771,7 +1771,7 @@
       "phase": "D",
       "priority": "P2",
       "status": "doing",
-      "assignee": "vector",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -1802,7 +1802,7 @@
         }
       ],
       "createdAt": 1787483673579,
-      "updatedAt": 1787486625462,
+      "updatedAt": 1787486916283,
       "blocked": false
     },
     {
@@ -2223,7 +2223,7 @@
       "desc": "",
       "phase": "C",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "nova",
       "labels": [],
       "estimate": 3,
@@ -2255,7 +2255,7 @@
         }
       ],
       "createdAt": 1787485889267,
-      "updatedAt": 1787486750061,
+      "updatedAt": 1787486825454,
       "blocked": false
     },
     {
@@ -2434,6 +2434,27 @@
     }
   ],
   "activities": [
+    {
+      "id": "F9A4",
+      "taskId": "TASK-49",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787486916283
+    },
+    {
+      "id": "SCCQ",
+      "taskId": "TASK-49",
+      "text": "review · gates green tsc=13.6s·lint=43.0s·test=7.7s",
+      "agent": "VECTOR",
+      "at": 1787486842204
+    },
+    {
+      "id": "IYM3",
+      "taskId": "TASK-60",
+      "text": "shipped 01c9767 → origin/master · [TASK-60] feat(quant): S101 Low-Volatility Anomaly (jury #6) — 126d realized vol, inverted pctRank, point-in-time safe; screener + signals live · gates tsc=12.1s·lint=41.9s·test=7.3s",
+      "agent": "NOVA",
+      "at": 1787486825454
+    },
     {
       "id": "DROH",
       "taskId": "TASK-60",
@@ -2972,29 +2993,8 @@
       "text": "✓ checked gates green + scoped ship",
       "agent": "CIPHER",
       "at": 1787484598661
-    },
-    {
-      "id": "CZ36",
-      "taskId": "TASK-45",
-      "text": "✓ checked docs/BOARD.md documents unique-active-callsign r",
-      "agent": "CIPHER",
-      "at": 1787484598476
-    },
-    {
-      "id": "X9CQ",
-      "taskId": "TASK-45",
-      "text": "✓ checked --force overrides and logs the takeover in board",
-      "agent": "CIPHER",
-      "at": 1787484598263
-    },
-    {
-      "id": "745E",
-      "taskId": "TASK-45",
-      "text": "✓ checked workflow.mjs start exits non-zero when target st",
-      "agent": "CIPHER",
-      "at": 1787484598076
     }
   ],
   "deletions": [],
-  "updatedAt": 1787486750065
+  "updatedAt": 1787486916286
 }
