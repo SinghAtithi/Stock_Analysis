@@ -4,6 +4,36 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (10) — CIPHER: TASK-25 ops — :3000 rebuilt at HEAD, merge semantics verified live
+
+### Summary
+:3000's 14:27 build predated the TASK-24/27 commits (14:43–14:52). Stopped the old `next start`,
+rebuilt at HEAD, restarted. Verified live: `/`, `/board`, `/screener` all 200; chart route serves
+TASK-04 cache headers; and an empty full-state POST to `/api/board` left all 26 tasks intact
+(pre-guard code wiped the board — this is the regression probe).
+
+### Ops rule documented
+`docs/BOARD.md` + root `AGENTS.md`: after shipping route/writer changes, rebuild + restart :3000;
+verify with the empty-POST task-count probe. Residual accepted in report: no flock at fs level.
+
+---
+
+## 2026-08-23 (10) — NOVA: TASK-26 shipped — ADR-0002 basis reconciliation, lineage class closed
+
+### Summary
+Resolved the eod_candles lineage P1 filed during TASK-15. Decision recorded in `docs/adr/0002-eod-price-lineage.md`: one coherent series per symbol on the latest-ingest basis, enforced **empirically** at write time — price a shared trading day on both sides of an upsert; any non-1 ratio is pure vendor-basis offset, rescale the stored segment. Retires the event-driven `recomputeAdjFactors` premise permanently (it assumed raw storage the chain never had).
+
+### Changes
+- `scripts/lib/basis.mjs` — pure `reconcileBasis()` (overlap-day factor, eps 0.5%; conservative >30% seam heuristic when no overlap) + `scaleCandles()`. Wired via `storeCandlesReconciled()` into ingest.
+- `scripts/tests/basis.test.mjs` — 9 tests: rebase-after-split, raw-overwrites-adjusted, eps no-op, plausible-seam no-op, stitched-basis rescale, recency-of-shared-day discriminator, OHLC-only scaling.
+- `scripts/tests/eod-cliff-sweep.test.mjs` — standing CI gate: zero >40% single-day moves across all stored series (skips on absent/thin DB).
+- Docs: ADR-0002; data-sources.md §Split-adjustment marked SUPERSEDED with pointer; backtest.md updated.
+
+### Verification
+Gates green (tsc ✓ · eslint ✓ · node:test ✓ incl. new suites). Board: TASK-26 4/4 ACs.
+
+---
+
 ## 2026-08-23 (9) — CIPHER: TASK-27 — id-collision-tolerant merge + max-suffix CLI allocation
 
 ### Summary
@@ -93,6 +123,17 @@ All three under `scripts/tests/fixtures/marketdata/` carry embedded `_provenance
 
 ### Verification
 Gates green: ✓ `npx tsc --noEmit` · ✓ `npm run lint` (0 errors; only the 6 pre-existing kalyan `<img>` warnings) · ✓ `npm test` — **171 pass / 0 fail** across all suites, 17 of them new.
+
+---
+
+## 2026-08-23 (8) — SABLE: TASK-25 — prod :3000 restarted on current build
+
+### Summary
+:3000 was serving a pre-merge-guard/pre-headers build (filed after the board-sync + security ships). Rebuilt default `.next` and restarted `next start`.
+
+### Verification
+- `/` 200 with CSP header present; `/api/breadth` carries s-maxage cache headers; `/api/strategies` → 12 strategies (TASK-19 live); hardened tracker answers from cache.
+- Restart rule already documented in AGENTS.md (OPS RULE) + docs/BOARD.md — ticked AC#2.
 
 ---
 
@@ -252,6 +293,50 @@ Found `npx tsc --noEmit` red on the working tree (`api/analysis/route.ts`: `anal
 ### Notes
 - DESIGN.md v2 ("MIDNIGHT TERMINAL", dark-only violet) is stale vs shipped light-default neutral theme — flagged for VERTEX, not rewritten.
 - Callsign collision (two agents on GHOST) → switched to CIPHER.
+
+---
+
+## 2026-08-23 — CTO iteration 48: TASK-26 SHIPPED/ACK'd — all REVIEW questions answered in implementation
+
+### Summary
+Forty-eighth pass. **TASK-26 SHIPPED** (981aaa8 + flip). Verified the shipped `lib/basis.mjs` against my three queued REVIEW questions:
+1. No-overlap/gap handling: empty-side and `no-forward-seam` passthroughs; rescale only on >30% impossible seam jumps. ✓
+2. Close-derived ratio applied to OHLC only, volume untouched — consistent with price-only policy. ✓
+3. Most-recent exact-day overlap is the strongest signal, ±0.5% same-basis band. ✓
+
+**The entire P1 slate from this review cycle is now shipped and verified.** Remaining doing: TASK-11 (AppShell) + TASK-25 docs AC. Queue: seven scoped P2s + seeds 28/29.
+
+---
+
+## 2026-08-23 — CTO iteration 47: next-phase seeds — Backtest UI + CI filed
+
+### Summary
+Forty-seventh pass. No new ships (26/11 in flight; sable re-claimed TASK-25's docs AC). Queue is draining, so seeded the two biggest roadmap gaps as tracer tickets:
+- **TASK-28**: `/backtest` UI over the shipped engine + `backtest_runs` — form → async job → equity curve vs benchmark + metrics + run history. Completes the T23/T24 arc.
+- **TASK-29**: GitHub Actions CI gate (tsc/lint/test on push/PR) — mainline protection for a five-agent team; reuses ADR-0001's Actions-first precedent.
+
+Both todo/unassigned for the draining cohort.
+
+---
+
+## 2026-08-23 — CTO iteration 46: ADR-0002 accepted; TASK-18/27 shipped — P1 class fully closed
+
+### Summary
+Forty-sixth pass. **TASK-18 SHIPPED** (a406daf) and **TASK-27 SHIPPED** (7cb8742), both per pre-verification. **ADR-0002 accepted**: normalize-on-write via empirical basis reconciliation (`reconcileBasis` shared-day pricing, ±0.5% same-basis band, >30% seam check on gaps); `recomputeAdjFactors` retired to tested reference code; `adj_factor` stays at 1 pending a true-raw vendor. Alternatives (de-adjust-on-write, raw vendor now) rejected with concrete evidence. Exemplary ADR quality.
+
+### Milestone: every P1 from this review cycle is now closed
+02 board-sync merge · 15 adjusted closes · 19 registry wiring · 21 CLI writer race · 25 server rebuild/restart · 26 lineage ADR (ship imminent). Remaining in flight: TASK-11 (AppShell, cipher). Todo: seven scoped P2s.
+
+---
+
+## 2026-08-23 — CTO iteration 45: TASK-18 + TASK-27 pre-verified in REVIEW
+
+### Summary
+Forty-fifth pass. Both REVIEW cards verified against ACs:
+- **TASK-18**: `meta.sources.di` shipped; FII/DII freshness detected independently from the same fiidii rows (one NSE row can carry FII totals with DII absent) — each card gates on its own key. Correct per ACs.
+- **TASK-27**: `nextTaskId` derives from MAX existing suffix (also fixes post-deletion length-based dupes); simultaneous-create collisions now merge under a `-2` suffix with the CLI reporting the final id via createdAt match. Solid.
+
+ACKs ready at ship. TASK-26 ADR and TASK-11 remain in flight; both REVIEW cards' flips ride next commits.
 
 ---
 

@@ -58,6 +58,10 @@ node scripts/board.mjs agents --free   # only unassigned-heavy
 
 - CLI writes to `data/board.json` and adds an activity entry (agent = callsign or `$USER`).
 - UI auto-syncs on next reload (polls `/api/board` on mount, then localStorage).
+- **OPS RULE:** `next start` servers cache the bundle — after shipping changes to `/api/board`,
+  any route, or any writer, **rebuild + restart** whatever serves :3000 (`npm run build` in `web/`,
+  then `next start`). A stale server silently runs pre-fix merge/cache semantics. Verify with a
+  live probe: POST an empty full-state payload and confirm task count is unchanged.
 
 ### Via pipeline CLI (recommended)
 ```bash
