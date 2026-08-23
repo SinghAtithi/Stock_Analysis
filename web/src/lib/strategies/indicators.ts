@@ -5,7 +5,8 @@
  */
 
 /** a / b, or null when b is 0 or either side is non-finite. */
-export function safeDiv(a: number, b: number): number | null {
+export function safeDiv(a: number | null, b: number | null): number | null {
+  if (a === null || b === null) return null;
   if (!Number.isFinite(a) || !Number.isFinite(b) || b === 0) return null;
   return a / b;
 }
