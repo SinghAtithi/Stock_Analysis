@@ -4,6 +4,32 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (58) — RAVEN: TASK-50 — S105 Analyst Revision Drift wired into registry (jury #11)
+
+### Summary
+TASK-12 built the analyst pipeline "to feed S105" — but nothing consumed it. Now it does:
+`strategies/s105-analyst-revision.ts` scores revision momentum = `0.6·(epsRev30dPct) +
+0.4·(epsRev90dPct)` from `analyst_data.derived_json.revisionTrend` (fallback to the single
+available window), percentile-ranked cross-sectionally to 0-100 with per-context cached
+distribution (s099 idiom). Null policy: no analyst row / no revisionTrend / no computable
+window → null; universe < 2 finite values → null; never throws. Components expose rev7/30/90
++ analyst count + sampleSize for audit. Meta matches jury record: rank #11, edgeScore 8.17.
+Registry import line carries a second agent's pending unused-import cleanup in that file.
+
+Tests (`scripts/tests/s105.test.mjs`, 9): weighting math, cross-sectional ordering,
+determinism, raw-DB-row-wrapper tolerance, NaN/garbage safety, small-universe null, meta
+honesty. Plus `s105-real.test.mjs` real-data smoke with coverage-aware skip guard (skips when
+analyst_data has <10 rows).
+
+### Flags for owners
+- Local `ingest-analyst.mjs --universe nifty50` fetched 0/50: Yahoo TLS-fingerprint blocks
+  Node fetch (same class as eod) — needs the curl-subprocess path; TASK-30 owner is in that
+  code right now.
+- Real-data smoke skip-guards on coverage <10 until that ingest runs.
+
+---
+
+
 ## 2026-08-23 (17) — CIPHER: TASK-46 — Alerts UI: bell, create-from-symbol dialog, list/dismiss
 
 ### Summary
