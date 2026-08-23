@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import { TIER_LIMITS } from "@/lib/tiers";
 
 export const metadata: Metadata = {
   title: "Pricing — NIFTY//TERM",
   description:
     "What stays free forever, what Pro adds, and why the free tier is not a trial.",
 };
+
+const REPO_ISSUES = "https://github.com/SinghAtithi/Stock_Analysis/issues";
 
 const FREE = [
   "Full NIFTY 50 terminal — charts, depth, key stats",
@@ -16,8 +19,8 @@ const FREE = [
 ];
 
 const PRO = [
-  "Higher compute caps: 100 backtests/day (vs 3)",
-  "Up to 50 active alerts (vs 5)",
+  `Higher compute caps: ${TIER_LIMITS.pro.backtestRunsPerDay} backtests/day (vs ${TIER_LIMITS.free.backtestRunsPerDay})`,
+  `Up to ${TIER_LIMITS.pro.activeAlertsMax} active alerts (vs ${TIER_LIMITS.free.activeAlertsMax})`,
   "Priority upstream budget when queues form",
   "Early access to nifty500 factor coverage",
 ];
@@ -49,6 +52,15 @@ export default function PricingPage() {
               </li>
             ))}
           </ul>
+          <Link
+            href="/"
+            className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-paper px-4 py-2 text-sm font-medium text-ink shadow-sm transition-colors hover:bg-accent"
+          >
+            Continue free →
+          </Link>
+          <p className="mt-2 text-center text-[11px] text-faint">
+            No account needed.
+          </p>
         </section>
 
         <section aria-labelledby="plan-pro" className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
@@ -65,6 +77,17 @@ export default function PricingPage() {
               </li>
             ))}
           </ul>
+          <a
+            href={REPO_ISSUES}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex w-full items-center justify-center rounded-full border border-line bg-panel-2 px-4 py-2 text-sm font-medium text-paper transition-colors hover:bg-surface"
+          >
+            Request Pro access ↗
+          </a>
+          <p className="mt-2 text-center text-[11px] text-faint">
+            Opens a GitHub issue — include your device id.
+          </p>
         </section>
       </div>
 
@@ -76,6 +99,45 @@ export default function PricingPage() {
         </Link>{" "}
         for what this tool is and is not.
       </p>
+
+      <section aria-labelledby="pricing-faq" className="mt-10">
+        <h2 id="pricing-faq" className="text-sm font-semibold tracking-wide text-paper">FAQ</h2>
+        <div className="mt-3 grid gap-3">
+          <details className="rounded-xl border border-line bg-surface p-4 shadow-sm">
+            <summary className="cursor-pointer text-sm font-medium text-paper">What does &quot;Pro preview&quot; mean?</summary>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              Pro exists in the product but billing is not wired. During the
+              research preview, Pro is granted manually per device — there is
+              nothing to pay and nothing auto-renews.
+            </p>
+          </details>
+          <details className="rounded-xl border border-line bg-surface p-4 shadow-sm">
+            <summary className="cursor-pointer text-sm font-medium text-paper">How are the caps counted?</summary>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              Backtest slots run on a rolling 24-hour window per device; alerts
+              are a concurrent cap on active alerts. Hitting a cap never deletes
+              anything — it just asks you to wait or free an alert.
+            </p>
+          </details>
+          <details className="rounded-xl border border-line bg-surface p-4 shadow-sm">
+            <summary className="cursor-pointer text-sm font-medium text-paper">Is the free tier going away?</summary>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              No. The free tier is the product — Pro only raises compute ceilings
+              for heavy users. Charts, screener, breadth and scores stay unlimited.
+            </p>
+          </details>
+          <details className="rounded-xl border border-line bg-surface p-4 shadow-sm">
+            <summary className="cursor-pointer text-sm font-medium text-paper">Where do these numbers come from?</summary>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              This page renders the same limits the API enforces (see{" "}
+              <Link href="/help/plans-and-limits" className="underline decoration-line underline-offset-2 hover:text-muted">
+                Plans &amp; limits
+              </Link>{" "}
+              in Help). When enforcement changes, both change together.
+            </p>
+          </details>
+        </div>
+      </section>
       </main>
     </div>
   );
