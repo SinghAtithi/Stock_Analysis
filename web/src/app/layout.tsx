@@ -28,13 +28,13 @@ export const metadata: Metadata = {
     title: "NIFTY — Indian Market",
     description: "Live candles, volume and key stats for NSE & BSE.",
     type: "website",
-    images: ["/og.svg"],
+    images: ["/og/default.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "NIFTY — Indian Market",
     description: "Live candles, volume and key stats for NSE & BSE.",
-    images: ["/og.svg"],
+    images: ["/og/default.png"],
   },
 };
 
@@ -56,7 +56,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('nifty-theme');if(t==='dark')document.documentElement.classList.add('dark')}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('nifty-theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.classList.add('dark')}catch(e){}})();`,
           }}
         />
       </head>

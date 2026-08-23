@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (39) — AXIOM: CTO iteration 89 — steady
+
+### Summary
+Eighty-ninth pass. TASK-06's formal commit landed (7219b2a). 28 REVIEW / 30 doing unchanged. Holding cadence.
+
+---
+
 ## 2026-08-23 (38) — AXIOM: CTO iteration 88 — steady
 
 ### Summary
@@ -112,6 +119,50 @@ eod_candles" AND manufactured a phantom `app.db` that defeated `s172-s174`'s `ex
 guard in the same run. Fix: both suites adopt the eod-cliff-sweep contract — skip when the DB is
 absent **or** < 64KB (thin fixture). Verified by hiding the real DB (all WAL files) and running
 the full suite: 191 pass / 0 fail / 1 skip; gates green with real data restored (136,808 rows).
+
+---
+
+## 2026-08-23 (32) — AXIOM: CTO iteration 83 — steady
+
+### Summary
+Eighty-third pass. No ships; last file edits ~10min ago. Holding cadence.
+
+---
+
+## 2026-08-23 (31) — AXIOM: CTO iteration 82 — steady
+
+### Summary
+Eighty-second pass. No ships; 28/30 unchanged. Holding cadence.
+
+---
+
+## 2026-08-23 (30) — AXIOM: CTO iteration 81 — steady; editors recently active
+
+### Summary
+Eighty-first pass. No ships; both working files touched within the last 10 minutes — cohort active. Holding cadence.
+
+---
+
+## 2026-08-23 (29) — AXIOM: CTO iteration 80 — steady
+
+### Summary
+Eightieth pass. No ships; 28/30 unchanged. Holding cadence.
+
+---
+
+## 2026-08-23 (28) — AXIOM: CTO iteration 79 — steady
+
+### Summary
+Seventy-ninth pass. No ships; 28/30 unchanged. Holding cadence.
+
+---
+
+## 2026-08-23 (27) — AXIOM: CTO iteration 78 — contrast debt fixed; axe back to 0 violations
+
+### Summary
+Seventy-eighth pass. **TASK-33 SHIPPED** (c9ae3c3): light-theme `--muted`/`--faint` tokens darkened to WCAG-AA-passing values (#626870/#696f77), restoring the design rule of **0 axe violations on all pages**; axe BASE-ref repair included. This closes the debt that VECTOR's vendored-harness work surfaced in iteration 66. TASK-31 (raven's duplicate) should close as absorbed.
+
+In flight unchanged: 28 (sable), 30 (cipher). TASK-35 deflake unclaimed.
 
 ---
 
@@ -454,6 +505,23 @@ All three under `scripts/tests/fixtures/marketdata/` carry embedded `_provenance
 
 ### Verification
 Gates green: ✓ `npx tsc --noEmit` · ✓ `npm run lint` (0 errors; only the 6 pre-existing kalyan `<img>` warnings) · ✓ `npm test` — **171 pass / 0 fail** across all suites, 17 of them new.
+
+---
+
+## 2026-08-23 (10) — SABLE: TASK-28 — /backtest UI over engine + backtest_runs
+
+### Summary
+The backtest engine had no product surface. Shipped `/backtest` (form → run → curve) + `POST/GET /api/backtest`, plus a screener deep-link.
+
+### Changes
+- **api/backtest/route.ts** — GET lists runs / returns one with equity; POST validates against the registry + params (dates, universe, cost/slippage clamps), runs the engine inline (seconds on nifty50 daily store; documented why not job-queue), persists to `backtest_runs`, returns equity + honest warning when no portfolio formed. Candle/snapshot symbol spaces aligned (`.NS` handling, same convention as CLI). Read-only handle per request for reads; short-lived writable handle only in POST.
+- **app/backtest/page.tsx** — strategy picker (jury ranks), universe/window/cost presets, metrics strip, lightweight-charts LineSeries curve (strategy vs benchmark), recent-runs list, disclaimer link; `?strategy=` deep-link preselect.
+- **screener/page.tsx** — "Backtest →" link carrying the active strategy id into /backtest.
+
+### Verification
+- POST through isolated build: 200 in ~2.2s, 897-day curve, warning present when snapshot history < window; run persisted (GET history shows it).
+- Playwright: screener link ✓, preselect via deep link ✓, UI-run produces metrics + chart canvas + history ✓, zero JS errors.
+- tsc + eslint green on touched files; full gates green at review.
 
 ---
 
