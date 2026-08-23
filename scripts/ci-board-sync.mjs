@@ -105,24 +105,40 @@ export function noteGreenRun({ b, suite, runUrl }) {
   return { closed: false, streak };
 }
 
+function normalizeStatus(raw) {
+  const v = String(raw ?? "").toLowerCase();
+  if (["green", "success", "passed", "pass"].includes(v)) return "green";
+  if (["red", "failure", "failed", "fail", "error"].includes(v)) return "red";
+  if (["cancelled", "canceled", "skipped"].includes(v)) return v;
+  return v;
+}
+
 function parseArgs(argv) {
   const args = {};
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
-    if (a === "--status") args.status = argv[++i];
+    if (a === "--status") args.status = normalizeStatus(argv[++i]);
     else if (a === "--suite") args.suite = argv[++i];
     else if (a === "--run-url") args.runUrl = argv[++i];
     else if (a === "--sha") args.sha = argv[++i];
     else if (a === "--last-green") args.lastGreen = argv[++i];
     else throw new Error(`unknown arg: ${a}`);
   }
-  if (!["red", "green"].includes(args.status)) throw new Error("--status red|green required");
+  if (["cancelled", "canceled", "skipped"].includes(args.status)) {
+    // caller handles early-exit; still considered valid
+  } else if (!["red", "green"].includes(args.status)) {
+    throw new Error("--status red|green required (got: " + args.status + ")");
+  }
   if (!args.suite) throw new Error("--suite required");
   return args;
 }
 
 export function main(argv = process.argv) {
   const args = parseArgs(argv);
+  if (["cancelled", "canceled", "skipped"].includes(args.status)) {
+    console.log(`board: suite ${args.suite} ${args.status} — no board update`);
+    return 0;
+  }
   const b = load();
   let out;
   if (args.status === "red") {

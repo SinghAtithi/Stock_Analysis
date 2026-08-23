@@ -66,6 +66,8 @@ jobs:
   security:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      contents: write # TASK-1479: sync pushes data/board.json
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -100,10 +102,13 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           # job.status is GitHub's vocabulary (success/failure/cancelled);
-          # ci-board-sync expects red|green
+          # ci-board-sync expects red|green — cancelled/skipped is a no-op
           case "$SUITE_STATUS" in
             success) SYNC=green ;;
-            *)       SYNC=red ;;
+            failure) SYNC=red ;;
+            cancelled|canceled|skipped) echo "suite $SUITE_STATUS — no board update"; exit 0 ;;
+            green|red) SYNC="$SUITE_STATUS" ;;
+            *) echo "unknown SUITE_STATUS: $SUITE_STATUS" >&2; exit 1 ;;
           esac
           node scripts/ci-board-sync.mjs --status "$SYNC" \
             --suite ci --run-url "$RUN_URL" --sha "$SHA"

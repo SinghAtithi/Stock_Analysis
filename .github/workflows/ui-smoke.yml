@@ -103,10 +103,13 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           # job.status is GitHub's vocabulary (success/failure/cancelled);
-          # ci-board-sync expects red|green
+          # ci-board-sync expects red|green — cancelled/skipped is a no-op
           case "$SUITE_STATUS" in
             success) SYNC=green ;;
-            *)       SYNC=red ;;
+            failure) SYNC=red ;;
+            cancelled|canceled|skipped) echo "suite $SUITE_STATUS — no board update"; exit 0 ;;
+            green|red) SYNC="$SUITE_STATUS" ;;
+            *) echo "unknown SUITE_STATUS: $SUITE_STATUS" >&2; exit 1 ;;
           esac
           node scripts/ci-board-sync.mjs --status "$SYNC" \
             --suite ui-smoke --run-url "$RUN_URL" --sha "$SHA"
