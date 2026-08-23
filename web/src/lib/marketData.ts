@@ -246,6 +246,32 @@ const MC_INTRADAY_SPEC: Record<
   "6mo": { res: 60, days: 100, label: "1h" },
 };
 
+/* techCharts history JSON (stock + index endpoints share the shape) -> candles;
+   null unless s:"ok" with usable t/c arrays and finite OHLC per bar */
+export function mcHistoryCandles(data: JsonObject): Candle[] | null {
+  if (data["s"] !== "ok") return null;
+  const t = data["t"] as number[];
+  const o = data["o"] as number[];
+  const h = data["h"] as number[];
+  const l = data["l"] as number[];
+  const c = data["c"] as number[];
+  const v = (data["v"] as number[]) ?? [];
+  if (!Array.isArray(t) || !Array.isArray(c) || !t.length) return null;
+  const candles: Candle[] = t
+    .map((time, i) => ({
+      time,
+      open: Number(o?.[i]),
+      high: Number(h?.[i]),
+      low: Number(l?.[i]),
+      close: Number(c?.[i]),
+      volume: Number(v?.[i] ?? 0),
+    }))
+    .filter((x) =>
+      [x.open, x.high, x.low, x.close].every((n) => Number.isFinite(n))
+    );
+  return candles.length ? candles : null;
+}
+
 async function fetchMoneycontrolChart(
   tradingSymbol: string,
   range: string,
@@ -262,27 +288,8 @@ async function fetchMoneycontrolChart(
   try {
     const { data, status } = await curlJson(url);
     if (status !== 200) return null;
-    if (data["s"] !== "ok") return null;
-    const t = data["t"] as number[];
-    const o = data["o"] as number[];
-    const h = data["h"] as number[];
-    const l = data["l"] as number[];
-    const c = data["c"] as number[];
-    const v = (data["v"] as number[]) ?? [];
-    if (!Array.isArray(t) || !Array.isArray(c) || !t.length) return null;
-    const candles: Candle[] = t
-      .map((time, i) => ({
-        time,
-        open: Number(o?.[i]),
-        high: Number(h?.[i]),
-        low: Number(l?.[i]),
-        close: Number(c?.[i]),
-        volume: Number(v?.[i] ?? 0),
-      }))
-      .filter((x) =>
-        [x.open, x.high, x.low, x.close].every((n) => Number.isFinite(n))
-      );
-    return candles.length ? { candles, interval: spec.label } : null;
+    const candles = mcHistoryCandles(data);
+    return candles ? { candles, interval: spec.label } : null;
   } catch {
     return null;
   }
@@ -341,27 +348,8 @@ async function fetchMoneycontrolIndexChart(
   const now = Math.floor(Date.now() / 1000);
   const from = now - spec.days * 86400;
   const parse = (data: JsonObject): { candles: Candle[]; interval: string } | null => {
-    if (data["s"] !== "ok") return null;
-    const t = data["t"] as number[];
-    const o = data["o"] as number[];
-    const h = data["h"] as number[];
-    const l = data["l"] as number[];
-    const c = data["c"] as number[];
-    const v = (data["v"] as number[]) ?? [];
-    if (!Array.isArray(t) || !Array.isArray(c) || !t.length) return null;
-    const candles: Candle[] = t
-      .map((time, i) => ({
-        time,
-        open: Number(o?.[i]),
-        high: Number(h?.[i]),
-        low: Number(l?.[i]),
-        close: Number(c?.[i]),
-        volume: Number(v?.[i] ?? 0),
-      }))
-      .filter((x) =>
-        [x.open, x.high, x.low, x.close].every((n) => Number.isFinite(n))
-      );
-    return candles.length ? { candles, interval: spec.label } : null;
+    const candles = mcHistoryCandles(data);
+    return candles ? { candles, interval: spec.label } : null;
   };
   try {
     for (const mcSymbol of variants) {
@@ -422,7 +410,7 @@ function istDay(tsSec: number): number {
 
 /* close of the last candle whose calendar day (IST) is strictly before the
    last candle's day; null if undeterminable */
-function previousCloseFromCandles(candles: Candle[]): number | null {
+export function previousCloseFromCandles(candles: Candle[]): number | null {
   if (candles.length < 2) return null;
   const lastDay = istDay(candles[candles.length - 1].time);
   for (let i = candles.length - 2; i >= 0; i--) {
@@ -431,13 +419,13 @@ function previousCloseFromCandles(candles: Candle[]): number | null {
   return null;
 }
 
-function distinctTradingDays(candles: Candle[]): number {
+export function distinctTradingDays(candles: Candle[]): number {
   const days = new Set<number>();
   for (const c of candles) days.add(istDay(c.time));
   return days.size;
 }
 
-function dayChange(
+export function dayChange(
   price: number | null,
   prevClose: number | null
 ): { change: number | null; changePct: number | null } {
@@ -684,7 +672,7 @@ export async function getChart(
   return null;
 }
 
-function yahooToPayload(
+export function yahooToPayload(
   result: JsonObject,
   range: string,
   interval: string
@@ -781,7 +769,7 @@ function googlePairMatches(rec0: unknown, ticker: string, exch: string): boolean
   return false;
 }
 
-function parseGoogleFinance(
+export function parseGoogleFinance(
   html: string,
   ticker: string,
   exch: string
@@ -878,7 +866,7 @@ async function fetchGoogleChart(
   }
 }
 
-function googleToPayload(
+export function googleToPayload(
   parsed: { quote: GoogleQuote; series: GoogleSeries[] },
   symbol: string,
   exchange: string,
