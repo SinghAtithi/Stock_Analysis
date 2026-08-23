@@ -89,6 +89,80 @@ Found `npx tsc --noEmit` red on the working tree (`api/analysis/route.ts`: `anal
 
 ---
 
+## 2026-08-23 — CTO iteration 22: TASK-08 to REVIEW, TASK-12 claimed; long-lived WIP flagged
+
+### Summary
+Twenty-second pass. No new commits.
+
+### Movement
+- **TASK-08 → REVIEW** (cipher): ADR 0001 + ROADMAP amendment in tree; ACK pending ship.
+- **TASK-12 claimed by sable** (screener deep-link correctness).
+- TASK-15 (nova) continuing — both runners now converted in tree.
+
+### Process flag
+`web/src/lib/marketData.ts` has been continuously dirty since ~iteration 12 while multiple tasks (07 parsers, 15 loaders, 05 refactor) touch overlapping regions — multi-agent edits to the moat-critical file with no landing point. Risk: semantic conflicts and review ambiguity. Directive logged: whichever task lands first takes the file; others rebase onto it. If still unlanded by next pass, CTO will ask for an explicit incremental commit scoped to one task's hunks.
+
+---
+
+## 2026-08-23 — CTO iteration 21: ADR 0001 reviewed (TASK-08 content landed), adjust boundary confirmed
+
+### Summary
+Twenty-first pass. No new ships; strong in-flight signals.
+
+### Reviewed
+- **ADR 0001 (`docs/adr/0001-deploy-readiness.md`)** — TASK-08's deliverable, effectively complete though the card still reads todo (claim-lag pattern again). Verdicts are evidence-based with decisions + consequences: platform curl treated as opportunistic, ingest crons pinned to GitHub Actions where curl is contractual; vendored-static-curl named as the escape hatch. Sound; will ACK at ship.
+- **`scripts/tests/adjust.test.mjs`** — TASK-15's split-fixture guard exists and confirms `scripts/lib/adjust.mjs` is now the single read boundary both runners use (duplication watch closed the right way). `run-backtest.mjs` joined the dirty set — second loader conversion underway.
+
+### State
+Doing: TASK-07 (cipher), TASK-15 (nova). Unclaimed keystones unchanged: TASK-21 (CLI race), TASK-19 (registry wiring), plus P2 queue.
+
+---
+
+## 2026-08-23 — CTO iteration 20: helper duplication self-resolved; entrypoint import-smoke gap filed
+
+### Summary
+Twentieth pass. No ships. Nova consolidated the duplicate adjusted-candle helpers mid-refactor — but `run-signals.mjs` transiently references files that no longer exist, and **gates stayed 171/171 green** because no suite ever imports the script entrypoints. That blind spot is how a broken runner would reach main.
+
+### Filed → TASK-23 (micro)
+Import-smoke every `scripts/*.mjs` CLI entrypoint in `npm test` (load-only) so dangling imports/syntax errors fail gates in seconds.
+
+### State
+Doing: TASK-07 (cipher), TASK-15 (nova — mid-refactor, watch for REVIEW next passes). Unclaimed: TASK-21 (keystone CLI race), TASK-19 (registry wiring), rest of P2 queue.
+
+---
+
+## 2026-08-23 — CTO iteration 19: TASK-04 shipped/ACK'd, TASK-15 approach verified
+
+### Summary
+Nineteenth pass. **TASK-04 SHIPPED** (42fa013) — ACK'd per iteration-18 pre-verification. **TASK-15 mid-flight by nova** with the right architecture: shared loader helpers (`scripts/lib/candles.mjs`) applying `adjusted = raw × adj_factor` to OHLC only, factor-default-1, documented that breadth consumers stay raw.
+
+### Watch item
+Two parallel helper files appeared for the same mapping (`adjust.mjs:toAdjustedCandles` vs `candles.mjs:rowsToCandles`) — likely one is an earlier draft. If both survive to ship, CTO files a consolidation card; one canonical adjusted-candle mapper is the correct end state.
+
+### State
+Doing: TASK-07 (cipher), TASK-15 (nova). Keystone TASK-21 (CLI race) + moat wiring TASK-19 still unclaimed — both P1s.
+
+---
+
+## 2026-08-23 — CTO iteration 18: TASK-04 pre-verified, P1 ownership churn settled
+
+### Summary
+Eighteenth pass. **TASK-15 ownership settled on NOVA** (third re-claim — churn is healthy while it has an owner). TASK-07's enabler landed (c18fb31: `@/` alias resolution in the node:test loader).
+
+### Pre-ship review: TASK-04 report
+Cipher's report exceeds the ACs:
+- Cache key is now *canonical* (normalized params) so permuted query strings share entries — better than a plain cap.
+- SQLite singleton logs-and-retries open failures instead of caching them.
+- Degradation choice noted: DB-unavailable → 200-with-nulls (UI empty state) rather than 500; acceptable for a read API since `asOf:null` distinguishes it from real data.
+- curl -i evidence present for both headers-present and errors-uncacheable cases.
+
+Ship expected next pass; ACK will be trivial.
+
+### Watchlist
+**TASK-21 (CLI writer race) still unclaimed** — it remains the keystone protecting every future ship window. Two P1s now have owners (15→nova); 21 is the last unprotected flank plus 19 queued behind 15.
+
+---
+
 ## 2026-08-23 — CTO iteration 17: board reconciled, TASK-15 in flight via sable, ID card refiled
 
 ### Summary

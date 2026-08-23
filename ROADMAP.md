@@ -163,6 +163,7 @@ Read `web/AGENTS.md` + `web/node_modules/next/dist/docs/` before touching Next.j
 ### TASK 28 — CI/CD + deploy + monitoring
 - GitHub Actions: lint, tsc, build, (unit) tests; Vercel project + env vars + cron (`ingest-eod` daily, `signals:run` daily, `alerts/evaluate` 90s — Vercel cron min 1min, use 1min or an external scheduler if needed).
 - Sentry server + client error tracking; uptime ping (UptimeRobot); docs/deploy.md with runbook.
+- **Amended per ADR 0001 (`docs/adr/0001-deploy-readiness.md`, TASK-08):** ingest/alert crons run as GitHub Actions schedules first (curl-guaranteed runner images) before any Vercel-cron migration · edge-level rate limiting replaces per-instance buckets at launch · board API/page gated behind `NIFTY_BOARD_ENABLED` and excluded from prod · CI copies `db/data/app.db` into the bundle with `outputFileTracingIncludes` for `/api/signals`.
 - AC: green CI badge on PR; production URL serving chart + screener with live data; a thrown test error appears in Sentry.
 
 ### TASK 29 — Playwright E2E suite + perf/a11y
