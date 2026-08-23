@@ -50,7 +50,10 @@ export default function StatsRail({ data }: { data: ChartData }) {
       : null;
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+    <div
+      className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6"
+      aria-label="Session stats"
+    >
       {cells.map((c) => (
         <div
           key={c.label}

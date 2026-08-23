@@ -42,7 +42,7 @@ const SECTIONS: { h: string; p: string[] }[] = [
 
 export default function TermsPage() {
   return (
-    <main className="legal-page">
+    <main id="main-content" tabIndex={-1} className="legal-page">
       <header className="legal-head">
         <Link href="/" className="legal-wordmark">
           <span className="inline-block h-2 w-2 bg-up" aria-hidden />

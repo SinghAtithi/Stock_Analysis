@@ -26,7 +26,7 @@ export default function SiteHeader({
   const clock = useISTClock();
   return (
     <header
-      className={`flex items-center justify-between gap-4 border-b border-line px-4 py-3 sm:px-6 ${
+      className={`flex flex-wrap items-center justify-between gap-4 border-b border-line px-4 py-3 sm:flex-nowrap sm:px-6 ${
         sticky ? "sticky top-0 z-30 bg-surface/80 backdrop-blur" : "bg-surface"
       }`}
     >
@@ -92,12 +92,37 @@ export default function SiteHeader({
           <button
             onClick={onHelp}
             aria-label="Keyboard shortcuts"
-            className="hidden h-8 w-8 items-center justify-center rounded-full border border-line bg-surface text-muted transition-colors hover:text-paper sm:inline-flex"
+            className="relative inline-flex h-8 w-8 items-center justify-center rounded-full border border-line bg-surface text-muted transition-colors hover:text-paper after:absolute after:-inset-1.5 after:content-['']"
           >
             ?
           </button>
         )}
       </div>
+      {nav && (
+        <nav
+          aria-label="Site"
+          className="-mx-4 flex w-full basis-full gap-1 overflow-x-auto border-t border-line px-4 pb-2 pt-2 sm:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          <Link
+            href="/screener"
+            className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:bg-panel-2 hover:text-paper"
+          >
+            Screener
+          </Link>
+          <Link
+            href="/breadth"
+            className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:bg-panel-2 hover:text-paper"
+          >
+            Breadth
+          </Link>
+          <Link
+            href="/board"
+            className="shrink-0 rounded-full bg-paper px-3 py-1.5 text-sm font-medium text-ink shadow-sm"
+          >
+            Board
+          </Link>
+        </nav>
+      )}
     </header>
   );
 }

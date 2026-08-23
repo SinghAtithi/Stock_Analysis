@@ -334,9 +334,16 @@ function BacktestInner() {
         </form>
 
         {error && (
-          <p role="alert" className="mt-4 rounded-xl border border-down/20 bg-down-soft px-4 py-3 text-sm text-down">
-            {error}
-          </p>
+          <div role="alert" className="mt-4 flex flex-wrap items-center gap-3 rounded-xl border border-down/20 bg-down-soft px-4 py-3 text-sm text-down">
+            <span className="flex-1">{error}</span>
+            <button
+              type="button"
+              onClick={() => void (runId ? loadRun() : runBacktest())}
+              className="rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted transition-colors hover:bg-panel-2"
+            >
+              Retry
+            </button>
+          </div>
         )}
 
         {result && (

@@ -102,7 +102,7 @@ export default function Watchlist({
                   onClick={() => onRemove(q)}
                   aria-label={`Remove ${q.symbol}`}
                   title={`Remove ${q.symbol}`}
-                  className={`ml-2 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm leading-none transition-colors ${isSel ? "text-ink/60 hover:bg-ink/10 hover:text-ink" : "text-faint hover:bg-surface hover:text-down"}`}
+                  className={`relative ml-2 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm leading-none transition-colors after:absolute after:-inset-2 after:content-[''] ${isSel ? "text-ink/60 hover:bg-ink/10 hover:text-ink" : "text-faint hover:bg-surface hover:text-down"}`}
                 >
                   ×
                 </button>

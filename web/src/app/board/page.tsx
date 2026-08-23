@@ -656,7 +656,7 @@ export default function BoardPage() {
       </div>
 
       {/* board */}
-      <main className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-4 px-4 py-6 sm:px-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-4 px-4 py-6 sm:px-6">
         {view === "board" ? (
           <div className="flex gap-4 overflow-x-auto pb-6 snap-x snap-mandatory lg:gap-3" style={{ scrollbarWidth: "thin" }}>
             {COLUMNS.map((col) => {

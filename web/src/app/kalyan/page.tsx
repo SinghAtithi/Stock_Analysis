@@ -28,7 +28,7 @@ export default function KalyanPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1100px] px-4 py-6 sm:px-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto max-w-[1100px] px-4 py-6 sm:px-6">
         <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
           <span className="inline-flex rounded-full bg-paper px-2.5 py-1 text-xs font-medium text-ink">
             Dossier · KALYANKJIL

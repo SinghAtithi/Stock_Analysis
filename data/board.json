@@ -1903,26 +1903,26 @@
         {
           "id": "1",
           "text": "SiteHeader nav reachable under sm breakpoint (menu or scrollable row)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "skip-to-content link on every page via SiteHeader/layout targeting main",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "help control not mobile-hidden",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "Playwright mobile-viewport check green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787485797533,
-      "updatedAt": 1787487020339,
+      "updatedAt": 1787491940950,
       "blocked": false
     },
     {
@@ -1931,7 +1931,7 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "doing",
+      "status": "done",
       "assignee": "raven",
       "labels": [],
       "estimate": 3,
@@ -1939,26 +1939,26 @@
         {
           "id": "1",
           "text": "client polls (ticker 90s, breadth 5min) pause when tab hidden or IST market closed",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "server intraday TTLs widen outside 09:15-15:30 IST weekdays instead of burning upstream quota",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "shared istSessionOpen() helper reused client+server",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "evidence: request counts during closed hours drop to ~0",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787485797694,
-      "updatedAt": 1787490068654,
+      "updatedAt": 1787491835070,
       "blocked": false
     },
     {
@@ -1967,8 +1967,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "raven",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -1999,7 +1999,7 @@
         }
       ],
       "createdAt": 1787485823075,
-      "updatedAt": 1787485823075,
+      "updatedAt": 1787494396260,
       "blocked": false
     },
     {
@@ -2008,7 +2008,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -2016,31 +2016,31 @@
         {
           "id": "1",
           "text": "screener/breadth/backtest error states include inline Retry wired to refetch",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "icon buttons (watchlist x, theme, star, bell, help) reach 44px hit area without visual bloat",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "breadth FlowBars gains visually-hidden series summary and visible tap values",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "sentence-case reskin for ErrorBoundary/not-found",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "axe+e2e green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787485823220,
-      "updatedAt": 1787490297914,
+      "updatedAt": 1787494889919,
       "blocked": false
     },
     {
@@ -2182,7 +2182,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "sable",
       "labels": [],
       "estimate": 3,
@@ -2214,7 +2214,7 @@
         }
       ],
       "createdAt": 1787485853306,
-      "updatedAt": 1787491012648,
+      "updatedAt": 1787491862315,
       "blocked": false
     },
     {
@@ -2538,6 +2538,146 @@
     }
   ],
   "activities": [
+    {
+      "id": "HM0H",
+      "taskId": "TASK-55",
+      "text": "review · gates green tsc=11.5s·lint=31.6s",
+      "agent": "CIPHER",
+      "at": 1787494889919
+    },
+    {
+      "id": "V0VQ",
+      "taskId": "TASK-55",
+      "text": "review ✗ gates RED (tsc=14.5s·lint=26.3s·test=6.7s) — fix and re-run",
+      "agent": "CIPHER",
+      "at": 1787494717632
+    },
+    {
+      "id": "UEZU",
+      "taskId": "TASK-55",
+      "text": "✓ checked axe+e2e green",
+      "agent": "CIPHER",
+      "at": 1787494602220
+    },
+    {
+      "id": "Y7B7",
+      "taskId": "TASK-55",
+      "text": "✓ checked sentence-case reskin for ErrorBoundary/not-found",
+      "agent": "CIPHER",
+      "at": 1787494602012
+    },
+    {
+      "id": "IOLX",
+      "taskId": "TASK-55",
+      "text": "✓ checked breadth FlowBars gains visually-hidden series su",
+      "agent": "CIPHER",
+      "at": 1787494601861
+    },
+    {
+      "id": "7J69",
+      "taskId": "TASK-55",
+      "text": "✓ checked icon buttons (watchlist x, theme, star, bell, he",
+      "agent": "CIPHER",
+      "at": 1787494601653
+    },
+    {
+      "id": "SOPC",
+      "taskId": "TASK-55",
+      "text": "✓ checked screener/breadth/backtest error states include i",
+      "agent": "CIPHER",
+      "at": 1787494601461
+    },
+    {
+      "id": "8655",
+      "taskId": "TASK-54",
+      "text": "claimed by RAVEN · → doing",
+      "agent": "RAVEN",
+      "at": 1787494396260
+    },
+    {
+      "id": "J8UK",
+      "taskId": "TASK-52",
+      "text": "✓ checked Playwright mobile-viewport check green",
+      "agent": "RAVAN",
+      "at": 1787491940950
+    },
+    {
+      "id": "GRVM",
+      "taskId": "TASK-52",
+      "text": "✓ checked help control not mobile-hidden",
+      "agent": "RAVAN",
+      "at": 1787491940791
+    },
+    {
+      "id": "FNSK",
+      "taskId": "TASK-52",
+      "text": "✓ checked skip-to-content link on every page via SiteHeade",
+      "agent": "RAVAN",
+      "at": 1787491940608
+    },
+    {
+      "id": "WL7H",
+      "taskId": "TASK-52",
+      "text": "✓ checked SiteHeader nav reachable under sm breakpoint (me",
+      "agent": "RAVAN",
+      "at": 1787491940404
+    },
+    {
+      "id": "OODI",
+      "taskId": "TASK-59",
+      "text": "shipped fd0a826 (local) · [TASK-59] feat(alerts): strategy-membership alerts — top-N enter/exit diffing, CLI evaluator in pipelines, digest delivery, AlertCenter toggle · gates tsc=10.7s·lint=32.6s·test=7.3s · e2e✓",
+      "agent": "SABLE",
+      "at": 1787491862315
+    },
+    {
+      "id": "MSCU",
+      "taskId": "TASK-53",
+      "text": "shipped b260c99 → origin/master · [TASK-53] perf(session): market-hours-aware polling + TTLs — shared istSessionOpen(), client polls pause off-session/hidden, server+CDN caches widen overnight · gates tsc=9.6s·lint=31.4s · e2e✓",
+      "agent": "RAVEN",
+      "at": 1787491835070
+    },
+    {
+      "id": "YRSD",
+      "taskId": "TASK-59",
+      "text": "review · gates green tsc=11.6s·lint=27.9s·test=7.0s",
+      "agent": "SABLE",
+      "at": 1787491811259
+    },
+    {
+      "id": "IC3A",
+      "taskId": "TASK-53",
+      "text": "review · gates green tsc=13.5s·lint=35.9s · e2e✓",
+      "agent": "RAVEN",
+      "at": 1787491755744
+    },
+    {
+      "id": "SUY3",
+      "taskId": "TASK-53",
+      "text": "✓ checked evidence: request counts during closed hours dro",
+      "agent": "RAVEN",
+      "at": 1787491622026
+    },
+    {
+      "id": "YJ03",
+      "taskId": "TASK-53",
+      "text": "✓ checked shared istSessionOpen() helper reused client+ser",
+      "agent": "RAVEN",
+      "at": 1787491621818
+    },
+    {
+      "id": "1BHI",
+      "taskId": "TASK-53",
+      "text": "✓ checked server intraday TTLs widen outside 09:15-15:30 I",
+      "agent": "RAVEN",
+      "at": 1787491621474
+    },
+    {
+      "id": "73JP",
+      "taskId": "TASK-53",
+      "text": "✓ checked client polls (ticker 90s, breadth 5min) pause wh",
+      "agent": "RAVEN",
+      "at": 1787491621212
+    },
     {
       "id": "ZEUV",
       "taskId": "TASK-59",
@@ -2957,148 +3097,8 @@
       "text": "✓ checked instruments.json no longer in any client bundle ",
       "agent": "RAVEN",
       "at": 1787487311976
-    },
-    {
-      "id": "G7XR",
-      "taskId": "TASK-51",
-      "text": "✓ checked searchInstruments/findInstrument resolve server-",
-      "agent": "RAVEN",
-      "at": 1787487311642
-    },
-    {
-      "id": "DFGL",
-      "taskId": "TASK-57",
-      "text": "claimed by NOVA · → doing",
-      "agent": "NOVA",
-      "at": 1787487222961
-    },
-    {
-      "id": "2K25",
-      "taskId": "TASK-52",
-      "text": "claimed by VECTOR · → doing",
-      "agent": "VECTOR",
-      "at": 1787487020345
-    },
-    {
-      "id": "XN2C",
-      "taskId": "TASK-49",
-      "text": "shipped c403fab (local) · [TASK-49] feat(terminal): fundamentals panel + /api/fundamentals — normalized ratios with margins, freshness header, empty state; sweep detects parallel-series corruption (RELIANCE dual-basis) and routes to owner · gates tsc=13.8s·lint=32.9s·test=7.5s · e2e✓",
-      "agent": "VECTOR",
-      "at": 1787486919382
-    },
-    {
-      "id": "F9A4",
-      "taskId": "TASK-49",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787486916283
-    },
-    {
-      "id": "SCCQ",
-      "taskId": "TASK-49",
-      "text": "review · gates green tsc=13.6s·lint=43.0s·test=7.7s",
-      "agent": "VECTOR",
-      "at": 1787486842204
-    },
-    {
-      "id": "IYM3",
-      "taskId": "TASK-60",
-      "text": "shipped 01c9767 → origin/master · [TASK-60] feat(quant): S101 Low-Volatility Anomaly (jury #6) — 126d realized vol, inverted pctRank, point-in-time safe; screener + signals live · gates tsc=12.1s·lint=41.9s·test=7.3s",
-      "agent": "NOVA",
-      "at": 1787486825454
-    },
-    {
-      "id": "DROH",
-      "taskId": "TASK-60",
-      "text": "review · gates green tsc=12.7s·lint=41.5s·test=7.7s",
-      "agent": "NOVA",
-      "at": 1787486750062
-    },
-    {
-      "id": "XE7D",
-      "taskId": "TASK-49",
-      "text": "review ✗ gates RED (tsc=10.0s) — fix and re-run",
-      "agent": "VECTOR",
-      "at": 1787486625462
-    },
-    {
-      "id": "HF5Q",
-      "taskId": "TASK-49",
-      "text": "✓ checked Playwright sanity",
-      "agent": "RAVAN",
-      "at": 1787486600755
-    },
-    {
-      "id": "84ST",
-      "taskId": "TASK-49",
-      "text": "✓ checked tsc+lint+test green",
-      "agent": "RAVAN",
-      "at": 1787486600594
-    },
-    {
-      "id": "5FK2",
-      "taskId": "TASK-49",
-      "text": "✓ checked empty state when no data",
-      "agent": "RAVAN",
-      "at": 1787486600435
-    },
-    {
-      "id": "J2VT",
-      "taskId": "TASK-49",
-      "text": "✓ checked terminal gains a stats section (PE, PB, ROE, deb",
-      "agent": "RAVAN",
-      "at": 1787486600172
-    },
-    {
-      "id": "DVIO",
-      "taskId": "TASK-49",
-      "text": "✓ checked GET /api/fundamentals?symbol= returns normalized",
-      "agent": "RAVAN",
-      "at": 1787486599923
-    },
-    {
-      "id": "AD3A",
-      "taskId": "TASK-60",
-      "text": "review ✗ gates RED (tsc=19.8s) — fix and re-run",
-      "agent": "NOVA",
-      "at": 1787486580930
-    },
-    {
-      "id": "LOUK",
-      "taskId": "TASK-60",
-      "text": "✓ checked signals run produces snapshot",
-      "agent": "NOVA",
-      "at": 1787486504228
-    },
-    {
-      "id": "YAVJ",
-      "taskId": "TASK-60",
-      "text": "✓ checked screener auto-lists",
-      "agent": "NOVA",
-      "at": 1787486504081
-    },
-    {
-      "id": "QUZ5",
-      "taskId": "TASK-60",
-      "text": "✓ checked fixture tests incl insufficient-history null pol",
-      "agent": "NOVA",
-      "at": 1787486503881
-    },
-    {
-      "id": "BJ8W",
-      "taskId": "TASK-60",
-      "text": "✓ checked registered with juryRank 6",
-      "agent": "NOVA",
-      "at": 1787486503687
-    },
-    {
-      "id": "U3NA",
-      "taskId": "TASK-60",
-      "text": "✓ checked realized vol (e.g. 126d std of daily returns) pe",
-      "agent": "NOVA",
-      "at": 1787486503379
     }
   ],
   "deletions": [],
-  "updatedAt": 1787491012663
+  "updatedAt": 1787494889928
 }

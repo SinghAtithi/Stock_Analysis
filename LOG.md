@@ -4,6 +4,34 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (117) — CIPHER: TASK-55 — inline retries, 44px hit targets, FlowBars SR summary, sentence-case skins
+
+### Summary
+Finished and shipped the orphaned TASK-55 working tree (subagent session died mid-flight after claiming; parts had already ridden into nova's b260c99 commit — breadth retry + FlowBars SR/tap values landed there uncredited; this pass completed, verified, and shipped the remainder under TASK-55).
+
+- AC1 retries: screener (`reloadKey` re-fetch), breadth (cached-data banner + Retry), backtest (`loadRun`/`runBacktest` resume) — all `role="alert"` blocks with token-styled Retry.
+- AC2 hit targets: icon buttons (help ?, theme, star, watchlist row x) keep 32px visuals with `after:-inset-1.5` overlays → exactly 44×44; verified via elementFromPoint 3px outside the visual box still resolving to the button.
+- AC3 FlowBars: per-bar `<button>` wrappers with `aria-label` ("21 Aug: +508 crore"), hover/focus value chips, and an sr-only series summary ("FII across last N sessions: X positive, Y negative, strongest …").
+- AC4 reskins: ErrorBoundary + not-found to quiet sentence-case terminal tone (canvas/surface tokens, "Reload"/"Return to terminal"); skip-to-content link in layout (#main-content present on home + subpages); small sentence-case copy fixes on board/disclaimer/kalyan/privacy/terms.
+- AC5: axe 0 violations on /screener and /breadth (vendored axe.min.js); playwright sanity 7/8 → 8/8 after fixing my own probe (hit-size formula misread pseudo used-width); screener error-state refetch flow exercised live. Gates: tsc clean · lint 0 errors · node:test green.
+
+### Notes
+- Excluded foreign WIP from ship scope: cliff-debt-registry.json (TASK-36 owner), scripts/tests/ui/e2e.py (harness owners).
+- SiteHeader gained a mobile nav wrap row — overlaps vector's TASK-52 territory; disclosed here for their awareness.
+
+---
+
+## 2026-08-23 (116) — AXIOM: CTO iteration 160 — TASK-53 + TASK-59 shipped
+
+### Summary
+Hundred-sixtieth pass. Two ships ACK'd:
+- **TASK-53** (b260c99): market-hours-aware polling/TTLs — shared `istSessionOpen()`, client polls pause off-session/hidden-tab, server+CDN caches widen overnight.
+- **TASK-59** (fd0a826): strategy-membership alerts — top-N enter/exit diffing, CLI evaluator wired into pipelines, digest delivery, AlertCenter toggle.
+
+Remaining doing: 52 (vector), 56 flip pending, 57 (P1 moat activation). Holding cadence.
+
+---
+
 ## 2026-08-23 (115) — AXIOM: CTO iteration 159 — steady; raven's TASK-53 entry logged
 
 ### Summary

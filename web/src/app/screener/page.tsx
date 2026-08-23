@@ -119,8 +119,8 @@ export default function ScreenerPage() {
   const meta = data?.strategy;
 
   const columns: Column<SignalItem>[] = [
-    { key: "rank", label: "Rank", rank: true, width: "w-14" },
-    { key: "symbol", label: "Symbol", sortable: true, width: "w-28" },
+    { key: "rank", label: "Rank", rank: true, width: "w-14", sticky: true, widthPx: 56 },
+    { key: "symbol", label: "Symbol", sortable: true, width: "w-28", sticky: true, widthPx: 112 },
     { key: "name", label: "Company", sortable: true },
     { key: "sector", label: "Sector", sortable: true, width: "w-40" },
     {
@@ -204,8 +204,15 @@ export default function ScreenerPage() {
         </div>
 
         {error && (
-          <p className="rounded-xl border border-down/20 bg-down-soft px-4 py-3 text-sm text-down">
-            {error}
+          <p role="alert" className="flex flex-wrap items-center gap-3 rounded-xl border border-down/20 bg-down-soft px-4 py-3 text-sm text-down">
+            <span className="flex-1">{error}</span>
+            <button
+              type="button"
+              onClick={() => setReloadKey((k) => k + 1)}
+              className="rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted transition-colors hover:bg-panel-2"
+            >
+              Retry
+            </button>
           </p>
         )}
 
