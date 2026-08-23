@@ -37,11 +37,21 @@ with sync_playwright() as p:
         "response",
         lambda r: failed.append(f"{r.status} {r.url[:120]}") if r.status >= 400 else None,
     )
+    # Catch-all fallback — must be the FIRST route registered (Playwright
+    # matches latest-first): DB-backed endpoints this page may grow return an
+    # empty object in CI instead of a console-erroring 503. Specific mocks
+    # below always win.
+    pg.route("**/api/**", lambda r: r.fulfill(json={}))
+
     pg.route("**/api/strategies", lambda r: r.fulfill(json=STRATEGIES))
     pg.route("**/api/signals**", lambda r: r.fulfill(json=signals_payload(1787500000)))
-    # AlertCenter (SiteHeader, every page) fetches /api/alerts?deviceId= on
-    # mount; DB-less environments legitimately 503 it — mock the empty list.
+    # SiteHeader-adjacent clients fetch DB-backed endpoints on mount that
+    # legitimately 503 in DB-less CI: AlertCenter (/api/alerts, TASK-65) and
+    # the cloud watchlist mirror (/api/watchlist, TASK-62). Mock both empty.
     pg.route("**/api/alerts**", lambda r: r.fulfill(json={"alerts": []}))
+    pg.route("**/api/watchlist**", lambda r: r.fulfill(json={"entries": []}))
+
+
     pg.goto(f"{BASE}/screener", wait_until="networkidle")
     pg.wait_for_timeout(2500)
 

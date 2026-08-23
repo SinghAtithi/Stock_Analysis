@@ -4,6 +4,33 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (129) — UI head audit pass 5: alerts rendering + brand/token-consistency findings logged to board (no code changes)
+
+Fifth pass — code-verified against source. Tracker-only via `board.mjs new`. Raven's 140–159 batch is product-level; my additions here are narrower, code-level findings.
+
+- **TASK-182 (P2)** — AlertCenter fired-list renders membership alerts wrongly: `strategy_enter`/`strategy_exit` rows carry `symbol: null`, `price: null`, and a `detail` string, but the fired section renders `{a.symbol}` + `firedVerb(a.type)` which for membership types always returns "crossed above/below" — so the list shows "null crossed above" with zero strategy context. `firedVerb()` (AlertCenter.tsx:37) only branches on `price_below` vs everything-else.
+- **TASK-188 (P3)** — Brand split in consumer metadata: home `<title>`/OG/twitter say "NIFTY — Indian Market", legal + pricing brand as "NIFTY//TERM", and the per-symbol `document.title` in page.tsx appends "— NIFTY". One consistent brand everywhere (metadata + dynamic titles + share cards).
+- **TASK-193 (P3)** — Hardcoded color classes bypass tokens: StarToggle (amber-200/50) and the "Cached data" chip (page.tsx:483) use tailwind amber utilities directly instead of `--color` tokens; ChartPanel re-declares `#141518/#ffffff/#6b7280` hex for bg/text instead of consuming `canvas/panel/muted` tokens — a future theme change won't propagate to chart or amber accents.
+
+**Self-corrections this pass**: TASK-183 (company membership endpoint, P1) was filed then **blocked** — it duplicates TASK-92's scope (N+1 fix already covers server-side aggregation); leaving the blocked tombstone so nobody double-claims. Priorities: P2 for the visible-alert bug (182), P3 for brand/token hygiene (188/193). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (128) — UI head audit pass 4: screener data-integrity + silent-failure findings logged to board (no code changes)
+
+Fourth pass — code-verified against source (server was down). Tracker-only via `board.mjs new`. Findings below are distinct from raven's 103–127 batch.
+
+- **TASK-145 (P2)** — Screener silently truncates at 50 rows: page fetches `limit=50` (`screener/page.tsx:139`), no pagination/load-more UI, and `/api/signals` returns `meta.count = page.length` (50) not the real snapshot total — consumers never learn a strategy ranks 190+ names. API already supports `offset` (`signals/route.ts:94`) — UI just needs to use it.
+- **TASK-146 (P2)** — DataTable rank badge renders `i+1` (sorted position) not `row.rank` (`DataTable.tsx:255`): sort screener by score/symbol/price and the Rank column stops being the strategy rank — it becomes table position. Server already returns `rank` per row; badge must read from it.
+- **TASK-148 (P3)** — `legal.css:40` uses `var(--font-archivo)` which is never declared (layout.tsx defines only `--font-inter`/`--font-jetbrains`) — legal/pricing headings silently fall back to mono, intended display font never loads.
+- **TASK-153 (P2)** — Search swallows genuine network failures: `Search.tsx` catch is labeled `/* aborted */` but non-abort fetch errors (offline/500) land there too — `setSearching(false)` runs, results stay empty, dropdown stays closed, no error/retry. Users get a silent dead search.
+
+**Self-correction**: TASK-147 (AlertCenter polling) was filed then **blocked** — re-reading `AlertCenter.tsx:96-122` the poll runs on mount regardless of dialog state and re-polls on `visibilitychange`, so the "only while dialog open / lags on refocus" premise is wrong. Kept the blocked row as a tombstone so nobody claims it.
+
+Priorities: P2 for data integrity (145/146) and silent failure (153); P3 for the undefined font token (148). Phase D. No callsign (audit-only).
+
+---
+
 ## 2026-08-23 (127) — UI head audit pass 3: verified data-integrity + navigation findings logged to board (no code changes)
 
 Third pass — code-verified findings (server was down, so verified statically against source, not live DOM). Tracker-only via `board.mjs new`. Two concurrent UI agents (raven + spectre) filed overlapping product-level tasks (103–111, 114–117, 120–127, 91); my additions are distinct, code-verified items.
@@ -131,6 +158,28 @@ is no longer part of the regression loop.
 
 ---
 
+
+## 2026-08-23 (121) — RAVEN: TASK-68 — every eod write path reconciled; cliff-sweep regressions closed at the root
+
+### Summary
+Root cause of the recurring cliff-sweep reds: two production write paths bypassed
+`storeCandlesReconciled`. (1) `ingest-eod.mjs` NSE single-symbol branch did delete-then-raw-
+upsert — fixing MC's stamp interleave but writing raw vendor closes whose real
+corporate-action gaps then read as basis splices (AARTIIND 2005/2006/2014 reproduced twice
+within minutes of a verified-clean repair). (2) `fetch-assets.mjs` wrote asset ETFs raw.
+Both now funnel through the reconciled write path; the manual DELETE block is gone —
+basis.mjs's calendar-day dedup supersedes it. Grep audit: only remaining `INSERT INTO
+eod_candles` sites are inside basis.mjs itself and test fixtures.
+
+### Verification
+Live end-to-end: `ingest-eod.mjs --symbol AARTIIND --force` via the fixed path (315s, nse
+source), then full `npm test` — **cliff sweep green across the entire local DB** for the first
+time since the pipelines activated; suite exit 0. Repair tool remains for legacy one-offs but
+is no longer part of the regression loop.
+
+---
+
+---
 
 ## 2026-08-23 (120) — CIPHER: TASK-58 — /company/[symbol] profile page
 
