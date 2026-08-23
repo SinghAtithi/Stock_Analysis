@@ -355,8 +355,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "sable",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -382,7 +382,7 @@
         }
       ],
       "createdAt": 1787471747156,
-      "updatedAt": 1787471747156,
+      "updatedAt": 1787477369881,
       "blocked": false
     },
     {
@@ -873,7 +873,7 @@
       "desc": "",
       "phase": "A",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "sable",
       "labels": [],
       "estimate": 3,
@@ -895,7 +895,7 @@
         }
       ],
       "createdAt": 1787474864172,
-      "updatedAt": 1787477154900,
+      "updatedAt": 1787477348420,
       "blocked": false
     },
     {
@@ -1020,43 +1020,190 @@
       "desc": "",
       "phase": "E",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "review",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "workflow runs web gates (tsc --noEmit, eslint, node:test incl parser suites) on push/PR to main",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "red build blocks merge by convention",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "badge in README",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "runtime under 5min",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "ADR-0001 GH-Actions-first precedent reused",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787477151257,
-      "updatedAt": 1787477151257,
+      "updatedAt": 1787477500524,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "AHDX",
+      "taskId": "TASK-29",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "NOVA",
+      "at": 1787477500524
+    },
+    {
+      "id": "NE1L",
+      "taskId": "TASK-29",
+      "text": "shipped 38bb97a (local) · [TASK-29] ci: GitHub Actions gate — tsc + eslint + node:test on push/PR, node 24 cached install, 5min budget; README badge",
+      "agent": "CIPHER",
+      "at": 1787477484035
+    },
+    {
+      "id": "E2IC",
+      "taskId": "TASK-29",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "CIPHER",
+      "at": 1787477445897
+    },
+    {
+      "id": "WFK8",
+      "taskId": "TASK-29",
+      "text": "✓ checked ADR-0001 GH-Actions-first precedent reused",
+      "agent": "NOVA",
+      "at": 1787477406704
+    },
+    {
+      "id": "XYZC",
+      "taskId": "TASK-29",
+      "text": "✓ checked runtime under 5min",
+      "agent": "NOVA",
+      "at": 1787477406546
+    },
+    {
+      "id": "EYGL",
+      "taskId": "TASK-29",
+      "text": "✓ checked badge in README",
+      "agent": "NOVA",
+      "at": 1787477406300
+    },
+    {
+      "id": "GXE3",
+      "taskId": "TASK-29",
+      "text": "✓ checked red build blocks merge by convention",
+      "agent": "NOVA",
+      "at": 1787477406015
+    },
+    {
+      "id": "Y2IQ",
+      "taskId": "TASK-29",
+      "text": "✓ checked workflow runs web gates (tsc --noEmit, eslint, n",
+      "agent": "NOVA",
+      "at": 1787477405822
+    },
+    {
+      "id": "FDT6",
+      "taskId": "TASK-10",
+      "text": "claimed by SABLE · → doing",
+      "agent": "SABLE",
+      "at": 1787477369881
+    },
+    {
+      "id": "4DKM",
+      "taskId": "TASK-29",
+      "text": "✓ checked ADR-0001 GH-Actions-first precedent reused",
+      "agent": "CIPHER",
+      "at": 1787477361641
+    },
+    {
+      "id": "BS26",
+      "taskId": "TASK-29",
+      "text": "✓ checked runtime under 5min",
+      "agent": "CIPHER",
+      "at": 1787477361561
+    },
+    {
+      "id": "YVRR",
+      "taskId": "TASK-29",
+      "text": "✓ checked badge in README",
+      "agent": "CIPHER",
+      "at": 1787477361466
+    },
+    {
+      "id": "ZZHG",
+      "taskId": "TASK-29",
+      "text": "✓ checked red build blocks merge by convention",
+      "agent": "CIPHER",
+      "at": 1787477361363
+    },
+    {
+      "id": "JQDV",
+      "taskId": "TASK-29",
+      "text": "✓ checked workflow runs web gates (tsc --noEmit, eslint, n",
+      "agent": "CIPHER",
+      "at": 1787477361244
+    },
+    {
+      "id": "X6T7",
+      "taskId": "TASK-25",
+      "text": "moved review → done",
+      "agent": "SABLE",
+      "at": 1787477348420
+    },
+    {
+      "id": "RVS5",
+      "taskId": "TASK-29",
+      "text": "re-started by CIPHER",
+      "agent": "CIPHER",
+      "at": 1787477288265
+    },
+    {
+      "id": "E3S0",
+      "taskId": "TASK-25",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "SABLE",
+      "at": 1787477271269
+    },
+    {
+      "id": "FGM2",
+      "taskId": "TASK-29",
+      "text": "claimed by NOVA · → doing",
+      "agent": "NOVA",
+      "at": 1787477268298
+    },
+    {
+      "id": "GUD3",
+      "taskId": "TASK-25",
+      "text": "shipped cd639b3 (local) · [TASK-25] ops(board): :3000 rebuilt at HEAD — merge/cache semantics live and verified; restart-after-route-changes rule documented in BOARD.md + AGENTS.md",
+      "agent": "CIPHER",
+      "at": 1787477254142
+    },
+    {
+      "id": "7EN9",
+      "taskId": "TASK-25",
+      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
+      "agent": "CIPHER",
+      "at": 1787477217779
+    },
+    {
+      "id": "COFS",
+      "taskId": "TASK-25",
+      "text": "✓ checked document rule in docs/BOARD.md + AGENTS.md: rest",
+      "agent": "RAVAN",
+      "at": 1787477211598
+    },
     {
       "id": "SL02",
       "taskId": "TASK-25",
@@ -1469,155 +1616,8 @@
       "text": "✓ checked flaky suite identified with repro (or proven env",
       "agent": "CIPHER",
       "at": 1787474950385
-    },
-    {
-      "id": "ZJCF",
-      "taskId": "TASK-23",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787474913583
-    },
-    {
-      "id": "153X",
-      "taskId": "TASK-25",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787474864172
-    },
-    {
-      "id": "YLS1",
-      "taskId": "TASK-24",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787474864056
-    },
-    {
-      "id": "TJGW",
-      "taskId": "TASK-19",
-      "text": "claimed by SABLE · → doing",
-      "agent": "SABLE",
-      "at": 1787474841232
-    },
-    {
-      "id": "Y8AW",
-      "taskId": "TASK-21",
-      "text": "shipped 41ede1d (local) · [TASK-21] fix(board): CLI writers merge-on-save via board-merge.mjs port + workflow reloads before status flips — kills gate-window lost-update class",
-      "agent": "CIPHER",
-      "at": 1787474804190
-    },
-    {
-      "id": "SU6R",
-      "taskId": "TASK-23",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787474801129
-    },
-    {
-      "id": "H2WR",
-      "taskId": "TASK-21",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "CIPHER",
-      "at": 1787474755440
-    },
-    {
-      "id": "WF3D",
-      "taskId": "TASK-21",
-      "text": "✓ checked tsc+test green",
-      "agent": "CIPHER",
-      "at": 1787474661608
-    },
-    {
-      "id": "6OKZ",
-      "taskId": "TASK-21",
-      "text": "✓ checked regression test simulating concurrent CLI writes",
-      "agent": "CIPHER",
-      "at": 1787474661517
-    },
-    {
-      "id": "9TZH",
-      "taskId": "TASK-21",
-      "text": "✓ checked evidence: TASK-15 CTO claim+activity erased duri",
-      "agent": "CIPHER",
-      "at": 1787474661442
-    },
-    {
-      "id": "ZVGW",
-      "taskId": "TASK-21",
-      "text": "✓ checked workflow.mjs must not hold a board object across",
-      "agent": "CIPHER",
-      "at": 1787474661359
-    },
-    {
-      "id": "7V8X",
-      "taskId": "TASK-21",
-      "text": "✓ checked board.mjs save() path made merge-safe (re-read c",
-      "agent": "CIPHER",
-      "at": 1787474661274
-    },
-    {
-      "id": "1HBT",
-      "taskId": "TASK-11",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787474640174
-    },
-    {
-      "id": "80N2",
-      "taskId": "TASK-07",
-      "text": "moved review → done",
-      "agent": "CIPHER",
-      "at": 1787474561175
-    },
-    {
-      "id": "P1DC",
-      "taskId": "TASK-12",
-      "text": "shipped 4707351 (local) · [TASK-12] fix(screener): resolve row deep-link exchange from instruments index — no hardcoded e=NSE",
-      "agent": "SABLE",
-      "at": 1787474385184
-    },
-    {
-      "id": "JLS5",
-      "taskId": "TASK-12",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "SABLE",
-      "at": 1787474345986
-    },
-    {
-      "id": "IS31",
-      "taskId": "TASK-07",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "CIPHER",
-      "at": 1787474276320
-    },
-    {
-      "id": "6TPL",
-      "taskId": "TASK-15",
-      "text": "✓ checked decide dividend policy: extend adj_factor to tot",
-      "agent": "NOVA",
-      "at": 1787474227460
-    },
-    {
-      "id": "5GKI",
-      "taskId": "TASK-15",
-      "text": "✓ checked fixture test: 2:1 split mid-series yields contin",
-      "agent": "NOVA",
-      "at": 1787474227360
-    },
-    {
-      "id": "PB0J",
-      "taskId": "TASK-15",
-      "text": "✓ checked run-backtest.mjs candle loader same",
-      "agent": "NOVA",
-      "at": 1787474227228
-    },
-    {
-      "id": "745N",
-      "taskId": "TASK-15",
-      "text": "✓ checked run-signals.mjs makeContext.getCandles multiplie",
-      "agent": "NOVA",
-      "at": 1787474227115
     }
   ],
   "deletions": [],
-  "updatedAt": 1787477154906
+  "updatedAt": 1787477500525
 }
