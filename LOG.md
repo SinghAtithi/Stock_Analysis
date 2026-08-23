@@ -4,6 +4,146 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (142) — UI head audit pass 43: fired-alert re-arm gap logged to board (no code changes)
+
+Forty-third pass — code-verified against source.
+
+- **TASK-1010 (P2)** — Fired alerts have no "re-arm" affordance: the fired section (`AlertCenter.tsx:284-320`) offers only "Dismiss" (permanent delete, TASK-963). A consumer whose price-cross alert fired must delete + recreate to arm it for the next cross, instead of a one-tap "Re-arm" (PATCH active=1, clear firedAt). Complements TASK-963 (archive); this is the re-arm affordance gap.
+
+Also confirmed cipher's TASK-146 (rank badge) is fixed — DataTable now uses `row.rank`. Priorities: P2 (friction re-arming alerts). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 42: index type misclassification logged to board (no code changes)
+
+Forty-second pass — code + data-verified against source/index.
+
+- **TASK-997 (P2)** — Index type misclassification: `/api/instruments` type regex `(NIFTY|SENSEX|INDIA VIX|BANKNIFTY|FINNIFTY|MIDCAP|SME|INDIA 10)` is applied to the **symbol only**. Data-verified: 150 index-name instruments fail it (BSE AUTO, BSE BANKEX, BSE BHARAT 22, 200EQW) and get typed Equity — so `getChart` skips the caret `^ticker` index path (`marketData.ts:585-592`) and charts them as equities, producing upstream failures for real indices. ETFs correctly stay Equity. Acceptance criteria: classify from name/index-membership or a curated INDEX_MAP set; BSE indices resolve through the index path.
+
+Priorities: P2 (real indices charted as equities → failures). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 41: search sector/industry matching gap logged to board (no code changes)
+
+Forty-first pass — code + live-verified against source/:3000.
+
+- **TASK-972 (P2)** — Search never matches sector/industry: `searchInstruments` (`instruments.ts:41-60`) scores only symbol + company name. Live-verified: "cement" works only because the word is in symbol/name (JKCEMENT, NIFTY CEMENT); sector terms not in any symbol/name — "health tech" → 0, "utilities"/"textiles" → 0 — return nothing despite the index's `sec`/`ind` fields carrying those values. Consumers searching by sector or theme get no results. Distinct from raven's TASK-158 (type/sector filters in results). Acceptance criteria: score `sec`/`industry`/`idx` fields; exact symbol still wins; sector hint preserved.
+
+Priorities: P2 (theme/sector search dead-end). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 40: fired-alert dismiss deletes permanently logged to board (no code changes)
+
+Fortieth pass — code-verified against source.
+
+- **TASK-963 (P2)** — Dismissing a fired alert permanently deletes it: AlertCenter "Dismiss" (`AlertCenter.tsx:310`) calls `removeAlert` → `DELETE /api/alerts?id=` (route.ts:141-156), destroying the fired record with no archive and no undo. A consumer who dismisses then wants to review their alert journal can't recover it. Distinct from raven's TASK-845 (export of existing records). Acceptance criteria: soft-delete/archive on dismiss (or undo); export covers archived records; active-alert Delete unchanged.
+
+Priorities: P2 (permanent data loss in a journal flow). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (143) — SPECTRE audit pass 4: alert-form a11y + import validation + deep-link gaps → TASK-900…902; restarted stale :3000
+
+- **Ops**: :3000 was serving a pre-22:13 manifest (chunk `0s7a_i0qav8_t.js` deleted on disk → intermittent 500/MIME-refusal → random full crash screens for anyone testing). Killed 3 stacked/orphaned next-servers, restarted on the current build via `./node_modules/.bin/next start -p 3000` (note: `npm exec next start -p 3000` mis-parses `-p` as npm's package flag — use the bin directly). Chunks now 200 `application/javascript`.
+- **TASK-900 (P2)**: Create-alert dialog — condition select + price input have NO accessible names (`:nolabel`); one ESC closes the whole stacked stack (Alert Center + form), losing the user's place. (Pass-3 "inputs labelled PASS" was scoped to the wrong dialog — Alert Center behind.)
+- **TASK-901 (P3)**: `/?s=ZZZZQQ` silently renders Reliance while URL keeps the bad symbol — no not-found feedback, URL/display divergence on shareable links.
+- **TASK-902 (P2)**: Watchlist import accepts garbage symbols (`!!@@` landed in the list verbatim); local import path skips the instruments-index validation TASK-62 built for the cloud mirror. Malformed JSON already errors cleanly without crashing (verified).
+- Verified clean: bogus-deeplink no-crash (ErrorBoundary only fires on chunk loss), import/export buttons present, preset save-view inline input works ("View name" placeholder; chip verification inconclusive under mock — recheck when wiring is exercised).
+
+## 2026-08-23 (142) — UI head audit pass 38: centered-modal scroll gap logged to board (no code changes)
+
+Thirty-eighth pass — code-verified against source.
+
+- **TASK-933 (P2)** — Centered Modal variant has no internal scroll: `Modal.tsx:80-82` uses `relative w-full max-w-md` with no `max-h`/`overflow-y-auto`, and body scroll is locked while open (TASK-93). On short mobile screens the AlertCenter dialog (active + fired lists + create form) can overflow the viewport with overflowed content unreachable. Distinct from spectre's TASK-900 (labels/ESC). Acceptance criteria: centered dialogs cap height and scroll internally; focus trap must not trap onto off-screen controls; bottom-sheet variant unchanged.
+- **Ops note**: the first add (TASK-922) was lost to a concurrent board merge (known race, TASK-21/24); re-added cleanly as TASK-933 and verified present.
+
+Priorities: P2 (unreachable dialog content). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 39: ticker-tape scroll affordance gap logged to board (no code changes)
+
+Thirty-ninth pass — code-verified against source.
+
+- **TASK-946 (P2)** — Ticker tape hides its scrollbar with no affordance the list extends: `TickerTape.tsx:15/19` uses `overflow-x-auto` + `scrollbar-none`, so a consumer sees ~8 chips with no hint the tape scrolls to 20+ symbols. Needs a right-edge fade, clipped trailing-chip peek, or a visible scroll cue. Distinct from raven's TASK-102 (keyboard scroll + hover pause) and TASK-238 (table shadow hint).
+
+Also re-checked and ruled out duplicates: ChartPanel `!data && !loading` showing "Search a symbol to start" on error is spectre's TASK-91 (already logged); marquee `?s=NIFTY 50` URL sharing works (URLSearchParams encodes the space). Priorities: P2 (discoverability of tape content). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 37: home chart no-auto-retry logged to board (no code changes)
+
+Thirty-seventh pass — code-verified against source.
+
+- **TASK-917 (P2)** — Home chart has no auto-retry on transient upstream throttling: `load` (`page.tsx:123`) sets `error` and returns; only manual R/Retry recovers. The tape self-heals via 90s polling, but the chart stays errored during a throttle window (`backoff.ts` is server-side only). A consumer watching live during throttling sees a dead chart until they notice + press R. Distinct from raven's TASK-422 (report issue) and TASK-117 (error consistency). Acceptance criteria: bounded auto-retry with backoff (3 tries, 2/4/8s), manual Retry forces immediate + resets schedule, no loops when session closed.
+
+Also noted spectre's TASK-901 (bogus `?s=` silent fallback) partially overlaps my TASK-358/866 cluster — noted in LOG, no duplicate created. Priorities: P2 (dead chart under throttling). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 36: watchlist export filename collision logged to board (no code changes)
+
+Thirty-sixth pass — code-verified against source.
+
+- **TASK-907 (P3)** — Watchlist export uses a static filename `nifty-watchlist.json` (`Watchlist.tsx:39`) — every export overwrites the previous file in Downloads and exports are indistinguishable. Should embed an IST date (`nifty-watchlist-YYYY-MM-DD.json`). Parallel to raven's TASK-769 (board archive filename).
+
+Also re-confirmed: TASK-200 (create-alert membership-type dropdown bug) still open and valid — the dialog gained symbol/exchange draft inputs but still offers `strategy_enter`/`strategy_exit` in the dropdown while posting `{symbol, exchange, type, price}` with no `strategyId`/`topN`. `useJson` (company) has the same sticky-failed shape as TASK-875 but is mitigated by route-level remounts — noted, not a separate task. Priorities: P3 (file overwrite). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 35: FundamentalsPanel sticky-failed-state bug logged to board (no code changes)
+
+Thirty-fifth pass — code-verified against source.
+
+- **TASK-875 (P2)** — FundamentalsPanel gets stuck in the failed state after any fetch error: `failed` is set on catch (`FundamentalsPanel.tsx:65`) and never reset on symbol change, and the render checks `failed` before data (line 74). One symbol's transient fundamentals failure makes the panel show "Fundamentals unavailable right now." forever for every subsequent symbol — the component isn't keyed, so no remount clears it. Acceptance criteria: reset `failed` on symbol change (or retry on next symbol); transient failure for A doesn't poison B's panel.
+
+Priorities: P2 (sticky dead panel across symbols). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 34: lowercase deep-link resolution gap logged to board (no code changes)
+
+Thirty-fourth pass — code + live-verified against source/:3000.
+
+- **TASK-866 (P2)** — Lowercase deep links silently fail: `?s=reliance` → `/api/instruments?s=reliance` → `{instrument:null}` (live-verified) because the index stores uppercase symbols and `findInstrument` is exact-match; `resolveTarget` (`page.tsx:78`) passes the raw URL symbol with no case normalization, unlike the company page (`UP_SYM`) and `searchInstruments` (which uppercases). A consumer pasting a lowercased/auto-lowered share link lands on the marquee NIFTY 50 instead of RELIANCE. Part of the same deep-link-resolution cluster as TASK-358 (suffixes) and TASK-405 (exchange) — this is the case facet.
+
+Priorities: P2 (silent wrong-symbol on case-folded links). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 33: J/K stepping bug for out-of-watchlist symbols logged to board (no code changes)
+
+Thirty-third pass — code-verified against source.
+
+- **TASK-853 (P2)** — J/K watchlist stepping breaks for deep-linked symbols not in the watchlist: `page.tsx:232` `findIndex` returns -1, so `nextIdx = (-1 + step + len) % len` wraps to 0 (J) or `len-2` (K), jumping to a random watchlist entry with no cue. Reachable via `?s=RELIANCE` on a watchlist that doesn't contain RELIANCE (selected = picked, not watchlist[0]). Acceptance criteria: no-op or nearest-entry step when out-of-list, sr-only announcement, unchanged behavior when in-list.
+
+Priorities: P2 (random jump on a keyboard core-flow). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 32: theme-color meta not synced on toggle logged to board (no code changes)
+
+Thirty-second pass — code-verified against source.
+
+- **TASK-848 (P2)** — `theme-color` meta is not updated on manual theme toggle: `layout.tsx:41-46` sets it via `prefers-color-scheme` media queries, but `ThemeToggle` only toggles the `.dark` class + localStorage — it never updates the meta. On mobile browsers (Chrome Android/Safari) the address/status-bar chrome follows the OS scheme, so a dark-mode user on a light-OS phone gets light browser chrome around a dark app. Distinct from raven's TASK-174 (system-follow). Acceptance criteria: toggle updates theme-color meta; pre-paint still correct; no FOUC.
+
+Also re-checked and dismissed: breadth per-card freshness (facet of TASK-257), AlertCenter announcement-not-cleared (harmless for sr-only). No self-corrections this pass. Priorities: P2 (mobile chrome mismatch). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 31: desktop watchlist scroll gap logged to board (no code changes)
+
+Thirty-first pass — code-verified against source.
+
+- **TASK-839 (P2)** — Desktop watchlist lacks internal scroll for long lists: `Watchlist` root (`Watchlist.tsx:57`) is `flex flex-1 flex-col` with no `overflow-y-auto`, and the sidebar `aside` has no `min-h-0`/overflow boundary. A 50+ symbol imported list grows past the viewport, forcing page scroll that breaks the sticky header layout. Acceptance criteria: overflow-y-auto on the list container + min-h-0 on the aside; token-styled scrollbar; mobile sheet unaffected.
+- **Ops note**: the initial `board.mjs new` call hit a concurrent ID-allocation collision and produced a malformed `TASK-836-2` (an existing raven task held 836). Removed the malformed row directly from `data/board.json` (merge-on-save applies to CLI writers; this was a targeted correction) with an activity entry, and re-added under the clean ID TASK-839.
+
+Priorities: P2 (layout break with long lists). Phase D. No callsign (audit-only).
+
+---
+
 ## 2026-08-23 (142) — UI head audit pass 30: ErrorBoundary misleading copy logged to board (no code changes)
 
 Thirtieth pass — code-verified against source.

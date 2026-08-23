@@ -2604,8 +2604,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
-      "assignee": "spectre",
+      "status": "doing",
+      "assignee": "phantom",
       "labels": [
         "ui",
         "api"
@@ -2639,7 +2639,7 @@
         }
       ],
       "createdAt": 1787500375837,
-      "updatedAt": 1787500375837,
+      "updatedAt": 1787505517232,
       "blocked": false
     },
     {
@@ -3429,8 +3429,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -3456,7 +3456,7 @@
         }
       ],
       "createdAt": 1787501820176,
-      "updatedAt": 1787501820176,
+      "updatedAt": 1787504736965,
       "blocked": false
     },
     {
@@ -3910,8 +3910,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
-      "assignee": "raven",
+      "status": "doing",
+      "assignee": "nova",
       "labels": [
         "ui",
         "watchlist"
@@ -3935,7 +3935,7 @@
         }
       ],
       "createdAt": 1787501977966,
-      "updatedAt": 1787501977966,
+      "updatedAt": 1787505128168,
       "blocked": false
     },
     {
@@ -4158,39 +4158,39 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "phantom",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "all four breadth series (VIX, A/D, FII, DII) render on the SAME chronological axis (oldest on the left, newest on the right)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "FlowBars values are reversed to match the sparklines",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "hover tooltips show ascending dates left-to-right",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "sr-only summary still correct",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "axe 0 violations",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787501987070,
-      "updatedAt": 1787501987070,
+      "updatedAt": 1787505607942,
       "blocked": false
     },
     {
@@ -5431,34 +5431,34 @@
       "desc": "",
       "phase": "D",
       "priority": "P3",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "phantom",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "legal/pricing headings use a defined font token (declare --font-archivo or swap to --font-display)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "no undefined-var fallback in legal.css/pricing.css",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "typography reads as intended in both themes",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "axe 0 violations",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787502161764,
-      "updatedAt": 1787502161764,
+      "updatedAt": 1787505593214,
       "blocked": false
     },
     {
@@ -21003,8 +21003,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "vertex",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -21030,7 +21030,7 @@
         }
       ],
       "createdAt": 1787503893573,
-      "updatedAt": 1787503893573,
+      "updatedAt": 1787505572162,
       "blocked": false
     },
     {
@@ -27085,570 +27085,6459 @@
       "createdAt": 1787504631124,
       "updatedAt": 1787504631124,
       "blocked": false
+    },
+    {
+      "id": "TASK-827",
+      "title": "Watchlist empty has single CTA — 'Browse sectors' only, no 'Try demo (Nifty 10)' vs Browse choice",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "empty-states"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add dual CTA: 'Try demo · Nifty 10' (269) + 'Browse screener' in empty art (588)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-588 generic + TASK-269 demo + TASK-501 recently viewed",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504657839,
+      "updatedAt": 1787504657839,
+      "blocked": false
+    },
+    {
+      "id": "TASK-828",
+      "title": "No 'Select all' for screener bulk — bulk Add top 5 (298) but no checkbox select all 50 with shift+range",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "screener",
+        "selection"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Header checkbox select all + shift+click range, bulk bar shows '5 selected · Add to watchlist'",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-298 preview + TASK-273 friendly + TASK-590 save as watchlist",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504658109,
+      "updatedAt": 1787504658109,
+      "blocked": false
+    },
+    {
+      "id": "TASK-829",
+      "title": "VIX fear band has no label — 'Fear <15 · Greed >20' color but not text label on axis, a11y weak",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "breadth",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add axis labels 'Fear' <15 and 'Greed' >20 on VIX sparkline 775 with muted 10px",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-775 fear band + TASK-548 baseline",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504658458,
+      "updatedAt": 1787504658458,
+      "blocked": false
+    },
+    {
+      "id": "TASK-830",
+      "title": "No weekend DND — DND 22:00-08:00 daily (672) but weekend needs separate schedule, consumer still pinged Sat 10am",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "alerts",
+        "personalization"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add weekday/weekend toggle in DND with separate ranges persisted",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-672 DND + TASK-771 DND schedule + TASK-557 until open",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504658838,
+      "updatedAt": 1787504658838,
+      "blocked": false
+    },
+    {
+      "id": "TASK-831",
+      "title": "Measure result not shareable as image — '+12% in 14d' copyable (478) but not Share as 2x PNG like pinned 497",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "share"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Share clipped image via canvas 2x PNG + Web Share in measure tooltip (487)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-487 share + TASK-478 copy + TASK-439 measure",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504665048,
+      "updatedAt": 1787504665048,
+      "blocked": false
+    },
+    {
+      "id": "TASK-832",
+      "title": "Watchlist sort control hidden — gainer/loser sort 230 exists but under overflow, not segmented at header",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "sorting"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show segmented control Manual · Gainers · Losers at header, 44px hit, persisted",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-230 sort + TASK-284 grouping + TASK-766 avg",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504665232,
+      "updatedAt": 1787504665232,
+      "blocked": false
+    },
+    {
+      "id": "TASK-833",
+      "title": "No trust rating near pricing CTA — matrix flat, not '4.8/5 · 1.2k traders' social proof near Pro button",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add '★★★★★ 4.8/5 · 1.2k traders' muted under Pro CTA after launch",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-241 strip + TASK-291 placeholders",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504665651,
+      "updatedAt": 1787504665651,
+      "blocked": false
+    },
+    {
+      "id": "TASK-834",
+      "title": "WIP ring has no tooltip — ring 818 visual but no '2/3 · 1 slot left · Why 3?' hover (681)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add tooltip on ring hover with count + why link",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-818 ring + TASK-681 Why 3? + TASK-794 block toast",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504665984,
+      "updatedAt": 1787504665984,
+      "blocked": false
+    },
+    {
+      "id": "TASK-835",
+      "title": "Voice mic has no waveform — listening 5s (774) with pulsing dot only, no waveform, consumer unsure active",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "mobile"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add waveform bars animation while listening + Esc stop (774) 44px",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-452 mic + TASK-774 stop control",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504672419,
+      "updatedAt": 1787504672419,
+      "blocked": false
+    },
+    {
+      "id": "TASK-836",
+      "title": "Target lacks consensus range — 'Target ₹2,800 +15%' but not 'High ₹3,100 · Low ₹2,400' range",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show 'Consensus High ₹3,100 · Low ₹2,400' muted under target pill (616)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-616 upside + TASK-684 downside + TASK-551 ATH",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504672797,
+      "updatedAt": 1787504672797,
+      "blocked": false
+    },
+    {
+      "id": "TASK-837",
+      "title": "Liquid filter toggle count static — 'Liquid (42/120)' but not live '42 → 41 after filter change 5s ago'",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "feedback"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Live update count on Tape poll + highlight change 800ms wash",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-637 count + TASK-649 showing + TASK-610 persist",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504673131,
+      "updatedAt": 1787504673131,
+      "blocked": false
+    },
+    {
+      "id": "TASK-838",
+      "title": "Fundamentals median compare lacks Nifty baseline — vs sector 40th %ile (511) but not 'vs Nifty 50 55th %ile' market context",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "comparison"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'vs Nifty 55th %ile' second chip under median (574)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-511 sample + TASK-574 peer median + TASK-348 sector index",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504673326,
+      "updatedAt": 1787504673326,
+      "blocked": false
+    },
+    {
+      "id": "TASK-839",
+      "title": "Desktop watchlist lacks internal scroll for long lists (flex flex-1, no overflow-y-auto) — 50+ symbol lists grow past the viewport and force page scroll, breaking the sticky header layout",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "long watchlists scroll inside the sidebar (overflow-y-auto + min-h-0 on aside), keeping header/search fixed",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "scrollbar token-styled",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "keyboard scroll works",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "mobile sheet unaffected",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504693528,
+      "updatedAt": 1787504693528,
+      "blocked": false
+    },
+    {
+      "id": "TASK-840",
+      "title": "No market day progress — MarketStatus Open but not '62% of day · Closes 15:30' bar, time blindness",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "market-status",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add thin progress bar under MarketStatus pill with % elapsed 09:15-15:30",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-334 countdown + TASK-640 tooltip",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504705735,
+      "updatedAt": 1787504705735,
+      "blocked": false
+    },
+    {
+      "id": "TASK-841",
+      "title": "Copy ticker format wrong — Copy symbol 602 gives RELIANCE but broker pastes RELIANCE.NSE, fails",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Copy as 'RELIANCE.NSE' option alongside Copy symbol in result row",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-602 quick copy + TASK-840 ticker.NSE",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504706027,
+      "updatedAt": 1787504706027,
+      "blocked": false
+    },
+    {
+      "id": "TASK-842",
+      "title": "Pagination keeps scroll at bottom — Jump to page 5 loads but viewport stays bottom, must scroll up",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "screener",
+        "ia"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Scroll to top of table on page/jump with 200ms smooth + focus first row",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-441 jump + TASK-753 First/Last",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504706313,
+      "updatedAt": 1787504706313,
+      "blocked": false
+    },
+    {
+      "id": "TASK-843",
+      "title": "FAQ helpful not sorted — '12 found helpful' count (795) but list still creation order, best buried",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "ia"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add sort 'Most helpful' toggle above FAQ with count badge",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-795 count + TASK-657 vote + TASK-623 highlight",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504706661,
+      "updatedAt": 1787504706661,
+      "blocked": false
+    },
+    {
+      "id": "TASK-844",
+      "title": "Tour has no Remind later — 'Don't show again' checked loses onboarding forever, no snooze",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "onboarding",
+        "personalization"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Remind in 7 days' alongside Don't show again in tour 539/761",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-761 replay + TASK-539 tour + TASK-843 remind",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504715111,
+      "updatedAt": 1787504715111,
+      "blocked": false
+    },
+    {
+      "id": "TASK-845",
+      "title": "Alert history has no export — trader wants CSV of fired alerts for journal, must screenshot",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "alerts",
+        "export"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Export CSV with symbol, type, price, firedAt IST + status",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-844 export + TASK-237 grouping + TASK-472 buckets",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504715527,
+      "updatedAt": 1787504715527,
+      "blocked": false
+    },
+    {
+      "id": "TASK-846",
+      "title": "Heatmap has no timeframe toggle — sector treemap 563 shows 1D only, not 1W weekly leaders",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "breadth",
+        "control"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add segmented 1D · 1W toggle above heatmap, persisted",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-563 heatmap + TASK-783 share",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504715725,
+      "updatedAt": 1787504715725,
+      "blocked": false
+    },
+    {
+      "id": "TASK-847",
+      "title": "Tape preview axis lacks scale — mini sparkline axis 521 but no '0% → +3%' numbers",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "visual"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add min/max % numbers 8px under mini sparkline (521) muted",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-521 axis + TASK-425 preview",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504716100,
+      "updatedAt": 1787504716100,
+      "blocked": false
+    },
+    {
+      "id": "TASK-848",
+      "title": "theme-color meta not updated on manual theme toggle — layout.tsx sets theme-color via prefers-color-scheme media queries, but ThemeToggle only toggles the .dark class + localStorage (no meta update); on mobile browsers the address/status bar chrome follows the OS scheme, not the app toggle — a dark-mode user on a light-OS phone gets light browser chrome around a dark app",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "toggling the theme updates the theme-color meta (JS swap between #fcfcf9/#0a0a0b, or matchMedia-independent) so mobile browser chrome matches the app theme immediately",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "pre-paint still sets the right initial color",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "dark+light both axe 0",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no FOUC regression",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504753511,
+      "updatedAt": 1787504753512,
+      "blocked": false
+    },
+    {
+      "id": "TASK-849",
+      "title": "Fundamentals filing not linked — 'Source: filing 12 May' 674 but not tappable to PDF filing",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Link beat pill provenance 674 to filing PDF with external icon",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-674 provenance + TASK-520 beat pill",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504754648,
+      "updatedAt": 1787504754648,
+      "blocked": false
+    },
+    {
+      "id": "TASK-850",
+      "title": "No FAB for watchlist when scrolled past header — Star 167 hidden after scroll, thumb can't add",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "mobile",
+        "watchlist"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show floating Add FAB bottom-right when header offscreen at 390px, safe-area 253",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-848 FAB + TASK-361 fullscreen Add",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504754913,
+      "updatedAt": 1787504754913,
+      "blocked": false
+    },
+    {
+      "id": "TASK-851",
+      "title": "Watchlist share text has no timestamp — 'RELIANCE, TCS' copy but not 'As of 12 May 15:30 IST' freshness",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Append 'As of 12 May 15:30 IST' to copy text (694) + QR expiry 568",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-694 sector + TASK-627 copy as text",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504755126,
+      "updatedAt": 1787504755126,
+      "blocked": false
+    },
+    {
+      "id": "TASK-852",
+      "title": "WIP tooltip has no guide link — 'Why 3?' hover 834 but not linked to workflow guide, curiosity gap",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Link tooltip to docs/workflow guide with 'Learn WIP' CTA",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-834 tooltip + TASK-818 ring",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504755588,
+      "updatedAt": 1787504755588,
+      "blocked": false
+    },
+    {
+      "id": "TASK-853",
+      "title": "J/K watchlist stepping breaks for deep-linked symbols not in the watchlist — page.tsx:232 findIndex returns -1, so nextIdx wraps to 0 (J) or len-2 (K), jumping to a random watchlist entry; a consumer on ?s=RELIANCE (not starred) pressing K lands on an unrelated symbol with no cue",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "when the selected symbol isn't in the watchlist, J/K step to the nearest sensible entry (or no-op with a hint) instead of the modulo-from-(-1) jump",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "when it is in the list, behavior is unchanged",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "sr-only announcement on step",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504790289,
+      "updatedAt": 1787504790289,
+      "blocked": false
+    },
+    {
+      "id": "TASK-854",
+      "title": "No bulk add from Tape — Gainers (6) need 6 taps, no 'Add all Gainers' one-tap",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "watchlist"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Add all 6 Gainers' link under Gainers header with 5s undo toast (570)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-789 tape inline Add + TASK-560 groups",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504798544,
+      "updatedAt": 1787504798544,
+      "blocked": false
+    },
+    {
+      "id": "TASK-855",
+      "title": "No 'Search in watchlist' toggle — 8 hits mixed watchlist + all, can't filter to watchlist only",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "filter"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add segmented All · Watchlist toggle persisted + URL ?scope=watchlist",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-854 watchlist filter + TASK-285 recents split",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504798726,
+      "updatedAt": 1787504798726,
+      "blocked": false
+    },
+    {
+      "id": "TASK-856",
+      "title": "Overdue task not red — past due date shows muted gray, not down-wash urgent, misses at glance",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "visual"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Style overdue due date with down-wash + ▲ urgent icon, tooltip 'Overdue 2d'",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-818 ring + TASK-681 Why 3?",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504798985,
+      "updatedAt": 1787504798985,
+      "blocked": false
+    },
+    {
+      "id": "TASK-857",
+      "title": "Team pricing no per-seat per-day — '5 seats × ₹239 = ₹1,195/mo' but not '₹8/seat/day' chai anchor",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add '≈₹8/seat/day' subtext under team total (779)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-779 calculator + TASK-431 chai + TASK-393 total",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504799370,
+      "updatedAt": 1787504799370,
+      "blocked": false
+    },
+    {
+      "id": "TASK-858",
+      "title": "FII flow number lacks sparkline — ₹1,200cr today but no 30d net flow trend line for context",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "breadth",
+        "chart"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 30d net flow sparkline under FII card 8% wash (505)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-548 baseline + TASK-563 heatmap",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504805488,
+      "updatedAt": 1787504805488,
+      "blocked": false
+    },
+    {
+      "id": "TASK-859",
+      "title": "Peers list has no heatmap toggle — 4 peers list only, not treemap performance at glance",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "visual"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add toggle List · Heatmap above peers (152) with treemap 1.5px, persisted",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-152 peers + TASK-274 1D/1M toggle",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504805713,
+      "updatedAt": 1787504805713,
+      "blocked": false
+    },
+    {
+      "id": "TASK-860",
+      "title": "Watchlist total lacks vs Nifty toggle — Total · Today toggle 733 but no 'vs Nifty' comparison switch",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "comparison"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'vs Nifty' toggle next to Total/Today that shows delta 'vs Nifty +1.1%' (745)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-733 toggle + TASK-714 today's gain + TASK-745 vs Nifty",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504806030,
+      "updatedAt": 1787504806030,
+      "blocked": false
+    },
+    {
+      "id": "TASK-861",
+      "title": "Fired alert lacks entry delta — 'Fired at ₹2,450' but not 'vs entry ₹2,400 +2.0% +₹50'",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "alerts",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show entry delta chip under fired price with up/down wash (155)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-860 entry delta + TASK-746 mini spark",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504806282,
+      "updatedAt": 1787504806282,
+      "blocked": false
+    },
+    {
+      "id": "TASK-862",
+      "title": "Recent selection doesn't bump to top — picking RELIANCE at 3 stays at 3, not top, recency lost",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "personalization"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Bump recent to top on select + persist order (476 sync)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-285 split + TASK-315 expiry + TASK-790 pin",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504811579,
+      "updatedAt": 1787504811579,
+      "blocked": false
+    },
+    {
+      "id": "TASK-863",
+      "title": "Sector match not highlighted — 'Bank' typed matches IT sector row but 'Bank' not bold, scent weak",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Highlight sector field with <mark> violet wash like symbol (751)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-751 case-sensitive + TASK-270 highlight",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504811950,
+      "updatedAt": 1787504811950,
+      "blocked": false
+    },
+    {
+      "id": "TASK-864",
+      "title": "Filtered empty has no Undo — Reset to All (737) clears filter with no 5s undo, misclick loses context",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "undo"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "5s pausable undo toast after Reset to All (737) with restore filter",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-737 reset + TASK-250 global undo",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504812213,
+      "updatedAt": 1787504812213,
+      "blocked": false
+    },
+    {
+      "id": "TASK-865",
+      "title": "Archive CSV lacks reason column — Shipped/Won't-fix tag (500) not in export, PM loses why",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "export"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Include reason tag in CSV header + filter count (618) + date (719)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-719 archived date + TASK-500 reason tag",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504812415,
+      "updatedAt": 1787504812415,
+      "blocked": false
+    },
+    {
+      "id": "TASK-866",
+      "title": "Lowercase deep links silently fail — ?s=reliance resolves to instrument:null (live-verified) because /api/instruments and findInstrument do exact uppercase-index matches and resolveTarget passes the raw URL symbol without uppercasing; a consumer pasting a lowercased/auto-lowered share link lands on the marquee NIFTY 50 instead of RELIANCE (company page and search already uppercase — the deep-link path doesn't)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "resolveTarget (and /api/instruments) normalize the symbol case before matching (trim + toUpperCase, or case-insensitive findInstrument)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "?s=reliance and ?s=RELIANCE resolve identically",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "watchlist-first path also case-normalized",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no behavior change for already-uppercase links",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504828241,
+      "updatedAt": 1787504828241,
+      "blocked": false
+    },
+    {
+      "id": "TASK-867",
+      "title": "Log scale toggle has no explainer — 'L' chip but no 'Log: equal % moves equal height' tooltip",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add tooltip/hover 'Log scale: equal % moves equal height' on L toggle (84)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-640 MarketStatus tooltip + TASK-750 % toggle",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504866399,
+      "updatedAt": 1787504866399,
+      "blocked": false
+    },
+    {
+      "id": "TASK-868",
+      "title": "Screener rows lack sparkline — Score 7.3 row has no 30d mini spark, must open chart",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "screener",
+        "preview"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add trailing sparkline 20×12 per row via Sparkline 8% wash",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-801 Sector leaders + TASK-105 watchlist sparkline",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504866781,
+      "updatedAt": 1787504866781,
+      "blocked": false
+    },
+    {
+      "id": "TASK-869",
+      "title": "Filing PDF not linked — 'Source: filing 12 May' 674 but not tappable to PDF, trust gap at tick",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Link beat pill provenance 674 to BSE filing PDF with external icon",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-674 provenance + TASK-520 beat pill + TASK-849 filing linked",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504867132,
+      "updatedAt": 1787504867132,
+      "blocked": false
+    },
+    {
+      "id": "TASK-870",
+      "title": "No Copy ISIN on company header — ISIN 820 only in search, not on quote where broker needs",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Copy ISIN button next to Copy price (585) with 'Copied INE123' toast pausable 222",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-820 Copy ISIN + TASK-585 price context",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504867579,
+      "updatedAt": 1787504867579,
+      "blocked": false
+    },
+    {
+      "id": "TASK-871",
+      "title": "Share QR image has no expiry printed — QR download 593 but image lacks 'Expires 19 May 15:30 IST' watermark",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "share"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Print expiry (568) on QR PNG download with muted 8px footer",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-593 QR download + TASK-568 live expiry",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504873546,
+      "updatedAt": 1787504873546,
+      "blocked": false
+    },
+    {
+      "id": "TASK-872",
+      "title": "Due date shows relative only — 'Due in 2d' but not 'Due 12 May 15:30 IST' exact on hover",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add hover tooltip with exact IST under due date chip (856 -> relative)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-856 overdue red + TASK-856 relative",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504874113,
+      "updatedAt": 1787504874113,
+      "blocked": false
+    },
+    {
+      "id": "TASK-873",
+      "title": "Label filter has no per-label clear — FAQ category 730 but board label filter has no X per pill",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "filter"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add X per label pill 44px via after:inset with undo 5s (222)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-730 FAQ count + TASK-407 AND/OR",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504874395,
+      "updatedAt": 1787504874395,
+      "blocked": false
+    },
+    {
+      "id": "TASK-874",
+      "title": "Annual toggle badge not on control — 'Most popular' 680 on matrix not on toggle itself",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add badge on toggle knob 'Popular' violet when Annual active",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-680 most popular + TASK-550 dual anchor + TASK-703 sticky",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504874792,
+      "updatedAt": 1787504874792,
+      "blocked": false
+    },
+    {
+      "id": "TASK-875",
+      "title": "FundamentalsPanel stuck in failed state after any fetch error — failed is set on catch (FundamentalsPanel.tsx:65) and never reset on symbol change, and the render checks failed before data (line 74); one symbol's fundamentals failure makes the panel show 'Fundamentals unavailable right now.' forever for every subsequent symbol (component isn't keyed, so no remount clears it)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "failed resets to false when symbol changes (or the effect retries on next symbol)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "a transient failure for symbol A doesn't poison symbol B's panel",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "retry happens automatically on symbol switch",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "existing loading skeleton preserved",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504875602,
+      "updatedAt": 1787504875602,
+      "blocked": false
+    },
+    {
+      "id": "TASK-876",
+      "title": "Cached suggestion lacks staleness — 'Try cached: TCS' but not 'Cached 2h ago · stale 90s delay'",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Cached 2h ago · stale' muted under cached chip (804)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-804 offline cached + TASK-427 offline empty",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504884133,
+      "updatedAt": 1787504884133,
+      "blocked": false
+    },
+    {
+      "id": "TASK-877",
+      "title": "Snooze picker lacks quick chips — custom hours 596 but no 4h/8h/12h quick row for earnings",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "alerts",
+        "control"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add row 4h · 8h · 12h above custom input with violet active",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-596 custom hours + TASK-557 until open",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504884835,
+      "updatedAt": 1787504884835,
+      "blocked": false
+    },
+    {
+      "id": "TASK-878",
+      "title": "Heatmap cells lack count — BANK tile but not 'BANK 12 stocks' count in treemap",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "breadth",
+        "ia"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add count '12' small muted under sector label in treemap 563",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-563 heatmap + TASK-876 count",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504885949,
+      "updatedAt": 1787504885949,
+      "blocked": false
+    },
+    {
+      "id": "TASK-879",
+      "title": "Pinned preview never expires — Tape preview pin persists 643 but stale after 2 days, shows outdated axis 521",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "reliability"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Auto-expire pin after 24h or when tape poll shows >5% drift, show 'Stale · Tap to refresh'",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-643 pin persist + TASK-521 axis",
+          "done": false
+        }
+      ],
+      "createdAt": 1787504887027,
+      "updatedAt": 1787504887027,
+      "blocked": false
+    },
+    {
+      "id": "TASK-880",
+      "title": "No alert limit at create — input shows price but not 'Free: 2/3 alerts used — 1 left' with pricing link",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "alerts",
+        "pricing"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Free: 2/3 used' muted under type select + link to pricing (137) + snooze hint (482)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-157 budget invisible + TASK-90 hyperlink",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505000836,
+      "updatedAt": 1787505000836,
+      "blocked": false
+    },
+    {
+      "id": "TASK-881",
+      "title": "No sample alert for empty state — 0 alerts shows generic empty vs 'Try sample: TCS > ₹500' one-tap",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "alerts",
+        "empty-states"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add sample CTA 'Try sample alert' that pre-fills price_above sample + toast Undo 5s (222)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-269 demo portfolio + TASK-269",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505001158,
+      "updatedAt": 1787505001158,
+      "blocked": false
+    },
+    {
+      "id": "TASK-882",
+      "title": "Old name alias not indexed — 'TATACONSUM' former name returns 0, no alias → TATACONSUM mapping",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Index aliases via instruments.json alias field + hint 'Formerly Tata Consumer' muted",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-559 ISIN + TASK-389 numeric",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505001369,
+      "updatedAt": 1787505001369,
+      "blocked": false
+    },
+    {
+      "id": "TASK-883",
+      "title": "No fib retracement preset — measure 439 free drag but no one-tap Fib 38/50/61% from low/high",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "control"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Fib presets under measure tooltip with dotted lines + % labels",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-439 measure + TASK-797 from low/high + TASK-612 snap",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505001624,
+      "updatedAt": 1787505001624,
+      "blocked": false
+    },
+    {
+      "id": "TASK-884",
+      "title": "No cycle time on board — Doing 3d avg not shown, stuck card 5d blends with 1d, process blind",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "analytics"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Avg cycle 2.1d · Doing 3: 5d ⚠' under velocity bar (339) with warn when > avg + 50%",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-339 velocity + TASK-466 forecast + TASK-794 WIP block toast",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505009371,
+      "updatedAt": 1787505009371,
+      "blocked": false
+    },
+    {
+      "id": "TASK-885",
+      "title": "Pricing lacks vs TradingView row-level compare — anchor 266 but matrix row 'Backtest' not 'TV free: manual vs Nifty: auto'",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add row detail 'Backtest: manual CSV vs auto Nifty' muted under matrix Pro column",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-266 competitor anchor + TASK-137 matrix",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505009782,
+      "updatedAt": 1787505009782,
+      "blocked": false
+    },
+    {
+      "id": "TASK-886",
+      "title": "Copy task link badge not count-synced — short task link 489 count not live like liquid count 637 live 42→41",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "feedback"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Live update task count on board poll 30s like Tape poll",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-637 liquid count + TASK-649 showing + TASK-489 copy",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505009923,
+      "updatedAt": 1787505009923,
+      "blocked": false
+    },
+    {
+      "id": "TASK-887",
+      "title": "Company peer Add lacks sector context in toast — 'Added TCS' but not 'Added TCS → IT (4→5) bank vs IT distinction'",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "feedback"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Toast 'Added TCS → IT (4→5) · Undo' with sector like 770 grouped but distinct per-peer group 284",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-770 sector context + TASK-644 sector toast",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505010195,
+      "updatedAt": 1787505010195,
+      "blocked": false
+    },
+    {
+      "id": "TASK-888",
+      "title": "Search Trending lacks sector volume leader — 'Trending on NIFTY' 8 mixed but not 'Bank leader: HDFC +2.1%'",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "ia"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add per-sector leader 'Bank: HDFC +2.1%' subheader under Trending grouping 533",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-533 sector grouping + TASK-767 volume reason",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505016574,
+      "updatedAt": 1787505016574,
+      "blocked": false
+    },
+    {
+      "id": "TASK-889",
+      "title": "Tape preview pin never expires becomes stale — pin persists 643 but after 2d shows outdated 5-tick spark axis 521",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "reliability"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Auto-expire pin after 24h + show 'Stale · Tap to refresh' muted 11px",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-879 pin never expires + TASK-643 pin persist",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505016775,
+      "updatedAt": 1787505016775,
+      "blocked": false
+    },
+    {
+      "id": "TASK-890",
+      "title": "Fundamentals median lacks Nifty vs sector switch — vs Energy 40th %ile (511) but no toggle Nifty vs Sector",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "control"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add segmented Nifty · Sector toggle under percentile badge (511) persisted",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-838 Nifty baseline + TASK-574 peer median",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505017119,
+      "updatedAt": 1787505017119,
+      "blocked": false
+    },
+    {
+      "id": "TASK-891",
+      "title": "Breadth mood 598 plain but mood icon missing — 'Risk-on' text but no Risk-on green dot vs Risk-off red, visual scent weak",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "breadth",
+        "visual"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add dot + wash pill '● Risk-on' up-wash vs down-wash per WCAG 1.4.1 (155)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-598 plain mood + TASK-667 strength",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505017437,
+      "updatedAt": 1787505017437,
+      "blocked": false
+    },
+    {
+      "id": "TASK-892",
+      "title": "No 52W high line on chart — High ₹3,200 horizontal not shown, distance to high not at glance",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "visual"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add dashed horizontal at 52W high/low with label '52W H ₹3,200' muted 11px",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-551 ATH + TASK-591 mini band + TASK-700 y-axis tag",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505048736,
+      "updatedAt": 1787505048736,
+      "blocked": false
+    },
+    {
+      "id": "TASK-893",
+      "title": "No 'Save screener as alert' — Top10 must be manually re-created as alert, extra 5 taps vs one-tap",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "screener",
+        "alerts"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Save as alert: Top10' CTA that pre-fills AlertCenter with strategy + Top10",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-262 Screener→Alert + TASK-262",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505049091,
+      "updatedAt": 1787505049091,
+      "blocked": false
+    },
+    {
+      "id": "TASK-894",
+      "title": "Label filter has no exclude — selecting ui shows ui only, can't 'Show all except ui' for focus",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "filter"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add toggle Include · Exclude per label pill with muted vs violet",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-288 taxonomy + TASK-407 AND/OR + TASK-730 count",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505049354,
+      "updatedAt": 1787505049354,
+      "blocked": false
+    },
+    {
+      "id": "TASK-895",
+      "title": "Watchlist note has no symbol link insert — toolbar 647 Markdown but no @RELIANCE quick link",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add @ autocomplete for symbols in note textarea with preview link",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-647 toolbar + TASK-562 preview + TASK-826 split",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505049591,
+      "updatedAt": 1787505049591,
+      "blocked": false
+    },
+    {
+      "id": "TASK-896",
+      "title": "No industry best anchor — P/E 22 vs peer median 0.8 but not 'Best in Energy: 12' for calibration",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Best P/E 12 · TCS' muted under median (574) with sector leader",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-574 peer median + TASK-511 sample + TASK-715 rank",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505056964,
+      "updatedAt": 1787505056964,
+      "blocked": false
+    },
+    {
+      "id": "TASK-897",
+      "title": "Fullscreen range pills still bare — 1Y default not highlighted when custom range active, confusion at 390px",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "mobile"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Highlight active range pill violet + dim custom when active (445)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-445 pills + TASK-361 fullscreen + TASK-380 exit cue",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505057572,
+      "updatedAt": 1787505057572,
+      "blocked": false
+    },
+    {
+      "id": "TASK-898",
+      "title": "Feature limit tooltip missing — '3 alerts/day' matrix cell but no hover 'Free: 3 active (2 used)' detail",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add tooltip on matrix cell 'Free: 3 active · Used 2' with link to pricing CTA (542)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-137 matrix + TASK-527 free-limit inline",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505058277,
+      "updatedAt": 1787505058277,
+      "blocked": false
+    },
+    {
+      "id": "TASK-899",
+      "title": "Recent filtered highlight still case mismatch — 'reliance' filtered recents not bold like search 751, scent weak",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Make recents highlight case-insensitive like search 751 with violet wash",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-751 case-sensitive + TASK-740 filtered",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505058634,
+      "updatedAt": 1787505058634,
+      "blocked": false
+    },
+    {
+      "id": "TASK-900",
+      "title": "Create-alert dialog inputs have no accessible names (condition select + price input render ':nolabel') and one ESC closes the ENTIRE stacked dialog stack (Alert Center + create form both vanish)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "spectre",
+      "labels": [
+        "a11y",
+        "ui"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Visible label or aria-label on both create-form controls",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "axe clean with dialog open (scan scoped to dialog)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "ESC pops one dialog level (2->1->0) or single-level stack documented as intentional",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "submit disabled until price entered",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505060509,
+      "updatedAt": 1787505060509,
+      "blocked": false
+    },
+    {
+      "id": "TASK-901",
+      "title": "Bogus ?s= deep link silently renders default watchlist symbol while URL keeps the bad symbol — /?s=ZZZZQQ shows 'Reliance Industries' with no not-found feedback",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "spectre",
+      "labels": [
+        "ux"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Unknown deep-link symbol shows inline 'symbol not found' notice (or search suggestion) instead of silently swapping companies",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "URL and rendered symbol stay consistent",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "shared-link recipients can tell the link is broken",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505061105,
+      "updatedAt": 1787505061105,
+      "blocked": false
+    },
+    {
+      "id": "TASK-902",
+      "title": "Watchlist import accepts garbage symbols — importing [{symbol:'!!@@'}] adds the row verbatim; local import path skips the instruments-index validation TASK-62 built for the cloud mirror",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "spectre",
+      "labels": [
+        "ux",
+        "data"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Import validates symbols against instruments index (reuse findInstrumentListing)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "unknown rows dropped with an import summary ('imported N, skipped M: symbols')",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "malformed JSON already errors cleanly — keep that",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505061658,
+      "updatedAt": 1787505061658,
+      "blocked": false
+    },
+    {
+      "id": "TASK-903",
+      "title": "Heatmap tap has no clear filter — sector filtered breadth but no 'Clear: Show all sectors' chip",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "breadth",
+        "control"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Clear filter · All sectors' chip under heatmap when filtered (799)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-799 heatmap tap + TASK-563 heatmap",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505068305,
+      "updatedAt": 1787505068305,
+      "blocked": false
+    },
+    {
+      "id": "TASK-904",
+      "title": "DND has no exception — quiet hours 22:00-08:00 blocks all, favorite RELIANCE breach still silenced",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "alerts",
+        "personalization"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add exception toggle 'Allow favorites' in DND (672) + star per alert",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-672 DND + TASK-830 weekend DND + TASK-771 DND schedule",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505068902,
+      "updatedAt": 1787505068902,
+      "blocked": false
+    },
+    {
+      "id": "TASK-905",
+      "title": "Tape pin has no refresh — stale pin 879 shows outdated 5-tick axis 521 with no 'Refresh' CTA",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "reliability"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Refresh button in pinned preview that re-fetches sparkline axis 521",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-879 stale + TASK-643 pin persist",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505069436,
+      "updatedAt": 1787505069436,
+      "blocked": false
+    },
+    {
+      "id": "TASK-906",
+      "title": "Demo video 664 has no 5-min link — 30s loop but no 'Watch 5-min full demo' CTA for deeper dive",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "home",
+        "activation"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Watch 5-min demo' link under loop video to /demo with transcript 710 + captions 764",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-664 loop + TASK-764 captions",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505069889,
+      "updatedAt": 1787505069889,
+      "blocked": false
+    },
+    {
+      "id": "TASK-907",
+      "title": "Watchlist export uses a static filename 'nifty-watchlist.json' (Watchlist.tsx:39) — every export overwrites the previous file and exports are indistinguishable; should carry a date (e.g. nifty-watchlist-2026-08-23.json) like the board archive naming issue (TASK-769)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "doing",
+      "assignee": "echo",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "export filename embeds the date (IST), e.g. nifty-watchlist-YYYY-MM-DD.json, so repeated exports don't overwrite",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "filename is stable enough to sort",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "existing export content unchanged",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": true
+        }
+      ],
+      "createdAt": 1787505083136,
+      "updatedAt": 1787505608489,
+      "blocked": false
+    },
+    {
+      "id": "TASK-908",
+      "title": "Copy as table lacks header — CSV row without 'Symbol,Date,O,H,L,C' header, Sheets import needs header",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Prepend header row to copy CSV (765) with symbol+date+OHLC headers",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-765 copy as table + TASK-765 header",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505111007,
+      "updatedAt": 1787505111007,
+      "blocked": false
+    },
+    {
+      "id": "TASK-909",
+      "title": "No 52W history sparkline — band 591 static but not 60d trailing High/Low trail, approach not visible",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "visual"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 60d High/Low mini line under band with High ₹3,200 Low ₹1,800 labels",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-591 mini band + TASK-551 ATH",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505111300,
+      "updatedAt": 1787505111300,
+      "blocked": false
+    },
+    {
+      "id": "TASK-910",
+      "title": "Bulk add 42 exceeds cap — screener Add all 42 at 48/50 silently adds 2 then blocks, no pre-check dialog",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "screener",
+        "watchlist"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show 'Watchlist 48/50 · trim 40 to add 42' dialog with Manage CTA before bulk",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-666 near-cap + TASK-854 bulk tape",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505111515,
+      "updatedAt": 1787505111515,
+      "blocked": false
+    },
+    {
+      "id": "TASK-911",
+      "title": "Sector search lacks count — 'Bank' typed but not 'Bank (42 stocks)' in filter pill header",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add count 'Bank (42)' in Trending header when sector filter active",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-533 grouping + TASK-804 offline cached",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505111753,
+      "updatedAt": 1787505111753,
+      "blocked": false
+    },
+    {
+      "id": "TASK-912",
+      "title": "No SSO teaser on pricing — Institutional teaser 467 but no 'SSO + Audit log on Enterprise' badge",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add badge 'SSO · Audit log · 99.9% SLA' muted under institutional teaser",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-467 institutional + TASK-556 GST",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505117340,
+      "updatedAt": 1787505117340,
+      "blocked": false
+    },
+    {
+      "id": "TASK-913",
+      "title": "Board scope creep hidden — velocity 339 but 3 tasks added mid-sprint not shown, ETA optimistic",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "analytics"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show 'Scope +3 mid-sprint' amber badge under velocity bar when added > done",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-466 forecast + TASK-339 velocity",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505117567,
+      "updatedAt": 1787505117567,
+      "blocked": false
+    },
+    {
+      "id": "TASK-914",
+      "title": "Tape Add has no undo — inline Add 789 star but no 5s undo like watchlist 570 peer Add",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "undo"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "5s pausable undo toast after tape star add with 'Undo' (222)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-789 tape inline Add + TASK-570 peer undo",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505117744,
+      "updatedAt": 1787505117744,
+      "blocked": false
+    },
+    {
+      "id": "TASK-915",
+      "title": "Peer list high leverage not linked to screener — warn D/E 3.1 High 561 but no 'Screen low leverage peers' link",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "screener"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Screen peers D/E <1.5' link under warn chip (561) to screener",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-561 leverage warn + TASK-574 peer median",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505117913,
+      "updatedAt": 1787505117913,
+      "blocked": false
+    },
+    {
+      "id": "TASK-916",
+      "title": "No 'Copy ISIN' hint on symbol — Copy ISIN 820 button hidden in search, not on company quote where broker needs",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Copy ISIN next to Copy price (585) on quote header with 'Copied INE123' toast",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-870 copy ISIN + TASK-820 Copy ISIN",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505124909,
+      "updatedAt": 1787505124909,
+      "blocked": false
+    },
+    {
+      "id": "TASK-917",
+      "title": "Home chart has no auto-retry on transient upstream throttling — load (page.tsx:123) sets error and returns; only manual R/Retry recovers; the tape self-heals via 90s polling but the chart stays errored during a throttle window (backoff.ts is server-side only); consumer watching live during throttling sees a dead chart until they notice + press R",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "transient failures (network / upstream throttled) auto-retry with bounded backoff (e.g. 3 tries, 2s/4s/8s) without user action",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "manual Retry still forces an immediate retry and resets the schedule",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "errors persist only after the schedule exhausts",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no infinite loop / wasted upstream when session closed",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505125069,
+      "updatedAt": 1787505125069,
+      "blocked": false
+    },
+    {
+      "id": "TASK-918",
+      "title": "Search voice lacks stop waveform — listening 5s dot pulsing but no waveform bars, active uncertain",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "mobile"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add waveform bars animation while listening + Esc stop (774) 44px",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-774 stop control + TASK-452 voice + TASK-835 waveform",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505125198,
+      "updatedAt": 1787505125198,
+      "blocked": false
+    },
+    {
+      "id": "TASK-919",
+      "title": "Heatmap cell tap has no detail drawer — BANK tile tap filters cards 799 but no drawer with top 3 movers list",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "breadth",
+        "interaction"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Open drawer with top 3 BANK movers + sparkline + Add star per mover",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-799 heatmap tap + TASK-563 heatmap + TASK-783 share",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505125396,
+      "updatedAt": 1787505125396,
+      "blocked": false
+    },
+    {
+      "id": "TASK-920",
+      "title": "Annual toggle badge not on control itself — 'Most popular' 680 on matrix not on Annual toggle, misses at decision",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add badge on toggle knob 'Popular' violet when Annual active (680)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-680 most popular + TASK-550 dual anchor",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505125559,
+      "updatedAt": 1787505125559,
+      "blocked": false
+    },
+    {
+      "id": "TASK-921",
+      "title": "Watchlist row lacks daily vs Nifty — price + since added 701 but not 'Today +1.2% vs Nifty +0.8% beat'",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "comparison"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add subtext 'Today +1.2% vs Nifty +0.8% +0.4% beat' under price per row",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-714 today's gain + TASK-701 since added",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505177269,
+      "updatedAt": 1787505177269,
+      "blocked": false
+    },
+    {
+      "id": "TASK-922",
+      "title": "Drag order not persisted — filter pills reorder 728 but reload resets order, URL not updated",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "screener",
+        "personalization"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Persist order via URL ?filtersOrder= + localStorage like 781 pagination persist",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-728 drag reorder + TASK-781 persist",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505177991,
+      "updatedAt": 1787505177991,
+      "blocked": false
+    },
+    {
+      "id": "TASK-923",
+      "title": "Sparkline tap does nothing — YoY sparkline with axis 294 but tap doesn't open View all 12 (354)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "interaction"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Tap sparkline opens fundamentals View all 12 expand 354 with focus",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-691 hover + TASK-354 View all + TASK-294 axis",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505178503,
+      "updatedAt": 1787505178503,
+      "blocked": false
+    },
+    {
+      "id": "TASK-924",
+      "title": "Tape preview lacks volume — mini sparkline 521 but no 'Vol 1.2Cr' number under preview",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Vol number muted 10px under mini sparkline in preview 425",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-521 axis + TASK-425 preview + TASK-847 scale",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505178776,
+      "updatedAt": 1787505178776,
+      "blocked": false
+    },
+    {
+      "id": "TASK-925",
+      "title": "Team velocity lacks per-agent split — avg 12pt/week but not Ghost 12pt vs Viper 8pt",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "analytics"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add per-agent bar under velocity 339 with Ghost/Viper split, muted",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-339 velocity + TASK-466 forecast + TASK-524 burndown",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505185715,
+      "updatedAt": 1787505185715,
+      "blocked": false
+    },
+    {
+      "id": "TASK-926",
+      "title": "New alert badge not pulsing when tab hidden — 2 new since 15:30 but badge static when background tab poll 314 fires",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "alerts",
+        "feedback"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Pulse badge + title '• 2 new alerts — Nifty' when new while hidden + sound if not DND (672)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-434 new + TASK-314 background poll",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505186425,
+      "updatedAt": 1787505186425,
+      "blocked": false
+    },
+    {
+      "id": "TASK-927",
+      "title": "Sync badge lacks time — 'Synced' 628 but not 'Synced 2m ago' live timestamp like per-symbol 689",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Synced 2m ago' live 60s under badge 628 with cloud icon",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-628 sync badge + TASK-689 per-symbol freshness",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505187087,
+      "updatedAt": 1787505187087,
+      "blocked": false
+    },
+    {
+      "id": "TASK-928",
+      "title": "Team seats math lacks save — '5 × ₹239 = ₹1,195/mo' but not 'Save ₹720 vs 5 individual Pro' absolute",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Save ₹720 vs individual' subtext under team total 779",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-779 calculator + TASK-768 absolute rupee",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505187867,
+      "updatedAt": 1787505187867,
+      "blocked": false
+    },
+    {
+      "id": "TASK-929",
+      "title": "Done filtered empty has no illustration — 'No matches' text but no EmptyState 144 art + 'Clear Done filter' CTA",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "empty-states"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Use EmptyState illustration + 'Clear Done filter' CTA when Done search 0 (517)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-517 hint + TASK-144 system",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505195675,
+      "updatedAt": 1787505195675,
+      "blocked": false
+    },
+    {
+      "id": "TASK-930",
+      "title": "Add all peers lacks preview — 'Add all 4' 727 but no '3 IT +1 Bank' sector preview before bulk",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "watchlist"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Preview 'Will add 3 IT +1 Bank' in tooltip before bulk Add all 727",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-727 bulk Add all + TASK-525 inline Add",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505196357,
+      "updatedAt": 1787505196357,
+      "blocked": false
+    },
+    {
+      "id": "TASK-931",
+      "title": "FII sparkline lacks 20d avg — trend line 858 but no dotted 20d average baseline like breadth 548",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "breadth",
+        "visual"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 20d avg dashed muted on FII sparkline 858 8% wash",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-858 sparkline + TASK-548 baseline",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505196999,
+      "updatedAt": 1787505196999,
+      "blocked": false
+    },
+    {
+      "id": "TASK-932",
+      "title": "Home tour lacks progress dots — 3 steps no '1 of 3' indicator, abandon risk like board tour 688",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "onboarding",
+        "tour"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add dots '● ○ ○' + 'Step 1 of 3' under home tour card (539) 150ms motion",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-688 progress dots + TASK-539 tour",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505197465,
+      "updatedAt": 1787505197465,
+      "blocked": false
+    },
+    {
+      "id": "TASK-933",
+      "title": "Centered Modal variant has no internal scroll — Modal.tsx:80-82 'relative w-full max-w-md' has no max-h/overflow-y-auto, and body scroll is locked while open (TASK-93); on short mobile screens the AlertCenter dialog can overflow the viewport with overflowed content unreachable",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "centered dialogs (AlertCenter at minimum) cap height and scroll internally (max-h-[85dvh])",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "focus trap keeps off-screen controls unreachable-safe",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "bottom-sheet variant unchanged",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505215887,
+      "updatedAt": 1787505215888,
+      "blocked": false
+    },
+    {
+      "id": "TASK-934",
+      "title": "Last-price shows price only — ₹2,420 on y-axis but not '+1.2% vs open' pill at glance",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add '+1.2% vs open' pill next to last-price tag 700 with up/down wash (155)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-700 tag + TASK-297 % from open",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505241304,
+      "updatedAt": 1787505241304,
+      "blocked": false
+    },
+    {
+      "id": "TASK-935",
+      "title": "Match source not labeled — 'Bank' in sector row but no 'Matched in sector' chip vs symbol",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "ia"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add chip 'Matched in sector' muted next to sector highlight 863",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-751 case highlight + TASK-863 sector highlight",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505241973,
+      "updatedAt": 1787505241973,
+      "blocked": false
+    },
+    {
+      "id": "TASK-936",
+      "title": "Sector avg lacks valuation — BANK avg +2.3% (766) but not 'Avg P/E 18 vs 22 market'",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Avg P/E 18' muted under sector avg with peer median 574",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-766 avg change + TASK-676 count",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505242314,
+      "updatedAt": 1787505242314,
+      "blocked": false
+    },
+    {
+      "id": "TASK-937",
+      "title": "Pagination lacks range — '50 of 120' but not '21-40 of 120' position awareness (Baymard)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "screener",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show '21-40 of 120 · Page 2' next to count 402 with scroll-to-top 842",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-402 filter context + TASK-842 scroll",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505242790,
+      "updatedAt": 1787505242790,
+      "blocked": false
+    },
+    {
+      "id": "TASK-938",
+      "title": "Annual save lacks urgency — 'Save 20% · Save ₹720' but no 'Ends in 3d 14h' scarcity timer",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add countdown 'Ends in 3d 14h' muted under Save badge (768) live 60s",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-768 absolute rupee + TASK-692 Pay 10 get 12",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505249036,
+      "updatedAt": 1787505249036,
+      "blocked": false
+    },
+    {
+      "id": "TASK-939",
+      "title": "No bulk Unarchive — 80 archived must be restored one-by-one after bulk archive 395",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "control"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Restore all filtered' bulk action with 5s undo 412 in archive",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-395 bulk archive + TASK-353 archive",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505249290,
+      "updatedAt": 1787505249290,
+      "blocked": false
+    },
+    {
+      "id": "TASK-940",
+      "title": "Copy note loses Markdown — pasted to Slack shows raw '[link](url)' not rendered link",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Copy as rich text + plain fallback via Clipboard API, preview 562 shows both",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-480 Markdown + TASK-562 preview",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505249510,
+      "updatedAt": 1787505249510,
+      "blocked": false
+    },
+    {
+      "id": "TASK-941",
+      "title": "Tape shows 'Live' when market closed — last 90s poll as Live 258/411 but should show 'Closed · last 15:30'",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show 'Closed · last 15:30 IST' when isMarketOpen false (MarketStatus 640)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-411 Live claim + TASK-840 progress bar",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505249858,
+      "updatedAt": 1787505249858,
+      "blocked": false
+    },
+    {
+      "id": "TASK-942",
+      "title": "Archived highlight truncated — highlight works for active board but archived search not highlighted (311)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "search"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Extend <mark> highlight to archived filter results with violet wash (270)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-311 checklist highlight + TASK-635 preview",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505256735,
+      "updatedAt": 1787505256735,
+      "blocked": false
+    },
+    {
+      "id": "TASK-943",
+      "title": "Voice denied has no fallback — mic denied shows spinner, not 'Type instead' with focus to Search",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "When denied, show 'Mic blocked · Type to search' with focus Search + settings link",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-452 voice + TASK-774 stop + TASK-835 waveform",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505257348,
+      "updatedAt": 1787505257348,
+      "blocked": false
+    },
+    {
+      "id": "TASK-944",
+      "title": "Source chip has no Retry — 'NSE 5m ago • stale' with no 'Retry now' CTA, waits poll 135",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "trust",
+        "feedback"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Retry now' link next to stale chip that triggers fetch + countdown reset",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-689 per-symbol + TASK-800 fetch log + TASK-762 per-source",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505257845,
+      "updatedAt": 1787505257845,
+      "blocked": false
+    },
+    {
+      "id": "TASK-945",
+      "title": "Demo video silent with no unmute — CC captions 764 but no 'Tap for sound' control, 30s loop silent",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "home",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add unmute button with VTT captions toggle, persists muted",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-764 captions + TASK-710 transcript + TASK-906 5-min link",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505258699,
+      "updatedAt": 1787505258699,
+      "blocked": false
+    },
+    {
+      "id": "TASK-946",
+      "title": "Ticker tape hides its scrollbar with no affordance the list extends — TickerTape (TickerTape.tsx:15/19) uses overflow-x-auto + scrollbar-none, so a consumer sees ~8 chips and no hint that the tape scrolls to 20+ symbols; needs a right-edge fade, partial-chip peek, or a visible scroll cue",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "the tape signals more content exists beyond the fold (right-edge fade, clipped trailing chip, or scrollbar on interaction)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "tap/drag still scrolls it",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "N chips partially visible at rest",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no layout shift",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505291804,
+      "updatedAt": 1787505291804,
+      "blocked": false
+    },
+    {
+      "id": "TASK-947",
+      "title": "Saved measure has no thumbnail — '+12% in 14d' note 631 text only, no tiny chart image for recall",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "personalization"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Attach 120×60 thumbnail to saved note with chart snippet + date",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-631 save as note + TASK-439 measure + TASK-465 note",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505306279,
+      "updatedAt": 1787505306279,
+      "blocked": false
+    },
+    {
+      "id": "TASK-948",
+      "title": "Heatmap toggle not in URL — List·Heatmap 859 resets on reload, not persisted like pagination 781",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "control"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Persist via URL ?view=heatmap + localStorage like 781",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-859 heatmap toggle + TASK-781 persist",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505306860,
+      "updatedAt": 1787505306860,
+      "blocked": false
+    },
+    {
+      "id": "TASK-949",
+      "title": "Jump validation only after submit — typing 20 with max 10 shows 'Max 10' only after Enter, not live",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "screener",
+        "validation"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Live hint 'Max page 10' while typing with red border before submit",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-630 max hint + TASK-441 jump + TASK-753 First/Last",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505307381,
+      "updatedAt": 1787505307381,
+      "blocked": false
+    },
+    {
+      "id": "TASK-950",
+      "title": "Popular badge has no why — 'Most popular' 680 but not '76% choose Annual' social proof",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add '76% choose Annual' subtext under badge with muted 11px",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-680 popular + TASK-833 trust rating",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505307772,
+      "updatedAt": 1787505307772,
+      "blocked": false
+    },
+    {
+      "id": "TASK-951",
+      "title": "Pinned tape preview stale no badge — 2d old pin shows outdated axis 521 without 'Stale · Tap to refresh' warning",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "reliability"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show Stale badge + Refresh CTA (905) when pin >24h old",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-879 never expires + TASK-950 warning?",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505314100,
+      "updatedAt": 1787505314100,
+      "blocked": false
+    },
+    {
+      "id": "TASK-952",
+      "title": "Q vs Y toggle not obvious — 'Q · Y' but not 'Quarterly · Yearly' tooltip, novice guesses",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add tooltip 'Quarterly vs Yearly YoY' on toggle 406 with 44px hit",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-406 Q vs Y + TASK-268 YoY",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505314360,
+      "updatedAt": 1787505314360,
+      "blocked": false
+    },
+    {
+      "id": "TASK-953",
+      "title": "Archive filter single only — Shipped filter 618 but not multi-select Shipped+Wont-fix, power user blocked",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "filter"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Allow multi-select pills with AND logic + count 'Filtered 12' live",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-618 reason filter + TASK-752 multi? Actually 618 count",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505314628,
+      "updatedAt": 1787505314628,
+      "blocked": false
+    },
+    {
+      "id": "TASK-954",
+      "title": "No 'Until 5m before open' snooze — 'Until next open 09:15' but not '5m before open' for pre-market prep",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "alerts",
+        "control"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add buffer option '5m before open' in snooze picker 557 with countdown 334",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-953 buffer before open + TASK-557 until open",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505315087,
+      "updatedAt": 1787505315087,
+      "blocked": false
+    },
+    {
+      "id": "TASK-955",
+      "title": "Demo loop has no pause — auto-play 664 violates WCAG 2.2.2, no pause button like ticker 449",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "home",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Pause button on hover/focus + respect prefers-reduced-motion default pause",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-664 loop + TASK-449 ticker pause",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505321928,
+      "updatedAt": 1787505321928,
+      "blocked": false
+    },
+    {
+      "id": "TASK-956",
+      "title": "Copy task link lacks checklists — Markdown 532 copy but no 'Include 2/4 checks' toggle, context lost",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "share"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add toggle 'Include checks' in copy modal 489 + preview",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-532 Markdown + TASK-787 status + TASK-545 preview",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505322330,
+      "updatedAt": 1787505322330,
+      "blocked": false
+    },
+    {
+      "id": "TASK-957",
+      "title": "Compare baseline Sensex toggle missing — Nifty vs sector 838/511 but no Sensex switch for BSE-heavy",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "comparison"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add segmented Nifty · Sensex toggle under percentile badge 511 persisted",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-838 Nifty baseline + TASK-511 sample size",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505322853,
+      "updatedAt": 1787505322853,
+      "blocked": false
+    },
+    {
+      "id": "TASK-958",
+      "title": "Trending lacks volume leaders per sector — sector grouped 533 but not 'Bank leader: HDFCBANK +2.1% top volume'",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "ia"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add leader subheader 'Bank leader: HDFC +2.1%' muted 11px under sector group 533",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-533 grouping + TASK-767 volume reason",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505323231,
+      "updatedAt": 1787505323231,
+      "blocked": false
+    },
+    {
+      "id": "TASK-959",
+      "title": "No 'Exclude watchlist' filter — 8 hits include 3 already in watchlist, can't hide owned, duplicate attempt",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "filter"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Toggle 'Hide in watchlist' with badge '3 hidden' + persist",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-677 in-watchlist badge + TASK-388 dedupe",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505360269,
+      "updatedAt": 1787505360269,
+      "blocked": false
+    },
+    {
+      "id": "TASK-960",
+      "title": "No 'Copy TV format' — company header Copy ISIN 870 but not 'NSE:RELIANCE' for TradingView paste",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Copy as 'NSE:RELIANCE' option in copy menu alongside price/ISIN 585/870",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-585 price context + TASK-870 ISIN",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505360836,
+      "updatedAt": 1787505360836,
+      "blocked": false
+    },
+    {
+      "id": "TASK-961",
+      "title": "Note checklist plain — '[ ] Buy after results' renders text, not interactive checkbox, habit weak",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Render - [ ] as clickable checkbox in preview 562 with strike-through",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-647 toolbar + TASK-562 preview + TASK-480 Markdown",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505361596,
+      "updatedAt": 1787505361596,
+      "blocked": false
+    },
+    {
+      "id": "TASK-962",
+      "title": "Screener columns not hideable — Score/Sector fixed, 390px table overflows 80px, no Hide Sector",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "screener",
+        "ia"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add column visibility toggle: Score · Sector · Rank with persist via URL + localStorage",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-816 page size + TASK-753 First/Last",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505362178,
+      "updatedAt": 1787505362178,
+      "blocked": false
+    },
+    {
+      "id": "TASK-963",
+      "title": "Dismissing a fired alert permanently deletes it — AlertCenter 'Dismiss' (AlertCenter.tsx:310) calls removeAlert → DELETE /api/alerts?id= (route.ts:141-156), destroying the fired record with no archive and no undo; a consumer who dismisses then wants to review their alert journal can't recover it (raven TASK-845 covers export of existing records, not retention)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "dismissed fired alerts are archived (soft-delete / kept in history) rather than hard-deleted, or dismiss offers undo",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "the fired list can still grow without permanent loss",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "export (TASK-845) covers archived records too",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "active-alert Delete behavior unchanged",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505363211,
+      "updatedAt": 1787505363211,
+      "blocked": false
+    },
+    {
+      "id": "TASK-964",
+      "title": "Tape has no sector filter — 10 pills mixed BANK/IT, can't filter to Bank only to focus",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "filter"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add segmented All · Bank · IT filter above Tape with count per sector",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-496 liquid filter + TASK-321 sector scent",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505390187,
+      "updatedAt": 1787505390187,
+      "blocked": false
+    },
+    {
+      "id": "TASK-965",
+      "title": "Drawdown lacks recovery — Worst -2.1% (541) but not 'Recovery 18 days' duration, pain misjudged",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "backtest",
+        "analytics"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add recovery days column in worst drawdown table 541 with muted 11px",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-541 worst table + TASK-580 sparkline",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505390651,
+      "updatedAt": 1787505390651,
+      "blocked": false
+    },
+    {
+      "id": "TASK-966",
+      "title": "Recents sync badge not tappable — 'Synced' 628 static, can't tap to see devices/last sync log",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Make badge tappable to show device list + Last sync 2m ago (927) modal",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-628 badge + TASK-927 time + TASK-476 sync",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505390972,
+      "updatedAt": 1787505390972,
+      "blocked": false
+    },
+    {
+      "id": "TASK-967",
+      "title": "Note history not restorable — edited 798 shows 'Edited · diff' but no 'Restore this version' CTA",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "undo"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Restore button per history entry with 5s undo toast 222",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-798 edited + TASK-806 diff + TASK-798",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505391574,
+      "updatedAt": 1787505391574,
+      "blocked": false
+    },
+    {
+      "id": "TASK-968",
+      "title": "Liquid badge not tappable to clear — 'Liquid (42)' 637 but tap does nothing, must find toggle to clear",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "control"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Make badge tappable to clear Liquid filter + toast 'Showing all 120' pausable 222",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-637 count + TASK-649 showing + TASK-496 liquid",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505400962,
+      "updatedAt": 1787505400962,
+      "blocked": false
+    },
+    {
+      "id": "TASK-969",
+      "title": "Beat pill provenance not tappable — '+6% beat' 520 but provenance 674 not linked to filing PDF, trust gap at tick",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Link beat pill 520 to filing PDF via external icon + methodology 343",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-674 provenance + TASK-520 beat pill",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505401562,
+      "updatedAt": 1787505401562,
+      "blocked": false
+    },
+    {
+      "id": "TASK-970",
+      "title": "Voice transcript not saved as recent after correction — chip 'Did you mean RELIANCE?' 780 tap not saved to recents 229",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "personalization"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Save corrected transcript to recents 229 + trending 533 on chip tap",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-780 correction + TASK-599 editable + TASK-711 history",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505402245,
+      "updatedAt": 1787505402245,
+      "blocked": false
+    },
+    {
+      "id": "TASK-971",
+      "title": "Annual toggle not sticky on scroll — Annual/Monthly 444 scrolls away with FAQ, consumer loses context at bottom",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "mobile"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Make toggle sticky under header with hairline + shadow when FAQ in view, safe-area 253",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-703 billing sticky + TASK-550 dual anchor",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505402874,
+      "updatedAt": 1787505402874,
+      "blocked": false
+    },
+    {
+      "id": "TASK-972",
+      "title": "Search never matches sector/industry — searchInstruments (instruments.ts:41-60) scores only symbol + company name; querying a sector term not in any symbol/name (live-verified: 'health tech' → 0, 'utilities'/'textiles' → 0) returns nothing despite the index's sec/ind fields carrying those values; consumers searching by sector or theme get no results",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "searchInstruments also scores sec/industry/idx fields (sector/theme queries like 'health tech', 'utilities', 'NIFTY 50' return relevant instruments)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "results keep the exchange/sector hint",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "existing symbol/name ranking unchanged (exact symbol still wins)",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505425774,
+      "updatedAt": 1787505425774,
+      "blocked": false
+    },
+    {
+      "id": "TASK-973",
+      "title": "No as-of near price — 'Data as of 15:30 IST' below fold source line 331, not near chart header",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show 'As of 15:30 IST · NSE' muted under price header with live 60s + per-source 762",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-331 above fold + TASK-689 per-symbol",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505446802,
+      "updatedAt": 1787505446802,
+      "blocked": false
+    },
+    {
+      "id": "TASK-974",
+      "title": "Watchlist total lacks sparkline — 'Portfolio ₹4.2L' but no 30d total trend vs Nifty mini spark",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "visual"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add mini sparkline vs Nifty dotted behind total value (714) 8% wash",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-714 today's gain + TASK-743 since-added sparkline",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505447274,
+      "updatedAt": 1787505447274,
+      "blocked": false
+    },
+    {
+      "id": "TASK-975",
+      "title": "Sector avg lacks market avg — BANK avg +2.3% but not 'Market +1.1% · Sector +1.8%' dual avg",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "comparison"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add dual subtext 'Market +1.1% · Sector +1.8%' under sector avg 766",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-766 avg change + TASK-778 vs Nifty",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505447691,
+      "updatedAt": 1787505447691,
+      "blocked": false
+    },
+    {
+      "id": "TASK-976",
+      "title": "No printable board PDF — Copy snapshot 641 image only, not table PDF for wall retro",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "export"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Print PDF with columns + counts + archived filter 618, dated filename 769",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-641 snapshot + TASK-704 export",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505448016,
+      "updatedAt": 1787505448016,
+      "blocked": false
+    },
+    {
+      "id": "TASK-977",
+      "title": "Trial duration not explicit — 'No card today' 518 but not '7-day trial ends 20 May' date",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add '7-day free · ends 20 May · cancel before' date under Pro CTA 518",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-518 trial clarity + TASK-341 last-updated",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505454475,
+      "updatedAt": 1787505454475,
+      "blocked": false
+    },
+    {
+      "id": "TASK-978",
+      "title": "Search result lacks TV copy — Copy symbol 602 plain RELIANCE but not 'NSE:RELIANCE' for TradingView",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Copy TV format 'NSE:RELIANCE' option per result alongside Copy symbol 602",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-960 copy TV header + TASK-841 copy ticker format",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505454968,
+      "updatedAt": 1787505454968,
+      "blocked": false
+    },
+    {
+      "id": "TASK-979",
+      "title": "No 'Unassigned' filter on board — 'Mine' 379 shows only mine, can't see 20 unassigned for triage",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "filter"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add toggle Unassigned · Mine · All with count, URL ?assignee=unassigned",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-379 Mine + TASK-606 saved views",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505455532,
+      "updatedAt": 1787505455532,
+      "blocked": false
+    },
+    {
+      "id": "TASK-980",
+      "title": "Copy task Markdown no status color — '[TASK-15 Doing]' plain, not violet vs amber dot per status",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Markdown '[TASK-15 Doing · P1]' with status/priority colored per 787 status + dot",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-787 Markdown status + TASK-532 Markdown",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505456145,
+      "updatedAt": 1787505456146,
+      "blocked": false
+    },
+    {
+      "id": "TASK-981",
+      "title": "Copy ISIN hint on company hidden — Copy ISIN 870 only on hover, not always visible, power user misses",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show Copy ISIN button always visible next to Copy price 585 at >=640px, 44px",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-870 ISIN + TASK-916 hint on symbol",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505467449,
+      "updatedAt": 1787505467449,
+      "blocked": false
+    },
+    {
+      "id": "TASK-982",
+      "title": "Sparkline YoY missing Nifty baseline — 12M line alone vs sector median 485 but not Nifty 50 838 baseline",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "comparison"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Overlay Nifty 50 dotted muted baseline in YoY sparkline 268 with legend",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-485 vs sector + TASK-838 Nifty baseline + TASK-294 axis",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505468154,
+      "updatedAt": 1787505468154,
+      "blocked": false
+    },
+    {
+      "id": "TASK-983",
+      "title": "Board Done has no bulk restore preview — 'Restore all filtered' 939 but no 'Will restore 12 Shipped' count",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "undo"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Preview 'Will restore 12 Shipped' in bulk restore confirm with 5s undo 412",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-939 bulk Unarchive + TASK-353 archive",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505468655,
+      "updatedAt": 1787505468655,
+      "blocked": false
+    },
+    {
+      "id": "TASK-984",
+      "title": "Mobile bottom nav alert badge not pulsing — nav badge 663 linked to bell 168 but no pulse when new while tab hidden",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "mobile",
+        "feedback"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Pulse nav badge + title '• 2 new alerts' when new while hidden + sound if not DND 672",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-663 nav badge + TASK-926 hidden pulsing",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505469063,
+      "updatedAt": 1787505469063,
+      "blocked": false
+    },
+    {
+      "id": "TASK-985",
+      "title": "Watchlist has no rename — 'Watchlist (8)' generic, cannot name 'Bank Bull' for recall",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "personalization"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add rename pencil next to title with inline edit + persist mirror (150)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-529 fork + TASK-244 share + TASK-827 empty dual CTA",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505523982,
+      "updatedAt": 1787505523982,
+      "blocked": false
+    },
+    {
+      "id": "TASK-986",
+      "title": "Bulk clear recents has no undo — 5 recents cleared instantly via bulk Clear all 540, no 5s undo",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "undo"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 5s pausable undo toast after Clear all recents 540 with restore",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-540 bulk Clear + TASK-357 per-item delete",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505524531,
+      "updatedAt": 1787505524531,
+      "blocked": false
+    },
+    {
+      "id": "TASK-987",
+      "title": "Tape sort lacks absolute vs % toggle — Top 2% but not 'Top ₹50 absolute move' for large caps",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "sorting"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add toggle % · ₹ next to sort with persisted choice",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-819 tape sort + TASK-560 groups + TASK-810 Most active",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505525145,
+      "updatedAt": 1787505525145,
+      "blocked": false
+    },
+    {
+      "id": "TASK-988",
+      "title": "52W mini band not interactive — band 591 under price but not tappable to expand to 52W chart",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "interaction"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Tap band opens 52W chart modal with High/Low markers 892",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-591 mini band + TASK-551 ATH + TASK-752 hover values",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505525801,
+      "updatedAt": 1787505525801,
+      "blocked": false
+    },
+    {
+      "id": "TASK-989",
+      "title": "No trial extension — 7-day trial 977 but no 'Extend 3 days' for power evaluation, churn risk",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "retention"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Need more time? Extend 3 days' link under trial date 977 with one tap",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-977 trial date + TASK-518 trial clarity + TASK-477 pause",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505534908,
+      "updatedAt": 1787505534908,
+      "blocked": false
+    },
+    {
+      "id": "TASK-990",
+      "title": "No 'Next' for search highlights — 8 hits highlight 751 but no 'Next →' to jump between matches",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Next/Prev chevrons next to '8 matches' pill (822 board style) that focuses next hit",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-751 highlight + TASK-899 case mismatch",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505535639,
+      "updatedAt": 1787505535639,
+      "blocked": false
+    },
+    {
+      "id": "TASK-991",
+      "title": "No copy delta on fired alert — '+2.0% vs entry' 861 but not copyable as 'RELIANCE +2.0% vs ₹2,400' text",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "alerts",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Copy button per fired row with toast 'Copied delta' pausable 222",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-861 entry delta + TASK-746 spark",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505536295,
+      "updatedAt": 1787505536295,
+      "blocked": false
+    },
+    {
+      "id": "TASK-992",
+      "title": "Demo video has no YouTube link — 30s loop 664 but no 'Watch 5-min full demo' CTA for low bandwidth",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "home",
+        "activation"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Watch 5-min on YouTube' link under loop with external icon",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-664 loop + TASK-906 5-min link + TASK-906",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505536816,
+      "updatedAt": 1787505536816,
+      "blocked": false
+    },
+    {
+      "id": "TASK-993",
+      "title": "Heatmap cells lack performance tooltip — BANK tile but hover shows no '+2.3% avg + Top mover HDFC +2.1%'",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "breadth",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add tooltip '+2.3% avg · Top HDFC +2.1%' on heatmap tile hover 563",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-563 heatmap + TASK-878 count",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505543948,
+      "updatedAt": 1787505543948,
+      "blocked": false
+    },
+    {
+      "id": "TASK-994",
+      "title": "Watchlist virtualized rows lack overscan shimmer — fast scroll 757 blank vs sector shimmer",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "perf"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Use shimmer with sector color vs white flash during overscan 5 rows",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-757 white flash + TASK-310 virtualization",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505544747,
+      "updatedAt": 1787505544747,
+      "blocked": false
+    },
+    {
+      "id": "TASK-995",
+      "title": "Breadth mood share lacks copy text — image share 696 but no 'Copy mood text' plain 'Risk-on 62%' for Twitter",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "breadth",
+        "share"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Copy text' alongside Share image 696 with plain 'Market mood: Risk-on 62%' + link",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-696 shareable + TASK-604 share image",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505545352,
+      "updatedAt": 1787505545352,
+      "blocked": false
+    },
+    {
+      "id": "TASK-996",
+      "title": "Home recently viewed lacks 'See all history' — 5 recents strip 501 but no 'View all history' link",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "home",
+        "ia"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'See all →' link to /history with all viewed + search filter",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-501 strip + TASK-584 clear + TASK-625 per-item remove",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505545826,
+      "updatedAt": 1787505545826,
+      "blocked": false
+    },
+    {
+      "id": "TASK-997",
+      "title": "Index type misclassification — /api/instruments type regex (NIFTY|SENSEX|INDIA VIX|BANKNIFTY|FINNIFTY|MIDCAP|SME|INDIA 10) applied to symbol only; 150 index-name instruments fail it (BSE AUTO, BSE BANKEX, BSE BHARAT 22, 200EQW — live data-verified) and get typed Equity, so getChart skips the caret ^ticker path (marketData.ts:585-592) and charts them as equities → upstream failures/errors for real indices",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "index classification uses the instrument's name/index-membership (or a curated INDEX_MAP set) not just the symbol regex",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "BSE AUTO/BANKEX/BHARAT 22 and similar resolve through the index chart path",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "ETFs stay Equity",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "no regression to NIFTY 50/SENSEX/BANKNIFTY",
+          "done": false
+        },
+        {
+          "id": "5",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505578596,
+      "updatedAt": 1787505578596,
+      "blocked": false
+    },
+    {
+      "id": "TASK-998",
+      "title": "Row sparkline has no Nifty baseline — 30d mini spark alone, no dotted Nifty comparison for context",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "comparison"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add dotted Nifty 50 baseline behind row sparkline 105 with legend 8% wash",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-974 total sparkline + TASK-105 watchlist sparkline",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505600021,
+      "updatedAt": 1787505600021,
+      "blocked": false
+    },
+    {
+      "id": "TASK-999",
+      "title": "No 52W low line on chart — High line 892 but Low not shown, support level missing at glance",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "visual"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add dashed low line with label '52W L ₹1,800' muted like high 892",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-892 high line + TASK-700 y-axis tag",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505600715,
+      "updatedAt": 1787505600715,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1000",
+      "title": "No pre-filter count — 'P/E <15' chip but not '42 matches' before apply, consumer blind",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "screener",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show '42 matches' pill next to filter chips live before apply",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-690 pills wrap + TASK-402 filter context",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505601486,
+      "updatedAt": 1787505601486,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1001",
+      "title": "Urgency badge not sticky — 'Ends in 3d 14h' 938 scrolls away with FAQ, urgency lost",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "mobile"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Make urgency badge sticky under billing toggle 703 with shadow when FAQ in view",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-938 urgency + TASK-703 billing sticky",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505602285,
+      "updatedAt": 1787505602285,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1002",
+      "title": "No per-bucket snooze — 'Snooze 1d' for all alerts, not 'Snooze Today bucket until tomorrow' per bucket",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "alerts",
+        "control"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add snooze icon per time bucket header Today/This week 472 with duration 672",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-638 collapse + TASK-472 buckets + TASK-672 DND",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505611262,
+      "updatedAt": 1787505611262,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1003",
+      "title": "No dividend streak badge — yield 2.1% static but not '5Y growing' streak for income investor trust",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add '5Y growing' green badge when yield growing 5Y with sparkline 791",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-791 dividend sparkline + TASK-791 yield trend",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505611864,
+      "updatedAt": 1787505611864,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1004",
+      "title": "Bulk add has no exclude owned toggle — 'Add all Gainers' 854 adds 3 already owned then deduped 388, waste",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ticker",
+        "watchlist"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add toggle 'Skip already owned' default on in bulk add modal with 3 owned preview",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-854 bulk add + TASK-388 dedupe",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505612373,
+      "updatedAt": 1787505612373,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1005",
+      "title": "Trending new badge missing — first-time trending symbol not marked 'NEW', consumer misses breakout",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show 'NEW' dot when symbol enters trending today vs yesterday not trending",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-533 grouped + TASK-594 recency + TASK-888 sector leader",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505612835,
+      "updatedAt": 1787505612835,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1006",
+      "title": "Copy task status color not in plain text — Markdown '[TASK-15 Doing]' colored in toast but plain text loses color, scent weak in Slack",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Append emoji per status: Doing 🟡 Review 🔵 Done 🟢 in plain text fallback",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-805 status icon + TASK-980 status color + TASK-532 Markdown",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505621174,
+      "updatedAt": 1787505621174,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1007",
+      "title": "Watchlist note edit lacks auto-save indicator — edited 2d ago saves silent, no 'Saved' tick",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "feedback"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Show 'Saved · 2m ago' tick under note after save with 2s fade",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-798 edited + TASK-564 timestamp",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505621858,
+      "updatedAt": 1787505621858,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1008",
+      "title": "Heatmap share lacks methodology table — image watermark 725 but no mini table 'Adv 62% · Vol 1.2Cr Avg' in image footer",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "breadth",
+        "share"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add footer table in heatmap share image 783 with Adv/Dec + avg volume muted 8px",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-783 share + TASK-725 watermark + TASK-878 count",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505622591,
+      "updatedAt": 1787505622591,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1009",
+      "title": "Annual billed yearly fine print hidden on mobile — 'Billed yearly' 742 wraps under ₹239/mo at 390px, clipped",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "mobile"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Stack fine print vertically on <640px with 4px gap, not clipped like 582 mobile anchor",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-742 billed yearly + TASK-582 mobile anchor",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505623422,
+      "updatedAt": 1787505623422,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1010",
+      "title": "Fired alerts have no 're-arm' affordance — the fired section (AlertCenter.tsx:284-320) offers only 'Dismiss' (permanent delete, TASK-963); a consumer whose price-cross alert fired must delete + recreate to arm it for the next cross, instead of a one-tap 'Re-arm' that resets active=1 + clears firedAt",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "fired alerts offer a one-tap re-arm (PATCH active=1, cleared firedAt, same target) alongside Dismiss",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "re-armed alerts move to the Active list with the same symbol/price/type",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "aria-labels distinguish Re-arm vs Dismiss",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axe 0 violations",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505655501,
+      "updatedAt": 1787505655501,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1011",
+      "title": "Home has no sector heatmap preview — breadth heatmap 563 only on breadth, not on home for quick scan",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "home",
+        "visual"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 2-row mini heatmap of top 6 sectors with avg % + count 878 under Market mood 739",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-563 heatmap + TASK-739 sentiment",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505672577,
+      "updatedAt": 1787505672577,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1012",
+      "title": "Volume spike not marked — 2× avg volume day looks like normal candle, liquidity event missed",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "chart",
+        "visual"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add dot above candle when volume >2× 20d avg with tooltip 'Vol 2.3× avg'",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-858 FII sparkline + TASK-548 baseline",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505673278,
+      "updatedAt": 1787505673278,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1013",
+      "title": "Screener share image missing — Copy link 614 but no image share for Twitter like breadth 604",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "screener",
+        "share"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Generate 1200×630 image with filters + count + top 3 rows via OG, watermark 725",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-614 copy link + TASK-604 share image",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505673964,
+      "updatedAt": 1787505673964,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1014",
+      "title": "Filing PDF opens new tab — 'Source: filing 12 May' 869 but no inline viewer, context lost",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "company",
+        "trust"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Open filing in Modal viewer with 44px close + download fallback",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-869 filing link + TASK-849 filing linked",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505674827,
+      "updatedAt": 1787505674827,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1015",
+      "title": "Total sparkline range fixed — 30d only, not 1W/1M selectable like breadth scrubber 247",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "watchlist",
+        "control"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add segmented 1W · 1M · 3M above total sparkline 974 persisted",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-974 sparkline + TASK-701 since added",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505681278,
+      "updatedAt": 1787505681278,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1016",
+      "title": "Board filtered link not shareable — filtered Doing 2/3 with no Copy link like screener 614",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "board",
+        "share"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add Copy link CTA next to highlight count 648 with filtered URL ?status=doing&q=momentum",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-648 count + TASK-784 per-column breakdown",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505681961,
+      "updatedAt": 1787505681961,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1017",
+      "title": "Pricing row lacks Learn more — 'Backtest row' but no 'Learn more → docs/backtest' link per feature",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "pricing",
+        "copy"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Add 'Learn more' link per Pro row in matrix 137 to docs anchor",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-137 matrix + TASK-885 row-level compare",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505682625,
+      "updatedAt": 1787505682625,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1018",
+      "title": "Trending leader not tappable — 'Bank leader: HDFC +2.1%' 958 but not tappable to filter BANK sector",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "search",
+        "ia"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "Make leader tappable to set sector filter 158 with count 911",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "AC: complements TASK-958 volume leaders + TASK-533 grouping",
+          "done": false
+        }
+      ],
+      "createdAt": 1787505683430,
+      "updatedAt": 1787505683430,
+      "blocked": false
     }
   ],
   "activities": [
     {
-      "id": "H1N1",
-      "taskId": "TASK-826",
+      "id": "20Z6",
+      "taskId": "TASK-1018",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504631124
+      "at": 1787505683430
     },
     {
-      "id": "9DOM",
-      "taskId": "TASK-825",
+      "id": "W99T",
+      "taskId": "TASK-1017",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504611070
+      "at": 1787505682625
     },
     {
-      "id": "317H",
-      "taskId": "TASK-824",
+      "id": "JKUJ",
+      "taskId": "TASK-1016",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504610767
+      "at": 1787505681964
     },
     {
-      "id": "J9B1",
-      "taskId": "TASK-823",
+      "id": "IBF6",
+      "taskId": "TASK-1015",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504610438
+      "at": 1787505681283
     },
     {
-      "id": "6Y6L",
-      "taskId": "TASK-822",
+      "id": "PPJC",
+      "taskId": "TASK-1014",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504610116
+      "at": 1787505674827
     },
     {
-      "id": "L6YD",
-      "taskId": "TASK-821",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787504603276
-    },
-    {
-      "id": "DKXJ",
-      "taskId": "TASK-820",
+      "id": "UWSR",
+      "taskId": "TASK-1013",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504602941
+      "at": 1787505673964
     },
     {
-      "id": "DZTD",
-      "taskId": "TASK-819",
+      "id": "N1SP",
+      "taskId": "TASK-1012",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504602631
+      "at": 1787505673279
     },
     {
-      "id": "JKGF",
-      "taskId": "TASK-818",
+      "id": "CSX8",
+      "taskId": "TASK-1011",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504602281
+      "at": 1787505672577
     },
     {
-      "id": "FVWW",
-      "taskId": "TASK-817",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504595682
-    },
-    {
-      "id": "U05V",
-      "taskId": "TASK-816",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504595511
-    },
-    {
-      "id": "L7V2",
-      "taskId": "TASK-815",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504595232
-    },
-    {
-      "id": "KYLF",
-      "taskId": "TASK-814",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504594977
-    },
-    {
-      "id": "8U5T",
-      "taskId": "TASK-813",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504567574
-    },
-    {
-      "id": "2BBW",
-      "taskId": "TASK-812",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504567299
-    },
-    {
-      "id": "VK1F",
-      "taskId": "TASK-811",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504566954
-    },
-    {
-      "id": "00BX",
-      "taskId": "TASK-810",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504566715
-    },
-    {
-      "id": "CTCO",
-      "taskId": "TASK-809",
+      "id": "3JC6",
+      "taskId": "TASK-1010",
       "text": "created in todo",
       "agent": "SYSTEM",
-      "at": 1787504566280
+      "at": 1787505655501
     },
     {
-      "id": "PCQQ",
-      "taskId": "TASK-808",
+      "id": "AYC7",
+      "taskId": "TASK-1009",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504561176
+      "at": 1787505623422
     },
     {
-      "id": "PZB5",
-      "taskId": "TASK-807",
+      "id": "1LSJ",
+      "taskId": "TASK-1008",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504560946
+      "at": 1787505622591
     },
     {
-      "id": "19SZ",
-      "taskId": "TASK-806",
+      "id": "BDAU",
+      "taskId": "TASK-1007",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504560684
+      "at": 1787505621858
     },
     {
-      "id": "Z6WD",
-      "taskId": "TASK-805",
+      "id": "BVTD",
+      "taskId": "TASK-1006",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504560472
+      "at": 1787505621174
     },
     {
-      "id": "G110",
-      "taskId": "TASK-804",
+      "id": "UNQC",
+      "taskId": "TASK-1005",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504554128
+      "at": 1787505612835
     },
     {
-      "id": "0WWR",
-      "taskId": "TASK-803",
+      "id": "YZGE",
+      "taskId": "TASK-1004",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504553823
+      "at": 1787505612387
     },
     {
-      "id": "4TXR",
-      "taskId": "TASK-802",
+      "id": "MDQB",
+      "taskId": "TASK-1003",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504553676
+      "at": 1787505611864
     },
     {
-      "id": "B9H7",
-      "taskId": "TASK-801",
+      "id": "HF4M",
+      "taskId": "TASK-1002",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504553450
+      "at": 1787505611262
     },
     {
-      "id": "LJGK",
-      "taskId": "TASK-800",
+      "id": "8L18",
+      "taskId": "TASK-907",
+      "text": "review ✗ gates RED (tsc=28.0s) — fix and re-run",
+      "agent": "ECHO",
+      "at": 1787505608490
+    },
+    {
+      "id": "Q72M",
+      "taskId": "TASK-112",
+      "text": "review ✗ gates RED (tsc=30.0s) — fix and re-run",
+      "agent": "PHANTOM",
+      "at": 1787505607942
+    },
+    {
+      "id": "T948",
+      "taskId": "TASK-1001",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504521153
+      "at": 1787505602285
     },
     {
-      "id": "MTTN",
-      "taskId": "TASK-799",
+      "id": "XK7C",
+      "taskId": "TASK-1000",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504520834
+      "at": 1787505601486
     },
     {
-      "id": "T66F",
-      "taskId": "TASK-798",
+      "id": "H17O",
+      "taskId": "TASK-999",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504520634
+      "at": 1787505600715
     },
     {
-      "id": "9D27",
-      "taskId": "TASK-797",
+      "id": "M4IN",
+      "taskId": "TASK-998",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504520412
+      "at": 1787505600021
     },
     {
-      "id": "ULX7",
-      "taskId": "TASK-796",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504514957
+      "id": "O1RJ",
+      "taskId": "TASK-148",
+      "text": "✓ checked axe 0 violations",
+      "agent": "RAVAN",
+      "at": 1787505593214
     },
     {
-      "id": "ECIY",
-      "taskId": "TASK-795",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504514712
+      "id": "7KAN",
+      "taskId": "TASK-148",
+      "text": "✓ checked typography reads as intended in both themes",
+      "agent": "RAVAN",
+      "at": 1787505592877
     },
     {
-      "id": "WCJB",
-      "taskId": "TASK-794",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504514482
+      "id": "LLUC",
+      "taskId": "TASK-148",
+      "text": "✓ checked no undefined-var fallback in legal.css/pricing.c",
+      "agent": "RAVAN",
+      "at": 1787505592189
     },
     {
-      "id": "T576",
-      "taskId": "TASK-793",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504514228
+      "id": "Q72W",
+      "taskId": "TASK-148",
+      "text": "✓ checked legal/pricing headings use a defined font token ",
+      "agent": "RAVAN",
+      "at": 1787505591525
     },
     {
-      "id": "4LSM",
-      "taskId": "TASK-792",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504506912
-    },
-    {
-      "id": "YENG",
-      "taskId": "TASK-791",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504506492
-    },
-    {
-      "id": "J3CG",
-      "taskId": "TASK-790",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504506208
-    },
-    {
-      "id": "9F24",
-      "taskId": "TASK-789",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504505872
-    },
-    {
-      "id": "72S3",
-      "taskId": "TASK-788",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504460531
-    },
-    {
-      "id": "JP9A",
-      "taskId": "TASK-787",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504460313
-    },
-    {
-      "id": "XTAG",
-      "taskId": "TASK-786",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504460063
-    },
-    {
-      "id": "1RSZ",
-      "taskId": "TASK-785",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504459734
-    },
-    {
-      "id": "RNSH",
-      "taskId": "TASK-784",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504453267
-    },
-    {
-      "id": "SNWP",
-      "taskId": "TASK-783",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504453032
-    },
-    {
-      "id": "VOUE",
-      "taskId": "TASK-782",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504452671
-    },
-    {
-      "id": "YE49",
-      "taskId": "TASK-781",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504452411
-    },
-    {
-      "id": "UBRH",
-      "taskId": "TASK-780",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504446680
-    },
-    {
-      "id": "674X",
-      "taskId": "TASK-779",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504446377
-    },
-    {
-      "id": "2QJP",
-      "taskId": "TASK-778",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504445992
-    },
-    {
-      "id": "A6EU",
-      "taskId": "TASK-777",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504445681
-    },
-    {
-      "id": "GT7I",
-      "taskId": "TASK-776",
+      "id": "TCP1",
+      "taskId": "TASK-997",
       "text": "created in todo",
       "agent": "SYSTEM",
-      "at": 1787504433945
+      "at": 1787505578596
     },
     {
-      "id": "A23M",
-      "taskId": "TASK-775",
+      "id": "FI1G",
+      "taskId": "TASK-907",
+      "text": "✓ checked axe 0 violations",
+      "agent": "ECHO",
+      "at": 1787505573802
+    },
+    {
+      "id": "054A",
+      "taskId": "TASK-907",
+      "text": "✓ checked existing export content unchanged",
+      "agent": "ECHO",
+      "at": 1787505573260
+    },
+    {
+      "id": "DMSU",
+      "taskId": "TASK-907",
+      "text": "✓ checked filename is stable enough to sort",
+      "agent": "ECHO",
+      "at": 1787505572575
+    },
+    {
+      "id": "SPJ6",
+      "taskId": "TASK-626",
+      "text": "claimed by VERTEX · → doing",
+      "agent": "VERTEX",
+      "at": 1787505572162
+    },
+    {
+      "id": "9KTE",
+      "taskId": "TASK-907",
+      "text": "✓ checked export filename embeds the date (IST), e.g. nift",
+      "agent": "ECHO",
+      "at": 1787505571866
+    },
+    {
+      "id": "VHAI",
+      "taskId": "TASK-112",
+      "text": "✓ checked axe 0 violations",
+      "agent": "PHANTOM",
+      "at": 1787505564034
+    },
+    {
+      "id": "CZWG",
+      "taskId": "TASK-112",
+      "text": "✓ checked sr-only summary still correct",
+      "agent": "PHANTOM",
+      "at": 1787505563321
+    },
+    {
+      "id": "OWSV",
+      "taskId": "TASK-112",
+      "text": "✓ checked hover tooltips show ascending dates left-to-righ",
+      "agent": "PHANTOM",
+      "at": 1787505562608
+    },
+    {
+      "id": "RMKF",
+      "taskId": "TASK-112",
+      "text": "✓ checked FlowBars values are reversed to match the sparkl",
+      "agent": "PHANTOM",
+      "at": 1787505561933
+    },
+    {
+      "id": "B3LB",
+      "taskId": "TASK-112",
+      "text": "✓ checked all four breadth series (VIX, A/D, FII, DII) ren",
+      "agent": "PHANTOM",
+      "at": 1787505561382
+    },
+    {
+      "id": "1HRP",
+      "taskId": "TASK-996",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504415700
+      "at": 1787505545826
     },
     {
-      "id": "187P",
-      "taskId": "TASK-774",
+      "id": "D8ZI",
+      "taskId": "TASK-995",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504415499
+      "at": 1787505545352
     },
     {
-      "id": "NNI2",
-      "taskId": "TASK-773",
+      "id": "CBWE",
+      "taskId": "TASK-994",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504415300
+      "at": 1787505544747
     },
     {
-      "id": "3HF1",
-      "taskId": "TASK-772",
+      "id": "92E5",
+      "taskId": "TASK-993",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504414948
+      "at": 1787505543948
     },
     {
-      "id": "MJ41",
-      "taskId": "TASK-771",
+      "id": "W7GA",
+      "taskId": "TASK-148",
+      "text": "claimed by PHANTOM · → doing",
+      "agent": "PHANTOM",
+      "at": 1787505538043
+    },
+    {
+      "id": "LYD6",
+      "taskId": "TASK-992",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504408833
+      "at": 1787505536816
     },
     {
-      "id": "7AI5",
-      "taskId": "TASK-770",
+      "id": "FOAB",
+      "taskId": "TASK-991",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504408665
+      "at": 1787505536295
     },
     {
-      "id": "QNQ1",
-      "taskId": "TASK-769",
+      "id": "JFGL",
+      "taskId": "TASK-990",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504408527
+      "at": 1787505535639
     },
     {
-      "id": "3MOC",
-      "taskId": "TASK-768",
+      "id": "YDUE",
+      "taskId": "TASK-989",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504408318
+      "at": 1787505534908
     },
     {
-      "id": "3PL8",
-      "taskId": "TASK-767",
+      "id": "3LAE",
+      "taskId": "TASK-988",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504402609
+      "at": 1787505525801
     },
     {
-      "id": "8SKQ",
-      "taskId": "TASK-766",
+      "id": "HRQU",
+      "taskId": "TASK-987",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504402308
+      "at": 1787505525145
     },
     {
-      "id": "PXR2",
-      "taskId": "TASK-765",
+      "id": "IMQ0",
+      "taskId": "TASK-986",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504401982
+      "at": 1787505524531
     },
     {
-      "id": "5BBP",
-      "taskId": "TASK-764",
+      "id": "N80R",
+      "taskId": "TASK-985",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504401573
+      "at": 1787505523982
     },
     {
-      "id": "MFPL",
-      "taskId": "TASK-763",
+      "id": "NC2D",
+      "taskId": "TASK-70",
+      "text": "claimed by PHANTOM · → doing",
+      "agent": "PHANTOM",
+      "at": 1787505517233
+    },
+    {
+      "id": "3SJN",
+      "taskId": "TASK-984",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787505469063
+    },
+    {
+      "id": "7S6N",
+      "taskId": "TASK-983",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787505468655
+    },
+    {
+      "id": "F3D5",
+      "taskId": "TASK-982",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787505468154
+    },
+    {
+      "id": "FYLZ",
+      "taskId": "TASK-981",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787505467450
+    },
+    {
+      "id": "U0EJ",
+      "taskId": "TASK-980",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787505456146
+    },
+    {
+      "id": "IHIY",
+      "taskId": "TASK-979",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787505455532
+    },
+    {
+      "id": "F3I1",
+      "taskId": "TASK-978",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787505454968
+    },
+    {
+      "id": "78GA",
+      "taskId": "TASK-977",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787505454476
+    },
+    {
+      "id": "5S0X",
+      "taskId": "TASK-976",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787505448016
+    },
+    {
+      "id": "IZTK",
+      "taskId": "TASK-975",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787505447691
+    },
+    {
+      "id": "QZ0M",
+      "taskId": "TASK-974",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787505447275
+    },
+    {
+      "id": "7FRE",
+      "taskId": "TASK-973",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787505446802
+    },
+    {
+      "id": "AUQ5",
+      "taskId": "TASK-972",
       "text": "created in todo",
       "agent": "SYSTEM",
-      "at": 1787504389507
+      "at": 1787505425774
     },
     {
-      "id": "K99K",
-      "taskId": "TASK-762",
+      "id": "7980",
+      "taskId": "TASK-112",
+      "text": "took over from CIPHER (--force)",
+      "agent": "PHANTOM",
+      "at": 1787505418924
+    },
+    {
+      "id": "PZL5",
+      "taskId": "TASK-971",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504366262
+      "at": 1787505402875
     },
     {
-      "id": "8UJ0",
-      "taskId": "TASK-761",
+      "id": "9UVW",
+      "taskId": "TASK-970",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504366044
+      "at": 1787505402245
     },
     {
-      "id": "9365",
-      "taskId": "TASK-760",
+      "id": "QP3F",
+      "taskId": "TASK-969",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504365708
+      "at": 1787505401562
     },
     {
-      "id": "6KY8",
-      "taskId": "TASK-759",
+      "id": "25LE",
+      "taskId": "TASK-968",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504365425
+      "at": 1787505400962
     },
     {
-      "id": "DQWO",
-      "taskId": "TASK-758",
+      "id": "8YBS",
+      "taskId": "TASK-967",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504359517
+      "at": 1787505391574
     },
     {
-      "id": "DI2R",
-      "taskId": "TASK-757",
+      "id": "X6JL",
+      "taskId": "TASK-966",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504359013
+      "at": 1787505390972
     },
     {
-      "id": "RTBT",
-      "taskId": "TASK-756",
+      "id": "KBHT",
+      "taskId": "TASK-965",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504358648
+      "at": 1787505390651
     },
     {
-      "id": "R1DQ",
-      "taskId": "TASK-755",
+      "id": "W3OZ",
+      "taskId": "TASK-964",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504358281
+      "at": 1787505390187
     },
     {
-      "id": "7MZ3",
-      "taskId": "TASK-754",
+      "id": "6OEF",
+      "taskId": "TASK-963",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787505363211
+    },
+    {
+      "id": "GGZI",
+      "taskId": "TASK-962",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504351753
+      "at": 1787505362178
     },
     {
-      "id": "O5XI",
-      "taskId": "TASK-753",
+      "id": "3QL0",
+      "taskId": "TASK-961",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504351392
+      "at": 1787505361596
     },
     {
-      "id": "HW61",
-      "taskId": "TASK-752",
+      "id": "6VT7",
+      "taskId": "TASK-960",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504351005
+      "at": 1787505360836
     },
     {
-      "id": "B0AX",
-      "taskId": "TASK-751",
+      "id": "D1R5",
+      "taskId": "TASK-959",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504350469
+      "at": 1787505360269
     },
     {
-      "id": "BHZQ",
-      "taskId": "TASK-93",
-      "text": "shipped c8e39e4 (local) · fix(ui): Modal locks body scroll with stacked-open counter + shift compensation (TASK-93) · gates tsc=11.5s·lint=34.6s·test=12.6s · e2e✓",
-      "agent": "CIPHER",
-      "at": 1787504336436
-    },
-    {
-      "id": "3U19",
-      "taskId": "TASK-750",
+      "id": "9TNA",
+      "taskId": "TASK-958",
       "text": "created in todo",
       "agent": "RAVEN",
-      "at": 1787504320691
-    },
-    {
-      "id": "NXGJ",
-      "taskId": "TASK-749",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504320420
-    },
-    {
-      "id": "GDEO",
-      "taskId": "TASK-748",
-      "text": "created in todo",
-      "agent": "RAVEN",
-      "at": 1787504320068
+      "at": 1787505323232
     }
   ],
   "deletions": [],
-  "updatedAt": 1787504631151
+  "updatedAt": 1787505683515
 }
