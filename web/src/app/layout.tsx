@@ -1,54 +1,66 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import "./globals.css";
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const jetbrains = JetBrains_Mono({
   variable: "--font-jetbrains",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   ),
-  title: "NIFTY//TERM — Indian Stock Terminal",
+  title: "NIFTY — Indian Market",
   description:
-    "A sharp terminal for NSE & BSE. Type any stock, get candles, volume, and key stats instantly.",
-  applicationName: "NIFTY//TERM",
+    "Clean view of NSE & BSE. Search any symbol, read candles, volume and key stats — no noise.",
+  applicationName: "NIFTY",
   icons: { icon: "/icon.svg" },
   openGraph: {
-    title: "NIFTY//TERM — Indian Stock Terminal",
-    description:
-      "A sharp terminal for NSE & BSE. Live candles, volume, key stats.",
+    title: "NIFTY — Indian Market",
+    description: "Live candles, volume and key stats for NSE & BSE.",
     type: "website",
     images: ["/og.svg"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "NIFTY//TERM — Indian Stock Terminal",
-    description: "A sharp terminal for NSE & BSE.",
+    title: "NIFTY — Indian Market",
+    description: "Live candles, volume and key stats for NSE & BSE.",
     images: ["/og.svg"],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b0b0c",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fcfcf9" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0b" },
+  ],
+  colorScheme: "light dark",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${archivo.variable} ${jetbrains.variable} h-full antialiased`}
+      className={`${inter.variable} ${jetbrains.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('nifty-theme');if(t==='dark')document.documentElement.classList.add('dark')}catch(e){}})();`,
+          }}
+        />
+      </head>
+      <body className="min-h-full bg-canvas text-paper">
         <ErrorBoundary>{children}</ErrorBoundary>
       </body>
     </html>

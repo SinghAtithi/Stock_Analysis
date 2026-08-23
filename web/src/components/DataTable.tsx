@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { ChevronUp, ChevronDown, ArrowUpDown } from "lucide-react";
 
 export type SortDir = "asc" | "desc";
 
@@ -41,7 +42,7 @@ export default function DataTable<T>({
   rowKey,
   onRowClick,
   selectedKey = null,
-  empty = "NO ROWS",
+  empty = "No rows",
   loading = false,
   sortKey = null,
   sortDir = "asc",
@@ -74,7 +75,6 @@ export default function DataTable<T>({
     }
   }
 
-  /* clamp instead of resetting state — keeps selection stable across data changes */
   const active = Math.min(activeState, Math.max(0, sorted.length - 1));
 
   useEffect(() => {
@@ -115,16 +115,15 @@ export default function DataTable<T>({
   };
 
   return (
-    <div
-      className="relative overflow-auto border border-hairline bg-panel font-mono"
-      tabIndex={0}
-      role="grid"
-      aria-rowcount={rows.length}
-      onKeyDown={onKeyDown}
-    >
-      <table className="w-full border-collapse text-[12px] tabular-nums">
+    <div className="overflow-auto rounded-2xl border border-line bg-surface shadow-sm">
+      <table
+        className="w-full border-collapse text-sm"
+        tabIndex={0}
+        aria-rowcount={rows.length}
+        onKeyDown={onKeyDown}
+      >
         <thead>
-          <tr className="border-b border-hairline-strong">
+          <tr className="border-b border-line bg-panel-2/60">
             {columns.map((c) => {
               return (
                 <th
@@ -137,20 +136,18 @@ export default function DataTable<T>({
                         : "descending"
                       : undefined
                   }
-                  className={`sticky top-0 z-10 bg-panel px-3 py-2 text-[9px] tracking-[0.22em] text-faint font-normal ${
+                  className={`sticky top-0 z-10 bg-panel-2/90 px-3 py-2.5 text-xs font-medium tracking-wide text-muted backdrop-blur ${
                     ALIGN[c.align ?? "left"]
                   } ${c.width ?? ""}`}
                 >
                   {c.sortable ? (
                     <button
                       onClick={() => setSort(c)}
-                      className={`inline-flex items-center gap-1.5 transition-colors duration-100 hover:text-paper ${
-                        key === c.key ? "text-up" : ""
-                      } ${c.align === "right" ? "flex-row-reverse" : ""}`}
+                      className={`inline-flex items-center gap-1 rounded-full px-2 py-1 transition-colors hover:bg-surface ${key === c.key ? "bg-paper text-ink shadow-sm" : ""} ${c.align === "right" ? "flex-row-reverse" : ""}`}
                     >
                       {c.label}
-                      <span aria-hidden>
-                        {key === c.key ? (dir === "asc" ? "▲" : "▼") : "⇅"}
+                      <span aria-hidden className="text-faint">
+                        {key === c.key ? (dir === "asc" ? <ChevronUp size={12} /> : <ChevronDown size={12} />) : <ArrowUpDown size={12} />}
                       </span>
                     </button>
                   ) : (
@@ -164,9 +161,9 @@ export default function DataTable<T>({
         {loading ? (
           <tbody>
             <tr>
-              <td colSpan={columns.length} className="px-3 py-6 text-center">
-                <span className="text-[11px] tracking-[0.25em] text-muted animate-dot-pulse">
-                  &gt; LOADING<span className="cursor-blink">_</span>
+              <td colSpan={columns.length} className="px-3 py-10 text-center">
+                <span className="inline-flex items-center gap-2 rounded-full bg-panel-2 px-4 py-2 text-sm text-muted">
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-faint" /> Loading…
                 </span>
               </td>
             </tr>
@@ -176,7 +173,7 @@ export default function DataTable<T>({
             <tr>
               <td
                 colSpan={columns.length}
-                className="px-3 py-6 text-center text-[11px] tracking-[0.25em] text-faint"
+                className="px-3 py-10 text-center text-sm text-faint"
               >
                 {empty}
               </td>
@@ -195,27 +192,23 @@ export default function DataTable<T>({
                   aria-selected={isSel}
                   onClick={onRowClick ? () => onRowClick(row) : undefined}
                   onMouseEnter={() => setActive(i)}
-                  className={`cursor-pointer border-b border-hairline transition-colors duration-75 ${
+                  className={`cursor-pointer border-b border-line/70 last:border-0 transition-colors ${
                     isSel
-                      ? "bg-up/10"
+                      ? "bg-paper text-ink"
                       : isActive
-                        ? "bg-panel-2"
-                        : "hover:bg-panel-2"
+                        ? "bg-canvas"
+                        : "hover:bg-canvas"
                   }`}
                 >
                   {columns.map((c) => (
                     <td
                       key={c.key}
-                      className={`px-3 py-2 ${ALIGN[c.align ?? "left"]} ${
-                        c.rank ? "text-up" : isSel ? "text-paper" : "text-muted"
-                      }`}
+                      className={`px-3 py-2.5 text-sm ${ALIGN[c.align ?? "left"]} ${isSel ? "text-ink" : c.rank ? "font-mono font-medium tabular-nums text-muted" : "text-paper"}`}
                     >
                       {c.render ? (
                         c.render(row)
                       ) : c.rank ? (
-                        <span className="text-[10px] tracking-widest">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
+                        <span className="text-xs">{String(i + 1).padStart(2, "0")}</span>
                       ) : (
                         String((row as Record<string, unknown>)[c.key] ?? "—")
                       )}

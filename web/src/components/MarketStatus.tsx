@@ -59,7 +59,8 @@ export default function MarketStatus() {
 
   if (!ist)
     return (
-      <span className="font-mono text-[11px] tracking-widest text-faint">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 py-1 text-[11px] text-faint">
+        <span className="h-1.5 w-1.5 rounded-full bg-line-strong" aria-hidden />
         —
       </span>
     );
@@ -80,40 +81,21 @@ export default function MarketStatus() {
     else diff = 1440 - now + SESSION_OPEN;
     const h = Math.floor(diff / 60);
     const m = diff % 60;
-    countdown =
-      h > 0
-        ? `+${h}H ${String(m).padStart(2, "0")}M`
-        : `+${String(m).padStart(2, "0")}M`;
+    countdown = h > 0 ? `in ${h}h ${String(m).padStart(2, "0")}m` : `in ${String(m).padStart(2, "0")}m`;
   }
 
   return (
     <span
-      className="flex items-center gap-2"
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium ${isOpen ? "border-up/20 bg-up-soft text-up" : "border-line bg-surface text-muted"}`}
       title={
         isOpen
-          ? `NSE session open · closes ${HHMM(SESSION_CLOSE)} IST`
-          : `NSE session closed · opens ${HHMM(SESSION_OPEN)} IST`
+          ? `Market open — closes ${HHMM(SESSION_CLOSE)} IST`
+          : `Market closed — opens ${HHMM(SESSION_OPEN)} IST`
       }
     >
-      <span
-        className={`h-1.5 w-1.5 rounded-full ${
-          isOpen ? "bg-up animate-dot-pulse" : "bg-muted"
-        }`}
-        aria-hidden
-      />
-      <span
-        className={`font-mono text-[11px] tracking-widest ${
-          isOpen ? "text-up" : "text-muted"
-        }`}
-        aria-live="off"
-      >
-        {isOpen ? "OPEN" : "CLOSED"}
-      </span>
-      {countdown && (
-        <span className="hidden font-mono text-[10px] tracking-widest text-faint sm:inline tabular-nums">
-          {countdown}
-        </span>
-      )}
+      <span className={`h-1.5 w-1.5 rounded-full ${isOpen ? "bg-up" : "bg-faint"}`} aria-hidden />
+      {isOpen ? "Market open" : "Market closed"}
+      {countdown && <span className="hidden font-normal tabular-nums text-faint sm:inline">· {countdown}</span>}
     </span>
   );
 }

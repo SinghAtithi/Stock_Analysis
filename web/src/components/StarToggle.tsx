@@ -15,13 +15,13 @@ export default function StarToggle({ inList, onToggle }: Props) {
       aria-pressed={inList}
       aria-label={inList ? "Remove from watchlist" : "Add to watchlist"}
       title={inList ? "Remove from watchlist" : "Add to watchlist"}
-      className={`flex h-[26px] w-[26px] shrink-0 items-center justify-center border transition-colors duration-100 ${
+      className={`inline-flex h-8 w-8 items-center justify-center rounded-full border transition-colors ${
         inList
-          ? "border-up/40 bg-up/10 text-up"
-          : "border-hairline bg-panel text-faint hover:text-paper"
+          ? "border-amber-200 bg-amber-50 text-amber-600 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-400"
+          : "border-line bg-surface text-faint hover:border-line-strong hover:text-paper"
       }`}
     >
-      <Star size={13} strokeWidth={1.5} fill={inList ? "currentColor" : "none"} />
+      <Star size={14} strokeWidth={1.6} fill={inList ? "currentColor" : "none"} />
     </button>
   );
 }

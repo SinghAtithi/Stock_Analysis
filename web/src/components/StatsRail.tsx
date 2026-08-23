@@ -11,11 +11,11 @@ export default function StatsRail({ data }: { data: ChartData }) {
     (candles.length >= 2 ? candles[candles.length - 2].close : null);
 
   const cells: { label: string; value: string; tone?: "up" | "down" }[] = [
-    { label: "OPEN", value: last ? last.open.toFixed(2) : "—" },
-    { label: "HIGH", value: last ? last.high.toFixed(2) : "—" },
-    { label: "LOW", value: last ? last.low.toFixed(2) : "—" },
+    { label: "Open", value: last ? last.open.toFixed(2) : "—" },
+    { label: "High", value: last ? last.high.toFixed(2) : "—" },
+    { label: "Low", value: last ? last.low.toFixed(2) : "—" },
     {
-      label: "PREV CLOSE",
+      label: "Prev close",
       value: prevClose != null ? prevClose.toFixed(2) : "—",
       tone:
         prevClose != null && last
@@ -24,9 +24,9 @@ export default function StatsRail({ data }: { data: ChartData }) {
             : "down"
           : undefined,
     },
-    { label: "VOLUME", value: last ? volumeCompact(last.volume) : "—" },
+    { label: "Volume", value: last ? volumeCompact(last.volume) : "—" },
     {
-      label: "52W RANGE",
+      label: "52W range",
       value:
         data.fiftyTwoWeekLow != null
           ? `${data.fiftyTwoWeekLow.toFixed(0)} – ${data.fiftyTwoWeekHigh?.toFixed(0) ?? "—"}`
@@ -50,21 +50,15 @@ export default function StatsRail({ data }: { data: ChartData }) {
       : null;
 
   return (
-    <div className="grid grid-cols-2 border border-hairline bg-panel sm:grid-cols-3 lg:grid-cols-6">
-      {cells.map((c, i) => (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      {cells.map((c) => (
         <div
           key={c.label}
-          className={`px-4 py-3 transition-colors duration-100 hover:bg-panel-2 ${
-            i > 0 ? "border-l border-hairline" : ""
-          } ${i >= 2 ? "border-t border-hairline sm:border-t-0" : ""} ${
-            i >= 3 ? "lg:border-t-0" : ""
-          }`}
+          className="rounded-2xl border border-line bg-surface px-4 py-3 shadow-sm"
         >
-          <p className="font-mono text-[9px] tracking-[0.22em] text-faint">
-            {c.label}
-          </p>
+          <p className="text-[11px] font-medium tracking-wide text-faint uppercase">{c.label}</p>
           <p
-            className={`mt-1 font-mono text-[15px] tabular-nums ${
+            className={`mt-1 font-mono text-[15px] font-medium tabular-nums ${
               c.tone === "up"
                 ? "text-up"
                 : c.tone === "down"
@@ -74,14 +68,14 @@ export default function StatsRail({ data }: { data: ChartData }) {
           >
             {c.value}
           </p>
-          {band !== null && i === cells.length - 1 && (
+          {band !== null && c.label === "52W range" && (
             <div
-              className="relative mt-1.5 h-[3px] bg-panel-2"
+              className="relative mt-2 h-1 rounded-full bg-panel-2"
               role="img"
               aria-label={`Current price at ${Math.round(band * 100)}% of 52 week range`}
             >
               <span
-                className="absolute top-1/2 h-[7px] w-[3px] -translate-x-1/2 -translate-y-1/2 bg-paper"
+                className="absolute top-1/2 h-2.5 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-paper"
                 style={{ left: `${band * 100}%` }}
               />
             </div>

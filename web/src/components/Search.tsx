@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import type { SearchResult } from "@/lib/types";
+import { Search as SearchIcon } from "lucide-react";
 
 interface Props {
   onSelect: (r: SearchResult) => void;
@@ -92,10 +93,8 @@ export default function Search({ onSelect }: Props) {
 
   return (
     <div className="relative w-full">
-      <div className="group flex items-center gap-3 border border-hairline-strong bg-panel px-4 transition-colors duration-150 focus-within:border-paper">
-        <span className="select-none font-mono text-[13px] text-up group-focus-within:animate-none cursor-blink">
-          &gt;
-        </span>
+      <div className="flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-2 shadow-sm transition-colors focus-within:border-line-strong focus-within:shadow-md">
+        <SearchIcon size={16} className="shrink-0 text-faint" />
         <input
           ref={inputRef}
           value={query}
@@ -103,8 +102,8 @@ export default function Search({ onSelect }: Props) {
           onFocus={() => results.length && setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
           onKeyDown={onKeyDown}
-          placeholder="SEARCH SYMBOL / NAME"
-          className="w-full bg-transparent py-3.5 font-mono text-[13px] tracking-wider text-paper placeholder:text-faint outline-none"
+          placeholder="Search symbol or company"
+          className="w-full bg-transparent text-sm text-paper placeholder:text-faint outline-none"
           autoComplete="off"
           spellCheck={false}
           aria-label="Search Indian stocks"
@@ -116,7 +115,7 @@ export default function Search({ onSelect }: Props) {
           }
           aria-autocomplete="list"
         />
-        <kbd className="hidden sm:block select-none border border-hairline px-1.5 py-0.5 font-mono text-[10px] text-faint">
+        <kbd className="hidden select-none rounded-full border border-line bg-panel-2 px-2 py-0.5 font-mono text-[10px] leading-none text-faint sm:block">
           /
         </kbd>
       </div>
@@ -126,26 +125,19 @@ export default function Search({ onSelect }: Props) {
           id="search-results"
           role="listbox"
           aria-label="Search results"
-          className="absolute inset-x-0 top-full z-50 border border-t-0 border-hairline-strong bg-ink shadow-[0_24px_48px_-12px_rgba(0,0,0,0.8)] animate-fade-up"
+          className="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-line bg-surface shadow-md"
         >
           {searching && results.length === 0 && (
-            <div
-              role="status"
-              className="px-4 py-3 font-mono text-[12px] text-faint animate-dot-pulse"
-            >
-              scanning NSE · BSE…
+            <div role="status" className="px-4 py-3 text-sm text-faint">
+              Searching NSE · BSE…
             </div>
           )}
           {!searching && results.length === 0 && (
-            <div className="px-4 py-3 font-mono text-[12px] text-faint">
-              no match for “{query}”
-            </div>
+            <div className="px-4 py-3 text-sm text-faint">No match for “{query}”</div>
           )}
-          <ul className="max-h-72 overflow-y-auto">
+          <ul className="max-h-72 overflow-y-auto py-1">
             {results.map((r, i) => {
-              const hint = [r.sector, r.indices?.[0]]
-                .filter(Boolean)
-                .join(" · ");
+              const hint = [r.sector, r.indices?.[0]].filter(Boolean).join(" · ");
               const q = query.trim().toUpperCase();
               const at = r.symbol.toUpperCase().indexOf(q);
               return (
@@ -157,46 +149,24 @@ export default function Search({ onSelect }: Props) {
                     onMouseEnter={() => setActive(i)}
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => pick(r)}
-                    className={`flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left font-mono transition-colors duration-75 ${
-                      i === active ? "bg-up text-ink" : "text-paper"
-                    }`}
+                    className={`flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left transition-colors ${i === active ? "bg-panel-2" : "hover:bg-canvas"}`}
                   >
-                    <span className="min-w-0 truncate text-[12px] tracking-wider">
-                      {at >= 0 ? (
-                        <>
-                          {r.symbol.slice(0, at)}
-                          <b className="font-bold underline decoration-1 underline-offset-2">
-                            {r.symbol.slice(at, at + q.length)}
-                          </b>
-                          {r.symbol.slice(at + q.length)}
-                        </>
-                      ) : (
-                        r.symbol
-                      )}
-                      <span
-                        className={i === active ? "text-ink/60" : "text-faint"}
-                      >
-                        {"  "}
-                        {r.name}
+                    <span className="min-w-0 truncate text-sm">
+                      <span className="font-medium text-paper">
+                        {at >= 0 ? (
+                          <>
+                            {r.symbol.slice(0, at)}
+                            <span className="underline decoration-paper/30 underline-offset-2">{r.symbol.slice(at, at + q.length)}</span>
+                            {r.symbol.slice(at + q.length)}
+                          </>
+                        ) : (
+                          r.symbol
+                        )}
                       </span>
-                      {hint && (
-                        <span
-                          className={
-                            i === active ? "text-ink/50" : "text-faint/70"
-                          }
-                        >
-                          {" · "}
-                          {hint}
-                        </span>
-                      )}
+                      <span className="ml-2 text-muted">{r.name}</span>
+                      {hint && <span className="ml-2 hidden text-xs text-faint sm:inline">· {hint}</span>}
                     </span>
-                    <span
-                      className={`shrink-0 text-[10px] tracking-widest ${
-                        i === active ? "text-ink/60" : "text-faint"
-                      }`}
-                    >
-                      {r.exchange}
-                    </span>
+                    <span className="shrink-0 rounded-full border border-line bg-surface px-2 py-0.5 font-mono text-[10px] leading-none text-faint">{r.exchange}</span>
                   </button>
                 </li>
               );

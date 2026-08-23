@@ -67,7 +67,7 @@ export default function Modal({
     >
       <button
         aria-label={`Close ${label.toLowerCase()}`}
-        className="absolute inset-0 h-full w-full bg-ink/70"
+        className="absolute inset-0 h-full w-full bg-black/50 backdrop-blur-[2px] dark:bg-black/60"
         onClick={onClose}
       />
       <div
@@ -77,8 +77,11 @@ export default function Modal({
         aria-label={label}
         className={
           sheet
-            ? `animate-sheet-up absolute inset-x-0 bottom-0 max-h-[75vh] overflow-y-auto border-t border-hairline-strong bg-ink p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-[0_-24px_48px_-12px_rgba(0,0,0,0.8)] ${panelClassName}`
-            : `animate-fade-up relative max-w-md w-full border border-hairline-strong bg-ink p-6 shadow-[0_24px_48px_-12px_rgba(0,0,0,0.8)] ${panelClassName}`
+            ? `absolute inset-x-0 bottom-0 max-h-[75vh] overflow-y-auto rounded-t-2xl border-t border-line bg-surface p-5 shadow-md ${panelClassName}`
+            : `relative w-full max-w-md rounded-2xl border border-line bg-surface p-6 shadow-md ${panelClassName}`
+        }
+        style={
+          sheet ? { paddingBottom: "calc(1.25rem + env(safe-area-inset-bottom))" } : undefined
         }
       >
         {children}
