@@ -9,6 +9,7 @@ import {
   replaceAuthorized,
 } from "@/lib/boardGuards";
 import { clientKeyFrom } from "@/lib/clientKey";
+import { internalError } from "@/lib/serverError";
 
 const BOARD_FILE = path.resolve(process.cwd(), "..", "data", "board.json");
 
@@ -36,7 +37,10 @@ export async function GET() {
     if (msg.includes("ENOENT")) {
       return NextResponse.json({ tasks: null, activities: [], deletions: [] }, { headers: { "cache-control": "no-store" } });
     }
-    return NextResponse.json({ error: msg }, { status: 500 });
+    /* TASK-1412: generic body — raw msg would leak server paths */
+    const ie = internalError("api/board:get", e);
+    console.error(ie.log);
+    return NextResponse.json(ie.body, { status: ie.status });
   }
 }
 
@@ -116,8 +120,9 @@ export async function POST(req: Request) {
     await atomicWrite(merged);
     return NextResponse.json({ ok: true, ...merged });
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : String(e);
-    return NextResponse.json({ error: msg }, { status: 500 });
+    const ie = internalError("api/board:post", e);
+    console.error(ie.log);
+    return NextResponse.json(ie.body, { status: ie.status });
   }
 }
 
