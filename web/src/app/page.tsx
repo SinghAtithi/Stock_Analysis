@@ -453,14 +453,14 @@ export default function Home() {
       <TickerTape items={ticker} onSelect={pick} />
 
       <main id="main-content" tabIndex={-1} className="flex min-h-0 flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row lg:px-6">
-        {/* sidebar desktop */}
-        <aside className="hidden w-[320px] shrink-0 flex-col gap-4 lg:flex">
+        {/* sidebar desktop — viewport-bounded so long watchlists scroll internally (TASK-839) */}
+        <aside className="hidden w-[320px] shrink-0 flex-col gap-4 lg:flex lg:sticky lg:top-24 lg:max-h-[calc(100dvh-7.5rem)] lg:self-start min-h-0">
           <div className="rounded-2xl border border-line bg-surface p-4 shadow-sm">
             <p className="mb-3 text-xs font-medium tracking-wide text-muted">Search</p>
             <Search onSelect={pick} />
             <p className="mt-2 text-[11px] text-faint">Press <kbd className="rounded border border-line bg-panel-2 px-1 py-0.5 font-mono text-[10px]">/</kbd> to focus</p>
           </div>
-          <div className="flex flex-1 flex-col rounded-2xl border border-line bg-surface p-4 shadow-sm">
+          <div className="flex min-h-0 flex-1 flex-col rounded-2xl border border-line bg-surface p-4 shadow-sm">
             <Watchlist
               items={watchlist}
               selected={selected}

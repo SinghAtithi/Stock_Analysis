@@ -68,7 +68,7 @@ export default function Watchlist({
   };
 
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex min-h-0 flex-1 flex-col">
       <div className="mb-3 flex items-center justify-between">
         <p className="text-xs font-medium tracking-wide text-muted">
           Watchlist <span className="ml-1 rounded-full bg-panel-2 px-1.5 py-0.5 font-mono text-[11px] text-faint">{String(items.length).padStart(2, "0")}</span>
@@ -87,7 +87,11 @@ export default function Watchlist({
         </div>
       )}
 
-      <ul className="flex flex-col gap-1">
+      <ul
+        className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto"
+        tabIndex={0}
+        aria-label="Watchlist symbols"
+      >
         {items.map((q) => {
           const isSel =
             selected?.symbol === q.symbol && selected?.exchange === q.exchange;
