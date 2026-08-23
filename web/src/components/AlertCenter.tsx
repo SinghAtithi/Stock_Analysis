@@ -20,6 +20,7 @@ interface AlertRecord {
   active: boolean;
   createdAt: number;
   firedAt: number | null;
+  dismissedAt?: number | null;
 }
 
 interface Props {
@@ -155,6 +156,37 @@ export default function AlertCenter({ symbol, exchange }: Props) {
     }
   };
 
+  /* Dismissing a fired alert archives it (TASK-963) — the row stays on the
+     server (dismissed_at) and moves to the Dismissed section locally. */
+  const dismissFired = async (id: string) => {
+    setBusyId(id);
+    setListError(null);
+    try {
+      const res = await fetch(
+        `/api/alerts?deviceId=${encodeURIComponent(getDeviceId())}&id=${encodeURIComponent(id)}`,
+        { method: "DELETE" },
+      );
+      if (!res.ok) throw new Error("dismiss_failed");
+      const json = (await res.json().catch(() => ({}))) as {
+        archived?: boolean;
+        dismissedAt?: number;
+      };
+      if (json.archived) {
+        const at = typeof json.dismissedAt === "number" ? json.dismissedAt : null;
+        setAlerts((prev) =>
+          prev.map((a) => (a.id === id ? { ...a, dismissedAt: at ?? a.firedAt } : a)),
+        );
+      } else {
+        /* legacy server without archive support — old behavior */
+        setAlerts((prev) => prev.filter((a) => a.id !== id));
+      }
+    } catch {
+      setListError("Could not dismiss alert");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
   const toggleAlert = async (id: string, next: boolean): Promise<void> => {
     setBusyId(id);
     setListError(null);
@@ -174,7 +206,12 @@ export default function AlertCenter({ symbol, exchange }: Props) {
   };
 
   const active = alerts.filter((a) => a.active);
-  const fired = alerts.filter((a) => !a.active && a.firedAt != null);
+  const fired = alerts.filter(
+    (a) => !a.active && a.firedAt != null && a.dismissedAt == null,
+  );
+  const dismissed = alerts
+    .filter((a) => !a.active && a.dismissedAt != null)
+    .sort((a, b) => (b.dismissedAt ?? 0) - (a.dismissedAt ?? 0));
 
   return (
     <>
@@ -307,7 +344,7 @@ export default function AlertCenter({ symbol, exchange }: Props) {
                       </div>
                       <button
                         type="button"
-                        onClick={() => void removeAlert(a.id)}
+                        onClick={() => void dismissFired(a.id)}
                         disabled={busyId === a.id}
                         aria-label={`Dismiss fired alert for ${a.symbol}`}
                         className="shrink-0 rounded-full border border-line bg-surface px-2.5 py-1 text-xs text-muted transition-colors hover:text-paper disabled:opacity-50"
@@ -316,6 +353,37 @@ export default function AlertCenter({ symbol, exchange }: Props) {
                       </button>
                     </li>
                   ))}
+                </ul>
+              </section>
+            )}
+
+            {dismissed.length > 0 && (
+              <section aria-label="Dismissed alerts">
+                <p className="mb-2 text-xs font-medium tracking-wide text-faint">
+                  Dismissed
+                </p>
+                <ul className="flex flex-col gap-1.5">
+                  {dismissed.slice(0, 10).map((a) => (
+                    <li
+                      key={a.id}
+                      className="flex items-baseline justify-between gap-3 rounded-xl border border-dashed border-line px-3 py-2 opacity-80"
+                    >
+                      <p className="min-w-0 truncate text-xs text-muted">
+                        <span className="font-mono">{a.symbol ?? a.strategyId}</span>
+                        <span className="ml-2">
+                          {firedVerb(a.type)} {a.price ?? ""}
+                        </span>
+                      </p>
+                      <p className="shrink-0 text-[11px] text-faint tabular-nums">
+                        {timeAgo(a.dismissedAt ?? a.firedAt)}
+                      </p>
+                    </li>
+                  ))}
+                  {dismissed.length > 10 && (
+                    <li className="px-3 text-[11px] text-faint">
+                      +{dismissed.length - 10} earlier kept in history
+                    </li>
+                  )}
                 </ul>
               </section>
             )}

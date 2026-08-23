@@ -58,6 +58,19 @@ export function isMembershipType(type: string): boolean {
 }
 
 /**
+ * What DELETE /api/alerts should do with a row (TASK-963): fired alerts are
+ * archived (dismissed_at stamp, row retained for the journal) while every
+ * other row — including manually deactivated ones — keeps the original
+ * hard-delete behavior.
+ */
+export function alertDeletePlan(row: {
+  active: number | boolean;
+  fired_at: number | null;
+}): "hard" | "archive" {
+  return !row.active && row.fired_at != null ? "archive" : "hard";
+}
+
+/**
  * Top-N membership diff between two consecutive snapshot runs.
  * `entered` = in current but not previous; `exited` = vice versa.
  */

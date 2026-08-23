@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
-import { isMembershipType, validateAlertInput } from "@/lib/alerts";
+import { alertDeletePlan, isMembershipType, validateAlertInput } from "@/lib/alerts";
 import { checkCap, tierForDevice } from "@/lib/tiers";
 
 /* /api/alerts — anonymous device-scoped price alerts (ROADMAP T25 v1).
@@ -53,10 +53,11 @@ export async function GET(request: NextRequest) {
   }
   try {
     /* symbol/exchange/price live in payload_json (schema v1 keeps alerts
-       type-generic); unpack for a friendly client shape */
+       type-generic); unpack for a friendly client shape. dismissed rows are
+       included so the journal survives reloads (TASK-963). */
     const rows = db
       .prepare(
-        `SELECT id, type, payload_json, active, created_at, fired_at
+        `SELECT id, type, payload_json, active, created_at, fired_at, dismissed_at
          FROM alerts WHERE device_id = ? ORDER BY created_at DESC LIMIT 100`
       )
       .all(deviceId) as Record<string, unknown>[];
@@ -74,6 +75,7 @@ export async function GET(request: NextRequest) {
           active: Boolean(r.active),
           createdAt: r.created_at,
           firedAt: r.fired_at,
+          dismissedAt: r.dismissed_at ?? null,
         };
       }),
     });
@@ -146,6 +148,22 @@ export async function DELETE(request: NextRequest) {
   const db = openDb(true);
   if (!db) return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
   try {
+    /* TASK-963: fired alerts (active=0 + fired_at) are archived via
+       dismissed_at instead of destroyed, so the alert journal survives
+       dismissal; every other row keeps the original hard delete. */
+    const row = db
+      .prepare(`SELECT active, fired_at FROM alerts WHERE id = ? AND device_id = ?`)
+      .get(id, deviceId) as { active: number; fired_at: number | null } | undefined;
+    if (!row) {
+      return NextResponse.json({ error: "not_found" }, { status: 404 });
+    }
+    if (alertDeletePlan(row) === "archive") {
+      const now = Math.floor(Date.now() / 1000);
+      db.prepare(
+        `UPDATE alerts SET dismissed_at = ? WHERE id = ? AND device_id = ?`
+      ).run(now, id, deviceId);
+      return NextResponse.json({ ok: true, archived: true, dismissedAt: now });
+    }
     const res = db
       .prepare(`DELETE FROM alerts WHERE id = ? AND device_id = ?`)
       .run(id, deviceId) as unknown as { changes?: number };
