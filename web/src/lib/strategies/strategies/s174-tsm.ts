@@ -7,7 +7,7 @@
  * Self-registering on import. Never throws — returns null on insufficient data.
  */
 import type { Signal, Strategy, StrategyContext, StrategyMeta } from "../types";
-import { register } from "../registry";
+import { register } from "../store";
 import { ASSETS, CASH, ret12 } from "./s172-dual";
 
 const VOL_WINDOW = 60; // trading days of daily returns for realized vol

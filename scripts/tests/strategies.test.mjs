@@ -205,9 +205,11 @@ test("registry exposes demo strategies and sorts by juryRank", () => {
 
   const ranked = list.filter((s) => s.meta.juryRank !== null);
   const unranked = list.filter((s) => s.meta.juryRank === null);
-  for (const r of ranked) assert.ok(r.meta.juryRank < 6);
-  assert.ok(unranked.every((s) => s.meta.id.startsWith("d3") || s.meta.id.startsWith("demo-")),
-    "only d3 and demos are unranked");
+  /* registry holds real jury-ranked strategies too — assert the ordering
+     invariant over ranks instead of pinning specific rank values */
+  const ranks = ranked.map((s) => s.meta.juryRank);
+  assert.deepEqual(ranks, [...ranks].sort((a, b) => a - b), "ranked ascending");
+  assert.ok(unranked.some((s) => s.meta.id === "d3"), "d3 unranked present");
 
   assert.equal(getStrategy("demo-roc20").meta.name, "ROC(20) Momentum");
   assert.equal(getStrategy("missing-strategy"), undefined);

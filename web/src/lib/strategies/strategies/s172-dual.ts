@@ -9,7 +9,7 @@
  */
 import type { Signal, Strategy, StrategyContext, StrategyMeta } from "../types";
 import { sma, safeDiv } from "../indicators";
-import { register } from "../registry";
+import { register } from "../store";
 
 export const ASSETS = ["NIFTY 50", "SENSEX", "GOLDBEES"] as const;
 export const CASH = "CASH";

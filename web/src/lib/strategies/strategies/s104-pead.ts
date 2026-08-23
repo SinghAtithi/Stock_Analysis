@@ -1,6 +1,6 @@
 import type { Candle } from "../../types";
 import type { Signal, Strategy, StrategyContext, StrategyMeta } from "../types";
-import { register } from "../registry";
+import { register } from "../store";
 import { safeDiv } from "../indicators";
 
 /**

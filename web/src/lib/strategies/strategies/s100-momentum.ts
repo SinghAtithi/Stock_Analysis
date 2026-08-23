@@ -20,7 +20,7 @@
  * ERASABLE TS ONLY (no enums, namespaces, parameter properties) — this module
  * is loaded by Node's native type stripping from scripts/.
  */
-import { register } from "../registry";
+import { register } from "../store";
 import type { Signal, Strategy, StrategyContext, StrategyMeta } from "../types";
 import { pctRank } from "../indicators";
 

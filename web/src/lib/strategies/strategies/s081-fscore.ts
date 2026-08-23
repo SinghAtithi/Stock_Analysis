@@ -1,5 +1,5 @@
 import type { Signal, Strategy, StrategyContext, StrategyMeta } from "../types";
-import { register } from "../registry";
+import { register } from "../store";
 
 /**
  * S081 — Piotroski F-Score (jury rank #9). Classic 9-criteria 0-9 score over

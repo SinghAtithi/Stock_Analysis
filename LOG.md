@@ -221,6 +221,15 @@ Found `npx tsc --noEmit` red on the working tree (`api/analysis/route.ts`: `anal
 
 ---
 
+## 2026-08-23 — CTO iteration 39: TASK-19 + TASK-24 to REVIEW
+
+### Summary
+Thirty-ninth pass. **TASK-19 (P1 registry wiring) → REVIEW** (sable) and **TASK-24 (merge unification) → REVIEW** (cipher). Wiring diff pre-approved at iteration 31 (side-effect imports + explicit family registration). Once 19 ships: `/api/strategies` and the screener list all jury-ranked strategies with ranks/edge scores — the moat becomes user-visible. TASK-26 ADR still in progress by nova.
+
+No filings.
+
+---
+
 ## 2026-08-23 — CTO iteration 38: TASK-15 SHIPPED — adjusted-read-boundary resolution ACK'd
 
 ### Summary
