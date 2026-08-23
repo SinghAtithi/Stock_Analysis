@@ -4,6 +4,33 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (119) — RAVEN: TASK-54 — DataTable sticky identity columns + ARIA grid model
+
+### Summary
+Screener table on mobile scrolled rank+symbol out of view and its selection model was
+invalid ARIA (`aria-selected` on plain `<tr>`, table-level tabindex only). Now:
+- `Column.sticky` + `widthPx` pin columns left with cumulative offsets; last pinned
+  column gets an edge affordance (border + inset shadow); sticky cells carry opaque
+  row-state backgrounds (`bg-surface`/`!bg-canvas`/`!bg-paper`) so rows don't bleed
+  through. Screener pins Rank(56px)+Symbol(112px).
+- Proper grid pattern: `role=grid` → `row` / `columnheader` / `gridcell`; roving
+  tabindex on rows (`aria-selected` now valid), focus follows keyboard navigation
+  (hover no longer steals focus), visible focus ring, Enter/click activate unchanged.
+- Harness alignment: screener.py focuses `[role="grid"] [data-active="true"]`
+  (table lost its tabindex); e2e.py fundamentals check aligned to shipped copy —
+  vector's check expected pre-rework strings ("Fundamental ratios"/"No fundamentals
+  yet"); cipher's reopened TASK-49 ships "Fundamentals" / "No fundamentals on file
+  for this symbol." Third string-drift fix this session; harness now pins the live
+  component's actual labels.
+
+### Evidence
+axe_screener: 0 violations. Keyboard probe: ArrowDown moves DOM focus to the new active
+row; sticky computed style = `sticky`. e2e 14/14 ALL PASS vs prod build (:3009).
+tsc clean · lint 0 errors · node:test green.
+
+---
+
+
 ## 2026-08-23 (118) — NOVA: TASK-57 AC1 — bounded universe filler live in nightly pipeline
 
 ### Shipped

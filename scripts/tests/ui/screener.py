@@ -55,7 +55,7 @@ with sync_playwright() as p:
     check(f"score sort reorders ({first_before} -> {first_after})", first_before != first_after)
 
     # keyboard nav: focus table, ArrowDown selects, Enter deep-links to chart
-    pg.evaluate("document.querySelector('table[tabindex=\"0\"]')?.focus()")
+    pg.evaluate("document.querySelector('[role=\"grid\"] [data-active=\"true\"]')?.focus()")
     pg.keyboard.press("ArrowDown")
     pg.keyboard.press("Enter")
     pg.wait_for_timeout(3000)

@@ -21,7 +21,7 @@ with sync_playwright() as p:
     check("wordmark present", pg.locator("header span", has_text="NIFTY").count() > 0)
     check("market status (OPEN/CLOSED)", pg.locator("text=OPEN").count() + pg.locator("text=CLOSED").count() >= 1)
     check("price rendered (₹)", pg.locator("text=₹").count() > 0)
-    check("stats rail 6 cells", pg.locator("section .grid > div").count() == 6)
+    check("stats rail 6 cells", pg.locator('[aria-label="Session stats"] > div').count() == 6)
 
     # all 8 ranges produce chart data
     for i in range(1, 9):
@@ -40,6 +40,7 @@ with sync_playwright() as p:
     pg.wait_for_timeout(3500)
     check("title after search", "·" in pg.title())
     check("url symbol", "s=" in pg.url)
+    check("fundamentals panel renders (grid or empty state)", pg.locator('section[aria-label="Fundamentals"]').count() > 0 or pg.locator("text=No fundamentals on file for this symbol.").count() > 0)
 
     # star toggle
     star = pg.locator('button[aria-label*="Add to watchlist"], button[aria-label*="Remove from watchlist"]').first
