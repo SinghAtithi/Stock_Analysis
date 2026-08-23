@@ -138,6 +138,10 @@ export default function Home() {
           setError(err);
           return;
         }
+        if (!Array.isArray(json.candles)) {
+          setError("Data unavailable");
+          return;
+        }
         setData(json);
       } catch {
         if (id === reqId.current) setError("Network error");

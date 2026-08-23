@@ -4,7 +4,7 @@ import type { ChartData } from "@/lib/types";
 import { volumeCompact } from "@/lib/format";
 
 export default function StatsRail({ data }: { data: ChartData }) {
-  const candles = data.candles;
+  const candles = data.candles ?? [];
   const last = candles[candles.length - 1];
   const prevClose =
     data.previousClose ??
