@@ -3,11 +3,11 @@
 // ADD → CLAIM → WORK → REVIEW → VERIFY → SHIP
 //
 // usage: node scripts/workflow.mjs <cmd> [opts]
-//   start  TASK-ID --agent cipher              claim + move to IN PROGRESS (WIP-aware)
+//   start  TASK-ID --agent cipher              claim + move to IN PROGRESS (WIP cap enforced, --force overrides)
 //   verify [--skip-test]                       run gates only (tsc → lint → test)
-//   review TASK-ID [--agent cipher]            gates green ⇒ task moves to REVIEW
+//   review TASK-ID [--agent cipher] [--e2e]    gates green ⇒ task moves to REVIEW
 //   ship   TASK-ID --msg "feat(scope): ..."    requires REVIEW · re-runs gates
-//          (--files p1,p2 | --all) [--push] [--force] [--skip-test] [--agent X]
+//          (--files p1,p2 | --all) [--push] [--force] [--skip-test] [--e2e] [--agent X]
 //
 // Gates run from web/: npx tsc --noEmit · npm run lint · npm test.
 // Ship commits at repo root. data/board.json is flipped to DONE AFTER the commit
@@ -95,6 +95,40 @@ function printGateSummary(results) {
 
 function gatesGreen(results) { return results.every(r=>r.ok); }
 
+// ── TASK-17 helpers ─────────────────────────────────────────────────────
+const UI_DIRS = ["web/src/app/", "web/src/components/"];
+
+/** Pure: which of the given repo-relative paths touch UI surfaces. */
+export function uiInPaths(paths) {
+  return paths.filter((p) => UI_DIRS.some((d) => p.startsWith(d)));
+}
+
+function dirtyPaths(dirs) {
+  const r = git(["status", "--porcelain", "--untracked-files=all", "--", ...dirs]);
+  return r.stdout.split("\n").map((l) => l.slice(3).trim()).filter(Boolean);
+}
+
+/** Compact gate trail for the activity feed: tsc=9.4s·eslint=21.0s·test=5.6s */
+export function gateTrail(results) {
+  return results
+    .map((r) => `${r.key}=${r.skipped ? "skip" : `${(r.ms / 1000).toFixed(1)}s`}`)
+    .join("·");
+}
+
+// TASK-17 AC1: UI surfaces need Playwright sanity before review/ship. Until an
+// in-repo e2e suite exists (ROADMAP Phase E), --e2e is the explicit reviewer
+// attestation that sanity was run against :3000.
+function requireE2eIfUi(uiPaths, context) {
+  if (!uiPaths.length || has("--e2e")) return;
+  die(`UI paths in ${context}:\n    ${uiPaths.join("\n    ")}\n  Run Playwright sanity against :3000 first, then re-run with --e2e.`);
+}
+
+// Staged paths = the author's declared blast radius (multi-agent safe: another
+// agent's unstaged WIP must not trip YOUR e2e gate).
+function stagedPaths() {
+  return git(["diff", "--cached", "--name-only"]).stdout.split("\n").map(s => s.trim()).filter(Boolean);
+}
+
 // ── start ───────────────────────────────────────────────────────────────
 function cmdStart() {
   const id = process.argv[3];
@@ -104,6 +138,10 @@ function cmdStart() {
   if (t.status === "done") die(`${id} is DONE — reopen it on /board first.`);
   const wip = b.tasks.filter(x => x.status === "doing").length;
   const wasDoing = t.status === "doing";
+  // TASK-17 AC2: the WIP cap is enforced, not advisory.
+  if (!wasDoing && wip >= WIP_LIMIT_DOING && !has("--force")) {
+    die(`WIP ${wip}/${WIP_LIMIT_DOING} — IN PROGRESS is at limit. Finish something first or pass --force.`);
+  }
   const prev = t.assignee;
   t.assignee = agent;
   t.status = "doing";
@@ -111,7 +149,7 @@ function cmdStart() {
   addActivity(b, id, wasDoing ? `re-started by ${agent.toUpperCase()}` : `claimed by ${agent.toUpperCase()} · → doing`, agent);
   save(b);
   console.log(`▸ CLAIMED ${id} · ${agent.toUpperCase()}${prev && prev !== agent ? ` (was ${String(prev).toUpperCase()})` : ""}`);
-  if (!wasDoing && wip >= WIP_LIMIT_DOING) console.log(`⚠ WIP ${wip}/${WIP_LIMIT_DOING} — IN PROGRESS at limit, finish something first.`);
+  if (!wasDoing && wip >= WIP_LIMIT_DOING) console.log(`⚠ claimed with --force at WIP ${wip}/${WIP_LIMIT_DOING}.`);
   console.log(`\n  work it · tick ACs:  node scripts/board.mjs tick ${id} <n>
   done? gate it:       node scripts/workflow.mjs review ${id} --agent ${agent}`);
 }
@@ -127,13 +165,27 @@ function cmdVerify() {
 // ── review ──────────────────────────────────────────────────────────────
 function cmdReview() {
   const id = process.argv[3];
-  if (!id) die("Usage: node scripts/workflow.mjs review TASK-ID --agent cipher");
+  if (!id) die("Usage: node scripts/workflow.mjs review TASK-ID --agent cipher [--e2e]");
   const agent = requireAgent();
   const { b, t } = getTask(id);
   if (t.blocked) die(`${id} is BLOCKED — unblock before review.`);
+  // TASK-17 AC1: e2e attestation is required for STAGED UI paths (stage-then-
+  // review declares your scope). Unstaged UI WIP elsewhere is only advisory —
+  // it belongs to another agent.
+  const stagedUi = uiInPaths(stagedPaths());
+  requireE2eIfUi(stagedUi, "staged files");
+  const dirtyUi = uiInPaths(dirtyPaths(["web/src/app", "web/src/components"]));
+  if (!stagedUi.length && dirtyUi.length && !has("--e2e")) {
+    console.log(`⚠ unstaged UI changes in tree (not yours to gate): ${dirtyUi.join(", ")}`);
+  }
   const results = runGates();
   printGateSummary(results);
+  const trail = gateTrail(results.filter(r => !r.skipped));
   if (!gatesGreen(results)) {
+    // TASK-17 AC3: red stays are on the audit trail too
+    b.tasks = load().tasks;
+    flipStatus(b, id, t.status, `review ✗ gates RED (${trail}) — fix and re-run`, agent);
+    save(b);
     console.log(`\n✗ ${id} stays in ${t.status.toUpperCase()} — fix red gates, re-run review.`);
     process.exit(1);
   }
@@ -141,7 +193,8 @@ function cmdReview() {
   // AC2 (TASK-21): never mutate the pre-gate snapshot — reload fresh so the
   // flip lands on the current file instead of resurrecting a stale board.
   b.tasks = load().tasks; // refresh in place: same object, current rows
-  const r = flipStatus(b, id, "review", `review · gates green (${results.filter(r=>!r.skipped).map(r=>r.label).join("·")})`, agent);
+  const e2e = has("--e2e") ? " · e2e✓" : "";
+  const r = flipStatus(b, id, "review", `review · gates green ${trail}${e2e}`, agent);
   if (!r.ok) die(r.reason);
   save(b);
   console.log(`\n✓ ${id}: ${from.toUpperCase()} → REVIEW (${agent.toUpperCase()})
@@ -168,11 +221,14 @@ function cmdShip() {
   const all = has("--all");
   if (!files.length && !all) die("Stage scope required: --files src/a.ts,docs/b.md (scoped) or --all (bulk).");
   if (files.length) {
+    // TASK-17 AC1: explicit scope — check it before staging anything
+    requireE2eIfUi(uiInPaths(files), "the ship scope (--files)");
     for (const f of files) if (!fs.existsSync(path.resolve(ROOT, f))) die(`--files entry not found: ${f}`);
     const s = git(["add", "--", ...files]);
     if (s.status !== 0) die(`git add failed:\n${s.stderr}`);
   } else {
     console.log("⚠ --all staged every change in the tree — mind other agents' WIP.");
+    requireE2eIfUi(uiInPaths(dirtyPaths(["web/src/app", "web/src/components"])), "the ship scope (--all)");
     const s = git(["add", "-A"]);
     if (s.status !== 0) die(`git add -A failed:\n${s.stderr}`);
   }
@@ -199,7 +255,8 @@ function cmdShip() {
   // board AFTER commit — the status flip rides the next commit, never this one.
   // TASK-21: reload fresh (gates + commit held the pre-run board for 40s+).
   b.tasks = load().tasks; // refresh in place: same object, current rows
-  const flip = flipStatus(b, id, "done", `shipped ${hash}${pushed ? ` → origin/${branch}` : " (local)"} · ${full}`, agent);
+  const e2e = has("--e2e") ? " · e2e✓" : "";
+  const flip = flipStatus(b, id, "done", `shipped ${hash}${pushed ? ` → origin/${branch}` : " (local)"} · ${full} · gates ${gateTrail(results.filter(r => !r.skipped))}${e2e}`, agent);
   if (!flip.ok) {
     console.log(`⚠ board not flipped: ${flip.reason} — set ${id} to done on /board manually.`);
   } else {
@@ -222,17 +279,18 @@ NIFTY//PIPELINE — board-first dev workflow
   SHIP    node scripts/workflow.mjs ship TASK-ID --msg "feat(scope): ..." --files p1,p2 --push
 
 cmds:
-  start  TASK-ID --agent cipher            claim + IN PROGRESS (warns past WIP 6)
+  start  TASK-ID --agent cipher            claim + IN PROGRESS (WIP cap enforced; --force overrides)
   verify [--skip-test]                     gates only: tsc → lint → test
-  review TASK-ID [--agent X]               gates green ⇒ REVIEW
+  review TASK-ID [--agent X] [--e2e]       gates green ⇒ REVIEW
   ship   TASK-ID --msg "..." [opts]        gates ⇒ stage ⇒ commit ⇒ [--push] ⇒ DONE
 
 ship opts:
   --files a,b,c    scoped staging (multi-agent safe)
   --all            stage everything (bulk)
   --push           push origin HEAD after commit (never forced)
-  --force          skip REVIEW-status precondition
+  --force          skip REVIEW-status precondition / WIP cap on start
   --skip-test      skip node:test gate (tsc+lint always run)
+  --e2e            attest Playwright sanity ran (REQUIRED when UI paths are in scope)
 
 Examples:
   node scripts/workflow.mjs start TASK-32 --agent cipher

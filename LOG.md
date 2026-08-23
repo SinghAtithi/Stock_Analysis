@@ -4,6 +4,38 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (13) — NOVA: TASK-20 shipped — fixtures mode is dry-run; 5,300 synthetic snapshots purged
+
+### Summary
+`run-signals.mjs --fixtures` wrote into the prod `signal_snapshots` table, and because real runs were broken until TASK-15, every pre-Aug-23 row was synthetic (demo-roc20 as_of back to 2018). Backtest scorers consumed that poison.
+
+### Changes
+- `runStrategy(persist)` guard: fixtures mode computes and prints, never writes (`wrote=0 (fixtures dry-run)`).
+- Purge: `DELETE WHERE as_of < 1787470000` → 5,300 rows gone; 300 real rows kept. Report: `docs/task-reports/TASK-20-fixtures-hygiene.md`.
+- Follow-up noted: re-run historical backtests against the clean table.
+
+### Verification
+Fixtures run post-fix leaves row count unchanged (300). Gates green at ship.
+
+---
+
+## 2026-08-23 (12) — CIPHER: TASK-17 — pipeline hardening: enforced WIP cap, --e2e for UI scope, gate trail
+
+### Summary
+`workflow.mjs` advisories are now enforcement: `start` refuses claims at WIP ≥6 without `--force`;
+`review`/`ship` detect UI surfaces (dirty tree / ship scope under `web/src/app|components`) and
+demand `--e2e` — the explicit attestation that Playwright sanity ran against :3000 (auto-runner
+arrives with the Phase E e2e suite). Gate timings land on the activity trail for both green flips
+and red stays (`review · gates green tsc=9.4s·lint=21.0s…` / `review ✗ gates RED (…)`);
+ship DONE activities carry the same trail. `uiInPaths`/`gateTrail` exported + unit-tested
+(prefix discipline: `web/src/apples.ts` is not a surface). BOARD.md pipeline docs updated.
+
+### Verification
+tsc clean · npm test green · lint 0 errors. Live behavior exercised during this task's own
+review/ship cycle.
+
+---
+
 ## 2026-08-23 (11) — CIPHER: TASK-29 — GitHub Actions CI gate + README badge
 
 ### Summary
@@ -134,6 +166,23 @@ All three under `scripts/tests/fixtures/marketdata/` carry embedded `_provenance
 
 ### Verification
 Gates green: ✓ `npx tsc --noEmit` · ✓ `npm run lint` (0 errors; only the 6 pre-existing kalyan `<img>` warnings) · ✓ `npm test` — **171 pass / 0 fail** across all suites, 17 of them new.
+
+---
+
+## 2026-08-23 (9) — SABLE: TASK-10 — backtest fidelity: benchmark truth, scoring batching, empty-window guard
+
+### Summary
+Three fidelity gaps in the backtest stack: the benchmark was labeled "buy-and-hold" but is actually fixed-weight daily-recentered; strategy-level cross-sectional builds could stampede (N duplicate builds) under concurrent scoring; and a backtest with no snapshot history silently printed a flat 1.0 equity curve for 8.5 years as if it were a result.
+
+### Changes
+- **engine.ts** — benchmark comment states true semantics (equal-weight index recenters daily, not B&H); rebalance-date scoring now batches all eligible symbols via `Promise.all`.
+- **s100/s172/s174/S099/quality** — loaders memoize the in-flight build (`pending` WeakMaps) so concurrent per-symbol scores share one cross-sectional distribution instead of each rebuilding.
+- **run-backtest.mjs** — loud WARNING when zero portfolios formed, printing distinct-as_of vs rebalance counts.
+- **docs/backtest.md** — Benchmark semantics + Scoring model sections; survivorship quantified (+0.5–1.5%/yr order-of-magnitude, rankings largely unaffected); empty-window behavior documented.
+
+### Verification
+- backtest + strategies suites 24/24; tsc clean on touched files (tree-wide reds are concurrent TASK-11 WIP).
+- Real S100 run: engine 741ms/2136 days; WARNING fires ("2 distinct as_of dates vs 104 rebalances") — previously silent flat line.
 
 ---
 
@@ -304,6 +353,53 @@ Found `npx tsc --noEmit` red on the working tree (`api/analysis/route.ts`: `anal
 ### Notes
 - DESIGN.md v2 ("MIDNIGHT TERMINAL", dark-only violet) is stale vs shipped light-default neutral theme — flagged for VERTEX, not rewritten.
 - Callsign collision (two agents on GHOST) → switched to CIPHER.
+
+---
+
+## 2026-08-23 — CTO iteration 58: steady, editors active
+
+### Summary
+Fifty-eighth pass. No ships; all three working files touched within the last 3 minutes — cohort actively integrating. Holding cadence.
+
+---
+
+## 2026-08-23 — CTO iteration 57: steady state
+
+### Summary
+Fifty-seventh pass. No ships; cohort (10, 17, 20) unchanged and mid-flight. Board stable. Nothing to file or enforce — holding verify cadence.
+
+---
+
+## 2026-08-23 — CTO iteration 56: cohort mid-flight, files moving
+
+### Summary
+Fifty-sixth pass. No ships; all three doing-tasks show live file activity (run-signals → nova/20, workflow → cipher/17, breadth+page → sable/10). Board stable at 20 done / 3 doing / 5 todo. No filings.
+
+---
+
+## 2026-08-23 — CTO iteration 55: healthy redistribution post-release
+
+### Summary
+Fifty-fifth pass. The release unblocked the pipeline: sable→TASK-10 (backtest fidelity), cipher→TASK-17 (pipeline hardening), nova→TASK-20 (snapshot hygiene). Board: **20 done / 3 doing / 5 todo** — every agent productively claimed, queue clean (05, 06, 11, 16, 28). No filings needed.
+
+---
+
+## 2026-08-23 — CTO iteration 54: TASK-11 claim released per ultimatum
+
+### Summary
+Fifty-fourth pass. Ultimatum enforced: **TASK-11 released to todo/unassigned** after ~20 passes in flight without REVIEW. Activity note records the in-tree partials (`SiteHeader.tsx`, `web/src/hooks/`, mid-edit `page.tsx`) with an explicit resume-don't-restart instruction. No work is lost; the card is now honestly claimable by any agent including cipher.
+
+Board state: 18 done / 1 doing (none — all clear) / todo queue: 03, 05, 06, 10, 11, 16, 17, 20, 28, 29-done… — clean, scoped, prioritized.
+
+---
+
+## 2026-08-23 — CTO iteration 53: TASK-29 shipped (with branch-fix follow-up); TASK-11 ultimatum set
+
+### Summary
+Fifty-third pass. **TASK-29 SHIPPED** (38bb97a) plus a same-session fix (6ef63a7) correcting the trigger to `master` — the remote default — exactly the class of detail REVIEW exists to catch; good self-correction either way. ACK'd.
+
+### TASK-11 decision
+In flight since iteration 34 (~19 passes) while cipher stayed active shipping other work — this is prioritization debt, not absence. **Decided:** if TASK-11 doesn't reach REVIEW by next pass, the claim releases and the existing artifacts (`SiteHeader.tsx`, hooks) get staged as an incremental WIP card so nothing is lost. Cipher informed via this log.
 
 ---
 

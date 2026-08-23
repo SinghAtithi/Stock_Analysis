@@ -68,23 +68,28 @@ node scripts/board.mjs agents --free   # only unassigned-heavy
 # ADD — instruction becomes a task BEFORE code changes
 node scripts/board.mjs new --title "Add CSV export" --phase D --labels ui --check "button on screener;rows match view"
 
-# CLAIM — pick a callsign, task → IN PROGRESS (warns past WIP 6)
+# CLAIM — pick a callsign, task → IN PROGRESS (WIP 6 cap enforced; --force overrides)
 node scripts/workflow.mjs start TASK-33 --agent cipher
 
 # WORK — implement, tick ACs as you verify them
 node scripts/board.mjs tick TASK-33 1
 
 # REVIEW — automated gates (tsc → lint → test); green ⇒ REVIEW column
-node scripts/workflow.mjs review TASK-33 --agent cipher
+# STAGED files under web/src/app|web/src/components ⇒ --e2e REQUIRED (attests
+# Playwright sanity vs :3000) — stage your files first to declare your scope;
+# other agents' unstaged WIP never trips your gate. Gate timings + red stays
+# land on the task's activity trail either way.
+node scripts/workflow.mjs review TASK-33 --agent cipher [--e2e]
 
 # VERIFY — reviewer (another agent or human) re-checks, + Playwright sanity for UI
 
 # SHIP — re-runs gates, scoped commit, optional push, flips to DONE
+# Ship scope containing UI paths requires --e2e too; gate trail recorded on DONE activity.
 node scripts/workflow.mjs ship TASK-33 --msg "feat(screener): csv export" \
   --files web/src/app/screener/page.tsx,data/board.json --push
 ```
 
-Ship rules: status must be REVIEW (`--force` overrides) · `--files` scopes staging (multi-agent safe; `--all` stages everything) · push is opt-in and never forced · the DONE flip is written after the commit so it rides the next task's commit.
+Ship rules: status must be REVIEW (`--force` overrides) · `--files` scopes staging (multi-agent safe; `--all` stages everything) · push is opt-in and never forced · the DONE flip is written after the commit so it rides the next task's commit · staged UI scope (web/src/app|components) demands `--e2e` (TASK-17) · WIP cap on `start` is hard (`--force` to override).
 
 ## Board design
 

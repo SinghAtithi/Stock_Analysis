@@ -179,6 +179,25 @@ test("TASK-27 migration: gapped legacy boards get gap-free max+1 allocation", as
   assert.equal(nextTaskId(gapped), "TASK-10");
 });
 
+test("TASK-17: uiInPaths + gateTrail helpers", async () => {
+  process.env.NIFTY_BOARD_FILE = FILE;
+  const { uiInPaths, gateTrail } = await import("../../scripts/workflow.mjs");
+
+  assert.deepEqual(
+    uiInPaths(["web/src/app/page.tsx", "docs/x.md", "web/src/components/ChartPanel.tsx", "src/other.ts"]),
+    ["web/src/app/page.tsx", "web/src/components/ChartPanel.tsx"],
+  );
+  // prefix discipline: web/src/apples.ts is NOT a UI surface
+  assert.deepEqual(uiInPaths(["web/src/apples.ts"]), []);
+
+  const trail = gateTrail([
+    { key: "tsc", ms: 9400, ok: true, skipped: false },
+    { key: "lint", ms: 21000, ok: true, skipped: false },
+    { key: "test", ms: 0, ok: true, skipped: true },
+  ]);
+  assert.equal(trail, "tsc=9.4s·lint=21.0s·test=skip");
+});
+
 test("flipStatus mutates fresh board and reports missing tasks cleanly", async () => {
   process.env.NIFTY_BOARD_FILE = FILE;
   const { flipStatus } = await import("../../scripts/workflow.mjs");
