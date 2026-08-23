@@ -7,7 +7,8 @@
  *   node --experimental-strip-types scripts/run-signals.mjs [strategyId] [--universe nifty50|nifty500] [--fixtures]
  *
  * --fixtures: seed deterministic synthetic candles in memory (smoke test when
- * eod_candles is empty; nothing is written to the DB for candles).
+ * eod_candles is empty; NOTHING is persisted — synthetic snapshots must never
+ * reach signal_snapshots, TASK-20).
  *
  * Node's native type stripping resolves relative import specifiers verbatim,
  * so web/src/lib/strategies/*.ts use extensionless relative imports (they are
@@ -157,7 +158,7 @@ function makeContext(db, universeSymbols, fixtures) {
   };
 }
 
-async function runStrategy(strategy, ctx, db, asOf, universeLabel) {
+async function runStrategy(strategy, ctx, db, asOf, universeLabel, persist = true) {
   const t0 = Date.now();
   const signals = [];
   let failed = 0;
@@ -174,30 +175,34 @@ async function runStrategy(strategy, ctx, db, asOf, universeLabel) {
   signals.sort((a, b) => b.score - a.score || a.symbol.localeCompare(b.symbol));
   const ranked = signals.map((s, i) => ({ ...s, rank: i + 1 }));
 
-  const del = db.prepare(
-    "DELETE FROM signal_snapshots WHERE strategy_id = ? AND as_of = ?"
-  );
-  const ins = db.prepare(
-    "INSERT INTO signal_snapshots (strategy_id, symbol, score, rank, components_json, as_of) VALUES (?, ?, ?, ?, ?, ?)"
-  );
-  const run = db.transaction(() => {
-    del.run(strategy.meta.id, asOf);
-    for (const s of ranked) {
-      ins.run(
-        strategy.meta.id,
-        s.symbol,
-        s.score,
-        s.rank,
-        JSON.stringify(s.components),
-        asOf
-      );
-    }
-  });
-  run();
+  // fixtures mode is a smoke test: synthetic candles must never land in the
+  // prod snapshot table (TASK-20 — legacy fixture rows poisoned backtests)
+  if (persist) {
+    const del = db.prepare(
+      "DELETE FROM signal_snapshots WHERE strategy_id = ? AND as_of = ?"
+    );
+    const ins = db.prepare(
+      "INSERT INTO signal_snapshots (strategy_id, symbol, score, rank, components_json, as_of) VALUES (?, ?, ?, ?, ?, ?)"
+    );
+    const run = db.transaction(() => {
+      del.run(strategy.meta.id, asOf);
+      for (const s of ranked) {
+        ins.run(
+          strategy.meta.id,
+          s.symbol,
+          s.score,
+          s.rank,
+          JSON.stringify(s.components),
+          asOf
+        );
+      }
+    });
+    run();
+  }
 
   console.log(`\n[${strategy.meta.id}] ${strategy.meta.name}`);
   console.log(
-    `  category=${strategy.meta.category} universe=${universeLabel} signals=${ranked.length} failed=${failed} wrote=${ranked.length} ms=${Date.now() - t0}`
+    `  category=${strategy.meta.category} universe=${universeLabel} signals=${ranked.length} failed=${failed} wrote=${persist ? ranked.length : "0 (fixtures dry-run)"} ms=${Date.now() - t0}`
   );
   if (ranked.length > 0) {
     const top = ranked.slice(0, 5);
@@ -234,8 +239,8 @@ for (const strategy of strategies) {
   if (strategy.meta.universe !== args.universe) {
     console.log(`note: ${strategy.meta.id} design universe=${strategy.meta.universe}, running on ${args.universe}`);
   }
-  total += await runStrategy(strategy, ctx, db, asOf, args.universe);
+  total += await runStrategy(strategy, ctx, db, asOf, args.universe, !args.fixtures);
 }
 
 db.close();
-console.log(`\ndone: ${strategies.length} strategy(ies), ${total} signals written, as_of=${asOf}`);
+console.log(`\ndone: ${strategies.length} strategy(ies), ${total} signals ${args.fixtures ? "computed (fixtures: nothing persisted)" : "written"}, as_of=${asOf}`);

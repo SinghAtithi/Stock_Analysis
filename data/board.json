@@ -355,7 +355,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "done",
       "assignee": "sable",
       "labels": [],
       "estimate": 3,
@@ -363,26 +363,26 @@
         {
           "id": "1",
           "text": "benchmark static-weight daily recenter documented or replaced with true buy&hold compounding",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "ADR: survivorship bias of current-constituent universe quantified or acknowledged in docs/backtest.md",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "StrategyScorer loop parallelized or batched per rebalance",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "npm test green incl metrics suites",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787471747156,
-      "updatedAt": 1787477369881,
+      "updatedAt": 1787478192353,
       "blocked": false
     },
     {
@@ -392,24 +392,24 @@
       "phase": "D",
       "priority": "P2",
       "status": "doing",
-      "assignee": "cipher",
+      "assignee": "raven",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "one SiteHeader component replaces 3 copy-pasted headers (home variant keeps sticky)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "useISTClock collapses to one shared component (currently 3 divergent copies)",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "breadth FlowBars stops reading documentElement during render and re-colors on theme change",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
@@ -423,7 +423,7 @@
         }
       ],
       "createdAt": 1787471747254,
-      "updatedAt": 1787474640173,
+      "updatedAt": 1787477879958,
       "blocked": false
     },
     {
@@ -622,39 +622,39 @@
       "desc": "",
       "phase": "A",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "done",
+      "assignee": "cipher",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "review/ship detect dirty or staged web/src/app|components paths and require an explicit --e2e flag or run the Playwright sanity script automatically",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "workflow start refuses claims past WIP limit unless --force",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "gate results recorded on task activity",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "docs/BOARD.md updated",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "tsc+lint+test green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787472368906,
-      "updatedAt": 1787472368906,
+      "updatedAt": 1787478180324,
       "blocked": false
     },
     {
@@ -740,13 +740,13 @@
       "desc": "",
       "phase": "C",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "review",
+      "assignee": "nova",
       "labels": [],
       "estimate": 3,
       "checklist": [],
       "createdAt": 1787472672117,
-      "updatedAt": 1787472672117,
+      "updatedAt": 1787478235457,
       "blocked": false
     },
     {
@@ -1020,7 +1020,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -1052,11 +1052,172 @@
         }
       ],
       "createdAt": 1787477151257,
-      "updatedAt": 1787477500524,
+      "updatedAt": 1787477568566,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "H5MQ",
+      "taskId": "TASK-20",
+      "text": "review · gates green tsc=10.9s·lint=21.8s·test=6.6s",
+      "agent": "NOVA",
+      "at": 1787478235457
+    },
+    {
+      "id": "0VR2",
+      "taskId": "TASK-10",
+      "text": "shipped 4a58e39 (local) · [TASK-10] feat(backtest): fidelity pass — true benchmark semantics documented, batched scoring with in-flight memoization, empty-window guard · gates tsc=9.8s·lint=27.3s·test=5.9s",
+      "agent": "SABLE",
+      "at": 1787478192353
+    },
+    {
+      "id": "V5BF",
+      "taskId": "TASK-17",
+      "text": "shipped e29782d (local) · [TASK-17] feat(board): pipeline hardening — enforced WIP cap, --e2e attestation for staged UI scope, gate timings on activity trail incl red stays · gates tsc=9.6s·lint=23.3s·test=6.6s",
+      "agent": "CIPHER",
+      "at": 1787478180324
+    },
+    {
+      "id": "RBUM",
+      "taskId": "TASK-10",
+      "text": "review · gates green tsc=10.7s·lint=29.7s·test=7.5s",
+      "agent": "SABLE",
+      "at": 1787478134758
+    },
+    {
+      "id": "A2I7",
+      "taskId": "TASK-17",
+      "text": "review · gates green tsc=10.6s·lint=27.0s·test=7.6s",
+      "agent": "CIPHER",
+      "at": 1787478131795
+    },
+    {
+      "id": "PSVL",
+      "taskId": "TASK-10",
+      "text": "✓ checked npm test green incl metrics suites",
+      "agent": "RAVAN",
+      "at": 1787478086560
+    },
+    {
+      "id": "1TNB",
+      "taskId": "TASK-10",
+      "text": "✓ checked StrategyScorer loop parallelized or batched per ",
+      "agent": "RAVAN",
+      "at": 1787478039521
+    },
+    {
+      "id": "QTMQ",
+      "taskId": "TASK-10",
+      "text": "✓ checked ADR: survivorship bias of current-constituent un",
+      "agent": "RAVAN",
+      "at": 1787478039339
+    },
+    {
+      "id": "9XZ7",
+      "taskId": "TASK-10",
+      "text": "✓ checked benchmark static-weight daily recenter documente",
+      "agent": "RAVAN",
+      "at": 1787478039206
+    },
+    {
+      "id": "U4DR",
+      "taskId": "TASK-17",
+      "text": "✓ checked tsc+lint+test green",
+      "agent": "CIPHER",
+      "at": 1787477889929
+    },
+    {
+      "id": "ONAV",
+      "taskId": "TASK-11",
+      "text": "✓ checked breadth FlowBars stops reading documentElement d",
+      "agent": "RAVAN",
+      "at": 1787477879958
+    },
+    {
+      "id": "HWKB",
+      "taskId": "TASK-11",
+      "text": "✓ checked useISTClock collapses to one shared component (c",
+      "agent": "RAVAN",
+      "at": 1787477879784
+    },
+    {
+      "id": "A1GD",
+      "taskId": "TASK-11",
+      "text": "✓ checked one SiteHeader component replaces 3 copy-pasted ",
+      "agent": "RAVAN",
+      "at": 1787477879471
+    },
+    {
+      "id": "K8LD",
+      "taskId": "TASK-17",
+      "text": "✓ checked docs/BOARD.md updated",
+      "agent": "CIPHER",
+      "at": 1787477851461
+    },
+    {
+      "id": "WNV8",
+      "taskId": "TASK-17",
+      "text": "✓ checked gate results recorded on task activity",
+      "agent": "CIPHER",
+      "at": 1787477851318
+    },
+    {
+      "id": "PCCI",
+      "taskId": "TASK-17",
+      "text": "✓ checked workflow start refuses claims past WIP limit unl",
+      "agent": "CIPHER",
+      "at": 1787477851224
+    },
+    {
+      "id": "F4W2",
+      "taskId": "TASK-17",
+      "text": "✓ checked review/ship detect dirty or staged web/src/app|c",
+      "agent": "CIPHER",
+      "at": 1787477851024
+    },
+    {
+      "id": "60HU",
+      "taskId": "TASK-11",
+      "text": "re-started by RAVEN",
+      "agent": "RAVEN",
+      "at": 1787477789920
+    },
+    {
+      "id": "K5XK",
+      "taskId": "TASK-11",
+      "text": "claimed by VECTOR · → doing",
+      "agent": "VECTOR",
+      "at": 1787477785254
+    },
+    {
+      "id": "JN48",
+      "taskId": "TASK-11",
+      "text": "claim released by CTO per iteration-53 ultimatum (~20 passes in flight). Partial artifacts live in tree: web/src/components/SiteHeader.tsx, web/src/hooks/, page.tsx mid-edit — next claimant resumes from them, do not restart from scratch",
+      "agent": "AXIOM",
+      "at": 1787477634883
+    },
+    {
+      "id": "00KZ",
+      "taskId": "TASK-17",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787477605886
+    },
+    {
+      "id": "KGPM",
+      "taskId": "TASK-20",
+      "text": "claimed by NOVA · → doing",
+      "agent": "NOVA",
+      "at": 1787477598023
+    },
+    {
+      "id": "782X",
+      "taskId": "TASK-29",
+      "text": "shipped dad58fd → origin/master · [TASK-29] feat(ci): GitHub Actions gate — tsc + eslint + node:test on push/PR, README badge (with CIPHER)",
+      "agent": "NOVA",
+      "at": 1787477568566
+    },
     {
       "id": "AHDX",
       "taskId": "TASK-29",
@@ -1455,169 +1616,8 @@
       "text": "✓ checked registry.ts imports+registers all implemented st",
       "agent": "RAVAN",
       "at": 1787476319600
-    },
-    {
-      "id": "DTV1",
-      "taskId": "TASK-15",
-      "text": "shipped 3395f1e (local) · [TASK-15] fix(quant): adjusted-candle read boundary + signals pipeline unblocks — unit mismatch, symbol resolution, data de-corruption",
-      "agent": "NOVA",
-      "at": 1787476295644
-    },
-    {
-      "id": "NE1Z",
-      "taskId": "TASK-15",
-      "text": "review · gates green (tsc --noEmit·eslint·node:test)",
-      "agent": "NOVA",
-      "at": 1787476251615
-    },
-    {
-      "id": "9RJM",
-      "taskId": "TASK-15",
-      "text": "unchecked run-signals.mjs makeContext.getCandles multiplie",
-      "agent": "RAVAN",
-      "at": 1787475925063
-    },
-    {
-      "id": "4XRF",
-      "taskId": "TASK-15",
-      "text": "✓ checked run-signals.mjs makeContext.getCandles multiplie",
-      "agent": "RAVAN",
-      "at": 1787475909784
-    },
-    {
-      "id": "MN5X",
-      "taskId": "TASK-26",
-      "text": "claimed by NOVA · → doing",
-      "agent": "NOVA",
-      "at": 1787475909655
-    },
-    {
-      "id": "SX40",
-      "taskId": "TASK-24",
-      "text": "✓ checked land after TASK-21",
-      "agent": "CIPHER",
-      "at": 1787475761301
-    },
-    {
-      "id": "845F",
-      "taskId": "TASK-24",
-      "text": "✓ checked tombstone+activity semantics identical",
-      "agent": "CIPHER",
-      "at": 1787475761150
-    },
-    {
-      "id": "IGDQ",
-      "taskId": "TASK-24",
-      "text": "✓ checked parity test retired/shrunk",
-      "agent": "CIPHER",
-      "at": 1787475761048
-    },
-    {
-      "id": "CCKH",
-      "taskId": "TASK-24",
-      "text": "✓ checked single canonical merge consumed by /api/board an",
-      "agent": "CIPHER",
-      "at": 1787475760895
-    },
-    {
-      "id": "LYIN",
-      "taskId": "TASK-25",
-      "text": "✓ checked verify live: POST through :3000 preserves CLI-cr",
-      "agent": "RAVAN",
-      "at": 1787475709959
-    },
-    {
-      "id": "G11K",
-      "taskId": "TASK-25",
-      "text": "✓ checked running next-start on :3000 rebuilt/restarted so",
-      "agent": "RAVAN",
-      "at": 1787475709888
-    },
-    {
-      "id": "Q21H",
-      "taskId": "TASK-27",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787475420199
-    },
-    {
-      "id": "RXYS",
-      "taskId": "TASK-15",
-      "text": "✓ checked re-run S100 snapshot and diff affected symbols",
-      "agent": "NOVA",
-      "at": 1787475212958
-    },
-    {
-      "id": "SIB7",
-      "taskId": "TASK-24",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787475202830
-    },
-    {
-      "id": "R43N",
-      "taskId": "TASK-26",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787475164859
-    },
-    {
-      "id": "O4UZ",
-      "taskId": "TASK-23",
-      "text": "shipped 6286a13 (local) · chore(board): deflake verdict for TASK-23 — transient was mid-edit module-cache state, fixed in 41ede1d; 20/20 + full-suite runs green, no code change",
-      "agent": "CIPHER",
-      "at": 1787475044807
-    },
-    {
-      "id": "LVQU",
-      "taskId": "TASK-23",
-      "text": "review · gates green (tsc --noEmit·eslint)",
-      "agent": "CIPHER",
-      "at": 1787475005341
-    },
-    {
-      "id": "KTHS",
-      "taskId": "TASK-23",
-      "text": "✓ checked LOG note",
-      "agent": "CIPHER",
-      "at": 1787474975250
-    },
-    {
-      "id": "YZH2",
-      "taskId": "TASK-25",
-      "text": "claimed by GHOST · → doing",
-      "agent": "GHOST",
-      "at": 1787474956444
-    },
-    {
-      "id": "0O9K",
-      "taskId": "TASK-23",
-      "text": "✓ checked gate trust restored",
-      "agent": "CIPHER",
-      "at": 1787474950788
-    },
-    {
-      "id": "0BMM",
-      "taskId": "TASK-23",
-      "text": "✓ checked 20 consecutive green runs locally",
-      "agent": "CIPHER",
-      "at": 1787474950653
-    },
-    {
-      "id": "A7X4",
-      "taskId": "TASK-23",
-      "text": "✓ checked fs-touching suites serialized or given unique NI",
-      "agent": "CIPHER",
-      "at": 1787474950517
-    },
-    {
-      "id": "AANX",
-      "taskId": "TASK-23",
-      "text": "✓ checked flaky suite identified with repro (or proven env",
-      "agent": "CIPHER",
-      "at": 1787474950385
     }
   ],
   "deletions": [],
-  "updatedAt": 1787477500525
+  "updatedAt": 1787478235459
 }

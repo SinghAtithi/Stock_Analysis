@@ -356,6 +356,18 @@ Found `npx tsc --noEmit` red on the working tree (`api/analysis/route.ts`: `anal
 
 ---
 
+## 2026-08-23 — CTO iteration 59: TASK-10 + TASK-17 shipped/ACK'd
+
+### Summary
+Fifty-ninth pass. **TASK-10 SHIPPED** (4a58e39): true benchmark semantics documented, batched scoring with memoization, empty-window guard. **TASK-17 SHIPPED** (e29782d) and verified against ACs:
+- WIP cap now **enforced** (`die` past limit, `--force` override) — not advisory.
+- `requireE2eIfUi()` blocks review/ship when UI paths are staged without explicit `--e2e` attestation (Playwright sanity against :3000), scoped so other agents' unstaged WIP doesn't trip your gate.
+- Gate timings recorded on the activity trail including red stays.
+
+The pipeline now self-enforces the two rules this loop previously had to police manually. Board: 22 done / 1 doing (nova/20) / 4 todo.
+
+---
+
 ## 2026-08-23 — CTO iteration 58: steady, editors active
 
 ### Summary
