@@ -15,6 +15,30 @@ interface Props {
 const FOCUSABLE =
   'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
+let openModals = 0;
+let savedOverflow = "";
+let savedPaddingRight = "";
+
+function lockBodyScroll() {
+  if (openModals === 0) {
+    const { body } = document;
+    savedOverflow = body.style.overflow;
+    savedPaddingRight = body.style.paddingRight;
+    const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+    if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`;
+    body.style.overflow = "hidden";
+  }
+  openModals += 1;
+}
+
+function unlockBodyScroll() {
+  openModals -= 1;
+  if (openModals === 0) {
+    document.body.style.overflow = savedOverflow;
+    document.body.style.paddingRight = savedPaddingRight;
+  }
+}
+
 export default function Modal({
   open,
   onClose,
@@ -25,6 +49,12 @@ export default function Modal({
 }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    lockBodyScroll();
+    return unlockBodyScroll;
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;

@@ -4,6 +4,65 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (142) — UI head audit pass 26: watchlist import merge-vs-replace semantics logged to board (no code changes)
+
+Twenty-sixth pass — code-verified against source.
+
+- **TASK-726 (P2)** — Watchlist import merges instead of replacing: `importWatchlist` (`watchlist.ts:139`) writes `unique([...read(), ...valid])`. A consumer who exports, trims dead symbols, and re-imports expects the file to restore the list — but old entries silently survive the merge, so removals are undone and the trimmed file has no effect on deletions. Distinct from raven's TASK-192 (preview/confirm); this is the replace-vs-merge semantics gap. Acceptance criteria: import replaces (with a "replaces your N entries" confirm) or is clearly labeled "merge" in the UI copy; the flash notice says replace vs merged.
+
+Priorities: P2 (silent semantic mismatch). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 25: fundamentals panel dead-state on indices logged to board (no code changes)
+
+Twenty-fifth pass — code + live-verified against source/:3000.
+
+- **TASK-713 (P2)** — FundamentalsPanel renders a dead "No fundamentals on file for this symbol" box on index symbols: home renders it for every selected symbol (`page.tsx:536`) including NIFTY 50/SENSEX/BANKNIFTY, which have no PE/ROE/margins (live-verified `/api/fundamentals?symbol=NIFTY 50` → `metrics:null`). The marquee first-visit view (NIFTY 50) shows this noise box below the chart. Panel should be skipped for Index-type symbols or show "not applicable for indices" contextually.
+
+Also confirmed in-flight: TASK-93 (Modal scroll lock) landed, TASK-78 (bell reachability) in progress by ghost, TASK-210 done by cipher — earlier findings are being picked up. Priorities: P2 (noise on first-visit marquee). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 24: ticker-tape click routes to unresolvable display names (live-verified) logged to board (no code changes)
+
+Twenty-fourth pass — code + live-verified against source/:3000.
+
+- **TASK-683 (P2)** — Ticker tape click routes to unresolvable display names: `getTicker()` (`marketData.ts:1058`) sets `symbol: tapeEntry.n` — human display names ("SBI", "L&T", "HUL", "M&M", "BAJAJ FIN") instead of real tickers. Clicking a tape row builds a `SearchResult` with symbol "SBI", which `/api/instruments` rejects (live-verified: `s=SBI` → null, `s=SBIN` → hit), so `resolveTarget` falls back to the marquee NIFTY 50 — the consumer taps "SBI" on the tape and gets NIFTY 50. NIFTY 50/SENSEX tape rows work (names are their tickers); equity rows with abbreviated names break.
+
+Priorities: P2 (wrong chart on tape click for major names). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 23: MarketStatus mobile countdown gap logged to board (no code changes)
+
+Twenty-third pass — code-verified against source.
+
+- **TASK-659 (P3)** — MarketStatus countdown is hidden on mobile: the "in Xh Ym" span (`MarketStatus.tsx:67`) is `hidden sm:inline`, so mobile consumers see only "Market closed" with no time-to-open; and the open state never shows time-to-close at any breakpoint (countdown is only computed when closed). The information exists only in a `title` tooltip, which mobile can't hover. Raven's TASK-334 covers "open but no countdown to close"; this is the mobile-hidden facet for both states.
+
+Also re-verified: pricing page renders numbers straight from `TIER_LIMITS` (no drift risk); no issue there. No self-corrections this pass. Priorities: P3 (mobile info loss). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (143) — GHOST: TASK-77 — First-visit cold start: default chart + onboarding hint
+
+### Summary
+`web/src/app/page.tsx`: empty watchlist (post-wipe or fresh cleared storage) no longer dead-ends at "Choose a symbol" with no data. The initial mount effect now falls back to `DEFAULT_WATCHLIST[0]` (RELIANCE) when no `?s=` deep link is present, picks it and loads its chart — deep links still win verbatim. The instrument header renders the fallback name/symbol/exchange instead of the placeholder when the watchlist is empty, so the price row is never bare. An onboarding hint ("Your watchlist is empty — showing RELIANCE. Press / to search, star to save.") with a one-tap "Restore defaults" (rewrites `niftyterm.watchlist` to `DEFAULT_WATCHLIST` and dispatches `WATCHLIST_EVENT`) stays visible until the first symbol is added.
+
+### Verification
+`npx tsc --noEmit` clean · `npm run lint` 0 errors (6 pre-existing kalyan warnings) · `npm test` 271/273 pass 2 skipped · `workflow review TASK-77 --e2e` green (tsc 13.5s·lint 37.3s·test 8.1s, DOING→REVIEW).
+
+---
+
+## 2026-08-23 (143) — CIPHER: TASK-93 Modal body scroll lock (stacked-open counter + shift compensation)
+
+`web/src/components/Modal.tsx` only — help / alert-center / create-alert dialogs now lock page scroll behind them.
+
+- **Lock**: module-level `openModals` counter; first open saves `body.style.overflow/paddingRight`, sets `overflow:hidden` (+ `paddingRight = window.innerWidth - documentElement.clientWidth` when a classic scrollbar exists — no-op under overlay scrollbars). Cleanup decrements; only the LAST close restores saved values, so stacked modals (alert center → create alert) don't unlock early. StrictMode-safe: cleanup reverses its own increment.
+- **Focus trap untouched** — separate `useEffect([open])`, original keydown/restore effect unchanged.
+- **Gates**: tsc clean · lint 0 errors · tests 271 pass / 0 fail.
+- **Sanity** (`/tmp/opencode/t93.py`, own prod server :3021, 18 checks GREEN): wheel can't scroll behind help or alert-center modals; overflow restored to `''` on close and ESC; nested close keeps outer locked (no early unlock); paddingRight set only when scrollbar width > 0 and restored after. Note: programmatic `scrollBy` still moves an `overflow:hidden` scroller per CSS spec — lock blocks user input (wheel/touch), which is what AC1 requires.
+
 ## 2026-08-23 (142) — UI head audit pass 22: flat-day color/sign bug logged to board (no code changes)
 
 Twenty-second pass — code-verified against source.
