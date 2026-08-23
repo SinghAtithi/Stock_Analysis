@@ -166,6 +166,17 @@ function makeContext(db, universeSymbols, fixtures, asOfSec = Math.floor(Date.no
   const stmt = db.prepare(
     "SELECT ts, o, h, l, c, v, adj_factor FROM eod_candles WHERE symbol = ? AND ts >= ? ORDER BY ts ASC"
   );
+  // TASK-57: strategies with fundamental/analyst factors need these tables —
+  // bare-symbol keys (RELIANCE), module_json/derived_json parsed before handoff
+  const fundStmt = db.prepare("SELECT module_json FROM fundamentals WHERE symbol = ?");
+  const anStmt = db.prepare("SELECT derived_json FROM analyst_data WHERE symbol = ?");
+  const parseJsonOrNull = (raw) => {
+    try {
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  };
   return {
     universe: universeSymbols,
     // point-in-time clock (TASK-34): strategies derive cache-day keys and
@@ -177,6 +188,15 @@ function makeContext(db, universeSymbols, fixtures, asOfSec = Math.floor(Date.no
       const since = asOfSec - lookbackDays * 86_400 * 1.6;
       const rows = stmt.all(resolveCandleSymbol(symbol), since);
       return toAdjustedCandles(rows);
+    },
+    getFundamentals(symbol) {
+      const row = fundStmt.get(resolveCandleSymbol(symbol)) ?? fundStmt.get(symbol);
+      return row ? parseJsonOrNull(row.module_json) : null;
+    },
+    getAnalyst(symbol) {
+      const row = anStmt.get(resolveCandleSymbol(symbol)) ?? anStmt.get(symbol);
+      const derived = row ? parseJsonOrNull(row.derived_json) : null;
+      return row || derived ? { symbol, derived_json: derived } : null;
     },
     getUniverse(_universe) {
       // The runner decides what is being scored; cross-sectional strategies

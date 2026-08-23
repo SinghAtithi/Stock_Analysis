@@ -1061,7 +1061,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -1093,7 +1093,7 @@
         }
       ],
       "createdAt": 1787478527371,
-      "updatedAt": 1787487788249,
+      "updatedAt": 1787488098379,
       "blocked": false
     },
     {
@@ -1770,7 +1770,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "done",
+      "status": "doing",
       "assignee": "cipher",
       "labels": [],
       "estimate": 3,
@@ -1802,7 +1802,7 @@
         }
       ],
       "createdAt": 1787483673579,
-      "updatedAt": 1787486919382,
+      "updatedAt": 1787488344895,
       "blocked": false
     },
     {
@@ -2118,7 +2118,7 @@
         {
           "id": "3",
           "text": "S104/S105/S081/quality/value strategies produce non-null signals",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
@@ -2132,7 +2132,7 @@
         }
       ],
       "createdAt": 1787485852943,
-      "updatedAt": 1787487222961,
+      "updatedAt": 1787488827701,
       "blocked": false
     },
     {
@@ -2182,8 +2182,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "sable",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -2214,7 +2214,7 @@
         }
       ],
       "createdAt": 1787485853306,
-      "updatedAt": 1787485853306,
+      "updatedAt": 1787488158480,
       "blocked": false
     },
     {
@@ -2431,9 +2431,133 @@
       "createdAt": 1787485890061,
       "updatedAt": 1787485890061,
       "blocked": false
+    },
+    {
+      "id": "TASK-65",
+      "title": "ui-smoke: screener blocking gate trips on AlertCenter /api/alerts 503 in DB-less CI — mock alerts API + log failed request URLs",
+      "desc": "",
+      "phase": "E",
+      "priority": "P1",
+      "status": "doing",
+      "assignee": "raven",
+      "labels": [
+        "ui",
+        "ci"
+      ],
+      "estimate": 1,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "screener.py mocks /api/alerts**",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "failed-response URLs printed alongside console errors",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "ui-smoke green again",
+          "done": false
+        }
+      ],
+      "createdAt": 1787488668969,
+      "updatedAt": 1787488682984,
+      "blocked": false
+    },
+    {
+      "id": "TASK-66",
+      "title": "Fundamentals/analyst source: Yahoo quoteSummary IP-blocked locally AND on GH runners — need proxy or NSE/corp-filings path",
+      "desc": "",
+      "phase": "C",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "data",
+        "quant"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "evaluate keyless alternatives (NSE financial results pages, screener.in public endpoints, BSE API)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "if none viable, document paid-source decision ADR",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "wire chosen source into ingest-fundamentals/analyst keeping cache+upsert contract",
+          "done": false
+        }
+      ],
+      "createdAt": 1787488827566,
+      "updatedAt": 1787488827566,
+      "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "R0I1",
+      "taskId": "TASK-57",
+      "text": "✓ checked S104/S105/S081/quality/value strategies produce ",
+      "agent": "NOVA",
+      "at": 1787488827701
+    },
+    {
+      "id": "54W9",
+      "taskId": "TASK-66",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787488827566
+    },
+    {
+      "id": "K55R",
+      "taskId": "TASK-65",
+      "text": "claimed by RAVEN · → doing",
+      "agent": "RAVEN",
+      "at": 1787488682984
+    },
+    {
+      "id": "OYM8",
+      "taskId": "TASK-65",
+      "text": "created in todo",
+      "agent": "RAVEN",
+      "at": 1787488668969
+    },
+    {
+      "id": "6VKG",
+      "taskId": "TASK-49",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787488344896
+    },
+    {
+      "id": "TOAV",
+      "taskId": "TASK-49",
+      "text": "moved done → todo",
+      "agent": "CIPHER",
+      "at": 1787488344681
+    },
+    {
+      "id": "TBHT",
+      "taskId": "TASK-59",
+      "text": "claimed by SABLE · → doing",
+      "agent": "SABLE",
+      "at": 1787488158481
+    },
+    {
+      "id": "WABX",
+      "taskId": "TASK-30",
+      "text": "shipped 3928532 (local) · feat(ingest): single-symbol full-history EOD via NSE NextApi proxy — --symbol flag, 70-row-cap window sweeper, raw-basis replace + adj_factor rebuild (TASK-30) · gates tsc=22.9s·lint=36.3s·test=7.0s",
+      "agent": "CIPHER",
+      "at": 1787488098379
+    },
     {
       "id": "TFLC",
       "taskId": "TASK-61",
@@ -2937,64 +3061,8 @@
       "text": "review ✗ gates RED (tsc=9.5s·lint=31.3s·test=6.4s) — fix and re-run",
       "agent": "SABLE",
       "at": 1787485597768
-    },
-    {
-      "id": "BXQF",
-      "taskId": "TASK-48",
-      "text": "review · gates green tsc=11.9s·lint=31.5s·test=7.3s",
-      "agent": "CIPHER",
-      "at": 1787485364063
-    },
-    {
-      "id": "D941",
-      "taskId": "TASK-47",
-      "text": "shipped a72fb6a → origin/master · [TASK-47] feat(ci): scheduled data pipelines — nightly eod→signals chain, morning breadth, refreshed db committed to master · gates tsc=11.1s·lint=31.0s·test=7.0s",
-      "agent": "NOVA",
-      "at": 1787485344039
-    },
-    {
-      "id": "XDD6",
-      "taskId": "TASK-47",
-      "text": "review · gates green tsc=16.7s·lint=28.9s·test=7.4s",
-      "agent": "NOVA",
-      "at": 1787485291762
-    },
-    {
-      "id": "H8LU",
-      "taskId": "TASK-48",
-      "text": "✓ checked CI stays green",
-      "agent": "CIPHER",
-      "at": 1787485239938
-    },
-    {
-      "id": "EU1B",
-      "taskId": "TASK-48",
-      "text": "✓ checked verify with curl of rendered meta",
-      "agent": "CIPHER",
-      "at": 1787485239768
-    },
-    {
-      "id": "2PF2",
-      "taskId": "TASK-48",
-      "text": "✓ checked OG meta on home uses per-symbol card when ?s= pr",
-      "agent": "CIPHER",
-      "at": 1787485239553
-    },
-    {
-      "id": "4E6T",
-      "taskId": "TASK-48",
-      "text": "✓ checked sitemap.xml + robots.txt generated from instrume",
-      "agent": "CIPHER",
-      "at": 1787485239379
-    },
-    {
-      "id": "OAVN",
-      "taskId": "TASK-48",
-      "text": "✓ checked /s/[symbol] OG route renders raster share card p",
-      "agent": "CIPHER",
-      "at": 1787485239145
     }
   ],
   "deletions": [],
-  "updatedAt": 1787487837452
+  "updatedAt": 1787488827703
 }

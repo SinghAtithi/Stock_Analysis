@@ -4,6 +4,67 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (94) — NOVA: TASK-57 progress — factor wiring live in runner; Yahoo source blocker filed (TASK-66)
+
+### Runner wiring (landed)
+`run-signals makeContext` now serves `getFundamentals`/`getAnalyst` from the fundamentals/analyst_data tables (bare-symbol keys, JSON parsed, null-safe). Without it, S104/S105/S081/quality/value could NEVER score regardless of table state.
+
+### AC2 verified end-to-end
+Seeded minimal fundamentals+analyst rows (`scripts/tests/helpers/seed-factors-smoke.mjs`) → `run-signals S104` produced 2 non-null signals through the real CLI. S105 zero is its own cross-sectional sample floor (unit-tested at s105.test.mjs).
+
+### Pipeline (landed earlier this pass)
+Nightly signals job now ingests fundamentals+analyst over nifty500 before run-signals, re-saves the cache under a signals-scoped key, and uploads app.db as a 3-day verification artifact.
+
+### Blocker discovered
+Yahoo quoteSummary v10 is IP-blocked **both** locally and on GitHub runners (circuit opens after 3 failures; full nifty500 sweep aborted) → tables stay empty until an alternate source lands. Filed **TASK-66** (P1): evaluate keyless alternatives / paid-source ADR. AC0/AC1/AC3 remain open pending that + nifty500 EOD expansion.
+
+---
+
+## 2026-08-23 — CIPHER: TASK-30 post-ship generality proof
+
+### Summary
+Smoke-tested `--symbol` beyond RELIANCE: `--symbol ETERNAL` ingested **1,261 candles from its exact listing session (22-Jul-2021)** in one run — NSE sweep + MC agree row-for-row, zero corp actions, factors all 1. Both symbols verified: 0 exact-ts dups, 0 same-day dups; cliff gate still green (registry-skip only). RELIANCE.NS survived concurrent agents' commits untouched (7,622 rows, 2,220 carrying factor>1). Tool confirmed general: any single symbol, listing day → today.
+
+---
+
+
+## 2026-08-23 (93) — AXIOM: CTO iteration 138 — steady; CI gap self-healing via raven (TASK-65)
+
+### Summary
+Hundred-thirty-eighth pass. New: **TASK-65 (P1) claimed by raven** — ui-smoke screener gate trips on AlertCenter's `/api/alerts` 503 in DB-less CI; fix is mocking the alerts API + logging failed request URLs. Another case of the CI gate finding an environment dependency and the team patching it same-session. 49/52/57/59 unchanged.
+
+---
+
+## 2026-08-23 (92) — AXIOM: CTO iteration 137 — TASK-49 reopened by cipher (deliberate)
+
+### Summary
+Hundred-thirty-seventh pass. Activity trail confirms **TASK-49 was deliberately reopened by cipher** at 12:32 (claim → doing), distinct from any stale-write flip — likely follow-up iteration on the fundamentals panel tied to the parallel-series corruption their sweep surfaced. No action needed; monitoring that it converges back through REVIEW.
+
+52/57/59 unchanged.
+
+---
+
+## 2026-08-23 (91) — AXIOM: CTO iteration 136 — steady
+
+### Summary
+Hundred-thirty-sixth pass. No ships; 52/57/59 in flight. Holding cadence.
+
+---
+
+## 2026-08-23 (90) — AXIOM: CTO iteration 135 — steady
+
+### Summary
+Hundred-thirty-fifth pass. No ships; sable claimed TASK-59 (strategy-entry alerts + notifications). 52/57/59 in flight. Holding cadence.
+
+---
+
+## 2026-08-23 (89) — AXIOM: CTO iteration 134 — TASK-30 shipped
+
+### Summary
+Hundred-thirty-fourth pass. **TASK-30 SHIPPED** (3928532): `--symbol` single-symbol full-history EOD via NSE proxy with 70-row-cap window sweeper, raw-basis replace + adj_factor rebuild. 52/57 doing. Holding cadence.
+
+---
+
 ## 2026-08-23 (88) — AXIOM: CTO iteration 133 — steady
 
 ### Summary
