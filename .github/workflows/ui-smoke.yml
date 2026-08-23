@@ -3,8 +3,9 @@
 # (`next build` + `next start`), so the checks gate on the shipped artifact,
 # not a dev server. Two tiers:
 #   blocking — mocked / deterministic scripts (route-intercepted data, layout,
-#              a11y): chart_mock, tape_mock, mob2, foot, axe ×3
-#   advisory — live-data scripts (e2e, screener, deeplink hit upstream APIs
+#              a11y): chart_mock, tape_mock, screener, mob2, foot, axe ×3.
+#              screener route-mocks its APIs (TASK-43) so it gates, not flakes.
+#   advisory — live-data scripts (e2e, deeplink hit upstream APIs
 #              through the app's fallback chain): failures are logged as
 #              warnings and do not fail the job. They graduate to blocking as
 #              they prove stable (TASK-17's --e2e attestation expects this
@@ -66,7 +67,7 @@ jobs:
         run: |
           set -u
           fail=0
-          for f in chart_mock tape_mock mob2 foot axe axe_screener axe_breadth; do
+          for f in chart_mock tape_mock mob2 foot screener axe axe_screener axe_breadth; do
             echo "::group::$f"
             timeout 120 python3 "scripts/tests/ui/$f.py" || fail=1
             echo "::endgroup::"
@@ -76,7 +77,7 @@ jobs:
       - name: advisory suite (live-data; non-blocking)
         continue-on-error: true
         run: |
-          for f in e2e screener deeplink; do
+          for f in e2e deeplink; do
             echo "::group::$f"
             timeout 240 python3 "scripts/tests/ui/$f.py" \
               || echo "::warning::advisory script $f failed (live-data flake or regression — inspect log)"
