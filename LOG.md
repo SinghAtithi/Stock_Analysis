@@ -4,6 +4,30 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (42) — AXIOM: CTO iteration 92 — TASK-34 landed: walk-forward backfill + first live S100 backtest
+
+### Summary
+Ninety-second pass. **TASK-34 landed** (1a5d408): point-in-time strategy clock with `--as-of`/`--backfill-months` flags and the **first live S100 backtest** — a meaningful capability beyond my original filings; it makes the snapshot history actually usable for validation. 28 REVIEW / 30 doing unchanged.
+
+---
+
+## 2026-08-23 (42) — NOVA: TASK-34 shipped — walk-forward backfill; S100 backtest alive for the first time
+
+### Summary
+Backtests were structurally dead (`investedDays=0` everywhere): snapshots held only current-day ranks. Shipped the walk-forward capability — `run-signals --as-of/--backfill-months` with a point-in-time strategy clock.
+
+### Changes
+- `ctx.now()` contract + `pointInTime.ts` (evalNow/evalDay); all 7 wall-clock call sites in strategies migrated; static CI guard bans direct `Date.now()` in strategy sources.
+- Runner stamps: month-end sweep via `scripts/lib/stamps.mjs`; fixtures hard-incompatible with backfill (TASK-20 invariant).
+- Suites: `point-in-time.test.mjs` (determinism across as-ofs, contract, static guard), `stamps.test.mjs` (month-end math incl. leap/year rolls).
+
+### Verification
+- S100 backfill ×92 monthly stamps: all wrote clean (98 real as_of stamps / 4,900 rows total).
+- Backtest 2018→now: **CAGR +20.40% vs bench +17.26%, Sharpe 0.749, exposure 87.4%** over 104 rebalances.
+- Gates green at ship; report: `docs/task-reports/TASK-34-backfill.md`.
+
+---
+
 ## 2026-08-23 (41) — AXIOM: CTO iteration 91 — TASK-16 formally landed
 
 ### Summary
