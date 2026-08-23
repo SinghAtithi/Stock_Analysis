@@ -4,7 +4,16 @@ import { useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import type { WatchlistEntry } from "@/lib/watchlist";
 import { exportWatchlist, importWatchlist } from "@/lib/watchlist";
+import Sparkline from "@/components/Sparkline";
 import Link from "next/link";
+
+export interface WatchQuote {
+  symbol: string;
+  exchange: string;
+  price: number | null;
+  changePct: number | null;
+  spark: number[];
+}
 
 interface Props {
   items: WatchlistEntry[];
@@ -12,6 +21,8 @@ interface Props {
   onPick: (e: WatchlistEntry) => void;
   onRemove: (e: WatchlistEntry) => void;
   bare?: boolean;
+  /** live quotes keyed by uppercased symbol — absent key renders skeleton */
+  quotes?: Map<string, WatchQuote>;
 }
 
 export default function Watchlist({
@@ -20,6 +31,7 @@ export default function Watchlist({
   onPick,
   onRemove,
   bare,
+  quotes,
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [notice, setNotice] = useState<{ ok: boolean; text: string } | null>(
@@ -36,7 +48,8 @@ export default function Watchlist({
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "nifty-watchlist.json";
+    const istDate = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
+    a.download = `nifty-watchlist-${istDate}.json`;
     a.click();
     URL.revokeObjectURL(url);
     flash(true, "Exported");
@@ -78,6 +91,8 @@ export default function Watchlist({
         {items.map((q) => {
           const isSel =
             selected?.symbol === q.symbol && selected?.exchange === q.exchange;
+          const quote = quotes?.get(q.symbol.toUpperCase());
+          const up = (quote?.changePct ?? 0) >= 0;
           return (
             <li key={`${q.exchange}-${q.symbol}`}>
               <div
@@ -93,10 +108,47 @@ export default function Watchlist({
                   <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold ${isSel ? "bg-ink/10 text-ink" : "bg-panel-2 text-muted"}`}>
                     {q.symbol.slice(0, 2)}
                   </span>
-                  <span className="min-w-0">
+                  <span className="min-w-0 flex-1">
                     <span className={`block truncate text-sm font-medium leading-none ${isSel ? "text-ink" : "text-paper"}`}>{q.symbol}</span>
                     <span className={`block truncate text-xs ${isSel ? "text-ink/70" : "text-faint"}`}>{q.type === "Index" ? "Index" : q.exchange} · {q.name.slice(0, 28)}</span>
                   </span>
+                  {/* live quote block (TASK-105): skeleton until the batch lands */}
+                  {quote === undefined ? (
+                    <span className="flex shrink-0 items-center gap-2" aria-hidden>
+                      <span className="h-6 w-14 animate-pulse rounded bg-panel-2" />
+                      <span className="h-5 w-12 animate-pulse rounded bg-panel-2" />
+                    </span>
+                  ) : (
+                    <span className="flex shrink-0 items-center gap-2">
+                      {quote.spark.length > 1 && (
+                        <Sparkline
+                          values={quote.spark}
+                          width={56}
+                          height={20}
+                          stroke={up ? "var(--color-up)" : "var(--color-down)"}
+                          label={`${q.symbol} day trend`}
+                        />
+                      )}
+                      <span className="w-14 text-right font-mono text-xs tabular-nums">
+                        {quote.price != null
+                          ? quote.price.toLocaleString("en-IN", { maximumFractionDigits: 2 })
+                          : "—"}
+                      </span>
+                      <span
+                        className={`w-16 rounded-full px-1.5 py-0.5 text-center font-mono text-[11px] tabular-nums ${
+                          quote.changePct == null
+                            ? isSel ? "bg-ink/10 text-ink/70" : "bg-panel-2 text-muted"
+                            : up
+                              ? isSel ? "bg-up/15 text-ink" : "bg-up-soft text-up"
+                              : isSel ? "bg-down/15 text-ink" : "bg-down-soft text-down"
+                        }`}
+                      >
+                        {quote.changePct != null
+                          ? `${quote.changePct > 0 ? "+" : ""}${quote.changePct.toFixed(2)}%`
+                          : "—"}
+                      </span>
+                    </span>
+                  )}
                 </button>
                 <button
                   onClick={() => onRemove(q)}

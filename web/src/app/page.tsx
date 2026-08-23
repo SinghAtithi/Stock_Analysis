@@ -16,7 +16,7 @@ import StatsRail from "@/components/StatsRail";
 import FundamentalsPanel from "@/components/FundamentalsPanel";
 import TickerTape from "@/components/TickerTape";
 import Odometer from "@/components/Odometer";
-import Watchlist from "@/components/Watchlist";
+import Watchlist, { type WatchQuote } from "@/components/Watchlist";
 import StarToggle from "@/components/StarToggle";
 import SiteHeader from "@/components/SiteHeader";
 import Modal from "@/components/Modal";
@@ -118,6 +118,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [ticker, setTicker] = useState<TickerItem[]>([]);
   const [tickerNonce, setTickerNonce] = useState(0);
+  const [watchQuotes, setWatchQuotes] = useState<Map<string, WatchQuote>>(new Map());
   const reqId = useRef(0);
 
   const load = useCallback(
@@ -201,6 +202,37 @@ export default function Home() {
       document.removeEventListener("visibilitychange", reeval);
     };
   }, [tickerNonce]);
+
+  /* TASK-105 — batched live quotes + day sparks for watchlist rows. Re-fetches
+     when the tape refreshes (same session-aware cadence) or the list changes;
+     60s server cache keeps repeat polls free. */
+  const watchKey = watchlist
+    .map((w) => w.symbol.toUpperCase())
+    .sort()
+    .join(",");
+  useEffect(() => {
+    if (!watchKey) {
+      setWatchQuotes(new Map());
+      return;
+    }
+    let cancelled = false;
+    const fetchQuotes = async () => {
+      try {
+        const res = await fetch(`/api/watchlist-quotes?symbols=${encodeURIComponent(watchKey)}`);
+        if (!res.ok) return;
+        const json = await res.json();
+        if (!cancelled && Array.isArray(json.quotes)) {
+          setWatchQuotes(new Map(json.quotes.map((q: WatchQuote) => [q.symbol.toUpperCase(), q])));
+        }
+      } catch {
+        /* keep previous quotes */
+      }
+    };
+    void fetchQuotes();
+    return () => {
+      cancelled = true;
+    };
+  }, [watchKey, tickerNonce]);
 
   const pick = useCallback(
     (r: SearchResult) => {
@@ -312,7 +344,10 @@ export default function Home() {
     }
   };
 
-  const up = (data?.change ?? 0) >= 0;
+  const hasChange = data?.change != null && data?.changePct != null;
+  const isUp = hasChange && (data!.change as number) > 0;
+  const isDown = hasChange && (data!.change as number) < 0;
+  const isFlat = hasChange && (data!.change as number) === 0;
   const busy = loading;
 
   useEffect(() => {
@@ -517,9 +552,21 @@ export default function Home() {
                   "—"
                 )}
               </span>
-              <span className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium tabular-nums ${up ? "bg-up-soft text-up" : "bg-down-soft text-down"}`}>
-                {data?.change != null && data?.changePct != null
-                  ? `${up ? "+" : ""}${data.change.toFixed(2)} · ${up ? "+" : ""}${data.changePct.toFixed(2)}%`
+              <span
+                className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium tabular-nums border ${
+                  isUp
+                    ? "bg-up-soft text-up border-transparent"
+                    : isDown
+                      ? "bg-down-soft text-down border-transparent"
+                      : isFlat
+                        ? "bg-panel-2 text-muted border-line"
+                        : "bg-surface text-faint border-line"
+                }`}
+              >
+                {hasChange
+                  ? isFlat
+                    ? `0.00 · 0.00%`
+                    : `${isUp ? "+" : ""}${(data!.change as number).toFixed(2)} · ${isUp ? "+" : ""}${(data!.changePct as number).toFixed(2)}%`
                   : "—"}
               </span>
               {error && (

@@ -139,9 +139,9 @@ export default function BreadthPage() {
     )
     .filter((v): v is number => v != null);
   const vixSeries = [...days].reverse().map((d) => d.vix).filter((v): v is number => v != null);
-  const sessionDates = days.map((d) => d.date);
-  const fiiSeries = [...days].map((d) => d.fii_total);
-  const diSeries = [...days].map((d) => d.di_total);
+  const sessionDates = [...days].reverse().map((d) => d.date);
+  const fiiSeries = [...days].reverse().map((d) => d.fii_total);
+  const diSeries = [...days].reverse().map((d) => d.di_total);
 
   const num = (v: number | null | undefined, f = 0) =>
     v == null ? "—" : v.toLocaleString("en-IN", { maximumFractionDigits: f });
