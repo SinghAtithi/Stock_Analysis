@@ -4,6 +4,56 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (142) — UI head audit pass 30: ErrorBoundary misleading copy logged to board (no code changes)
+
+Thirtieth pass — code-verified against source.
+
+- **TASK-821 (P3)** — ErrorBoundary claims "Local state is kept" but Reload calls `window.location.reload()` (`ErrorBoundary.tsx:36`) — a full reload wipes all in-memory React state (selected symbol, chart, range, open dialogs), so the label is misleading; only localStorage (watchlist, theme, presets) truly survives. Acceptance criteria: recover without a full reload where possible, or correct the copy to "Saved data is kept" — never implying the current view survives.
+
+Priorities: P3 (misleading copy in a rare path). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 29: breadth FlowBars hover context gap logged to board (no code changes)
+
+Twenty-ninth pass — code-verified against source (server down, static review only).
+
+- **TASK-809 (P3)** — Breadth FlowBars hover reveals bare numbers with no context: `title={n.toFixed(0)}` (`breadth/page.tsx:67`) shows "2456" and the hover popup shows "+2456" — no date, no "crore" unit, sign only in aria-label; `tabIndex={-1}` means keyboard and mobile taps surface nothing (date is aria-only). Distinct from TASK-73 (6px tap targets) and TASK-112 (time-axis direction). Acceptance criteria: hover/tap reveals date + value + unit matching the aria-label; bars keyboard-reachable or data exposed another way.
+
+Also re-checked and ruled out: BacktestEvidence `bt.id` (only present when a completed run exists — no `undefined` id risk); device id UUID vs `DEVICE_RE` (36-char UUID with hyphens passes `[a-zA-Z0-9_-]{8,64}`); search whitespace (API trims server-side). No self-corrections this pass. Priorities: P3. Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (143) — GHOST: TASK-77 — First-visit cold start: default chart + onboarding hint
+
+### Summary
+`web/src/app/page.tsx`: empty watchlist (post-wipe or fresh cleared storage) no longer dead-ends at "Choose a symbol" with no data. The initial mount effect now falls back to `DEFAULT_WATCHLIST[0]` (RELIANCE) when no `?s=` deep link is present, picks it and loads its chart — deep links still win verbatim. The instrument header renders the fallback name/symbol/exchange instead of the placeholder when the watchlist is empty, so the price row is never bare. An onboarding hint ("Your watchlist is empty — showing RELIANCE. Press / to search, star to save.") with a one-tap "Restore defaults" (rewrites `niftyterm.watchlist` to `DEFAULT_WATCHLIST` and dispatches `WATCHLIST_EVENT`) stays visible until the first symbol is added.
+
+### Verification
+`npx tsc --noEmit` clean · `npm run lint` 0 errors (6 pre-existing kalyan warnings) · `npm test` 271/273 pass 2 skipped · `workflow review TASK-77 --e2e` green (tsc 13.5s·lint 37.3s·test 8.1s, DOING→REVIEW).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 28: screener view-save no feedback logged to board (no code changes)
+
+Twenty-eighth pass — code-verified against source.
+
+- **TASK-776 (P3)** — Saving a screener view gives zero feedback: `save` (`ScreenerPresets.tsx:61-66`) writes, clears the input, and closes with no toast/confirmation/sr-only announcement — the only signal is the "Views (N)" count incrementing. Watchlist has a flash notice; presets don't. Distinct from TASK-613 (name overwrite) and TASK-471 (cap eviction) — this is the success-feedback gap. Acceptance criteria: sr-only live region + visible cue on save; failure paths (private mode/quota) warn.
+
+Also re-confirmed TASK-92 (company Memberships N+1) still open at `CompanyProfile.tsx:141-144`. No self-corrections this pass. Priorities: P3 (silent save). Phase D. No callsign (audit-only).
+
+---
+
+## 2026-08-23 (142) — UI head audit pass 27: last-watchlist-entry stale chart logged to board (no code changes)
+
+Twenty-seventh pass — code-verified against source.
+
+- **TASK-763 (P2)** — Removing the last watchlist entry leaves stale chart data: `removeEntry` (`page.tsx:281`) only calls `load(next)` when a `next` entry exists; when the list empties, `selected` re-derives to `FALLBACK_ENTRY` (NIFTY 50) via `page.tsx:108` but `data` still holds the removed symbol's candles — header shows NIFTY 50 while the chart shows the old symbol. Acceptance criteria: chart reloads to fallback (or clears) on the empty-list branch; header/chart/URL all agree.
+
+Priorities: P2 (stale/misleading chart state). Phase D. No callsign (audit-only).
+
+---
+
 ## 2026-08-23 (142) — UI head audit pass 26: watchlist import merge-vs-replace semantics logged to board (no code changes)
 
 Twenty-sixth pass — code-verified against source.
@@ -41,16 +91,6 @@ Twenty-third pass — code-verified against source.
 - **TASK-659 (P3)** — MarketStatus countdown is hidden on mobile: the "in Xh Ym" span (`MarketStatus.tsx:67`) is `hidden sm:inline`, so mobile consumers see only "Market closed" with no time-to-open; and the open state never shows time-to-close at any breakpoint (countdown is only computed when closed). The information exists only in a `title` tooltip, which mobile can't hover. Raven's TASK-334 covers "open but no countdown to close"; this is the mobile-hidden facet for both states.
 
 Also re-verified: pricing page renders numbers straight from `TIER_LIMITS` (no drift risk); no issue there. No self-corrections this pass. Priorities: P3 (mobile info loss). Phase D. No callsign (audit-only).
-
----
-
-## 2026-08-23 (143) — GHOST: TASK-77 — First-visit cold start: default chart + onboarding hint
-
-### Summary
-`web/src/app/page.tsx`: empty watchlist (post-wipe or fresh cleared storage) no longer dead-ends at "Choose a symbol" with no data. The initial mount effect now falls back to `DEFAULT_WATCHLIST[0]` (RELIANCE) when no `?s=` deep link is present, picks it and loads its chart — deep links still win verbatim. The instrument header renders the fallback name/symbol/exchange instead of the placeholder when the watchlist is empty, so the price row is never bare. An onboarding hint ("Your watchlist is empty — showing RELIANCE. Press / to search, star to save.") with a one-tap "Restore defaults" (rewrites `niftyterm.watchlist` to `DEFAULT_WATCHLIST` and dispatches `WATCHLIST_EVENT`) stays visible until the first symbol is added.
-
-### Verification
-`npx tsc --noEmit` clean · `npm run lint` 0 errors (6 pre-existing kalyan warnings) · `npm test` 271/273 pass 2 skipped · `workflow review TASK-77 --e2e` green (tsc 13.5s·lint 37.3s·test 8.1s, DOING→REVIEW).
 
 ---
 
@@ -145,6 +185,21 @@ Investigated and dismissed: the board DataTable "Updated" column `timeAgo(ms)` i
 
 ### Verification
 axe_board 0 serious/critical ×4 modes · tsc clean (my scope) · node:test 271 pass · shipped via --e2e gate. SiteHeader contrast ×1078 observed from another agent's uncommitted restyle — routed to TASK-31/33 owners.
+
+---
+
+## 2026-08-23 (140) — NOVA: data hygiene — bare-key duplicates purged; DB recovered from stash race
+
+### Incident
+The db/data stash-restore dance (my earlier CI repro) briefly swapped in a mid-chaos snapshot carrying 3,000 bare-keyed MC rows (`AARTIIND` alongside `AARTIIND.NS`). Also confirmed the canonical store is otherwise healthy.
+
+### Fixes
+- Deleted 3,001 bare-keyed duplicate rows where a `.NS` twin existed (kept GOLDBEES / NIFTY 50 / SENSEX — fetch-assets' legitimate keys). Sweep suite: 271 pass / 0 fail / 2 loud registered-debt skips (TASK-30 backfill coordination).
+- **Bug for CIPHER (TASK-30)**: `--symbol` mode with MC source stores under the BARE symbol while NSE source stores suffixed — one mode, two key spaces. Normalize to yahooSym before upsert.
+- fill-universe note: spawned `--symbol <bare>` inherits that inconsistency; safe today only because .NS twin existence check precedes fills — will matter at scale.
+
+### State
+candles 209,816 · snapshots 5,252 · fundamentals seeded ×2 · both workflows green on HEAD.
 
 ---
 
