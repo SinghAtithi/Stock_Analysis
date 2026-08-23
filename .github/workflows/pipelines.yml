@@ -81,11 +81,35 @@ jobs:
         uses: actions/cache@v4
         with:
           path: db/data
-          key: eod-db-${{ runner.os }}-${{ github.run_id }}
+          key: eod-db-${{ runner.os }}-signals-${{ github.run_id }}
           restore-keys: eod-db-${{ runner.os }}-
+
+      # TASK-57: factor tables feed S104/S105/S081/quality/value. Yahoo
+      # quoteSummary is often IP-blocked locally; GH runners get clean IPs.
+      - name: ingest-fundamentals (nifty500)
+        run: node --experimental-strip-types scripts/ingest-fundamentals.mjs --universe nifty500
+
+      - name: ingest-analyst (nifty500)
+        run: node --experimental-strip-types scripts/ingest-analyst.mjs --universe nifty500
 
       - name: signal snapshots (all strategies)
         run: node --experimental-strip-types scripts/run-signals.mjs --backfill-months 1
+
+      # persist refreshed tables for tomorrow's restore-prefix; keep a
+      # short-lived artifact so humans can verify row counts without shell access
+      - name: save candle + factor store
+        uses: actions/cache/save@v4
+        with:
+          path: db/data
+          key: eod-db-${{ runner.os }}-signals-${{ github.run_id }}
+
+      - name: upload db snapshot for verification
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-db
+          path: db/data/app.db
+          retention-days: 3
+          if-no-files-found: ignore
 
       - name: report failure
         if: failure()
