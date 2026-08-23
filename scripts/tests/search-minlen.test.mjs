@@ -43,3 +43,25 @@ test("popular quick-pick shapes resolve in the index", () => {
     );
   }
 });
+
+test("TASK-972: sector queries return classified instruments", () => {
+  const r = searchInstruments("health tech", 8);
+  assert.ok(r.length > 0, "'health tech' must not be empty");
+  assert.ok(
+    r.some((x) => (x.sector ?? "").toUpperCase().includes("HEALTH TECH")),
+    "sector field surfaces Health Technology hits"
+  );
+});
+
+test("TASK-972: index-membership query returns constituents", () => {
+  const r = searchInstruments("NIFTY BANK", 20);
+  const members = r.filter((x) => (x.indices ?? []).includes("NIFTY BANK"));
+  assert.ok(members.length > 0, "constituents matched via idx membership");
+  // the index row itself still outranks members (name prefix score 3 < 6)
+  assert.equal(r[0]?.symbol, "NIFTY BANK");
+});
+
+test("TASK-972: exact symbol still beats sector matches", () => {
+  const r = searchInstruments("SBIN", 8);
+  assert.equal(r[0]?.symbol, "SBIN");
+});

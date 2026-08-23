@@ -74,6 +74,12 @@ export function searchInstruments(q: string, limit = 8): SearchHit[] {
     else if (name.startsWith(needle)) score = 3;
     else if (sym.includes(needle)) score = 4;
     else if (name.includes(needle) && needle.length >= 3) score = 5;
+    /* TASK-972: theme/sector queries ('NIFTY 50', 'utilities', 'health tech')
+       match index membership and classification fields — ranked below every
+       symbol/name path so exact-symbol ranking is untouched */
+    else if (inst.idx?.some((ix) => ix.toUpperCase() === needle)) score = 6;
+    else if (inst.sec?.toUpperCase().includes(needle) && needle.length >= 3) score = 7;
+    else if (inst.ind?.toUpperCase().includes(needle) && needle.length >= 3) score = 8;
 
     if (score >= 0) {
       const hit: SearchHit = {
