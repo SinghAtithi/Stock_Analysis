@@ -10,6 +10,16 @@
 
 set -u
 
+# TASK-1497: never let a torn/conflicted data/board.json reach git — a stash
+# pop that conflicts leaves <<<<<<< markers in the file, and one landed in
+# the live board (2026-08-24, incident #4). Fail the commit instead.
+if [ -f data/board.json ]; then
+  node -e "JSON.parse(require('fs').readFileSync('data/board.json','utf8'))" 2>/dev/null || {
+    echo "[pre-commit] data/board.json is not valid JSON — fix or checkout before committing." >&2
+    exit 1
+  }
+fi
+
 if ! command -v gitleaks >/dev/null 2>&1; then
   echo "[pre-commit] gitleaks not installed — skipping local scan (CI will scan)."
   exit 0

@@ -48878,15 +48878,131 @@
       "createdAt": 1787522817442,
       "updatedAt": 1787522817442,
       "blocked": false
+    },
+    {
+      "id": "TASK-1497",
+      "title": "SEC: guard data/board.json integrity — pre-commit JSON validity check after stash-conflict markers corrupted live board",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "done",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "pre-commit script rejects invalid board.json",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "hook reinstalled locally",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "incident documented in LOG",
+          "done": true
+        }
+      ],
+      "createdAt": 1787524971436,
+      "updatedAt": 1787525439889,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1498",
+      "title": "SEC: triage open dependabot PRs — lucide-react 1.33 merge-on-green; @types/node 26 HOLD until runtime upgrade; typescript 7 HOLD for dedicated migration; action bumps #5/#6/#7 evidence-complete",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "lucide-react merged if ci green",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "types-node held until runtime upgrade lands",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "ts-7 moved to its own migration task",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "action bumps merged on fresh green evidence",
+          "done": false
+        }
+      ],
+      "createdAt": 1787524971685,
+      "updatedAt": 1787524971685,
+      "blocked": false
     }
   ],
   "activities": [
     {
-      "id": "0P0S",
-      "taskId": "TASK-1496",
-      "text": "still red @ 64782f8 · https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32671347878",
-      "agent": "CI-BOT",
-      "at": 1787525161617
+      "id": "KOEO",
+      "taskId": "TASK-1497",
+      "text": "moved review → done",
+      "agent": "CIPHER",
+      "at": 1787525439889
+    },
+    {
+      "id": "1FB9",
+      "taskId": "TASK-1497",
+      "text": "review · gates green tsc=29.4s·lint=35.5s·test=7.4s · e2e✓",
+      "agent": "CIPHER",
+      "at": 1787525368310
+    },
+    {
+      "id": "O899",
+      "taskId": "TASK-1497",
+      "text": "review ✗ gates RED (tsc=10.2s·lint=38.2s) — fix and re-run",
+      "agent": "CIPHER",
+      "at": 1787525037466
+    },
+    {
+      "id": "R4AS",
+      "taskId": "TASK-1497",
+      "text": "✓ checked incident documented in LOG",
+      "agent": "CIPHER",
+      "at": 1787524988621
+    },
+    {
+      "id": "4DUB",
+      "taskId": "TASK-1497",
+      "text": "✓ checked hook reinstalled locally",
+      "agent": "CIPHER",
+      "at": 1787524988381
+    },
+    {
+      "id": "JBIF",
+      "taskId": "TASK-1497",
+      "text": "✓ checked pre-commit script rejects invalid board.json",
+      "agent": "CIPHER",
+      "at": 1787524988021
+    },
+    {
+      "id": "3NNQ",
+      "taskId": "TASK-1498",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787524971685
+    },
+    {
+      "id": "VYDA",
+      "taskId": "TASK-1497",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787524971437
     },
     {
       "id": "PI21",
@@ -49391,57 +49507,8 @@
       "text": "review · gates green tsc=13.7s·lint=38.5s·test=7.3s",
       "agent": "ORION",
       "at": 1787521000271
-    },
-    {
-      "id": "PG3X",
-      "taskId": "TASK-83",
-      "text": "✓ checked existing keyboard J/K step and export/import una",
-      "agent": "ORION",
-      "at": 1787520932823
-    },
-    {
-      "id": "3JG5",
-      "taskId": "TASK-83",
-      "text": "✓ checked behavior identical on desktop + mobile sheet",
-      "agent": "ORION",
-      "at": 1787520932554
-    },
-    {
-      "id": "Z1N2",
-      "taskId": "TASK-83",
-      "text": "✓ checked undo announces via sr-only live region",
-      "agent": "ORION",
-      "at": 1787520932158
-    },
-    {
-      "id": "EE8V",
-      "taskId": "TASK-83",
-      "text": "✓ checked removing a watchlist entry offers an undo afford",
-      "agent": "ORION",
-      "at": 1787520931861
-    },
-    {
-      "id": "XVGM",
-      "taskId": "TASK-763",
-      "text": "✓ checked J/K stepping with an empty list does nothing",
-      "agent": "QUARK",
-      "at": 1787520868609
-    },
-    {
-      "id": "NI7P",
-      "taskId": "TASK-763",
-      "text": "✓ checked removeEntry handles the empty-list branch",
-      "agent": "QUARK",
-      "at": 1787520868266
-    },
-    {
-      "id": "WFEY",
-      "taskId": "TASK-763",
-      "text": "✓ checked after removing the last watchlist entry, the cha",
-      "agent": "QUARK",
-      "at": 1787520867901
     }
   ],
   "deletions": [],
-  "updatedAt": 1787525161633
+  "updatedAt": 1787525439951
 }
