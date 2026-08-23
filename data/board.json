@@ -1802,7 +1802,7 @@
         }
       ],
       "createdAt": 1787483673579,
-      "updatedAt": 1787488344895,
+      "updatedAt": 1787489668192,
       "blocked": false
     },
     {
@@ -2190,31 +2190,31 @@
         {
           "id": "1",
           "text": "alert type strategy-membership: fires on top-N enter/exit between snapshot runs (diffable from signal_snapshots)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "evaluation wired to scheduled runs",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "delivery via logged digest now, Resend-shaped adapter for email when key present",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "togglable per alert in AlertCenter",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "tests for membership diff",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787485853306,
-      "updatedAt": 1787488158480,
+      "updatedAt": 1787489679046,
       "blocked": false
     },
     {
@@ -2438,7 +2438,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "raven",
       "labels": [
         "ui",
@@ -2449,21 +2449,21 @@
         {
           "id": "1",
           "text": "screener.py mocks /api/alerts**",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "failed-response URLs printed alongside console errors",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "ui-smoke green again",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787488668969,
-      "updatedAt": 1787488682984,
+      "updatedAt": 1787489678264,
       "blocked": false
     },
     {
@@ -2472,7 +2472,7 @@
       "desc": "",
       "phase": "C",
       "priority": "P1",
-      "status": "todo",
+      "status": "review",
       "assignee": null,
       "labels": [
         "data",
@@ -2483,12 +2483,12 @@
         {
           "id": "1",
           "text": "evaluate keyless alternatives (NSE financial results pages, screener.in public endpoints, BSE API)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "if none viable, document paid-source decision ADR",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
@@ -2497,11 +2497,229 @@
         }
       ],
       "createdAt": 1787488827566,
-      "updatedAt": 1787488827566,
+      "updatedAt": 1787489657799,
+      "blocked": false
+    },
+    {
+      "id": "TASK-67",
+      "title": "NSE sweeper starts at listing year via getHistoricalPeriodicDataYears (skip empty pre-listing windows)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "doing",
+      "assignee": "cipher",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "nseFirstYear() resolves earliest data year (falls back to 1996 floor on failure)",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "tail-fill sweep starts at max(floor, firstYear)",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "node:test coverage",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "gates green",
+          "done": true
+        }
+      ],
+      "createdAt": 1787488980755,
+      "updatedAt": 1787489688321,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "HA8H",
+      "taskId": "TASK-67",
+      "text": "✓ checked gates green",
+      "agent": "RAVAN",
+      "at": 1787489688322
+    },
+    {
+      "id": "EOSU",
+      "taskId": "TASK-67",
+      "text": "✓ checked node:test coverage",
+      "agent": "RAVAN",
+      "at": 1787489688194
+    },
+    {
+      "id": "X1N2",
+      "taskId": "TASK-67",
+      "text": "✓ checked tail-fill sweep starts at max(floor, firstYear)",
+      "agent": "RAVAN",
+      "at": 1787489688013
+    },
+    {
+      "id": "SI75",
+      "taskId": "TASK-67",
+      "text": "✓ checked nseFirstYear() resolves earliest data year (fall",
+      "agent": "RAVAN",
+      "at": 1787489687829
+    },
+    {
+      "id": "NQOP",
+      "taskId": "TASK-59",
+      "text": "✓ checked tests for membership diff",
+      "agent": "RAVAN",
+      "at": 1787489679046
+    },
+    {
+      "id": "2ILK",
+      "taskId": "TASK-59",
+      "text": "✓ checked togglable per alert in AlertCenter",
+      "agent": "RAVAN",
+      "at": 1787489678825
+    },
+    {
+      "id": "W21P",
+      "taskId": "TASK-59",
+      "text": "✓ checked delivery via logged digest now, Resend-shaped ad",
+      "agent": "RAVAN",
+      "at": 1787489678631
+    },
+    {
+      "id": "SV4A",
+      "taskId": "TASK-59",
+      "text": "✓ checked evaluation wired to scheduled runs",
+      "agent": "RAVAN",
+      "at": 1787489678478
+    },
+    {
+      "id": "KZH5",
+      "taskId": "TASK-59",
+      "text": "✓ checked alert type strategy-membership: fires on top-N e",
+      "agent": "RAVAN",
+      "at": 1787489678293
+    },
+    {
+      "id": "U9IJ",
+      "taskId": "TASK-65",
+      "text": "shipped 9ef7703 → origin/master · [TASK-65] fix(harness): mock /api/alerts in screener.py — AlertCenter bell 503s in DB-less CI and tripped the strict console gate; failed-request URLs now self-report · gates tsc=14.3s·lint=40.0s",
+      "agent": "RAVEN",
+      "at": 1787489678264
+    },
+    {
+      "id": "9U1Y",
+      "taskId": "TASK-49",
+      "text": "✓ checked Playwright sanity",
+      "agent": "CIPHER",
+      "at": 1787489668193
+    },
+    {
+      "id": "WRYL",
+      "taskId": "TASK-49",
+      "text": "✓ checked tsc+lint+test green",
+      "agent": "CIPHER",
+      "at": 1787489667893
+    },
+    {
+      "id": "8W78",
+      "taskId": "TASK-49",
+      "text": "✓ checked empty state when no data",
+      "agent": "CIPHER",
+      "at": 1787489667606
+    },
+    {
+      "id": "BBHG",
+      "taskId": "TASK-49",
+      "text": "✓ checked terminal gains a stats section (PE, PB, ROE, deb",
+      "agent": "CIPHER",
+      "at": 1787489667275
+    },
+    {
+      "id": "2MFE",
+      "taskId": "TASK-49",
+      "text": "✓ checked GET /api/fundamentals?symbol= returns normalized",
+      "agent": "CIPHER",
+      "at": 1787489667076
+    },
+    {
+      "id": "CND5",
+      "taskId": "TASK-66",
+      "text": "review · gates green tsc=14.4s·lint=40.3s·test=7.4s",
+      "agent": "NOVA",
+      "at": 1787489657799
+    },
+    {
+      "id": "IS9G",
+      "taskId": "TASK-65",
+      "text": "review · gates green tsc=12.4s·lint=38.3s",
+      "agent": "RAVEN",
+      "at": 1787489620751
+    },
+    {
+      "id": "7NOY",
+      "taskId": "TASK-66",
+      "text": "✓ checked if none viable, document paid-source decision AD",
+      "agent": "NOVA",
+      "at": 1787489563565
+    },
+    {
+      "id": "5A4X",
+      "taskId": "TASK-66",
+      "text": "✓ checked evaluate keyless alternatives (NSE financial res",
+      "agent": "NOVA",
+      "at": 1787489563278
+    },
+    {
+      "id": "NDBE",
+      "taskId": "TASK-65",
+      "text": "review ✗ gates RED (tsc=13.4s·lint=35.0s·test=8.2s) — fix and re-run",
+      "agent": "RAVEN",
+      "at": 1787489480915
+    },
+    {
+      "id": "68GL",
+      "taskId": "TASK-65",
+      "text": "review ✗ gates RED (tsc=12.7s·lint=35.8s·test=8.5s) — fix and re-run",
+      "agent": "RAVEN",
+      "at": 1787489227671
+    },
+    {
+      "id": "2GS3",
+      "taskId": "TASK-65",
+      "text": "✓ checked ui-smoke green again",
+      "agent": "RAVEN",
+      "at": 1787489170419
+    },
+    {
+      "id": "DGSH",
+      "taskId": "TASK-65",
+      "text": "✓ checked failed-response URLs printed alongside console e",
+      "agent": "RAVEN",
+      "at": 1787489170247
+    },
+    {
+      "id": "H6MI",
+      "taskId": "TASK-65",
+      "text": "✓ checked screener.py mocks /api/alerts**",
+      "agent": "RAVEN",
+      "at": 1787489169996
+    },
+    {
+      "id": "5XUB",
+      "taskId": "TASK-67",
+      "text": "claimed by CIPHER · → doing",
+      "agent": "CIPHER",
+      "at": 1787488994363
+    },
+    {
+      "id": "C0SK",
+      "taskId": "TASK-67",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1787488980755
+    },
     {
       "id": "R0I1",
       "taskId": "TASK-57",
@@ -2879,190 +3097,8 @@
       "text": "created in todo",
       "agent": "SYSTEM",
       "at": 1787485889555
-    },
-    {
-      "id": "GMBS",
-      "taskId": "TASK-60",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485889267
-    },
-    {
-      "id": "5WL3",
-      "taskId": "TASK-47",
-      "text": "review · gates green tsc=9.8s·lint=28.7s·test=6.4s",
-      "agent": "SABLE",
-      "at": 1787485875392
-    },
-    {
-      "id": "GEFW",
-      "taskId": "TASK-59",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485853306
-    },
-    {
-      "id": "K2NF",
-      "taskId": "TASK-58",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485853189
-    },
-    {
-      "id": "2BVX",
-      "taskId": "TASK-57",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485852943
-    },
-    {
-      "id": "8TDU",
-      "taskId": "TASK-50",
-      "text": "✓ checked node:test green incl real-data smoke",
-      "agent": "RAVEN",
-      "at": 1787485827203
-    },
-    {
-      "id": "I205",
-      "taskId": "TASK-56",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485823449
-    },
-    {
-      "id": "T4XG",
-      "taskId": "TASK-55",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485823220
-    },
-    {
-      "id": "H1MK",
-      "taskId": "TASK-54",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485823075
-    },
-    {
-      "id": "EFJ1",
-      "taskId": "TASK-53",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485797694
-    },
-    {
-      "id": "EP2N",
-      "taskId": "TASK-52",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485797534
-    },
-    {
-      "id": "X1HI",
-      "taskId": "TASK-51",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1787485797320
-    },
-    {
-      "id": "RHW1",
-      "taskId": "TASK-50",
-      "text": "review · gates green tsc=13.4s·lint=30.2s·test=6.6s",
-      "agent": "RAVEN",
-      "at": 1787485791695
-    },
-    {
-      "id": "7FM8",
-      "taskId": "TASK-48",
-      "text": "shipped 326c3a0 (local) · [TASK-48] feat(web): per-symbol share cards (/s/[symbol] og route + sparkline) and sitemap/robots from instruments index · gates tsc=12.6s·lint=34.6s · e2e✓",
-      "agent": "CIPHER",
-      "at": 1787485759183
-    },
-    {
-      "id": "VMMN",
-      "taskId": "TASK-50",
-      "text": "✓ checked meta matches jury record (#11)",
-      "agent": "RAVEN",
-      "at": 1787485741099
-    },
-    {
-      "id": "59YE",
-      "taskId": "TASK-50",
-      "text": "✓ checked cross-sectional pctRank verified on fixture",
-      "agent": "RAVEN",
-      "at": 1787485740828
-    },
-    {
-      "id": "JWY3",
-      "taskId": "TASK-50",
-      "text": "✓ checked NaN-safe null policy (no revisionTrend -> null)",
-      "agent": "RAVEN",
-      "at": 1787485740441
-    },
-    {
-      "id": "33L5",
-      "taskId": "TASK-50",
-      "text": "✓ checked s105 strategy registered + snapshot-capable from",
-      "agent": "RAVEN",
-      "at": 1787485740293
-    },
-    {
-      "id": "6JLG",
-      "taskId": "TASK-46",
-      "text": "review · gates green tsc=12.8s·lint=30.5s·test=8.1s",
-      "agent": "CIPHER",
-      "at": 1787485731003
-    },
-    {
-      "id": "IJKM",
-      "taskId": "TASK-48",
-      "text": "review · gates green tsc=11.9s·lint=26.2s",
-      "agent": "CIPHER",
-      "at": 1787485630065
-    },
-    {
-      "id": "DFU6",
-      "taskId": "TASK-46",
-      "text": "✓ checked Playwright sanity green",
-      "agent": "CIPHER",
-      "at": 1787485621553
-    },
-    {
-      "id": "GVIZ",
-      "taskId": "TASK-46",
-      "text": "✓ checked keyboard accessible + aria-live on fired alerts",
-      "agent": "CIPHER",
-      "at": 1787485621407
-    },
-    {
-      "id": "P3J3",
-      "taskId": "TASK-46",
-      "text": "✓ checked wire to TASK-42 CRUD API",
-      "agent": "CIPHER",
-      "at": 1787485621282
-    },
-    {
-      "id": "B6FD",
-      "taskId": "TASK-46",
-      "text": "✓ checked create dialog prefilled from symbol header (cros",
-      "agent": "CIPHER",
-      "at": 1787485621078
-    },
-    {
-      "id": "SV7E",
-      "taskId": "TASK-46",
-      "text": "✓ checked bell entry point opens alert center (list active",
-      "agent": "CIPHER",
-      "at": 1787485620802
-    },
-    {
-      "id": "PS3W",
-      "taskId": "TASK-47",
-      "text": "review ✗ gates RED (tsc=9.5s·lint=31.3s·test=6.4s) — fix and re-run",
-      "agent": "SABLE",
-      "at": 1787485597768
     }
   ],
   "deletions": [],
-  "updatedAt": 1787488827703
+  "updatedAt": 1787489688324
 }
