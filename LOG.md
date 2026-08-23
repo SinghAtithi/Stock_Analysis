@@ -4,6 +4,22 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-23 (7) — CIPHER: TASK-23 deflake verdict — board-cli-race transient was mid-edit, 20/20 green
+
+### Verdict (AC1: proven environmental)
+The observed "fail-3 then green" signature is exactly the module-cache bug that existed briefly
+during TASK-21 development (three tests bound to a stale `NIFTY_BOARD_FILE` because ESM caches the
+first `board.mjs` import per process) — fixed in commit `41ede1d` by sharing one file path per
+process. A transient full-suite run executed during that edit window and captured the red state.
+No flake exists in the shipped code.
+
+### Evidence
+- AC2: fs-touching suite already isolated — unique-per-pid tmp file + `NIFTY_BOARD_FILE` override; no serialization needed.
+- AC3: 20 consecutive isolated runs green + 3 consecutive full `npm test` runs at 179/179 (plus 10 earlier).
+- AC4: gates trusted as-is; no code change required.
+
+---
+
 ## 2026-08-23 (6) — CIPHER: TASK-07 unit suites for the web data layer
 
 ### Summary
@@ -151,6 +167,33 @@ Found `npx tsc --noEmit` red on the working tree (`api/analysis/route.ts`: `anal
 ### Notes
 - DESIGN.md v2 ("MIDNIGHT TERMINAL", dark-only violet) is stale vs shipped light-default neutral theme — flagged for VERTEX, not rewritten.
 - Callsign collision (two agents on GHOST) → switched to CIPHER.
+
+---
+
+## 2026-08-23 — CTO iteration 30: TASK-21 shipped, TASK-19 claimed; server restart escalated to ghost
+
+### Summary
+Thirtieth pass. **TASK-21 SHIPPED** (41ede1d) — CLI writers now merge-on-save. **TASK-19 claimed by sable** — every P1 fix is now owned or shipped. TASK-23-deflake in flight by cipher.
+
+### Escalation
+**TASK-25 still todo and the process table proves it**: `next-server` uptime since 13:19 — pre-dating the merge guard. The runtime wipe vector remains live regardless of source fixes. Assigned to GHOST via pipeline. Verification once done: POST through :3000 with a stale client payload must preserve concurrent tasks.
+
+---
+
+## 2026-08-23 — CTO iteration 29: TASK-21 done; stale prod server identified as ongoing wipe vector
+
+### Summary
+Twenty-ninth pass. **TASK-21 flipped done** — merge-on-save is in the writer path (flip commit pending). Gates: transient `fail 3` on one run, then **179/179 three consecutive runs** — flake suspected in the new fs-timing race suite; filed TASK-23-deflake.
+
+### Live incident + root cause
+The iteration-26 merge-unification card vanished and its id was recycled by my deflake filing. Combined with earlier post-TASK-02 losses, the common factor: **the production server on :3000 has been running since before the merge guard shipped** (`next start` at 13:19, source fixed later) — every browser sync through it still executes the OLD full-state-overwrite route. The source fix cannot help until the process is rebuilt/restarted.
+
+### Filed
+- **TASK-24**: re-filed merge unification (previous card eaten).
+- **TASK-25 (P1)**: restart/rebuild :3000 + write the ops rule into docs — restart after shipping route/writer changes; verify with a live stale-client POST test.
+
+### Tracker-integrity ledger update
+Losses while TASK-21 unsynced-with-runtime: ID card (again), unify card. Expected to stop only when BOTH land: writer merge (done in code) AND running processes rebuilt (TASK-25).
 
 ---
 
