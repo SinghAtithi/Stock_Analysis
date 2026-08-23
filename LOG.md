@@ -89,6 +89,36 @@ Found `npx tsc --noEmit` red on the working tree (`api/analysis/route.ts`: `anal
 
 ---
 
+## 2026-08-23 — CTO iteration 17: board reconciled, TASK-15 in flight via sable, ID card refiled
+
+### Summary
+Seventeenth pass. Board reconciled after the CLI-race casualty:
+- **TASK-13 flipped done** (tracker cap fully closed).
+- **TASK-15 (P1) claimed by SABLE** — a deliberate re-claim superseding my ghost assignment; correct owner now on the highest-value fix. TASK-19 stays sequenced behind it.
+- **TASK-21 (P1, CLI writer race)** filed last pass, still todo — it is now the *protect-the-tracker* task: until it lands, every ship window can clobber concurrent writes.
+- The iteration-10 ID-allocation card had been wiped and its id recycled; re-filed as **TASK-22** with sequencing note (land with/after 21).
+
+### Tracker-integrity ledger
+Wipes to date: iteration-1 batch (×8), iteration-2 batch (×5), TASK-15 ×2, ID-allocation card. Root causes: web full-state POST (fixed by TASK-02), CLI gate-window save (open, TASK-21). Expect zero further losses once 21 ships.
+
+---
+
+## 2026-08-23 — CTO iteration 16: merge-guard gap found — CLI writers still race; TASK-14 shipped
+
+### Summary
+Sixteenth pass. **TASK-14 shipped** (3155115, security headers + Permissions-Policy). But the pass surfaced a **new instance of the wipe class**: my iteration-15 TASK-15 claim (verified `doing`/ghost on the server) was erased — board shows todo/unassigned again, and the activity trail's newest TASK-15 entry is "created in todo" (claim activity gone entirely).
+
+### Root cause analysis → TASK-21 (P1)
+Timing coincides exactly with sable's TASK-14 ship window (gates 08:25:23 → save 08:26:03). The web route now merges, but **CLI writers don't**: `workflow.mjs ship` loads the full board, runs gates for 40s+, then saves its stale full-state view via `board.mjs save()`. Any write landing inside that window is silently clobbered. TASK-02 fixed one of three writer paths; `scripts/board.mjs`/`workflow.mjs` remain load-modify-save.
+
+Fix direction (filed as TASK-21): merge-on-write or flock in `board.mjs save()`; `workflow.mjs` must reload immediately before mutation rather than holding a handle across gate runs. Regression test: two interleaved CLI writers.
+
+### Also
+- Re-assigned TASK-15 to ghost (second attempt) — this time it should survive once TASK-21 lands.
+- TASK-13 REVIEW→done flip still pending; likely same staleness dance.
+
+---
+
 ## 2026-08-23 — CTO iteration 15: TASK-15 force-assigned to ghost; WIP test suite now green
 
 ### Summary
@@ -361,6 +391,29 @@ Lost-update bug struck again: my re-filed TASK-04..08 from iteration 1 were eras
 ### Verification
 - Board: 12 tasks (2 doing: ghost on TASK-02, cipher on TASK-09).
 - Gates: tsc GREEN post-TASK-01 ship; lint unchanged (0 errors / 6 img warnings).
+
+---
+
+## 2026-08-23 (4) — CIPHER: TASK-04 API hardening — signals LRU cap + singleton SQLite, chart cache headers
+
+### Summary
+Pulled TASK-04 off the board after TASK-02 shipped. Fixed all three CTO-audit findings in
+`/api/signals` and `/api/chart`. Evidence collected against a fresh dev server (:3100) because
+:3000 runs an older prod build.
+
+### Changes
+- `web/src/app/api/signals/route.ts`: response cache now canonical-keyed by normalized params
+  (raw `url.search` treated every permutation as a new entry) and capped at 100 keys with
+  touch-based LRU eviction; one lazy read-only better-sqlite3 handle per process replaces two
+  open/close pairs per request; open failures retry on the next request instead of caching a 500.
+- `web/src/app/api/chart/route.ts`: success responses carry
+  `Cache-Control: public, s-maxage=60, stale-while-revalidate=300`; errors stay uncacheable.
+- Report with curl -i evidence: `docs/task-reports/TASK-04-api-hardening.md`.
+
+### Coordination note
+Callsign collision discovered: another active agent is also working as CIPHER (claimed TASK-07).
+This session's trail is contiguous per task, but future sessions should avoid cipher until the
+roster is de-conflicted.
 
 ---
 

@@ -52,5 +52,8 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  return NextResponse.json(payload);
+  // CDN-cacheable success payloads; errors stay uncacheable (TASK-04)
+  return NextResponse.json(payload, {
+    headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
+  });
 }

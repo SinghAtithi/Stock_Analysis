@@ -44,6 +44,9 @@ const DB_PATH = path.resolve(
 );
 
 const CACHE_TTL_MS = 60_000;
+// bounded LRU — the cache used to be an uncapped Map keyed by raw query string,
+// so arbitrary param permutations grew it without limit (TASK-04)
+const MAX_CACHE_KEYS = 100;
 const cache = new Map<string, { at: number; body: { status: number; body: unknown } }>();
 
 const DEFAULT_LIMIT = 50;
@@ -102,39 +105,46 @@ function openReadOnly(): DbLike {
   return new Database(DB_PATH, { readonly: true });
 }
 
-function readSnapshots(strategyId: string): { rows: SnapshotRow[]; asOf: number | null } {
-  const db = openReadOnly();
+// one read-only handle per process — the old code opened (and closed) up to two
+// SQLite connections per request. Open failure is not cached: next request retries.
+let dbHandle: DbLike | null = null;
+function db(): DbLike | null {
+  if (dbHandle) return dbHandle;
   try {
-    const asOfRow = db
-      .prepare("SELECT MAX(as_of) AS as_of FROM signal_snapshots WHERE strategy_id = ?")
-      .get(strategyId) as { as_of: number | null };
-    if (asOfRow.as_of === null) return { rows: [], asOf: null };
-    const rows = db
-      .prepare(
-        "SELECT symbol, score, rank, components_json, as_of FROM signal_snapshots WHERE strategy_id = ? AND as_of = ?"
-      )
-      .all(strategyId, asOfRow.as_of) as SnapshotRow[];
-    return { rows, asOf: asOfRow.as_of };
-  } finally {
-    db.close();
+    dbHandle = openReadOnly();
+    return dbHandle;
+  } catch (e: unknown) {
+    console.error("[api/signals] sqlite open failed:", e instanceof Error ? e.message : e);
+    return null;
   }
+}
+
+function readSnapshots(strategyId: string): { rows: SnapshotRow[]; asOf: number | null } {
+  const dbh = db();
+  if (!dbh) return { rows: [], asOf: null };
+  const asOfRow = dbh
+    .prepare("SELECT MAX(as_of) AS as_of FROM signal_snapshots WHERE strategy_id = ?")
+    .get(strategyId) as { as_of: number | null };
+  if (asOfRow.as_of === null) return { rows: [], asOf: null };
+  const rows = dbh
+    .prepare(
+      "SELECT symbol, score, rank, components_json, as_of FROM signal_snapshots WHERE strategy_id = ? AND as_of = ?"
+    )
+    .all(strategyId, asOfRow.as_of) as SnapshotRow[];
+  return { rows, asOf: asOfRow.as_of };
 }
 
 function readQuotes(symbols: string[]): Map<string, QuoteRow> {
   const out = new Map<string, QuoteRow>();
-  if (symbols.length === 0) return out;
-  const db = openReadOnly();
-  try {
-    const placeholders = symbols.map(() => "?").join(",");
-    const rows = db
-      .prepare(
-        `SELECT symbol, price, change_pct FROM quotes WHERE symbol IN (${placeholders})`
-      )
-      .all(...symbols) as QuoteRow[];
-    for (const r of rows) out.set(r.symbol, r);
-  } finally {
-    db.close();
-  }
+  const dbh = db();
+  if (!dbh || symbols.length === 0) return out;
+  const placeholders = symbols.map(() => "?").join(",");
+  const rows = dbh
+    .prepare(
+      `SELECT symbol, price, change_pct FROM quotes WHERE symbol IN (${placeholders})`
+    )
+    .all(...symbols) as QuoteRow[];
+  for (const r of rows) out.set(r.symbol, r);
   return out;
 }
 
@@ -215,11 +225,29 @@ export function GET(request: Request) {
       { status: parsed.status }
     );
   }
-  const key = url.search;
+  // canonical key from normalized params (raw url.search made ?a=1&b=2 and
+  // ?b=2&a=1 distinct entries); Map insertion order + re-set on touch = LRU
+  const key = JSON.stringify([
+    parsed.strategy,
+    parsed.limit,
+    parsed.offset,
+    parsed.sector,
+    parsed.sort,
+    parsed.order,
+  ]);
   const now = Date.now();
   const hit = cache.get(key);
   if (!hit || now - hit.at > CACHE_TTL_MS) {
+    cache.delete(key);
     cache.set(key, { at: now, body: buildBody(parsed) });
+    while (cache.size > MAX_CACHE_KEYS) {
+      const oldest = cache.keys().next().value;
+      if (oldest === undefined) break;
+      cache.delete(oldest);
+    }
+  } else {
+    cache.delete(key);
+    cache.set(key, hit);
   }
   const { status, body } = cache.get(key)!.body;
   return NextResponse.json(body, {
