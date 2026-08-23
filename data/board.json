@@ -3164,8 +3164,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "orion",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -3191,7 +3191,7 @@
         }
       ],
       "createdAt": 1787501713128,
-      "updatedAt": 1787501713128,
+      "updatedAt": 1787527652705,
       "blocked": false
     },
     {
@@ -33341,7 +33341,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P3",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -33349,26 +33349,26 @@
         {
           "id": "1",
           "text": "evidence strip shows the run's finished date (IST, e.g. 'as of 21 Aug') or a staleness cue when old",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "date is prominent near the metrics",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "deep-link unchanged",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "axe 0 violations",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787506640300,
-      "updatedAt": 1787506640300,
+      "updatedAt": 1787527647757,
       "blocked": false
     },
     {
@@ -48851,7 +48851,7 @@
       "desc": "Auto-filed from CI (TASK-1479). Suite `ui-smoke` failed.\n\n- Failing run: https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32669553542\n- Commit: ad6fb40\n\nInvestigate the failing check first; re-run the suite locally before marking fixed.",
       "phase": "A",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [
         "ci",
@@ -48876,7 +48876,7 @@
         }
       ],
       "createdAt": 1787522817442,
-      "updatedAt": 1787522817442,
+      "updatedAt": 1787527641098,
       "blocked": false
     },
     {
@@ -48948,6 +48948,55 @@
     }
   ],
   "activities": [
+    {
+      "id": "R1Z5",
+      "taskId": "TASK-85",
+      "text": "claimed by ORION · → doing",
+      "agent": "ORION",
+      "at": 1787527652717
+    },
+    {
+      "id": "LIYA",
+      "taskId": "TASK-1031",
+      "text": "moved todo → done",
+      "agent": "QUARK",
+      "at": 1787527647757
+    },
+    {
+      "id": "PNJC",
+      "taskId": "TASK-1031",
+      "text": "✓ checked axe 0 violations",
+      "agent": "QUARK",
+      "at": 1787527647542
+    },
+    {
+      "id": "Y3AK",
+      "taskId": "TASK-1031",
+      "text": "✓ checked deep-link unchanged",
+      "agent": "QUARK",
+      "at": 1787527647317
+    },
+    {
+      "id": "2J2U",
+      "taskId": "TASK-1031",
+      "text": "✓ checked date is prominent near the metrics",
+      "agent": "QUARK",
+      "at": 1787527647051
+    },
+    {
+      "id": "5VTN",
+      "taskId": "TASK-1031",
+      "text": "✓ checked evidence strip shows the run's finished date (IS",
+      "agent": "QUARK",
+      "at": 1787527646820
+    },
+    {
+      "id": "0AMJ",
+      "taskId": "TASK-1496",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787527641098
+    },
     {
       "id": "NEBK",
       "taskId": "TASK-1496",
@@ -49458,57 +49507,8 @@
       "text": "shipped 3212c5b (local) · docs(security): SECURITY.md — per-surface threat model, accepted-risk register with revisit triggers, disclosure process; consolidates SEC task cluster 1370-1478 (TASK-1468) · gates tsc=10.1s·lint=32.0s·test=6.9s",
       "agent": "CIPHER",
       "at": 1787521190324
-    },
-    {
-      "id": "G8KX",
-      "taskId": "TASK-763",
-      "text": "moved doing → done",
-      "agent": "QUARK",
-      "at": 1787521168385
-    },
-    {
-      "id": "AXA6",
-      "taskId": "TASK-763",
-      "text": "✓ checked axe 0 violations",
-      "agent": "QUARK",
-      "at": 1787521168128
-    },
-    {
-      "id": "KU6L",
-      "taskId": "TASK-1468",
-      "text": "review · gates green tsc=9.8s·lint=31.8s·test=7.9s",
-      "agent": "CIPHER",
-      "at": 1787521128367
-    },
-    {
-      "id": "GJDX",
-      "taskId": "TASK-83",
-      "text": "shipped de7a1be → origin/master · feat(watchlist): 5s undo chip on removal — restores entry at original position, sr-only live-region announcement, works in desktop panel + mobile sheet via shared removeEntry; insertWatchlistAt clamps against concurrent edits (TASK-83) · gates tsc=9.6s·lint=29.5s·test=7.0s · e2e✓",
-      "agent": "ORION",
-      "at": 1787521081969
-    },
-    {
-      "id": "RXYP",
-      "taskId": "TASK-1468",
-      "text": "✓ checked links to SEC task cluster 1370-1465",
-      "agent": "CIPHER",
-      "at": 1787521078476
-    },
-    {
-      "id": "RRF2",
-      "taskId": "TASK-1468",
-      "text": "✓ checked responsible-disclosure section",
-      "agent": "CIPHER",
-      "at": 1787521078075
-    },
-    {
-      "id": "8Y7H",
-      "taskId": "TASK-1468",
-      "text": "✓ checked threat model per surface (api/board, alerts, ups",
-      "agent": "CIPHER",
-      "at": 1787521077773
     }
   ],
   "deletions": [],
-  "updatedAt": 1787527512936
+  "updatedAt": 1787527652862
 }

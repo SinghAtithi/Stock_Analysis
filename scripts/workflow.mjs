@@ -30,6 +30,10 @@ const GATES = [
   { key: "tsc",  label: "tsc --noEmit", cwd: WEB, cmd: "npx", args: ["tsc", "--noEmit"] },
   { key: "lint", label: "eslint",       cwd: WEB, cmd: "npm", args: ["run", "lint"] },
   { key: "test", label: "node:test",    cwd: WEB, cmd: "npm", args: ["test"] },
+  // TASK-1497 (CIPHER, incident #6): stash-pop conflicts and stale wholesale
+  // writes have repeatedly landed marker-laden/torn board.json — every ship
+  // now proves the shared state file parses before anything else gates.
+  { key: "boardjson", label: "board.json parse", cwd: ROOT, cmd: "node", args: ["-e", "JSON.parse(require('fs').readFileSync('data/board.json','utf8'))"] },
 ];
 
 function die(msg) {
