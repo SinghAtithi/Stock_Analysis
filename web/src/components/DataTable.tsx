@@ -40,6 +40,11 @@ const ALIGN: Record<NonNullable<Column<unknown>["align"]>, string> = {
   center: "text-center",
 };
 
+const rankBadge = (v: unknown): string =>
+  typeof v === "number" && Number.isFinite(v)
+    ? String(v).padStart(2, "0")
+    : "—";
+
 export default function DataTable<T>({
   columns,
   rows,
@@ -252,7 +257,7 @@ export default function DataTable<T>({
                         {c.render ? (
                           c.render(row)
                         ) : c.rank ? (
-                          <span className="text-xs">{String(i + 1).padStart(2, "0")}</span>
+                          <span className="text-xs">{rankBadge((row as Record<string, unknown>)[c.key])}</span>
                         ) : (
                           String((row as Record<string, unknown>)[c.key] ?? "—")
                         )}
