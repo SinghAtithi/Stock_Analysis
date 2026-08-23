@@ -129,6 +129,17 @@ function stagedPaths() {
   return git(["diff", "--cached", "--name-only"]).stdout.split("\n").map(s => s.trim()).filter(Boolean);
 }
 
+// ── TASK-45 helpers ─────────────────────────────────────────────────────
+
+/** Claim-steal guard: a task actively held by a DIFFERENT agent needs --force.
+ *  Same-agent resume and unclaimed/other-column tasks pass freely. */
+export function stealGuard(task, agent, force) {
+  if (task.status !== "doing") return { ok: true };
+  if (!task.assignee || task.assignee === agent) return { ok: true };
+  if (force) return { ok: true, stole: true, from: task.assignee };
+  return { ok: false, holder: task.assignee };
+}
+
 // ── start ───────────────────────────────────────────────────────────────
 function cmdStart() {
   const id = process.argv[3];
@@ -136,6 +147,15 @@ function cmdStart() {
   const agent = requireAgent();
   const { b, t } = getTask(id);
   if (t.status === "done") die(`${id} is DONE — reopen it on /board first.`);
+  // TASK-45 AC1: claim-steal guard — an active task under another agent is not free.
+  const guard = stealGuard(t, agent, has("--force"));
+  if (!guard.ok) {
+    die(
+      `${id} is IN PROGRESS under ${String(guard.holder).toUpperCase()} — claim-steal guard.\n` +
+      `  Coordinate with them, pick another task, or pass --force to take over (logged as takeover).`
+    );
+  }
+  const stealing = Boolean(guard.stole);
   const wip = b.tasks.filter(x => x.status === "doing").length;
   const wasDoing = t.status === "doing";
   // TASK-17 AC2: the WIP cap is enforced, not advisory.
@@ -146,9 +166,15 @@ function cmdStart() {
   t.assignee = agent;
   t.status = "doing";
   t.updatedAt = Date.now();
-  addActivity(b, id, wasDoing ? `re-started by ${agent.toUpperCase()}` : `claimed by ${agent.toUpperCase()} · → doing`, agent);
+  const actText = stealing
+    ? `took over from ${String(prev).toUpperCase()} (--force)`
+    : wasDoing
+      ? `re-started by ${agent.toUpperCase()}`
+      : `claimed by ${agent.toUpperCase()} · → doing`;
+  addActivity(b, id, actText, agent);
   save(b);
   console.log(`▸ CLAIMED ${id} · ${agent.toUpperCase()}${prev && prev !== agent ? ` (was ${String(prev).toUpperCase()})` : ""}`);
+  if (stealing) console.log(`⚠ takeover logged: previous holder ${String(prev).toUpperCase()} — sync with them on handoff.`);
   if (!wasDoing && wip >= WIP_LIMIT_DOING) console.log(`⚠ claimed with --force at WIP ${wip}/${WIP_LIMIT_DOING}.`);
   console.log(`\n  work it · tick ACs:  node scripts/board.mjs tick ${id} <n>
   done? gate it:       node scripts/workflow.mjs review ${id} --agent ${agent}`);

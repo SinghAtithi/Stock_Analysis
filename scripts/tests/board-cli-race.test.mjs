@@ -198,6 +198,23 @@ test("TASK-17: uiInPaths + gateTrail helpers", async () => {
   assert.equal(trail, "tsc=9.4s·lint=21.0s·test=skip");
 });
 
+test("TASK-45: stealGuard blocks foreign holders, allows resume, --force logs", async () => {
+  process.env.NIFTY_BOARD_FILE = FILE;
+  const { stealGuard } = await import("../../scripts/workflow.mjs");
+
+  const doing = (assignee) => ({ status: "doing", assignee });
+
+  assert.deepEqual(stealGuard(doing("ghost"), "cipher", false).ok, false, "foreign holder blocked");
+  assert.equal(stealGuard(doing("ghost"), "cipher", false).holder, "ghost");
+  const forced = stealGuard(doing("ghost"), "cipher", true);
+  assert.equal(forced.ok, true);
+  assert.equal(forced.stole, true);
+  assert.equal(forced.from, "ghost");
+  assert.equal(stealGuard(doing("cipher"), "cipher", false).ok, true, "own task resumable");
+  assert.equal(stealGuard({ status: "doing", assignee: null }, "cipher", false).ok, true, "unclaimed fine");
+  assert.equal(stealGuard({ status: "todo", assignee: "ghost" }, "cipher", false).ok, true, "non-doing never steals");
+});
+
 test("flipStatus mutates fresh board and reports missing tasks cleanly", async () => {
   process.env.NIFTY_BOARD_FILE = FILE;
   const { flipStatus } = await import("../../scripts/workflow.mjs");

@@ -132,6 +132,7 @@ Ship rules: status must be REVIEW (`--force` overrides) · `--files` scopes stag
 ## Agent etiquette
 
 - Pick **one** callsign per session, keep it consistent in commit messages (`feat(board): TASK-15 — GHOST moves to review`).
+- **Unique-active-callsign rule (TASK-45):** one callsign must be active on exactly one task at a time, and two agents must never work under the same callsign simultaneously. Today's raven/cipher TASK-11 steal and the dual-cipher TASK-07/TASK-16 collisions both produced mixed-authorship trails. `start` enforces this: a `doing` task held by a *different* agent is rejected (holder named) unless `--force`, which logs a takeover activity entry.
 - Run the pipeline: `start` → work+`tick` → `review` → reviewer ACK → `ship`. No code without a task; no DONE without green gates.
 - Claim before doing. One task at a time in DOING if possible.
 - Keep checklist honest — tick only when verified (`npm run lint`, `npx tsc --noEmit`, Playwright when UI).
