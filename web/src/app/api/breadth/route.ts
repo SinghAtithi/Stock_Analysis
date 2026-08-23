@@ -155,25 +155,29 @@ function numOrNull(v: unknown): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
+// one readonly handle per process (TASK-56) — opening per request costs a
+// sqlite header read + fd churn on every poll
+let cachedDb: {
+  prepare(sql: string): { all(): SqlRow[] };
+} | null = null;
+
 function readBreadth() {
   try {
-    const Database = require("better-sqlite3") as unknown as {
-      new (path: string, opts: { readonly: true }): {
-        prepare(sql: string): { all(): SqlRow[] };
-        close(): void;
+    if (!cachedDb) {
+      const Database = require("better-sqlite3") as unknown as {
+        new (path: string, opts: { readonly: true }): {
+          prepare(sql: string): { all(): SqlRow[] };
+        };
       };
-    };
-    const db = new Database(DB_PATH, { readonly: true });
-    try {
-      const rows = db
-        .prepare(
-          "SELECT name, ts, payload_json FROM breadth_series WHERE name IN ('vix','vix_spot','fiidii','breadth','breadth_spot')"
-        )
-        .all();
-      return buildPayload(rows);
-    } finally {
-      db.close();
+      cachedDb = new Database(DB_PATH, { readonly: true });
     }
+    const db = cachedDb;
+    const rows = db
+      .prepare(
+        "SELECT name, ts, payload_json FROM breadth_series WHERE name IN ('vix','vix_spot','fiidii','breadth','breadth_spot')"
+      )
+      .all();
+    return buildPayload(rows);
   } catch {
     return emptyPayload();
   }
