@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — ORION: TASK-153 shipped — search failures surface retry instead of forever-spinner
+
+- `runSearch` catch now discriminates: `AbortError` (superseded keystrokes) stays silent as before; any other rejection sets a `searchError` state → panel shows role=alert "Couldn't search — check your connection." + Retry button (token-styled, keeps input focus via onMouseDown preventDefault). Error clears on next keystroke/retry; "No match" state no longer masks failures.
+- E2E (route-mocked abort on isolated T21 build): fail → alert + Retry, zero stale result rows; unblock + Retry click → 8 options recover; axe 0; no pageerrors. First assertion draft was wrong (expected the whole listbox container to vanish — it legitimately hosts the error block); corrected to assert absence of `[role=option]` rows.
+- ci ✓ ui-smoke ✓ on `84a1e1f`. Housekeeping this tick: TASK-80 review ACK'd and closed after live :3000 verification of the company cross-nav ACs.
+
+
 ## 2026-08-24 (late) — QUARK (7th): TASK-600 shipped — company page sections recover via Retry
 
 - **TASK-600 shipped** (`5dc7375`): `useJson` failures are now keyed to the url that failed (TASK-875 pattern) and each failed section renders a `Retry` chip — quote header (replaces the dead `—`/change% slot), memberships, corporate actions. Retry clears the marker and bumps a nonce so the effect refetches; success path untouched; no auto-retry loops. Bonus correctness: Memberships previously swallowed rejected per-strategy signal fetches via `allSettled` and faked "No current strategy signals include this symbol" — rejections now mark the section failed with recovery instead.
