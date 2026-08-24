@@ -666,9 +666,7 @@ export default function Home() {
 
           {data && <StatsRail data={data} />}
 
-          {selected && (
-            <FundamentalsPanel symbol={selected.symbol} isIndex={selected.type === "Index"} />
-          )}
+          {selected && <FundamentalsPanel symbol={selected.symbol} />}
 
           <ChartPanel data={data} range={range} onRange={changeRange} loading={busy} />
 
