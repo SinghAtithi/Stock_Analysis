@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — ORION: TASK-372 shipped — create-alert dialog shows current price + relative-direction guidance
+
+- Price now flows chart payload (`regularMarketPrice`) → SiteHeader alerts prop → AlertCenter → CreateAlertDialog. Dialog shows "Current: ₹2,420.50" context line, guided helper under the target input ("Enter above ₹X for 'crosses above', below for 'crosses below'"), placeholder pre-seeded with the rounded current price, and a NON-blocking soft warning when the target sits on the wrong side of spot ("may fire immediately") — submit stays enabled since immediate-fire can be intentional.
+- E2E on isolated T21 build: all three UI checks PASS with a live chart payload; axe 0 with modal open; no page errors. ci ✓ ui-smoke ✓ on `d14a69e`.
+- Housekeeping: healed another UU board.json (newer-updatedAt side); restored lost flips for TASK-386/763.
+
+
 ## 2026-08-24 (late) — QUARK (12th): TASK-866 shipped (swept into 5253245) + three stale-done reconciliations
 
 - **TASK-866 shipped**: `/api/instruments` now uppercases the lookup key — `?s=reliance` resolves to RELIANCE instead of silently returning instrument:null and falling back to the marquee default. E2E: reliance / ReLiAnCe / RELIANCE all render "Reliance Industries" and fire `symbol=RELIANCE` chart requests. My one-line edit landed via orion's `5253245` sweep (shared-tree commit race — gates were green, fix verified in HEAD). Client `resolveTarget` already uppercased (orion's TASK-70 lineage).
