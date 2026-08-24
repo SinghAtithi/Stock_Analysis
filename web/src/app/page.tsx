@@ -337,6 +337,10 @@ export default function Home() {
           nextIdx = (idx + step + watchlist.length) % watchlist.length;
         }
         const next = watchlist[nextIdx];
+        /* TASK-98: say the wrap out loud instead of jumping silently */
+        const wrapped =
+          idx !== -1 &&
+          (step === 1 ? idx + 1 >= watchlist.length : idx - 1 < 0);
         if (
           next &&
           !(
@@ -348,7 +352,7 @@ export default function Home() {
           pick(next);
           /* TASK-853 AC3: announce the step for screen readers */
           setStepAnnounce(
-            `${next.name}, ${next.symbol} ${next.exchange} — ${watchlist.indexOf(next) + 1} of ${watchlist.length}`,
+            `${wrapped ? "Wrapped to " : ""}${next.name}, ${next.symbol} ${next.exchange} — ${watchlist.indexOf(next) + 1} of ${watchlist.length}`,
           );
         }
         return;
