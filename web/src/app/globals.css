@@ -147,6 +147,11 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 /* TASK-102: ticker tape drifts slowly (60s per loop) and pauses on hover /
    focus / manual scroll via animation-play-state from the component.
    Reduced motion: no drift at all — the strip stays a static scroller. */
+/* TASK-946: right-edge fade signals the tape extends beyond the fold */
+.tape-fade {
+  pointer-events: none;
+  background: linear-gradient(to right, transparent, var(--color-canvas));
+}
 .tape-strip {
   scrollbar-width: none;
 }

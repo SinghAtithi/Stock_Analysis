@@ -62,7 +62,8 @@ export default function MarketStatus() {
     >
       <span className={`h-1.5 w-1.5 rounded-full ${open ? "bg-up" : "bg-faint"}`} aria-hidden />
       {open ? "Market open" : "Market closed"}
-      {countdown && <span className="whitespace-nowrap font-normal tabular-nums text-faint">· {countdown}</span>}
+      {/* TASK-946 sweep: text-faint on up-soft measured 4.46:1 after hours — muted clears AA */}
+      {countdown && <span className="whitespace-nowrap font-normal tabular-nums text-muted">· {countdown}</span>}
     </span>
   );
 }

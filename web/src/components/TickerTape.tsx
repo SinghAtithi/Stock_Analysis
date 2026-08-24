@@ -70,6 +70,7 @@ export default function TickerTape({
     <div
       role="region"
       aria-label="Market ticker"
+      className="relative"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
@@ -104,6 +105,7 @@ export default function TickerTape({
         onTouchStart={() => setPaused(true)}
         className="tape-strip flex items-center overflow-x-auto px-4 py-2 sm:px-6 focus-visible:outline-2 focus-visible:outline-accent"
       >
+        {/* TASK-946: nothing here — the fade overlays the region, see below */}
         <div
           className="tape-track flex w-max items-center"
           style={{ animationPlayState: paused ? "paused" : "running" }}
@@ -112,6 +114,12 @@ export default function TickerTape({
           {half(true)}
         </div>
       </div>
+      {/* TASK-946: right-edge fade — the tape visibly dissolves past the fold,
+          signalling it scrolls; pointer-events-none keeps taps/drags native */}
+      <div
+        aria-hidden
+        className="tape-fade absolute inset-y-0 right-0 w-12 sm:w-16"
+      />
     </div>
   );
 }
