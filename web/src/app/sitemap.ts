@@ -19,7 +19,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
   const symbols = (instruments as Array<{ s: string }>).map((i) => ({
-    url: `${BASE}/s/${encodeURIComponent(i.s)}`,
+    /* canonical company URLs — /s/[symbol] 301s here, and crawlers should not
+       index the redirect hop (TASK-128); share links keep working */
+    url: `${BASE}/company/${encodeURIComponent(i.s)}`,
     lastModified: now,
     changeFrequency: "daily" as const,
     priority: 0.5,
