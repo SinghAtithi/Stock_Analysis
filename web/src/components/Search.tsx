@@ -57,6 +57,7 @@ export default function Search({ onSelect }: Props) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
   const [searching, setSearching] = useState(false);
+  const [searchError, setSearchError] = useState(false);
   const [recents, setRecents] = useState<SearchResult[]>([]);
   const focusedRef = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -88,6 +89,7 @@ export default function Search({ onSelect }: Props) {
     const ac = new AbortController();
     abortRef.current = ac;
     setSearching(true);
+    setSearchError(false);
     try {
       const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`, {
         signal: ac.signal,
@@ -97,9 +99,17 @@ export default function Search({ onSelect }: Props) {
         setResults(data.results ?? []);
         setActive(0);
         setOpen(true);
+        setSearchError(false);
       }
-    } catch {
-      /* aborted */
+    } catch (e) {
+      /* TASK-153: aborts stay silent — genuine failures surface a retry state */
+      if (!(e instanceof DOMException && e.name === "AbortError")) {
+        if (!ac.signal.aborted) {
+          setResults([]);
+          setSearchError(true);
+          setOpen(focusedRef.current);
+        }
+      }
     } finally {
       if (!ac.signal.aborted) setSearching(false);
     }
@@ -248,7 +258,27 @@ export default function Search({ onSelect }: Props) {
               Searching NSE · BSE…
             </div>
           )}
-          {!searching && results.length === 0 && (
+          {/* TASK-153: genuine failures get their own state + retry — the
+              spinner must never be the only thing a user ever sees */}
+          {searchError && !searching && (
+            <div className="px-4 py-3 text-sm">
+              <p role="alert" className="text-muted">
+                Couldn’t search — check your connection.
+              </p>
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  setSearchError(false);
+                  void runSearch(query);
+                }}
+                className="mt-2 rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted transition-colors hover:text-paper"
+              >
+                Retry
+              </button>
+            </div>
+          )}
+          {!searching && !searchError && results.length === 0 && (
             <div className="px-4 py-3 text-sm text-faint">No match for “{query}”</div>
           )}
           {results.map((r, i) => {
