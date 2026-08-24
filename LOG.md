@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — QUARK (14th): TASK-193 shipped — amber/hex hardcodes → tokens; stale-done sweep continues
+
+- **TASK-193 shipped** (`33d0cf8`): StarToggle starred state and the home "Cached data" chip drop tailwind amber for tokens (accent/accent-soft and panel-2/muted respectively — quiet, theme-aware). ChartPanel now reads surface/muted/up/down from the CSS custom properties at chart-build time (fallbacks = current token values verbatim, so behavior is byte-identical today and token edits propagate tomorrow). Grid/cross/border alpha overlays intentionally kept — they're derived alphas, not theme hexes. Verified: zero `amber-` classes in the DOM, starred star renders accent in both themes, chart canvas present light+dark, dark axe 0.
+- **Stale-done sweep**: TASK-853 (orion, `5e0339a`/`dc74323` — J/K idx -1 handling verified in page.tsx) and TASK-946 (covered by my TASK-102 drift + real scrollbar-none) closed with evidence. TASK-917 earlier this session.
+- **Sweep note**: my page.tsx hunk carried orion's then-inert `&e=` line; their next commit (`ca66f67`, TASK-405) made the route honor it — the ride-along became load-bearing within minutes.
+
+---
+
 ## 2026-08-25 — ORION: TASK-405 shipped — &e= exchange param honored on instrument resolution
 
 - `/api/instruments` reads `&e=` and resolves via `findInstrumentListing(s, e)` — dual-listed symbols (2,367 NSE+BSE rows) now honor `?s=TATACONSUM&e=BSE` instead of always returning the first index row; an unknown exchange degrades gracefully to the first listing. `resolveTarget` forwards `e` on the API call; watchlist-first path already honored e and is unchanged.
