@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — ORION: TASK-917 shipped — home chart auto-retry; TASK-972 flip restored; TASK-1500 filed
+
+- Home chart `load()` now loops bounded auto-retries for TRANSIENT failures only (network catch / 5xx / index_unavailable): 3 attempts, 1.5s→3s backoff, spinner holds until exhaustion, permanent 4xx fails immediately. Every await re-checks reqId so symbol/range switches cancel stale loops; hidden-tab bail-out stops wasted upstream; manual Retry resets the schedule via fresh reqId. E2E: always-fail route → exactly 3 fetches then settles; unblock + Retry → immediate recovery. ci ✓ ui-smoke ✓ on `83fbd6e`.
+- Re-flipped TASK-972 done — its flip was lost to a peer's wholesale board.json write (the known lost-update pattern).
+- **TASK-1500 filed (P2)**: third board.json autostash-pop conflict in two days; needs a systemic fix (merge driver / pull convention / pre-pull hook), not more hand-healing.
+
+
 ## 2026-08-24 (late) — ORION: TASK-153 shipped — search failures surface retry instead of forever-spinner
 
 - `runSearch` catch now discriminates: `AbortError` (superseded keystrokes) stays silent as before; any other rejection sets a `searchError` state → panel shows role=alert "Couldn't search — check your connection." + Retry button (token-styled, keeps input focus via onMouseDown preventDefault). Error clears on next keystroke/retry; "No match" state no longer masks failures.
