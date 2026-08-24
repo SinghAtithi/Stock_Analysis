@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — QUARK (8th): TASK-102 shipped — ticker tape drifts, pauses, and is keyboard-scrollable; smoke harness adapted to moving targets
+
+- **TASK-102 shipped** (`1bd2114`): the tape now drifts slowly (60s linear loop over a duplicated half, seamless translateX(-50%)) and pauses on hover, focus-within, wheel/touch, or any arrow-key nudge. The strip is keyboard-scrollable (tabIndex=0, Arrow/Home/End, visible outline). Clone half is `aria-hidden` + `tabIndex={-1}` so real symbols keep unique tab stops and SR reads them once. Reduced-motion disables drift entirely (scoped media query — the global 0.01ms kill would have snapped the track to its final keyframe). Also made `scrollbar-none` real via `.tape-strip` (the utility never existed).
+- **Harness co-adaptation** (`e97497b`): Playwright clicks need positional stability, which a drifting chip never has — tape_mock now hovers first (pausing drift), mirroring human gesture; scroll probe asserts the region's strip behavior instead of stale class strings. Verified locally against fresh isolated build: 8 buttons (4+4 clone), hover pauses, arrows scroll, click navigates, 0 console errors.
+- **Ops**: two more live UU board.json conflicts resolved mid-flight (restore HEAD copy → validate JSON). ui-smoke spent the session being cancelled by the commit storm before finally completing green (`ci ✓ ui-smoke ✓`) once pushes paused.
+
+---
+
 ## 2026-08-24 (late) — ORION: TASK-917 shipped — home chart auto-retry; TASK-972 flip restored; TASK-1500 filed
 
 - Home chart `load()` now loops bounded auto-retries for TRANSIENT failures only (network catch / 5xx / index_unavailable): 3 attempts, 1.5s→3s backoff, spinner holds until exhaustion, permanent 4xx fails immediately. Every await re-checks reqId so symbol/range switches cancel stale loops; hidden-tab bail-out stops wasted upstream; manual Retry resets the schedule via fresh reqId. E2E: always-fail route → exactly 3 fetches then settles; unblock + Retry → immediate recovery. ci ✓ ui-smoke ✓ on `83fbd6e`.
@@ -82,6 +90,11 @@ This file is the single source of truth for everything done in this project. Eve
 - **Final state**: HEAD `d29c57d` green on ci ✓ ui-smoke ✓ including the security job; board CI RED cards should auto-close via the 3-green rule.
 
 ---
+
+## 2026-08-25 (V) — ORION: TASK-182 shipped — fired membership alerts render their real detail
+
+- **TASK-182 shipped** (`1b399dc`): the fired journal no longer prints "null crossed above" for strategy-membership alerts. Root cause: `alerts.evaluate` composed a detail string ("S100 top-10: entered RELIANCE, TCS") but only persisted active=0/fired_at — schema had nowhere to put it. Fix spans the stack: new migration **0003_alerts_detail** (`ALTER TABLE alerts ADD COLUMN detail TEXT`, additive, applied locally), evaluate persists `detail` alongside fired_at, GET /api/alerts surfaces it, and AlertCenter renders it in Fired + Dismissed rows with an entered/exited direction pill (up/down tone), uses it for the sr-only fire announcement and Dismiss aria-labels. Price-cross rows render exactly as before; legacy rows without detail fall back to a sane strategy label.
+- Also closed stale card TASK-254 (shipped as `9d5bd9d` by an earlier ORION session but never flipped). Verified via Playwright with mocked fired rows: membership detail, price row intact, dismiss labels, 0 pageerrors; full gates green; ci ✓ ui-smoke ✓ at `1b399dc`.
 
 ## 2026-08-25 (IV) — ORION: TASK-82 shipped — mobile chart re-fit affordance
 
