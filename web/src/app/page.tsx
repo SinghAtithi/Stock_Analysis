@@ -84,7 +84,9 @@ const resolveTarget = async (
   /* Server-side resolution (TASK-51): the instruments index no longer ships
      to the client; deep-links resolve through /api/instruments. */
   try {
-    const res = await fetch(`/api/instruments?s=${encodeURIComponent(s)}`);
+    const res = await fetch(
+      `/api/instruments?s=${encodeURIComponent(s)}${e ? `&e=${encodeURIComponent(e)}` : ""}`,
+    );
     if (!res.ok) return null;
     const json = await res.json();
     const found = json.instrument as WatchlistEntry | null;
@@ -653,7 +655,10 @@ export default function Home() {
                     </span>
                   )}
                   {data?.stale && (
-                    <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-amber-700 dark:border-amber-900/50 dark:bg-amber-950/50 dark:text-amber-300">Cached data</span>
+                    /* TASK-193: token-driven (was tailwind amber) */
+                    <span className="rounded-full border border-line bg-panel-2 px-2.5 py-1 text-muted" title="Cached data">
+                      Cached data
+                    </span>
                   )}
                   {data?.degraded === "daily" && (
                     <span className="rounded-full border border-line bg-surface px-2.5 py-1 text-faint">Daily</span>

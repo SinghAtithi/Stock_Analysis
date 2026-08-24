@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { findInstrument, isIndexSymbol } from "@/lib/instruments";
+import { findInstrument, findInstrumentListing, isIndexSymbol } from "@/lib/instruments";
 
 /**
  * Single-instrument resolution for client deep-links. Replaces static
@@ -18,8 +18,11 @@ export async function GET(request: NextRequest) {
     .replace(/\.(NS|BO)$/, "")
     .slice(0, 64);
   if (!s) return NextResponse.json({ instrument: null });
+  /* TASK-405: &e= pins the listing on dual-listed symbols (2,367 rows are
+     NSE+BSE); an unknown exchange degrades to the first listing */
+  const e = (request.nextUrl.searchParams.get("e") ?? "").trim().toUpperCase();
 
-  const hit = findInstrument(s);
+  const hit = e ? findInstrumentListing(s, e) : findInstrument(s);
   if (!hit) return NextResponse.json({ instrument: null });
 
   return NextResponse.json({
