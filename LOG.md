@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-25 — ORION: TASK-96 shipped — legal pages join the design system
+
+- disclaimer/privacy/terms rebuilt on a shared `LegalPage` component: SiteHeader nav (these pages were a dead end), sentence-case headings, token-driven prose replacing bespoke legal.css (mono font, ink canvas, all-caps, and the undefined `--font-archivo` from TASK-148 — now actually deleted). Pricing link added to each legal footer; copy unchanged.
+- Verified per page × both themes: SiteHeader present, nav to terminal, pricing link intact, axe 0 light+dark, no page errors.
+- Shared-tree incident: peer's uncommitted TASK-98 hunk used-before-declaration broke whole-tree tsc mid-review; applied the required 2-line reorder in place (mechanical fix any resolution needs) rather than waiting. Also restored six lost done-flips (79/153/358/372/405/866) at tick start — the wholesale-overwrite churn continues; heal command from TASK-1502 handles conflicts but flips still need manual re-application until the root writer is fixed.
+
+
 ## 2026-08-24 (late) — QUARK (16th): TASK-188 shipped — one brand across metadata; stale sweep continues
 
 - **TASK-188 shipped** (`54dd798`): layout home/OG/twitter titles, `applicationName`, dynamic per-symbol `document.title`, company share-card titles, global-error and the help layout all now say **NIFTY//TERM** (was a NIFTY vs NIFTY//TERM split). Verified rendered `<title>` on /, /company/RELIANCE and /pricing on an isolated build.
