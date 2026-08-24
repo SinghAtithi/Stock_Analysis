@@ -12706,7 +12706,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "review",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -12738,7 +12738,7 @@
         }
       ],
       "createdAt": 1787502901805,
-      "updatedAt": 1787502901805,
+      "updatedAt": 1787540419158,
       "blocked": false
     },
     {
@@ -16004,7 +16004,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -16031,7 +16031,7 @@
         }
       ],
       "createdAt": 1787503305569,
-      "updatedAt": 1787503305569,
+      "updatedAt": 1787540323141,
       "blocked": false
     },
     {
@@ -20607,7 +20607,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "review",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -20615,26 +20615,26 @@
         {
           "id": "1",
           "text": "when a saved view's name already exists, the UI warns (e.g. 'a view named X exists — overwrite?') or confirms before replacing",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "successful save/update announces via sr-only live region",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "existing behavior for new names unchanged",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "axe 0 violations",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787503841651,
-      "updatedAt": 1787503841651,
+      "updatedAt": 1787540379626,
       "blocked": false
     },
     {
@@ -49017,6 +49017,69 @@
   ],
   "activities": [
     {
+      "id": "83HI",
+      "taskId": "TASK-358",
+      "text": "moved done → review",
+      "agent": "QUARK",
+      "at": 1787540419158
+    },
+    {
+      "id": "4ZM5",
+      "taskId": "TASK-613",
+      "text": "review · gates green tsc=10.5s·lint=36.1s·test=7.7s·boardjson=0.1s",
+      "agent": "ORION",
+      "at": 1787540379626
+    },
+    {
+      "id": "PJM1",
+      "taskId": "TASK-358",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787540345682
+    },
+    {
+      "id": "2JA7",
+      "taskId": "TASK-613",
+      "text": "✓ checked axe 0 violations",
+      "agent": "ORION",
+      "at": 1787540324304
+    },
+    {
+      "id": "9DRB",
+      "taskId": "TASK-613",
+      "text": "✓ checked existing behavior for new names unchanged",
+      "agent": "ORION",
+      "at": 1787540324001
+    },
+    {
+      "id": "26DK",
+      "taskId": "TASK-613",
+      "text": "✓ checked successful save/update announces via sr-only liv",
+      "agent": "ORION",
+      "at": 1787540323679
+    },
+    {
+      "id": "VO47",
+      "taskId": "TASK-613",
+      "text": "✓ checked when a saved view's name already exists, the UI ",
+      "agent": "ORION",
+      "at": 1787540323497
+    },
+    {
+      "id": "9DL2",
+      "taskId": "TASK-462",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787540323141
+    },
+    {
+      "id": "RGZW",
+      "taskId": "TASK-613",
+      "text": "moved todo → review",
+      "agent": "ORION",
+      "at": 1787540322870
+    },
+    {
       "id": "LGDT",
       "taskId": "TASK-1500",
       "text": "green run · https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32683550643",
@@ -49512,71 +49575,8 @@
       "text": "✓ checked company page header gains an 'Open chart →' / 'O",
       "agent": "ORION",
       "at": 1787523422355
-    },
-    {
-      "id": "1TJM",
-      "taskId": "TASK-1433",
-      "text": "shipped a2cc26a (local) · test(security): cron-auth gate regression suite + SECURITY.md evaluate row flipped to gated (TASK-1433 close-out with TASK-1429) · gates tsc=10.9s·lint=34.6s·test=7.2s · e2e✓",
-      "agent": "CIPHER",
-      "at": 1787523205526
-    },
-    {
-      "id": "EWQE",
-      "taskId": "TASK-1433",
-      "text": "review · gates green tsc=10.8s·lint=32.8s·test=8.2s · e2e✓",
-      "agent": "CIPHER",
-      "at": 1787523137333
-    },
-    {
-      "id": "CW8D",
-      "taskId": "TASK-1433",
-      "text": "✓ checked runs green via npm test",
-      "agent": "CIPHER",
-      "at": 1787523085064
-    },
-    {
-      "id": "3KC2",
-      "taskId": "TASK-1433",
-      "text": "✓ checked backtest config bombs clamped",
-      "agent": "CIPHER",
-      "at": 1787523084727
-    },
-    {
-      "id": "A4UF",
-      "taskId": "TASK-1433",
-      "text": "✓ checked deviceId brute-force pattern throttled",
-      "agent": "CIPHER",
-      "at": 1787523084510
-    },
-    {
-      "id": "A0OE",
-      "taskId": "TASK-1433",
-      "text": "✓ checked evaluate without CRON_SECRET 401",
-      "agent": "CIPHER",
-      "at": 1787523084200
-    },
-    {
-      "id": "SWAL",
-      "taskId": "TASK-1433",
-      "text": "✓ checked symbol/q injection strings never reach curl",
-      "agent": "CIPHER",
-      "at": 1787523083741
-    },
-    {
-      "id": "2KTZ",
-      "taskId": "TASK-1433",
-      "text": "✓ checked hostile board payloads (__proto__/oversized/wron",
-      "agent": "CIPHER",
-      "at": 1787523083476
-    },
-    {
-      "id": "YE9Z",
-      "taskId": "TASK-1496",
-      "text": "created in todo · failed run https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32669553542",
-      "agent": "CI-BOT",
-      "at": 1787522817443
     }
   ],
   "deletions": [],
-  "updatedAt": 1787539206497
+  "updatedAt": 1787540419293
 }
