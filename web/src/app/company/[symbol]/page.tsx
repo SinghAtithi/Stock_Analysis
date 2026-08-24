@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { findInstrument } from "@/lib/instruments";
+import { findInstrument, findInstrumentListing, isIndexSymbol, stripExchangeSuffix } from "@/lib/instruments";
 import type { WatchlistEntry } from "@/lib/watchlist";
 import CompanyProfile from "./CompanyProfile";
 
@@ -16,9 +16,16 @@ export async function generateMetadata({
 }: {
   params: Promise<{ symbol: string }>;
 }): Promise<Metadata> {
-  const { symbol: raw } = await params;
-  const symbol = UP_SYM(raw);
-  const inst = findInstrument(symbol);
+  const { symbol: rawMeta } = await params;
+  /* TASK-358: suffixed links resolve to the bare symbol for metadata too */
+  const { symbol } = stripExchangeSuffix(UP_SYM(rawMeta));
+  const inst =
+    (stripExchangeSuffix(UP_SYM(rawMeta)).impliedExchange &&
+      findInstrumentListing(
+        symbol,
+        stripExchangeSuffix(UP_SYM(rawMeta)).impliedExchange!,
+      )) ||
+    findInstrument(symbol);
   const title = `${inst?.n ?? symbol} (${symbol}) — NIFTY`;
   return {
     title,
@@ -41,15 +48,19 @@ export default async function CompanyPage({
 }: {
   params: Promise<{ symbol: string }>;
 }) {
-  const { symbol: raw } = await params;
-  const symbol = UP_SYM(raw);
-  const inst = findInstrument(symbol);
+  const { symbol: rawParam } = await params;
+  /* TASK-358: /company/RELIANCE.NS-style links resolve to the bare symbol
+     and prefer the suffixed exchange's listing for quote lookups */
+  const { symbol, impliedExchange } = stripExchangeSuffix(UP_SYM(rawParam));
+  const inst =
+    (impliedExchange && findInstrumentListing(symbol, impliedExchange)) ||
+    findInstrument(symbol);
   const resolved: WatchlistEntry = {
     symbol,
     name: inst?.n ?? symbol,
     shortName: inst?.s ?? symbol,
-    exchange: inst?.e ?? "NSE",
-    type: inst?.idx?.length ? "Index" : "Equity",
+    exchange: inst?.e ?? impliedExchange ?? "NSE",
+    type: inst ? (isIndexSymbol(inst.s, inst.n) ? "Index" : "Equity") : symbol.includes("^") ? "Index" : "Equity",
     sector: inst?.sec ?? "",
   };
   return <CompanyProfile symbol={symbol} resolved={resolved} />;

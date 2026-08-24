@@ -104,6 +104,20 @@ export function searchInstruments(q: string, limit = 8): SearchHit[] {
   return scored.slice(0, limit).map((x) => x.hit);
 }
 
+/* TASK-358: share links carry exchange suffixes (?s=RELIANCE.NS,
+   /company/TCS.BO). Strip them and map to the canonical exchange code;
+   an explicit &e= param still wins at the call site. */
+export function stripExchangeSuffix(raw: string): {
+  symbol: string;
+  impliedExchange?: "NSE" | "BSE";
+} {
+  const m = raw.trim().toUpperCase().match(/^(.+)\.(NS|BO|NSE|BSE)$/);
+  if (!m) return { symbol: raw.trim().toUpperCase() };
+  const impliedExchange =
+    m[2] === "BO" || m[2] === "BSE" ? "BSE" : ("NSE" as const);
+  return { symbol: m[1], impliedExchange };
+}
+
 export function findInstrument(symbol: string): Instrument | undefined {
   /* TASK-866: deep links arrive lowercased (?s=reliance) — match
      case-insensitively so pasted links resolve like typed ones */

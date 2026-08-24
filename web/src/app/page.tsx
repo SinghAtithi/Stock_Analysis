@@ -42,6 +42,7 @@ import {
   WATCHLIST_KEY,
 } from "@/lib/watchlist";
 import { useWatchlistMirror } from "@/lib/watchlistMirror";
+import { stripExchangeSuffix } from "@/lib/instruments";
 
 const chartUrl = (
   r: { symbol: string; exchange: string; type: string },
@@ -68,9 +69,14 @@ const resolveTarget = async (
 ): Promise<WatchlistEntry | null> => {
   /* TASK-866: normalize case up front so ?s=reliance and ?s=RELIANCE
      resolve identically — watchlist snapshot and API both match exact */
-  const s = (params.get("s") ?? "").trim().toUpperCase();
-  if (!s) return null;
-  const e = params.get("e")?.trim().toUpperCase();
+  const raw = (params.get("s") ?? "").trim().toUpperCase();
+  if (!raw) return null;
+  /* TASK-358: exchange-suffixed links (?s=RELIANCE.NS / .BO) resolve to the
+     bare symbol; the suffix pins the exchange when the URL carries none */
+  const stripped = stripExchangeSuffix(raw);
+  const s = stripped.symbol;
+  const e =
+    params.get("e")?.trim().toUpperCase() || stripped.impliedExchange || null;
   const hit = getWatchlistSnapshot().find(
     (x) => x.symbol === s && (!e || x.exchange === e),
   );
@@ -127,6 +133,8 @@ export default function Home() {
   const [pendingUndo, setPendingUndo] = useState<{ entry: WatchlistEntry; index: number } | null>(null);
   /* TASK-853: sr-only J/K step announcement */
   const [stepAnnounce, setStepAnnounce] = useState("");
+  /* TASK-358 AC2: deep-linked symbol that resolved to nothing */
+  const [missSymbol, setMissSymbol] = useState<string | null>(null);
   const undoTimer = useRef<number | null>(null);
   useEffect(() => {
     return () => {
@@ -195,6 +203,10 @@ export default function Home() {
     (async () => {
       const params = new URLSearchParams(location.search);
       const resolved = await resolveTarget(params);
+      /* TASK-358: an explicit deep link that resolves to nothing gets a
+         visible miss notice — never a silent NIFTY 50 substitution */
+      const rawS = params.get("s")?.trim();
+      if (!cancelled && rawS && !resolved) setMissSymbol(rawS.toUpperCase());
       const target = resolved ?? getWatchlistSnapshot()[0] ?? FALLBACK_ENTRY;
       if (cancelled) return;
       const rangeParam = params.get("r") as RangeKey | null;
@@ -275,6 +287,7 @@ export default function Home() {
   const pick = useCallback(
     (r: SearchResult) => {
       setPicked(r);
+      setMissSymbol(null);
       setRange("1y");
       load(r, "1y");
     },
@@ -519,6 +532,22 @@ export default function Home() {
       <div className="sr-only" role="status" aria-live="polite">
         {stepAnnounce}
       </div>
+
+      {/* TASK-358 AC2: explicit deep link that matched nothing */}
+      {missSymbol && (
+        <div className="px-4 pt-3 sm:px-6">
+          <p role="status" className="rounded-xl border border-line bg-panel-2 px-4 py-2.5 text-xs text-muted">
+            Symbol “{missSymbol}” not found — showing NIFTY 50.{" "}
+            <button
+              type="button"
+              onClick={() => setMissSymbol(null)}
+              className="rounded-full border border-line bg-surface px-2 py-0.5 text-[11px] text-paper transition-colors hover:border-line-strong"
+            >
+              Dismiss
+            </button>
+          </p>
+        </div>
+      )}
 
       <SiteHeader
         subtitle="Indian Market"
