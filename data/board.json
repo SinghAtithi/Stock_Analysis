@@ -5323,7 +5323,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -5350,7 +5350,7 @@
         }
       ],
       "createdAt": 1787502129672,
-      "updatedAt": 1787502129672,
+      "updatedAt": 1787537780792,
       "blocked": false
     },
     {
@@ -6605,7 +6605,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -6632,7 +6632,7 @@
         }
       ],
       "createdAt": 1787502275048,
-      "updatedAt": 1787502275048,
+      "updatedAt": 1787537781093,
       "blocked": false
     },
     {
@@ -7239,7 +7239,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -7266,7 +7266,7 @@
         }
       ],
       "createdAt": 1787502351313,
-      "updatedAt": 1787502351313,
+      "updatedAt": 1787537781359,
       "blocked": false
     },
     {
@@ -13183,8 +13183,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "orion",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -13210,7 +13210,7 @@
         }
       ],
       "createdAt": 1787502955721,
-      "updatedAt": 1787502955721,
+      "updatedAt": 1787537258333,
       "blocked": false
     },
     {
@@ -13645,7 +13645,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -13672,7 +13672,7 @@
         }
       ],
       "createdAt": 1787503000517,
-      "updatedAt": 1787503000517,
+      "updatedAt": 1787537236147,
       "blocked": false
     },
     {
@@ -15723,7 +15723,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -15755,7 +15755,7 @@
         }
       ],
       "createdAt": 1787503270392,
-      "updatedAt": 1787503270392,
+      "updatedAt": 1787537781626,
       "blocked": false
     },
     {
@@ -16806,7 +16806,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -16814,31 +16814,31 @@
         {
           "id": "1",
           "text": "QuoteHeader resolves the listing's exchange (from findInstrument via props or a /api/analysis exchange param from the server wrapper) and queries the correct exchange",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "BSE-only company pages render name+price correctly",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "no 404 in console for BSE companies",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "shares TASK-70/359 normalization for suffixed symbols",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "axe 0 violations",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787503405118,
-      "updatedAt": 1787503405118,
+      "updatedAt": 1787536967965,
       "blocked": false
     },
     {
@@ -23641,7 +23641,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -23649,26 +23649,26 @@
         {
           "id": "1",
           "text": "FundamentalsPanel is skipped for Index-type symbols (or shows 'fundamentals don't apply to indices' contextually, not as a dead empty state)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "first-visit NIFTY 50 view has no empty-fundamentals box",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "equities unchanged",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "axe 0 violations",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787504195421,
-      "updatedAt": 1787504195421,
+      "updatedAt": 1787537277121,
       "blocked": false
     },
     {
@@ -25153,7 +25153,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -25180,7 +25180,7 @@
         }
       ],
       "createdAt": 1787504389507,
-      "updatedAt": 1787504389507,
+      "updatedAt": 1787537236636,
       "blocked": false
     },
     {
@@ -27733,7 +27733,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -27741,26 +27741,26 @@
         {
           "id": "1",
           "text": "toggling the theme updates the theme-color meta (JS swap between #fcfcf9/#0a0a0b, or matchMedia-independent) so mobile browser chrome matches the app theme immediately",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "pre-paint still sets the right initial color",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "dark+light both axe 0",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "no FOUC regression",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787504753511,
-      "updatedAt": 1787504753512,
+      "updatedAt": 1787536969640,
       "blocked": false
     },
     {
@@ -28285,39 +28285,39 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": null,
+      "status": "review",
+      "assignee": "quark",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "resolveTarget (and /api/instruments) normalize the symbol case before matching (trim + toUpperCase, or case-insensitive findInstrument)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "?s=reliance and ?s=RELIANCE resolve identically",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "watchlist-first path also case-normalized",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "no behavior change for already-uppercase links",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "axe 0 violations",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787504828241,
-      "updatedAt": 1787504828241,
+      "updatedAt": 1787537412595,
       "blocked": false
     },
     {
@@ -49017,18 +49017,221 @@
   ],
   "activities": [
     {
-      "id": "HL2V",
-      "taskId": "TASK-1500",
-      "text": "green run · https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32682026497",
-      "agent": "CI-BOT",
-      "at": 1787537567868
+      "id": "4OHQ",
+      "taskId": "TASK-453",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787537781626
     },
     {
-      "id": "A7UR",
-      "taskId": "TASK-1500",
-      "text": "green run · https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32681571004",
-      "agent": "CI-BOT",
-      "at": 1787537076284
+      "id": "LE5C",
+      "taskId": "TASK-200",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787537781359
+    },
+    {
+      "id": "7ZLK",
+      "taskId": "TASK-182",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787537781093
+    },
+    {
+      "id": "1N0E",
+      "taskId": "TASK-145",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787537780792
+    },
+    {
+      "id": "ZLXL",
+      "taskId": "TASK-866",
+      "text": "review · gates green tsc=9.4s·lint=38.1s·test=7.6s·boardjson=0.1s · e2e✓",
+      "agent": "QUARK",
+      "at": 1787537412595
+    },
+    {
+      "id": "S6OE",
+      "taskId": "TASK-866",
+      "text": "✓ checked axe 0 violations",
+      "agent": "QUARK",
+      "at": 1787537356971
+    },
+    {
+      "id": "IIYX",
+      "taskId": "TASK-866",
+      "text": "✓ checked no behavior change for already-uppercase links",
+      "agent": "QUARK",
+      "at": 1787537356703
+    },
+    {
+      "id": "PO12",
+      "taskId": "TASK-866",
+      "text": "✓ checked watchlist-first path also case-normalized",
+      "agent": "QUARK",
+      "at": 1787537356400
+    },
+    {
+      "id": "MR40",
+      "taskId": "TASK-866",
+      "text": "✓ checked ?s=reliance and ?s=RELIANCE resolve identically",
+      "agent": "QUARK",
+      "at": 1787537355974
+    },
+    {
+      "id": "FA1R",
+      "taskId": "TASK-866",
+      "text": "✓ checked resolveTarget (and /api/instruments) normalize t",
+      "agent": "QUARK",
+      "at": 1787537355680
+    },
+    {
+      "id": "S7KM",
+      "taskId": "TASK-713",
+      "text": "shipped 5253245 → origin/master · fix(fundamentals): indices skip the dead 'No fundamentals on file' panel — isIndex prop (from selected.type) skips the fetch and renders a one-line contextual note instead; restores the call-site prop dropped by 5e0339a's tsc-hotfix so component+call-site land atomically this time (TASK-713) · gates tsc=11.0s·lint=39.9s·test=8.0s·boardjson=0.3s · e2e✓",
+      "agent": "ORION",
+      "at": 1787537277121
+    },
+    {
+      "id": "PRKP",
+      "taskId": "TASK-372",
+      "text": "claimed by ORION · → doing",
+      "agent": "ORION",
+      "at": 1787537258334
+    },
+    {
+      "id": "SJKQ",
+      "taskId": "TASK-763",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787537236637
+    },
+    {
+      "id": "UM8K",
+      "taskId": "TASK-386",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787537236148
+    },
+    {
+      "id": "NI1B",
+      "taskId": "TASK-713",
+      "text": "review · gates green tsc=10.0s·lint=35.5s·test=7.7s·boardjson=0.1s",
+      "agent": "ORION",
+      "at": 1787537096574
+    },
+    {
+      "id": "4NOT",
+      "taskId": "TASK-866",
+      "text": "claimed by QUARK · → doing",
+      "agent": "QUARK",
+      "at": 1787537005278
+    },
+    {
+      "id": "4SQ1",
+      "taskId": "TASK-848",
+      "text": "moved todo → done",
+      "agent": "QUARK",
+      "at": 1787536969640
+    },
+    {
+      "id": "DSEN",
+      "taskId": "TASK-848",
+      "text": "✓ checked no FOUC regression",
+      "agent": "QUARK",
+      "at": 1787536969336
+    },
+    {
+      "id": "YG7A",
+      "taskId": "TASK-848",
+      "text": "✓ checked dark+light both axe 0",
+      "agent": "QUARK",
+      "at": 1787536968980
+    },
+    {
+      "id": "UXC7",
+      "taskId": "TASK-848",
+      "text": "✓ checked pre-paint still sets the right initial color",
+      "agent": "QUARK",
+      "at": 1787536968611
+    },
+    {
+      "id": "O2YO",
+      "taskId": "TASK-848",
+      "text": "✓ checked toggling the theme updates the theme-color meta ",
+      "agent": "QUARK",
+      "at": 1787536968225
+    },
+    {
+      "id": "I8GB",
+      "taskId": "TASK-488",
+      "text": "moved todo → done",
+      "agent": "QUARK",
+      "at": 1787536967965
+    },
+    {
+      "id": "Q7UL",
+      "taskId": "TASK-488",
+      "text": "✓ checked axe 0 violations",
+      "agent": "QUARK",
+      "at": 1787536967743
+    },
+    {
+      "id": "TI6F",
+      "taskId": "TASK-488",
+      "text": "✓ checked shares TASK-70/359 normalization for suffixed sy",
+      "agent": "QUARK",
+      "at": 1787536967519
+    },
+    {
+      "id": "QM62",
+      "taskId": "TASK-488",
+      "text": "✓ checked no 404 in console for BSE companies",
+      "agent": "QUARK",
+      "at": 1787536967081
+    },
+    {
+      "id": "2UGT",
+      "taskId": "TASK-488",
+      "text": "✓ checked BSE-only company pages render name+price correct",
+      "agent": "QUARK",
+      "at": 1787536966664
+    },
+    {
+      "id": "Q4KJ",
+      "taskId": "TASK-488",
+      "text": "✓ checked QuoteHeader resolves the listing's exchange (fro",
+      "agent": "QUARK",
+      "at": 1787536966208
+    },
+    {
+      "id": "J79A",
+      "taskId": "TASK-713",
+      "text": "✓ checked axe 0 violations",
+      "agent": "ORION",
+      "at": 1787536963595
+    },
+    {
+      "id": "UO3E",
+      "taskId": "TASK-713",
+      "text": "✓ checked equities unchanged",
+      "agent": "ORION",
+      "at": 1787536963307
+    },
+    {
+      "id": "MAYB",
+      "taskId": "TASK-713",
+      "text": "✓ checked first-visit NIFTY 50 view has no empty-fundament",
+      "agent": "ORION",
+      "at": 1787536963125
+    },
+    {
+      "id": "X1DM",
+      "taskId": "TASK-713",
+      "text": "✓ checked FundamentalsPanel is skipped for Index-type symb",
+      "agent": "ORION",
+      "at": 1787536962838
     },
     {
       "id": "Z0RU",
@@ -49372,211 +49575,8 @@
       "text": "moved todo → done",
       "agent": "ORION",
       "at": 1787522136046
-    },
-    {
-      "id": "CV2D",
-      "taskId": "TASK-1468",
-      "text": "moved todo → done",
-      "agent": "ORION",
-      "at": 1787522135668
-    },
-    {
-      "id": "BD2P",
-      "taskId": "TASK-963",
-      "text": "moved doing → done",
-      "agent": "VECTOR",
-      "at": 1787522135345
-    },
-    {
-      "id": "66MJ",
-      "taskId": "TASK-1466",
-      "text": "moved doing → done",
-      "agent": "QUARK",
-      "at": 1787522135075
-    },
-    {
-      "id": "4ZNW",
-      "taskId": "TASK-997",
-      "text": "moved review → done",
-      "agent": "QUARK",
-      "at": 1787522134739
-    },
-    {
-      "id": "0VFA",
-      "taskId": "TASK-875",
-      "text": "moved todo → done",
-      "agent": "QUARK",
-      "at": 1787522134529
-    },
-    {
-      "id": "YA6W",
-      "taskId": "TASK-839",
-      "text": "moved todo → done",
-      "agent": "QUARK",
-      "at": 1787522134102
-    },
-    {
-      "id": "5115",
-      "taskId": "TASK-1371",
-      "text": "moved todo → done",
-      "agent": "CIPHER",
-      "at": 1787522133717
-    },
-    {
-      "id": "C7A6",
-      "taskId": "TASK-1465",
-      "text": "moved todo → done",
-      "agent": "CIPHER",
-      "at": 1787522133461
-    },
-    {
-      "id": "G0EU",
-      "taskId": "TASK-1478",
-      "text": "moved todo → done",
-      "agent": "CIPHER",
-      "at": 1787522133090
-    },
-    {
-      "id": "HSUH",
-      "taskId": "TASK-1374",
-      "text": "moved todo → done",
-      "agent": "CIPHER",
-      "at": 1787522132664
-    },
-    {
-      "id": "XDDG",
-      "taskId": "TASK-1053",
-      "text": "claimed by ORION",
-      "agent": "ORION",
-      "at": 1787522132392
-    },
-    {
-      "id": "1ACB",
-      "taskId": "TASK-1403",
-      "text": "claimed by ORION",
-      "agent": "ORION",
-      "at": 1787522132019
-    },
-    {
-      "id": "01I0",
-      "taskId": "TASK-1389",
-      "text": "moved doing → done",
-      "agent": "ORION",
-      "at": 1787522131791
-    },
-    {
-      "id": "RKLC",
-      "taskId": "TASK-1053",
-      "text": "moved done → done",
-      "agent": "ORION",
-      "at": 1787522131457
-    },
-    {
-      "id": "0DLE",
-      "taskId": "TASK-1403",
-      "text": "moved todo → done",
-      "agent": "ORION",
-      "at": 1787522131166
-    },
-    {
-      "id": "PFAK",
-      "taskId": "TASK-95",
-      "text": "moved todo → done",
-      "agent": "ORION",
-      "at": 1787522130678
-    },
-    {
-      "id": "BNV3",
-      "taskId": "TASK-94",
-      "text": "moved todo → done",
-      "agent": "ORION",
-      "at": 1787522130374
-    },
-    {
-      "id": "4A1B",
-      "taskId": "TASK-83",
-      "text": "moved todo → done",
-      "agent": "ORION",
-      "at": 1787522129871
-    },
-    {
-      "id": "AAOP",
-      "taskId": "TASK-1404",
-      "text": "review · gates green tsc=10.6s·lint=32.4s·test=7.2s",
-      "agent": "CIPHER",
-      "at": 1787522094004
-    },
-    {
-      "id": "OR1W",
-      "taskId": "TASK-1404",
-      "text": "✓ checked threat-model note in docs/task-reports",
-      "agent": "CIPHER",
-      "at": 1787522043421
-    },
-    {
-      "id": "MNO1",
-      "taskId": "TASK-1404",
-      "text": "✓ checked expiry checked server-side not countdown-only",
-      "agent": "CIPHER",
-      "at": 1787522043147
-    },
-    {
-      "id": "H5VC",
-      "taskId": "TASK-1404",
-      "text": "✓ checked note payload stays in URL fragment never server-",
-      "agent": "CIPHER",
-      "at": 1787522042887
-    },
-    {
-      "id": "PBVY",
-      "taskId": "TASK-1404",
-      "text": "✓ checked share ids >=128-bit random base64url not sequent",
-      "agent": "CIPHER",
-      "at": 1787522042661
-    },
-    {
-      "id": "K2QK",
-      "taskId": "TASK-1404",
-      "text": "claimed by CIPHER · → doing",
-      "agent": "CIPHER",
-      "at": 1787521991252
-    },
-    {
-      "id": "N2M8",
-      "taskId": "TASK-1373",
-      "text": "shipped 92cf723 (local) · fix(security): throttle deviceId probing on watchlist/alerts GETs via token buckets; upstreamGuards store gains LRU eviction; entropy audit write-up (TASK-1373) · gates tsc=9.3s·lint=32.8s·test=7.4s · e2e✓",
-      "agent": "CIPHER",
-      "at": 1787521917536
-    },
-    {
-      "id": "9PZD",
-      "taskId": "TASK-1373",
-      "text": "review · gates green tsc=9.8s·lint=32.4s·test=6.9s",
-      "agent": "CIPHER",
-      "at": 1787521854950
-    },
-    {
-      "id": "EHXA",
-      "taskId": "TASK-1373",
-      "text": "✓ checked write-up in docs/task-reports",
-      "agent": "CIPHER",
-      "at": 1787521805297
-    },
-    {
-      "id": "Z1FR",
-      "taskId": "TASK-1373",
-      "text": "✓ checked brute-force probing rate-limited",
-      "agent": "CIPHER",
-      "at": 1787521805059
-    },
-    {
-      "id": "O9BK",
-      "taskId": "TASK-1373",
-      "text": "✓ checked audit deviceId generation entropy >=128 bits",
-      "agent": "CIPHER",
-      "at": 1787521804733
     }
   ],
   "deletions": [],
-  "updatedAt": 1787537567890
+  "updatedAt": 1787537781703
 }
