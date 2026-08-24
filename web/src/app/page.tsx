@@ -526,7 +526,13 @@ export default function Home() {
         nav
         onHelp={() => setHelpOpen(true)}
         alerts={
-          selected ? { symbol: selected.symbol, exchange: selected.exchange } : null
+          selected
+            ? {
+                symbol: selected.symbol,
+                exchange: selected.exchange,
+                price: data?.regularMarketPrice ?? null,
+              }
+            : null
         }
       />
 

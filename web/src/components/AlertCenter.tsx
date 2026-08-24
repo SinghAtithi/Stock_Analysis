@@ -52,6 +52,8 @@ interface AlertRecord {
 interface Props {
   symbol: string;
   exchange: string;
+  /** TASK-372: current price from the loaded chart payload, when available */
+  price?: number | null;
 }
 
 const TYPE_LABELS: Record<string, string> = {
@@ -109,7 +111,7 @@ function BellIcon() {
   );
 }
 
-export default function AlertCenter({ symbol, exchange }: Props) {
+export default function AlertCenter({ symbol, exchange, price }: Props) {
   const [open, setOpen] = useState(false);  const [createOpen, setCreateOpen] = useState(false);
   const [alerts, setAlerts] = useState<AlertRecord[]>([]);
   const [loadedOnce, setLoadedOnce] = useState(false);
@@ -471,6 +473,7 @@ export default function AlertCenter({ symbol, exchange }: Props) {
             onClose={() => setCreateOpen(false)}
             symbol={symbol}
             exchange={exchange}
+            currentPrice={price ?? null}
             onCreated={() => void refresh()}
           />
         </>,
@@ -485,18 +488,36 @@ function CreateAlertDialog({
   onClose,
   symbol,
   exchange,
+  currentPrice,
   onCreated,
 }: {
   open: boolean;
   onClose: () => void;
   symbol: string;
   exchange: string;
+  currentPrice: number | null;
   onCreated: () => void;
 }) {
+
   const [type, setType] = useState<string>(PRICE_TYPES[0]);
   const [price, setPrice] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const fmtINR = (v: number): string =>
+    `₹${v.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  /* TASK-372 AC3: soft relative validation — warn but never block submit */
+  const targetNum = Number(price);
+  const relativeWarning =
+    currentPrice != null &&
+    price.trim() !== "" &&
+    Number.isFinite(targetNum) &&
+    targetNum > 0
+      ? type === "price_above" && targetNum <= currentPrice
+        ? `Target is at or below the current ${fmtINR(currentPrice)} — “crosses above” may fire immediately.`
+        : type === "price_below" && targetNum >= currentPrice
+          ? `Target is at or above the current ${fmtINR(currentPrice)} — “crosses below” may fire immediately.`
+          : null
+      : null;
 
   const reset = () => {
     setType(PRICE_TYPES[0]);
@@ -601,6 +622,11 @@ function CreateAlertDialog({
           </select>
         </label>
 
+        {currentPrice != null && (
+          <p className="text-xs text-muted">
+            Current: <span className="font-mono tabular-nums text-paper">{fmtINR(currentPrice)}</span>
+          </p>
+        )}
         <label className="flex flex-col gap-1.5">
           <span className="text-xs text-muted">Target price (₹)</span>
           <input
@@ -608,13 +634,24 @@ function CreateAlertDialog({
             inputMode="decimal"
             step="any"
             min="0"
-            placeholder="0.00"
+            placeholder={currentPrice != null ? String(Math.round(currentPrice * 100) / 100) : "0.00"}
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             required
+            aria-describedby={relativeWarning ? "alert-relative-hint" : undefined}
             className="rounded-lg border border-line bg-panel-2 px-3 py-2 text-right font-mono text-sm tabular-nums text-paper focus-visible:outline-2 focus-visible:outline-accent"
           />
+          <span className="text-[11px] leading-relaxed text-faint">
+            {currentPrice != null
+              ? `Enter above ${fmtINR(currentPrice)} for “crosses above”, below for “crosses below”.`
+              : "Enter the level the price should cross."}
+          </span>
         </label>
+        {relativeWarning && (
+          <p id="alert-relative-hint" className="text-xs text-faint">
+            {relativeWarning}
+          </p>
+        )}
 
         {error && (
           <p role="alert" className="text-xs text-down">

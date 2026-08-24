@@ -12,7 +12,7 @@ interface SiteHeaderProps {
   sticky?: boolean;
   nav?: boolean;
   onHelp?: () => void;
-  alerts?: { symbol: string; exchange: string } | null;
+  alerts?: { symbol: string; exchange: string; price?: number | null } | null;
 }
 
 export default function SiteHeader({
@@ -72,7 +72,7 @@ export default function SiteHeader({
       <div
         className={`flex items-center ${nav ? "gap-2 sm:gap-3" : "gap-3 sm:gap-4"}`}
       >
-        {alerts && <AlertCenter symbol={alerts.symbol} exchange={alerts.exchange} />}
+        {alerts && <AlertCenter symbol={alerts.symbol} exchange={alerts.exchange} price={"price" in alerts ? alerts.price : null} />}
         <span className="hidden font-mono text-xs tabular-nums text-faint sm:inline">
           {clock ? `${clock} IST` : "—"}
         </span>
