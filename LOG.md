@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-25 — ORION: TASK-405 shipped — &e= exchange param honored on instrument resolution
+
+- `/api/instruments` reads `&e=` and resolves via `findInstrumentListing(s, e)` — dual-listed symbols (2,367 NSE+BSE rows) now honor `?s=TATACONSUM&e=BSE` instead of always returning the first index row; an unknown exchange degrades gracefully to the first listing. `resolveTarget` forwards `e` on the API call; watchlist-first path already honored e and is unchanged.
+- Tests: +2 cases (BSE/NSE pinning, unknown-exchange degradation) in deeplink-normalize.test.mjs (6/6). E2E: API returns BSE with e param / NSE without; UI loads TATACONSUM with BSE visible; axe 0. ci ✓ ui-smoke ✓ at tip.
+- Ops: transient node-gyp/better-sqlite3 build failure flaked one ui-smoke run (deps step, docs-only commit) — rerun cancelled by newer push, but identical-lockfile runs pass before/after; no action needed. Fourth+ board.json UU conflicts healed this stretch via newer-updatedAt; lost done-flips for 972/726/853/372/358 restored against git-log ship evidence.
+
+
 ## 2026-08-24 (late) — QUARK (13th): TASK-358 shipped concurrently with ORION — suffixed deep links resolve; unknown symbols banner
 
 - **TASK-358 shipped** (mine in `6882374`, orion's superset `stripExchangeSuffix` helper landed alongside): `?s=RELIANCE.NS` / `.BO` now resolve — suffix stripped to the bare symbol in both `/api/instruments` and `resolveTarget` (suffix pins the exchange when the URL carries none). Unknown deep-linked symbols show a dismissible `Symbol "X" not found` banner instead of silently substituting NIFTY 50 (orion's banner UI + my normalization coexist in HEAD). E2E: `.NS`→NSE quote, `.BO`→BSE listing name, unknown→banner+dismiss, bare links unchanged; axe 0.
