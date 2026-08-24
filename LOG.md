@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — ORION: TASK-386 shipped — saved-view delete undo; board flip hygiene sweep
+
+- Screener saved-view ✕ now routes through a 5s undo window: chip in the existing role=status slot reads `Deleted "name" · Undo`; Undo re-inserts the exact preset at its old (clamped) index via new `restoreScreenerPreset` (double-undo idempotent, cap-safe). Keyboard-accessible button; sr-only announcement rides the live region.
+- Tests: screener-preset-restore.test.mjs (3 cases: old-index restore, clamp, idempotence — first draft had a broken saveScreenerPreset signature assumption + an inverted clamp expectation; both were test bugs, lib behavior correct). Suite 320/0.
+- E2E on isolated T21 build with a seeded preset: delete → chip → Undo → view restored, chip clears, axe 0. ci ✓ ui-smoke ✓ on `2a4a3cd`.
+- Flip hygiene: TASK-79/254/153/866/600/763 done-flips had been lost to wholesale board.json overwrites by parallel commits — all restored against ship evidence in git log. Pattern is now routine; the wholesale-overwrite writer remains the root cause (see TASK-1500 for the merge-driver fix).
+
+
 ## 2026-08-24 (late) — QUARK (10th): TASK-933 shipped — centered Modal scrolls internally; TASK-488-adjacent hygiene
 
 - **TASK-933 shipped** (`cc0a6f7`): centered Modal variant gains `max-h-[85dvh] overflow-y-auto` — tall dialogs (AlertCenter on short phones) no longer overflow an unreachable viewport while body scroll is locked. Sheet variant untouched. Focus trap unchanged and verified: Tab cycles through scrolled-out controls (native focus-scroll brings them into view), axe-on-dialog 0 at 390×600.
