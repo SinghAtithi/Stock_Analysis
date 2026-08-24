@@ -3056,7 +3056,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -3083,7 +3083,7 @@
         }
       ],
       "createdAt": 1787501701084,
-      "updatedAt": 1787501701084,
+      "updatedAt": 1787532286467,
       "blocked": false
     },
     {
@@ -3318,7 +3318,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -3345,7 +3345,7 @@
         }
       ],
       "createdAt": 1787501723248,
-      "updatedAt": 1787501723248,
+      "updatedAt": 1787532286791,
       "blocked": false
     },
     {
@@ -9128,7 +9128,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -9155,7 +9155,7 @@
         }
       ],
       "createdAt": 1787502526309,
-      "updatedAt": 1787502526309,
+      "updatedAt": 1787532287160,
       "blocked": false
     },
     {
@@ -48952,7 +48952,7 @@
       "desc": "Auto-filed from CI (TASK-1479). Suite `ui-smoke` failed.\n\n- Failing run: https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32676338634\n- Commit: 1bd2114\n\nInvestigate the failing check first; re-run the suite locally before marking fixed.",
       "phase": "A",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [
         "ci",
@@ -48977,11 +48977,39 @@
         }
       ],
       "createdAt": 1787531012817,
-      "updatedAt": 1787531012817,
+      "updatedAt": 1787532287481,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "20L2",
+      "taskId": "TASK-1499",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787532287488
+    },
+    {
+      "id": "DU10",
+      "taskId": "TASK-254",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787532287161
+    },
+    {
+      "id": "8UYL",
+      "taskId": "TASK-89",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787532286791
+    },
+    {
+      "id": "LTGW",
+      "taskId": "TASK-82",
+      "text": "moved todo → done",
+      "agent": "ORION",
+      "at": 1787532286468
+    },
     {
       "id": "I1NA",
       "taskId": "TASK-1499",
@@ -49513,36 +49541,8 @@
       "text": "review · gates green tsc=9.8s·lint=30.5s·test=7.2s",
       "agent": "CIPHER",
       "at": 1787521389788
-    },
-    {
-      "id": "UJSD",
-      "taskId": "TASK-1413",
-      "text": "✓ checked note in docs/task-reports",
-      "agent": "CIPHER",
-      "at": 1787521342019
-    },
-    {
-      "id": "SSZ9",
-      "taskId": "TASK-1413",
-      "text": "✓ checked if public deploy blocked until gated",
-      "agent": "CIPHER",
-      "at": 1787521341726
-    },
-    {
-      "id": "ZHIH",
-      "taskId": "TASK-1413",
-      "text": "✓ checked enforced at middleware or server bind",
-      "agent": "CIPHER",
-      "at": 1787521341428
-    },
-    {
-      "id": "1FN4",
-      "taskId": "TASK-1413",
-      "text": "✓ checked documented decision localhost-only vs token gate",
-      "agent": "CIPHER",
-      "at": 1787521341098
     }
   ],
   "deletions": [],
-  "updatedAt": 1787532050331
+  "updatedAt": 1787532287616
 }
