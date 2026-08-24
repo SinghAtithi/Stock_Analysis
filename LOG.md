@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — QUARK (7th): TASK-600 shipped — company page sections recover via Retry
+
+- **TASK-600 shipped** (`5dc7375`): `useJson` failures are now keyed to the url that failed (TASK-875 pattern) and each failed section renders a `Retry` chip — quote header (replaces the dead `—`/change% slot), memberships, corporate actions. Retry clears the marker and bumps a nonce so the effect refetches; success path untouched; no auto-retry loops. Bonus correctness: Memberships previously swallowed rejected per-strategy signal fetches via `allSettled` and faked "No current strategy signals include this symbol" — rejections now mark the section failed with recovery instead.
+- **Verified** on isolated build with route-flipping mocks: 503/500 states render chips, clicking refetches (call counts asserted), healthy upstream recovers ₹ price + dividend rows. Axe 0 in the failed state.
+- CI green at HEAD (ci ✓ ui-smoke ✓ — own run cancelled by TASK-89's racing push, successor run watched to green).
+
+---
+
 ## 2026-08-24 (late) — ORION: TASK-866 shipped — lowercase deep links resolve; housekeeping sweeps
 
 - `findInstrument` now trims + uppercases before the exact-match scan (single choke point, all callers benefit); `resolveTarget` normalizes s/e up front so the watchlist-snapshot path and `/api/instruments` path agree. `?s=reliance` lands on RELIANCE instead of silently falling back to NIFTY 50; uppercase links byte-identical behavior.
@@ -60,6 +68,16 @@ This file is the single source of truth for everything done in this project. Eve
 - **Final state**: HEAD `d29c57d` green on ci ✓ ui-smoke ✓ including the security job; board CI RED cards should auto-close via the 3-green rule.
 
 ---
+
+## 2026-08-25 (III) — ORION: TASK-89 shipped — pricing page becomes a conversion surface
+
+- **TASK-89 shipped** (`fc1cad0`): pricing cards gain primary CTAs — **"Continue free →"** to the terminal (no account needed) and **"Request Pro access ↗"** opening a pre-targeted GitHub issue (billing isn't wired; Pro is granted manually per device during preview, so an issue with device id IS the existing flow). Cap lines now render from a live `TIER_LIMITS` import instead of hardcoded strings — enforcement and marketing can't drift. New 4-item FAQ (`<details>`, zero-JS): pro-preview semantics, rolling-window cap math, free-tier permanence, where the numbers come from (cross-linked to /help/plans-and-limits).
+- Verified on isolated T21 build: CTAs + hrefs + rel=noopener, tier numbers present, FAQ expands, axe **0 violations light AND dark**, 0 pageerrors; gates green; ci ✓ ui-smoke ✓ at `fc1cad0`.
+
+## 2026-08-25 (II) — ORION: TASK-85 shipped — skeleton loading states for breadth + screener
+
+- **TASK-85 shipped** (`04f21d6`): new shared `Skeleton` pulse component; breadth stat cards (VIX, A/D, FII, DII, 52W hi/lo + as-of chip) hold geometry-matched placeholders during the first fetch — values replace them with zero layout shift; DataTable's single "Loading…" pill upgraded to **8 `aria-busy` skeleton rows mirroring the column layout** (widths derived from column widthPx). Error and empty states byte-identical (AC3). Reduced-motion users get a static block — global `prefers-reduced-motion` rule collapses `animation-duration` to 0.01ms (verified computed style 1e-05s).
+- Verified on private-build instance: 15 pulse blocks visible during delayed fetch → 0 after values land; screener shows 8 skeleton rows then 2 real rows; no pageerrors; gates green. Ops note: `.next-t21` is shared across agents — concurrent builds corrupted chunks mid-test twice; verified against a private copy instead (`rm -rf .next-t21` before final build). Also closed stale auto-card TASK-1496 (CI red long fixed; multiple greens since).
 
 ## 2026-08-25 — ORION: TASK-1494 shipped — /help hub with five answer pages
 
