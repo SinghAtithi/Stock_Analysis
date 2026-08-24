@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — ORION: TASK-358 shipped — suffixed deep links + not-found banner; cooperative merge with peer's parallel fix
+
+- Shared `stripExchangeSuffix` in instruments.ts (.NS/.BO/.NSE/.BSE → bare symbol + implied exchange) now backs BOTH resolveTarget and the company server pages: `/company/TCS.BO` resolves the BSE listing, and its "Open chart" link carries bare `?s=TCS&e=BSE&r=1y`. Unknown deep links (`?s=NOSUCHZZ9`) show a dismissible role=status banner ("Symbol X not found — showing NIFTY 50") instead of silently substituting.
+- **Cooperative collision, resolved cleanly**: a peer independently added inline .NS/.BO regex stripping to resolveTarget (uncommitted) while I built the shared-helper version. Rather than duplicate, I unified their hunks onto the shared helper (which also covers .NSE/.BSE variants), completed their half-finished miss-banner state (setMissSymbol was referenced but undeclared — added state + render + Dismiss), and kept their exchange-pinning semantics.
+- Tests: stripExchangeSuffix cases appended to deeplink-normalize.test.mjs (4/4). E2E: suffixed link resolves with no banner; unknown shows banner + Dismiss; company suffix route emits bare-symbol chart link; axe 0. ci ✓ ui-smoke ✓ on `e63f4e0`.
+- Fourth board.json conflict this session-series healed by the newer-updatedAt protocol; TASK-1500 remains the systemic fix.
+
+
 ## 2026-08-24 (late) — ORION: TASK-372 shipped — create-alert dialog shows current price + relative-direction guidance
 
 - Price now flows chart payload (`regularMarketPrice`) → SiteHeader alerts prop → AlertCenter → CreateAlertDialog. Dialog shows "Current: ₹2,420.50" context line, guided helper under the target input ("Enter above ₹X for 'crosses above', below for 'crosses below'"), placeholder pre-seeded with the rounded current price, and a NON-blocking soft warning when the target sits on the wrong side of spot ("may fire immediately") — submit stays enabled since immediate-fire can be intentional.
@@ -45,6 +53,12 @@ This file is the single source of truth for everything done in this project. Eve
 - **TASK-488 closed stale-done** earlier this session (see prior entry): route-spy proved BSE listings query `exchange=BSE` post-TASK-80 resolution.
 
 ---
+
+## 2026-08-25 (X) — ORION: TASK-462 shipped — holiday-aware market session
+
+- **TASK-462 shipped** (`8b13ee4`): session.ts now carries a curated static NSE/BSE trading-holiday calendar (2025–2026 IST dates; lunar festivals flagged "approximate — confirm against NSE circular" with an explicit review-each-December note — the AC allowed static over feed). `istTradingDay` gates `sessionOpenFor`/`istSessionOpen`, so **chart cache TTLs and all polling treat holidays as closed automatically** (every consumer funnels through istSessionOpen per TASK-53). New `minutesUntilOpen` walks forward across weekends AND holidays to the real next open.
+- **MarketStatus** refactored off its duplicated inline weekday math onto the shared helpers (it was the one consumer that ignored the calendar): a Friday Diwali now reads "Market closed · in 2d 3h" instead of falsely counting into tomorrow's open. Unit tests added: holiday-Friday closed, non-holiday Friday still opens (over-blocking guard), minutesUntilOpen skips the holiday (4500-min assertion). Board hygiene: closed stale cards 153 (shipped `84a1e1f`) and 228 (obsolete — `.pricing-card` eliminated by fc1cad0's token rewrite).
+- Contention log: board.json stash-conflict #4 + another stale-snapshot regression (145/182/200/453) reconciled and pushed via worktree (`fbe48e8`). ci ✓ ui-smoke ✓ at `8b13ee4`.
 
 ## 2026-08-25 (IX) — ORION: TASK-713 shipped — no more dead fundamentals box on indices (+ board conflict #3)
 
