@@ -125,6 +125,8 @@ export default function Home() {
   const reqId = useRef(0);
   /* TASK-83 undo slot — one pending removal, 5s window */
   const [pendingUndo, setPendingUndo] = useState<{ entry: WatchlistEntry; index: number } | null>(null);
+  /* TASK-853: sr-only J/K step announcement */
+  const [stepAnnounce, setStepAnnounce] = useState("");
   const undoTimer = useRef<number | null>(null);
   useEffect(() => {
     return () => {
@@ -311,7 +313,14 @@ export default function Home() {
             w.exchange === selected.exchange,
         );
         const step = e.key === "j" || e.key === "J" ? 1 : -1;
-        const nextIdx = (idx + step + watchlist.length) % watchlist.length;
+        /* TASK-853: deep-linked symbol not in the list (idx -1) used to wrap
+           to a random entry — J now enters at the top, K from the bottom */
+        let nextIdx: number;
+        if (idx === -1) {
+          nextIdx = step === 1 ? 0 : watchlist.length - 1;
+        } else {
+          nextIdx = (idx + step + watchlist.length) % watchlist.length;
+        }
         const next = watchlist[nextIdx];
         if (
           next &&
@@ -322,6 +331,10 @@ export default function Home() {
           )
         ) {
           pick(next);
+          /* TASK-853 AC3: announce the step for screen readers */
+          setStepAnnounce(
+            `${next.name}, ${next.symbol} ${next.exchange} — ${watchlist.indexOf(next) + 1} of ${watchlist.length}`,
+          );
         }
         return;
       }
@@ -502,6 +515,10 @@ export default function Home() {
       >
         Skip to chart
       </a>
+      {/* TASK-853: J/K step announcement for screen readers */}
+      <div className="sr-only" role="status" aria-live="polite">
+        {stepAnnounce}
+      </div>
 
       <SiteHeader
         subtitle="Indian Market"
@@ -649,7 +666,9 @@ export default function Home() {
 
           {data && <StatsRail data={data} />}
 
-          {selected && <FundamentalsPanel symbol={selected.symbol} />}
+          {selected && (
+            <FundamentalsPanel symbol={selected.symbol} isIndex={selected.type === "Index"} />
+          )}
 
           <ChartPanel data={data} range={range} onRange={changeRange} loading={busy} />
 
