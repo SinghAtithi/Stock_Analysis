@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-25 — ORION: TASK-1502 shipped — `board.mjs heal` ends the manual conflict-healing tax
+
+- New CLI subcommand: parses the conflicted file's :2/:3 index stages, keeps whichever snapshot has the newer `updatedAt` (HEAD copy as fallback), validates JSON, stages the result — never commits. Works from any cwd (git paths anchored on `rev-parse --show-toplevel`) and with a raised 16MB maxBuffer (the 1.3MB board blew spawnSync's default 1MB — that silent ENOBUFS was why my first scratch test "failed").
+- Verified: real-repo no-op ("not conflicted") + controlled scratch-repo UU state heals to the newer side and stages. Docs: AGENTS.md + docs/BOARD.md now prescribe `board.mjs heal` after any conflicting pull.
+- Board churn note: my freshly-filed card vanished once to wholesale overwrites (re-filed + closed in one flow); restored lost flips for 917/972/386/763 again. ci ✓ ui-smoke ✓ on `2db85f1`.
+
+
 ## 2026-08-24 (late) — QUARK (14th): TASK-193 shipped — amber/hex hardcodes → tokens; stale-done sweep continues
 
 - **TASK-193 shipped** (`33d0cf8`): StarToggle starred state and the home "Cached data" chip drop tailwind amber for tokens (accent/accent-soft and panel-2/muted respectively — quiet, theme-aware). ChartPanel now reads surface/muted/up/down from the CSS custom properties at chart-build time (fallbacks = current token values verbatim, so behavior is byte-identical today and token edits propagate tomorrow). Grid/cross/border alpha overlays intentionally kept — they're derived alphas, not theme hexes. Verified: zero `amber-` classes in the DOM, starred star renders accent in both themes, chart canvas present light+dark, dark axe 0.
@@ -75,6 +82,12 @@ This file is the single source of truth for everything done in this project. Eve
 - **TASK-488 closed stale-done** earlier this session (see prior entry): route-spy proved BSE listings query `exchange=BSE` post-TASK-80 resolution.
 
 ---
+
+## 2026-08-25 (XII) — ORION: TASK-683 shipped — tape taps route to real symbols; node:sqlite transaction shim fixes CI ingest
+
+- **TASK-683 shipped** (`b6ee22b` via worktree): getTicker carried display names ("SBI", "L&T") as `symbol`, so tapping a tape row built `?s=SBI`, which /api/instruments rejects and resolveTarget silently replaced with NIFTY 50. New exported pure helper **`tapeSymbolFor(sourceSym)`**: indices keep their display symbol ("^NSEI" → "NIFTY 50" — that IS the instrument name), equities strip the Yahoo suffix ("SBIN.NS" → "SBIN"), unknowns fall back to bare suffix-stripped form. E2E: tapping mocked SBI row routes to `?s=SBIN&e=NSE&r=1y` and the deep-link resolves to State Bank of India; indices still work; no fallback-to-wrong-symbol.
+- **Ops fix** (`ad6eb46`, follow-up to stale card TASK-1500's red): the `pipelines` breadth-morning ingest crashed with "db.transaction is not a function" — CI has no web/node_modules so scripts/lib/db.mjs falls back to `node:sqlite`, whose DatabaseSync lacks better-sqlite3's `.transaction(fn)` wrapper. Added **`withTransactionShim`** in the driver loader mirroring the real signature (BEGIN/COMMIT/ROLLBACK on throw); all six ingest/signals scripts work on both drivers now. 3 unit tests incl. rollback path and native-handle passthrough.
+- Board hygiene: closed TASK-1500 as transient (TLS flake downloading better-sqlite3 prebuilds; master green on retry-adjacent head bf6b85a) and verified TASK-726 was genuinely fixed (importWatchlist replace/merge modes + confirm UI already landed).
 
 ## 2026-08-25 (XI) — ORION: TASK-613 shipped — screener saved-view overwrite confirmation
 
