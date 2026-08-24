@@ -2,6 +2,7 @@
 
 import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
+import StrategyPicker from "@/components/StrategyPicker";
 import { useRouter, useSearchParams } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 import DataTable from "@/components/DataTable";
@@ -57,6 +58,9 @@ const FALLBACK_STRATEGIES: StrategyMeta[] = [
 
 /* column keys eligible for ?sort= deep links + saved views */
 const SORTABLE_KEYS = new Set(["rank", "symbol", "name", "sector", "score", "price", "changePct"]);
+
+/* TASK-81: past this many strategies the pill row becomes a searchable picker */
+const PILL_ROW_MAX = 8;
 
 const readSortParams = (): { sortKey: string | null; sortDir: SortDir } => {
   const params = new URLSearchParams(window.location.search);
@@ -174,7 +178,7 @@ function ScreenerInner() {
   const meta = data?.strategy;
 
   /* TASK-145: load-more affordance state */
-  const total = data?.meta.count ?? 0;
+  const total = data?.meta?.count ?? 0;
   const loadMore = () => setOffset(items.length);
 
   /* keep ?strategy=&sort=&dir= in step with view state (saved views + deep links) */
@@ -265,7 +269,7 @@ function ScreenerInner() {
               <span className="rounded-full bg-paper px-2.5 py-1 font-medium text-ink">{meta.name}</span>
               <span className="rounded-full border border-line bg-panel-2 px-2.5 py-1 text-muted">{meta.juryRank ? `Jury #${meta.juryRank}` : "Unranked"} · Edge {meta.edgeScore ?? "—"}/10</span>
               <span className="rounded-full border border-line bg-surface px-2.5 py-1 text-faint">
-                {data?.meta.count ?? 0} ranked · showing {items.length} · {meta.asOf ? new Date(meta.asOf * 1000).toLocaleDateString("en-IN") : "—"}
+                {data?.meta?.count ?? 0} ranked · showing {items.length} · {meta.asOf ? new Date(meta.asOf * 1000).toLocaleDateString("en-IN") : "—"}
               </span>
             </div>
           )}
@@ -273,17 +277,27 @@ function ScreenerInner() {
         </div>
 
         <div role="group" aria-label="Strategy" className="flex flex-wrap items-center gap-2">
-          {strategies.map((s) => (
-            <button
-              key={s.id}
-              onClick={() => changeStrategy(s.id)}
-              aria-pressed={strategy === s.id}
-              title={s.juryRank ? `${s.name} · jury #${s.juryRank} · edge ${s.edgeScore ?? "—"}/10` : `${s.name} · unranked`}
-              className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${strategy === s.id ? "border-paper bg-paper text-ink shadow-sm" : "border-line bg-surface text-muted hover:border-line-strong hover:text-paper"}`}
-            >
-              {s.name}
-            </button>
-          ))}
+          {/* TASK-81: large registries swap pills for a searchable picker —
+              190+ strategies would wrap the toolbar endlessly */}
+          {strategies.length > PILL_ROW_MAX ? (
+            <StrategyPicker
+              strategies={strategies}
+              value={strategy}
+              onChange={changeStrategy}
+            />
+          ) : (
+            strategies.map((s) => (
+              <button
+                key={s.id}
+                onClick={() => changeStrategy(s.id)}
+                aria-pressed={strategy === s.id}
+                title={s.juryRank ? `${s.name} · jury #${s.juryRank} · edge ${s.edgeScore ?? "—"}/10` : `${s.name} · unranked`}
+                className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${strategy === s.id ? "border-paper bg-paper text-ink shadow-sm" : "border-line bg-surface text-muted hover:border-line-strong hover:text-paper"}`}
+              >
+                {s.name}
+              </button>
+            ))
+          )}
           <Link
             href={`/backtest?strategy=${encodeURIComponent(strategy)}`}
             className="ml-1 rounded-full border border-dashed border-line px-3.5 py-1.5 text-sm text-muted transition-colors hover:border-line-strong hover:text-paper"
