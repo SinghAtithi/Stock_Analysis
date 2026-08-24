@@ -60,12 +60,6 @@ export default function SiteHeader({
           >
             Help
           </Link>
-          <Link
-            href="/board"
-            className="rounded-full bg-paper px-3 py-1.5 text-sm font-medium text-ink shadow-sm"
-          >
-            Board
-          </Link>
         </nav>
       )}
 
@@ -85,12 +79,6 @@ export default function SiteHeader({
               className="rounded-full border border-line bg-surface px-3 py-1.5 text-sm font-medium text-paper hover:bg-panel-2"
             >
               Help
-            </Link>
-            <Link
-              href="/board"
-              className="rounded-full bg-paper px-3 py-1.5 text-sm font-medium text-ink shadow-sm"
-            >
-              Board
             </Link>
             <Link
               href="/"
@@ -132,12 +120,6 @@ export default function SiteHeader({
             className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:bg-panel-2 hover:text-paper"
           >
             Help
-          </Link>
-          <Link
-            href="/board"
-            className="shrink-0 rounded-full bg-paper px-3 py-1.5 text-sm font-medium text-ink shadow-sm"
-          >
-            Board
           </Link>
         </nav>
       )}

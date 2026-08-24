@@ -719,7 +719,6 @@ export default function Home() {
               <Link href="/breadth" className="hover:text-paper">Breadth</Link>
               <Link href="/help" className="hover:text-paper">Help</Link>
               <Link href="/pricing" className="hover:text-paper">Pricing</Link>
-              <Link href="/board" className="rounded-full bg-paper px-2.5 py-1 font-medium text-ink">Board</Link>
               <span className="hidden sm:inline">NIFTY · {new Date().getFullYear()}</span>
             </span>
           </footer>
