@@ -970,8 +970,7 @@ export function googleToPayload(
 
 /* ---------- NIFTY 50 ticker ---------- */
 
-const TAPE_UNIVERSE: { s: string; n: string }[] = [
-  { s: "^NSEI", n: "NIFTY 50" },
+const TAPE_UNIVERSE: { s: string; n: string }[] = [  { s: "^NSEI", n: "NIFTY 50" },
   { s: "^BSESN", n: "SENSEX" },
   { s: "RELIANCE.NS", n: "RELIANCE" },
   { s: "TCS.NS", n: "TCS" },
@@ -1021,6 +1020,17 @@ const TAPE_UNIVERSE: { s: string; n: string }[] = [
   { s: "INDUSINDBK.NS", n: "INDUSIND BK" },
 ];
 
+/** TASK-683: Yahoo source symbol → the resolvable instrument symbol a deep
+ *  link can carry. Indices keep their display symbol ("^NSEI" → "NIFTY 50",
+ *  which IS the instrument name); equities drop the Yahoo ".NS" suffix
+ *  ("SBIN.NS" → "SBIN") so /api/instruments resolves them. Unknown symbols
+ *  fall back to the bare suffix-stripped form. */
+export function tapeSymbolFor(sourceSym: string): string {
+  const entry = TAPE_UNIVERSE.find((t) => t.s === sourceSym);
+  if (entry && sourceSym.startsWith("^")) return entry.n;
+  return sourceSym.replace(/\.(NS|BO)$/, "");
+}
+
 export async function getTicker(): Promise<TickerItem[]> {
   const key = "ticker";
   const hit = cacheGet<TickerItem[]>(key);
@@ -1055,8 +1065,10 @@ export async function getTicker(): Promise<TickerItem[]> {
       const prevClose = asNum(rec["previousClose"]);
       const sourceSym = tapeEntry.s;
       const isIndex = sourceSym.startsWith("^");
+      /* TASK-683: carry the resolvable instrument symbol, not the display
+         name ("SBI" was unresolvable and fell back to NIFTY 50) */
       items.push({
-        symbol: tapeEntry.n,
+        symbol: tapeSymbolFor(sourceSym),
         name: tapeEntry.n,
         price,
         changePct:
