@@ -230,8 +230,12 @@ export async function PATCH(request: NextRequest) {
       );
     }
     const res = db
-      .prepare(`UPDATE alerts SET active = ? WHERE id = ? AND device_id = ?`)
-      .run(b.active ? 1 : 0, id, deviceId) as unknown as { changes?: number };
+      /* TASK-1010: re-arming clears fired_at — an active alert hasn't fired */
+      .prepare(
+        `UPDATE alerts SET active = ?, fired_at = CASE WHEN ? = 1 THEN NULL ELSE fired_at END
+         WHERE id = ? AND device_id = ?`
+      )
+      .run(b.active ? 1 : 0, b.active ? 1 : 0, id, deviceId) as unknown as { changes?: number };
     if (!res.changes) return NextResponse.json({ error: "not_found" }, { status: 404 });
     return NextResponse.json({ ok: true, active: b.active });
   } finally {

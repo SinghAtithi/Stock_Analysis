@@ -256,6 +256,27 @@ export default function AlertCenter({ symbol, exchange, price }: Props) {
   const fired = alerts.filter(
     (a) => !a.active && a.firedAt != null && a.dismissedAt == null,
   );
+  /* TASK-1010: one-tap re-arm — PATCH active=1 (server clears fired_at);
+     the row moves to Active with its original target intact */
+  const reArm = async (id: string): Promise<void> => {
+    setBusyId(id);
+    setListError(null);
+    try {
+      const res = await fetch("/api/alerts", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deviceId: getDeviceId(), id, active: true }),
+      });
+      if (!res.ok) throw new Error("rearm_failed");
+      setAlerts((prev) =>
+        prev.map((a) => (a.id === id ? { ...a, active: true, firedAt: null } : a)),
+      );
+    } catch {
+      setListError("Could not re-arm alert");
+    } finally {
+      setBusyId(null);
+    }
+  };
   /* TASK-453: fired alerts the consumer hasn't seen yet drive the bell badge */
   const unseenFired = fired.filter((a) => !seenFired.has(a.id));
   const openCenter = () => {
@@ -421,15 +442,27 @@ export default function AlertCenter({ symbol, exchange, price }: Props) {
                         )}
                         <p className="mt-0.5 text-xs text-faint">{timeAgo(a.firedAt)}</p>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => void dismissFired(a.id)}
-                        disabled={busyId === a.id}
-                        aria-label={`Dismiss fired alert: ${isMembership(a) ? (a.detail ?? `${a.strategyId ?? "strategy"} ${a.type}`) : a.symbol}`}
-                        className="shrink-0 rounded-full border border-line bg-surface px-2.5 py-1 text-xs text-muted transition-colors hover:text-paper disabled:opacity-50"
-                      >
-                        Dismiss
-                      </button>
+                      <div className="flex shrink-0 items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => void reArm(a.id)}
+                          disabled={busyId === a.id}
+                          aria-label={`Re-arm alert: ${isMembership(a) ? (a.detail ?? `${a.strategyId ?? "strategy"} ${a.type}`) : `${a.symbol} ${firedVerb(a.type)} ${a.price ?? ""}`}`}
+                          title="Re-arm for the next cross"
+                          className="rounded-full bg-paper px-2.5 py-1 text-xs font-medium text-ink shadow-sm transition-colors hover:bg-accent disabled:opacity-50"
+                        >
+                          Re-arm
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => void dismissFired(a.id)}
+                          disabled={busyId === a.id}
+                          aria-label={`Dismiss fired alert: ${isMembership(a) ? (a.detail ?? `${a.strategyId ?? "strategy"} ${a.type}`) : a.symbol}`}
+                          className="rounded-full border border-line bg-surface px-2.5 py-1 text-xs text-muted transition-colors hover:text-paper disabled:opacity-50"
+                        >
+                          Dismiss
+                        </button>
+                      </div>
                     </li>
                   ))}
                 </ul>
