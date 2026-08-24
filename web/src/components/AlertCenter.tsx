@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Modal from "@/components/Modal";
-import { ALERT_TYPES } from "@/lib/alerts";
+import { PRICE_TYPES } from "@/lib/alerts";
 import { getDeviceId } from "@/lib/device";
 import { timeAgo } from "@/lib/format";
 
@@ -493,13 +493,13 @@ function CreateAlertDialog({
   exchange: string;
   onCreated: () => void;
 }) {
-  const [type, setType] = useState<string>(ALERT_TYPES[0]);
+  const [type, setType] = useState<string>(PRICE_TYPES[0]);
   const [price, setPrice] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const reset = () => {
-    setType(ALERT_TYPES[0]);
+    setType(PRICE_TYPES[0]);
     setPrice("");
     setError(null);
   };
@@ -591,7 +591,9 @@ function CreateAlertDialog({
             onChange={(e) => setType(e.target.value)}
             className="rounded-lg border border-line bg-panel-2 px-3 py-2 text-sm text-paper focus-visible:outline-2 focus-visible:outline-accent"
           >
-            {ALERT_TYPES.map((t) => (
+            {/* TASK-200: only advertise types this dialog can actually create —
+                membership alerts need strategyId+topN and have no create UI yet */}
+            {PRICE_TYPES.map((t) => (
               <option key={t} value={t}>
                 {TYPE_LABELS[t]}
               </option>
