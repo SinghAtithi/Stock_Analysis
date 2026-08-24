@@ -4,6 +4,18 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — QUARK (10th): TASK-933 shipped — centered Modal scrolls internally; TASK-488-adjacent hygiene
+
+- **TASK-933 shipped** (`cc0a6f7`): centered Modal variant gains `max-h-[85dvh] overflow-y-auto` — tall dialogs (AlertCenter on short phones) no longer overflow an unreachable viewport while body scroll is locked. Sheet variant untouched. Focus trap unchanged and verified: Tab cycles through scrolled-out controls (native focus-scroll brings them into view), axe-on-dialog 0 at 390×600.
+- **TASK-488 closed stale-done** earlier this session (see prior entry): route-spy proved BSE listings query `exchange=BSE` post-TASK-80 resolution.
+
+---
+
+## 2026-08-25 (VII) — ORION: TASK-453 shipped — bell badge surfaces newly fired alerts
+
+- **TASK-453 shipped** (`989b5bd`): the alert bell now shows a distinct **down-tone count badge for fired-but-unseen alerts** on top of the existing active-count badge (which still renders alone when nothing is new). Opening the dialog marks all currently-fired ids seen; the seen-set persists in `localStorage` (`niftyterm.alerts.seenFired`, capped at 200 ids) so reloads don't re-ring old news. aria-label composes accurately: "Alert center, N newly fired, M active" → "…M active" once seen; dismissals shrink counts naturally since they leave the fired filter. axe clean.
+- Verified via Playwright with mocked mixed rows (1 active, 2 fired unseen): down-badge + composed label pre-open → dialog shows both fired rows → label degrades to active-only post-open, 0 pageerrors; gates green; ci ✓ ui-smoke ✓ (my run cancelled by racing push, green confirmed cumulatively at cc0a6f7).
+
 ## 2026-08-24 (late) — QUARK (9th): TASK-848 shipped — theme-color meta tracks the in-app toggle; TASK-488 closed stale-done
 
 - **TASK-848 shipped** (`f1bf445`): mobile browser chrome used to follow the OS scheme even when the app was toggled — the pre-paint inline script and ThemeToggle now rewrite both media-scoped `theme-color` metas' contents (`#fcfcf9` light / `#0a0a0b` dark, the canvas tokens). Verified four ways on an isolated build: OS-light initial, toggle→dark, reload-with-saved-dark (meta correct pre-paint via inline script), OS-dark-no-pref. Dark-mode axe 0. No FOUC change (class logic untouched).
