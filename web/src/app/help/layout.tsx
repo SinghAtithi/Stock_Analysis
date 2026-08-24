@@ -5,7 +5,7 @@ import SiteHeader from "@/components/SiteHeader";
 import { HELP_CHILDREN } from "./nav";
 
 export const metadata: Metadata = {
-  title: "Help — NIFTY",
+  title: "Help — NIFTY//TERM",
   description:
     "Getting started, score explanations, plan limits, data sources and delays, and the glossary for NIFTY.",
 };

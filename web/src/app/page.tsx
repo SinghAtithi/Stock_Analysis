@@ -468,8 +468,8 @@ export default function Home() {
   useEffect(() => {
     const apply = () => {
       document.title = selected
-        ? `${selected.symbol} · ${range.toUpperCase()} — NIFTY`
-        : "NIFTY — Indian Market";
+        ? `${selected.symbol} · ${range.toUpperCase()} — NIFTY//TERM`
+        : "NIFTY//TERM — Indian Market";
     };
     const timers = [0, 120, 400].map((d) => window.setTimeout(apply, d));
     return () => timers.forEach((t) => window.clearTimeout(t));

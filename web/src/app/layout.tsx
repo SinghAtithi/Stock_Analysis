@@ -19,20 +19,20 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   ),
-  title: "NIFTY — Indian Market",
+  title: "NIFTY//TERM — Indian Market",
   description:
     "Clean view of NSE & BSE. Search any symbol, read candles, volume and key stats — no noise.",
-  applicationName: "NIFTY",
+  applicationName: "NIFTY//TERM",
   icons: { icon: "/icon.svg" },
   openGraph: {
-    title: "NIFTY — Indian Market",
+    title: "NIFTY//TERM — Indian Market",
     description: "Live candles, volume and key stats for NSE & BSE.",
     type: "website",
     images: ["/og/default.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "NIFTY — Indian Market",
+    title: "NIFTY//TERM — Indian Market",
     description: "Live candles, volume and key stats for NSE & BSE.",
     images: ["/og/default.png"],
   },

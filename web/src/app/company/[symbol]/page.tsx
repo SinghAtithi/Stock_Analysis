@@ -26,7 +26,7 @@ export async function generateMetadata({
         stripExchangeSuffix(UP_SYM(rawMeta)).impliedExchange!,
       )) ||
     findInstrument(symbol);
-  const title = `${inst?.n ?? symbol} (${symbol}) — NIFTY`;
+  const title = `${inst?.n ?? symbol} (${symbol}) — NIFTY//TERM`;
   return {
     title,
     description: `${inst?.n ?? symbol} fundamentals, analyst coverage, strategy memberships and corporate actions on NIFTY.`,
