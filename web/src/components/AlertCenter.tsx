@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import Link from "next/link";
 import Modal from "@/components/Modal";
 import { PRICE_TYPES } from "@/lib/alerts";
 import { getDeviceId } from "@/lib/device";
@@ -532,11 +533,15 @@ function CreateAlertDialog({
   currentPrice: number | null;
   onCreated: () => void;
 }) {
+  interface AlertError {
+    text: string;
+    showPricing?: boolean;
+  }
 
   const [type, setType] = useState<string>(PRICE_TYPES[0]);
   const [price, setPrice] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
+  /* TASK-90: structured so cap errors can carry the Pricing CTA */
+  const [error, setError] = useState<AlertError | null>(null);  const [submitting, setSubmitting] = useState(false);
   const fmtINR = (v: number): string =>
     `₹${v.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   /* TASK-1040: after-hours creation — set expectations about evaluation timing
@@ -565,7 +570,7 @@ function CreateAlertDialog({
   const submit = async () => {
     const value = Number(price);
     if (!price.trim() || !Number.isFinite(value) || value <= 0) {
-      setError("Enter a valid price above zero");
+      setError({ text: "Enter a valid price above zero" });
       return;
     }
     setSubmitting(true);
@@ -583,11 +588,23 @@ function CreateAlertDialog({
         }),
       });
       if (!res.ok) {
-        const json = (await res.json().catch(() => ({}))) as { error?: string };
+        const json = (await res.json().catch(() => ({}))) as {
+          error?: string;
+          limit?: number;
+        };
+        /* TASK-90: cap errors get honest copy + a Pricing link */
+        if (json.error === "alert_cap_reached") {
+          const limit = typeof json.limit === "number" ? json.limit : 5;
+          setError({
+            text: `Free plan allows ${limit} active alerts — remove one or upgrade for more.`,
+            showPricing: true,
+          });
+          return;
+        }
         setError(
           json.error === "db_unavailable"
-            ? "Alert service unavailable — try again shortly"
-            : "Could not create alert",
+            ? { text: "Alert service unavailable — try again shortly" }
+            : { text: "Could not create alert" },
         );
         return;
       }
@@ -595,7 +612,7 @@ function CreateAlertDialog({
       onClose();
       onCreated();
     } catch {
-      setError("Network error — try again");
+      setError({ text: "Network error — try again" });
     } finally {
       setSubmitting(false);
     }
@@ -704,7 +721,15 @@ function CreateAlertDialog({
 
         {error && (
           <p role="alert" className="text-xs text-down">
-            {error}
+            {error.text}{" "}
+            {error.showPricing && (
+              <Link
+                href="/pricing"
+                className="font-medium underline decoration-line underline-offset-2 hover:text-muted focus-visible:outline-2 focus-visible:outline-accent"
+              >
+                See Pricing
+              </Link>
+            )}
           </p>
         )}
 
