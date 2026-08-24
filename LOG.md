@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-25 — ORION: TASK-946 shipped — tape scroll affordance (right-edge fade) + after-hours contrast fix
+
+- TickerTape gains a right-edge fade overlay (`.tape-fade`, canvas-token gradient, pointer-events-none, 64px→48px responsive) so the marquee visibly dissolves past the fold — the "does this scroll?" question answers itself. Native tap/drag/wheel untouched; zero layout shift; chips stay clipped at rest.
+- **Bonus axe catch**: evening-hour runs finally exercise the MarketStatus countdown, which measured 4.46:1 (`text-faint` on `up-soft`) — bumped to `text-muted` (AA-clear). This is why after-hours verification matters; daytime-only scans never see that chip.
+- E2E: mocked-ticker run shows 8 chips in view, trailing chip clipped by the fold, fade hugs the right edge with pointer-events:none, native wheel scroll works, axe 0. ci ✓ ui-smoke ✓ on `d3b1ea4`.
+
+
 ## 2026-08-24 (late) — QUARK (15th): TASK-295 shipped — /board leaves the consumer nav; TASK-853 re-reconciled
 
 - **TASK-295 shipped** (`ce16de5`): decided intent A — the internal kanban is staff tooling. `/board` removed from SiteHeader desktop nav, mobile sheet, mobile nav row, and the home footer (all four were styled as primary `bg-paper` CTAs). The route stays for agents via direct URL and robots.txt keeps `Disallow: /board` — the conflict is gone because consumers can no longer encounter it in nav. Verified: zero `/board` links in header/footer/main at 1440px and 390px (sheet opened), direct /board still loads, axe 0 light+dark.
@@ -89,6 +96,11 @@ This file is the single source of truth for everything done in this project. Eve
 - **TASK-488 closed stale-done** earlier this session (see prior entry): route-spy proved BSE listings query `exchange=BSE` post-TASK-80 resolution.
 
 ---
+
+## 2026-08-25 (XIII) — ORION: TASK-1010 shipped — one-tap Re-arm for fired alerts
+
+- **TASK-1010 shipped** (`8993e27`): fired alerts now offer **Re-arm** alongside Dismiss. Server: PATCH /api/alerts with `active:true` clears `fired_at` (an armed alert hasn't fired — previously the stale stamp survived reactivation). Client: `reArm()` PATCHes and optimistically moves the row back to Active with its original target intact; Re-arm button is primary-styled vs Dismiss's quiet outline, aria-labels distinguish the two ("Re-arm alert: INFY crossed above 1650"). Membership rows reuse their persisted detail in labels.
+- Verified via Playwright stateful mock: 1 fired + 1 active → Re-arm click → correct PATCH body captured → reopened dialog shows 0 fired / 2 active. Gates green; ci ✓ ui-smoke ✓ at `8993e27`. (My sanity assert initially demanded a surviving Re-arm button post-consumption — test bug, feature was already proven.)
 
 ## 2026-08-25 (XII) — ORION: TASK-683 shipped — tape taps route to real symbols; node:sqlite transaction shim fixes CI ingest
 
