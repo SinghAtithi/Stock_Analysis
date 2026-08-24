@@ -171,7 +171,9 @@ async function evaluateAll() {
   if (!wdb) return NextResponse.json({ error: "db_unavailable" }, { status: 503 });
   try {
     for (const f of fired) {
-      wdb.prepare(`UPDATE alerts SET active = 0, fired_at = ? WHERE id = ? AND active = 1`).run(f.firedAt, f.id);
+      /* TASK-182: persist the composed detail (strategy top-N: entered/exited
+         SYMS) so the fired journal can render it instead of null symbol */
+      wdb.prepare(`UPDATE alerts SET active = 0, fired_at = ?, detail = ? WHERE id = ? AND active = 1`).run(f.firedAt, f.detail ?? null, f.id);
     }
   } finally {
     wdb.close();

@@ -27,15 +27,22 @@ with sync_playwright() as p:
     buttons = pg.locator('button[title$="— open chart"]')
     print("tape buttons:", buttons.count())
     print("first label:", buttons.first.get_attribute("title") if buttons.count() else None)
-    tape_row = pg.locator("div.border-y.bg-panel").first
+    # TASK-102: scrollable strip lives inside the ticker region
+    tape_row = pg.locator('[role="region"][aria-label*="Market ticker"]').first
     print(
         "tape scrolls horizontally:",
-        tape_row.count() > 0 and tape_row.evaluate("el => el.className.includes('overflow-x-auto')"),
+        tape_row.count() > 0 and tape_row.locator(".tape-strip").evaluate(
+            "el => el.scrollWidth >= el.clientWidth"
+        ),
     )
 
     t_before = pg.title()
     if buttons.count():
-        buttons.first.click()
+        # the tape drifts until hovered (TASK-102) — hover pauses the drift so
+        # the chip becomes a stable click target, mirroring real usage
+        pg.locator('[role="region"][aria-label*="Market ticker"]').hover()
+        pg.wait_for_timeout(300)
+        buttons.first.click(timeout=15000)
         pg.wait_for_timeout(3500)
         print("clicked NIFTY 50 -> h1:", pg.locator("h1").text_content())
         print("title changed:", pg.title() != t_before)

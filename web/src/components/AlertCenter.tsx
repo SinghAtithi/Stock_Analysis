@@ -21,6 +21,7 @@ interface AlertRecord {
   createdAt: number;
   firedAt: number | null;
   dismissedAt?: number | null;
+  detail?: string | null;
 }
 
 interface Props {
@@ -37,6 +38,27 @@ const TYPE_LABELS: Record<string, string> = {
 
 const firedVerb = (type: string): string =>
   type === "price_below" ? "crossed below" : "crossed above";
+
+/* TASK-182: membership fires carry a persisted detail string
+ * ("S100 top-10: entered RELIANCE, TCS") — render that instead of the
+ * price-cross copy that produced "null crossed above". */
+const isMembership = (a: AlertRecord): boolean =>
+  a.type === "strategy_enter" || a.type === "strategy_exit";
+
+const firedCopy = (a: AlertRecord): string => {
+  if (isMembership(a)) {
+    return (
+      a.detail ??
+      `${a.strategyId ?? "strategy"} top-${a.topN ?? "N"} ${
+        a.type === "strategy_enter" ? "entry" : "exit"
+      }`
+    );
+  }
+  return `${firedVerb(a.type)} ${a.price ?? ""}`;
+};
+
+const firedTone = (a: AlertRecord): "up" | "down" =>
+  a.type === "strategy_exit" || a.type === "price_below" ? "down" : "up";
 
 const alertTitle = (a: AlertRecord): string =>
   a.strategyId
@@ -80,10 +102,7 @@ export default function AlertCenter({ symbol, exchange }: Props) {
     if (newlyFired.length > 0) {
       setAnnouncement(
         newlyFired
-          .map(
-            (f) =>
-              `${f.symbol ?? "Symbol"} ${firedVerb(f.type)} ${f.price ?? ""}`,
-          )
+          .map((f) => `${f.symbol ? `${f.symbol} ` : ""}${firedCopy(f)}`)
           .join("; "),
       );
     }
@@ -328,25 +347,40 @@ export default function AlertCenter({ symbol, exchange }: Props) {
                       className="flex items-center justify-between gap-3 rounded-xl border border-line bg-panel-2 px-3 py-2"
                     >
                       <div className="min-w-0">
-                        <p className="truncate text-sm text-paper">
-                          <span className="font-mono text-xs font-medium">{a.symbol}</span>
-                          <span
-                            className={`ml-2 rounded-full px-2 py-0.5 text-[11px] ${
-                              a.type === "price_below"
-                                ? "bg-down-soft text-down"
-                                : "bg-up-soft text-up"
-                            }`}
-                          >
-                            {firedVerb(a.type)} {a.price ?? ""}
-                          </span>
-                        </p>
+                        {isMembership(a) ? (
+                          <p className="truncate text-sm text-paper">
+                            <span
+                              className={`mr-2 rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                                firedTone(a) === "up"
+                                  ? "bg-up-soft text-up"
+                                  : "bg-down-soft text-down"
+                              }`}
+                            >
+                              {a.type === "strategy_enter" ? "entered" : "exited"}
+                            </span>
+                            {firedCopy(a)}
+                          </p>
+                        ) : (
+                          <p className="truncate text-sm text-paper">
+                            <span className="font-mono text-xs font-medium">{a.symbol}</span>
+                            <span
+                              className={`ml-2 rounded-full px-2 py-0.5 text-[11px] ${
+                                a.type === "price_below"
+                                  ? "bg-down-soft text-down"
+                                  : "bg-up-soft text-up"
+                              }`}
+                            >
+                              {firedCopy(a)}
+                            </span>
+                          </p>
+                        )}
                         <p className="mt-0.5 text-xs text-faint">{timeAgo(a.firedAt)}</p>
                       </div>
                       <button
                         type="button"
                         onClick={() => void dismissFired(a.id)}
                         disabled={busyId === a.id}
-                        aria-label={`Dismiss fired alert for ${a.symbol}`}
+                        aria-label={`Dismiss fired alert: ${isMembership(a) ? (a.detail ?? `${a.strategyId ?? "strategy"} ${a.type}`) : a.symbol}`}
                         className="shrink-0 rounded-full border border-line bg-surface px-2.5 py-1 text-xs text-muted transition-colors hover:text-paper disabled:opacity-50"
                       >
                         Dismiss
@@ -370,9 +404,7 @@ export default function AlertCenter({ symbol, exchange }: Props) {
                     >
                       <p className="min-w-0 truncate text-xs text-muted">
                         <span className="font-mono">{a.symbol ?? a.strategyId}</span>
-                        <span className="ml-2">
-                          {firedVerb(a.type)} {a.price ?? ""}
-                        </span>
+                        <span className="ml-2">{firedCopy(a)}</span>
                       </p>
                       <p className="shrink-0 text-[11px] text-faint tabular-nums">
                         {timeAgo(a.dismissedAt ?? a.firedAt)}

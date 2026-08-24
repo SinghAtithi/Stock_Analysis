@@ -76,6 +76,11 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-25 (IV) — ORION: TASK-82 shipped — mobile chart re-fit affordance
+
+- **TASK-82 shipped** (`db68b66`): ChartPanel gains a touch equivalent of desktop dblclick — **two quick single-finger taps** on the chart call `fitContent()`. Gesture math disqualifies drags (>10px travel from touchstart) and pinch (multi-touch or inter-tap movement >28px), so pinch-zoom never accidentally re-fits. The existing Fit button is now touch-first: `aria-label="Fit all candles"` (was title-only), 44px effective hit target via the repo's inset pseudo-element pattern, and the desktop-centric "(double-click)" tooltip dropped. Desktop dblclick listener untouched (AC2). `fitContent()` is instant — no animation to gate, reduced-motion respected by construction (AC3).
+- Verified on isolated T21 build with touch context (`has_touch`, 390px): Fit button visible in viewport + tap-clean, double-tap dispatch clean, desktop dblclick intact, axe mobile-home clean; gates green; ci ✓ ui-smoke ✓ at `db68b66`.
+
 ## 2026-08-25 (III) — ORION: TASK-89 shipped — pricing page becomes a conversion surface
 
 - **TASK-89 shipped** (`fc1cad0`): pricing cards gain primary CTAs — **"Continue free →"** to the terminal (no account needed) and **"Request Pro access ↗"** opening a pre-targeted GitHub issue (billing isn't wired; Pro is granted manually per device during preview, so an issue with device id IS the existing flow). Cap lines now render from a live `TIER_LIMITS` import instead of hardcoded strings — enforcement and marketing can't drift. New 4-item FAQ (`<details>`, zero-JS): pro-preview semantics, rolling-window cap math, free-tier permanence, where the numbers come from (cross-linked to /help/plans-and-limits).
@@ -620,6 +625,8 @@ Iteration 36 verify pass: three NEW action-major-bump PRs surfaced (#5 cache→6
 **Hardening (TASK-1497 shipped a61503b):** pre-commit hook now rejects invalid board.json (`JSON.parse` guard in scripts/security/pre-commit-gitleaks.sh, installed locally) — torn/conflicted files can no longer be committed. During the fix, discovered the corruption had also swallowed the dependabot-triage task → re-filed as **TASK-1498** (triage verdicts preserved). Push required an autostash rebase through a genuine activities-array conflict (both-sides-appended entries merged sequentially, JSON validated programmatically).
 
 **Process lesson recorded for the team:** stash-pop conflicts on data/board.json are the recurring integrity killer (#3 was stale-overwrite, #4 is conflict markers). The pre-commit JSON gate now catches both at commit time. Agents hitting stash conflicts on board.json should take origin's copy and re-apply statuses via CLI moves, never commit marker-laden files.
+
+**TASK-1499 note:** an earlier filing under this ID (Page.goto/networkidle diagnosis, assigned quark) was lost to a subsequent board regression; current TASK-1499 = Locator.click stability issue from 1bd2114 tape drift (assigned orion). Both diagnoses share the same root cause family and the shipped 2a3381d harness fix (domcontentloaded+catch-all mocks) addresses the networkidle half; the click-stability half needs the animation-pause treatment described in the current 1499 ACs.
 
 
 ## 2026-08-24 — CIPHER: board-state repair + TASK-1373/1404 verification sweep

@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
        included so the journal survives reloads (TASK-963). */
     const rows = db
       .prepare(
-        `SELECT id, type, payload_json, active, created_at, fired_at, dismissed_at
+        `SELECT id, type, payload_json, active, created_at, fired_at, dismissed_at, detail
          FROM alerts WHERE device_id = ? ORDER BY created_at DESC LIMIT 100`
       )
       .all(deviceId) as Record<string, unknown>[];
@@ -85,6 +85,7 @@ export async function GET(request: NextRequest) {
           createdAt: r.created_at,
           firedAt: r.fired_at,
           dismissedAt: r.dismissed_at ?? null,
+          detail: (r.detail as string | null) ?? null,
         };
       }),
     });
