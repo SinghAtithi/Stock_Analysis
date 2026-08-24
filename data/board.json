@@ -48979,9 +48979,50 @@
       "createdAt": 1787531012817,
       "updatedAt": 1787532287481,
       "blocked": false
+    },
+    {
+      "id": "TASK-1500",
+      "title": "CI RED: ui-smoke @ 7af827a",
+      "desc": "Auto-filed from CI (TASK-1479). Suite `ui-smoke` failed.\n\n- Failing run: https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32681267308\n- Commit: 7af827a\n\nInvestigate the failing check first; re-run the suite locally before marking fixed.",
+      "phase": "A",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "ci",
+        "ops"
+      ],
+      "estimate": 2,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "inspect failing run log",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "reproduce locally + fix",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "verify 3 consecutive green scheduled runs",
+          "done": false
+        }
+      ],
+      "createdAt": 1787536498511,
+      "updatedAt": 1787536498511,
+      "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "Z0RU",
+      "taskId": "TASK-1500",
+      "text": "created in todo · failed run https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32681267308",
+      "agent": "CI-BOT",
+      "at": 1787536498511
+    },
     {
       "id": "20L2",
       "taskId": "TASK-1499",
@@ -49534,15 +49575,8 @@
       "text": "shipped 5524971 (local) · fix(security): access-control posture — next start binds 127.0.0.1 by default, decision doc with public-deploy blockers (TASK-1413) · gates tsc=9.2s·lint=30.3s·test=6.8s · e2e✓",
       "agent": "CIPHER",
       "at": 1787521460460
-    },
-    {
-      "id": "I6I0",
-      "taskId": "TASK-1413",
-      "text": "review · gates green tsc=9.8s·lint=30.5s·test=7.2s",
-      "agent": "CIPHER",
-      "at": 1787521389788
     }
   ],
   "deletions": [],
-  "updatedAt": 1787532287616
+  "updatedAt": 1787536498529
 }
