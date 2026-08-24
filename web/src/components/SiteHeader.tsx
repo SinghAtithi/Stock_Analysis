@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import useISTClock from "@/hooks/useISTClock";
 import MarketStatus from "@/components/MarketStatus";
 import ThemeToggle from "@/components/ThemeToggle";
 import AlertCenter from "@/components/AlertCenter";
+import Search from "@/components/Search";
 
 interface SiteHeaderProps {
   subtitle: string;
@@ -24,6 +26,13 @@ export default function SiteHeader({
   alerts = null,
 }: SiteHeaderProps) {
   const clock = useISTClock();
+  const pathname = usePathname();
+  const router = useRouter();
+  /* TASK-113: symbol search reachable on every subpage — selecting routes to
+     the terminal with that symbol loaded; home keeps its inline terminal search */
+  const isHome = pathname === "/";
+  const pickFromHeader = (r: { symbol: string; exchange: string }) =>
+    router.push(`/?s=${encodeURIComponent(r.symbol)}&e=${encodeURIComponent(r.exchange)}&r=1y`);
   return (
     <header
       className={`flex flex-wrap items-center justify-between gap-4 border-b border-line px-4 py-3 sm:flex-nowrap sm:px-6 ${
@@ -39,6 +48,12 @@ export default function SiteHeader({
             <span className={subtitleClassName}>{subtitle}</span>
           </span>
       </Link>
+
+      {!isHome && (
+        <div className="order-first w-full basis-full px-0 sm:order-none sm:w-44 sm:basis-auto">
+          <Search onSelect={pickFromHeader} />
+        </div>
+      )}
 
       {nav && (
         <nav className="hidden items-center gap-1 text-sm sm:flex">
