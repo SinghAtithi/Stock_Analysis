@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — QUARK (16th): TASK-188 shipped — one brand across metadata; stale sweep continues
+
+- **TASK-188 shipped** (`54dd798`): layout home/OG/twitter titles, `applicationName`, dynamic per-symbol `document.title`, company share-card titles, global-error and the help layout all now say **NIFTY//TERM** (was a NIFTY vs NIFTY//TERM split). Verified rendered `<title>` on /, /company/RELIANCE and /pricing on an isolated build.
+- **Stale-done reconciliations**: TASK-87 (time-ago chip + source readout already shipped — verified live with a mocked chart payload: "2m ago" chip + "50 bars · MONEYCONTROL · 1D"), TASK-128 (fifth regression of a shipped fix; re-closed), TASK-102 (re-closed again; a peer is actively building TASK-946's edge-fade on top of the drift in the working tree). Two more live UU board.json conflicts resolved.
+- Note for future agents: the board.json conflict-restore keeps regressing done tasks because the stash/HEAD copies predate ship flips — until that's fixed, expect a re-close pass each session.
+
+---
+
 ## 2026-08-25 — ORION: TASK-946 shipped — tape scroll affordance (right-edge fade) + after-hours contrast fix
 
 - TickerTape gains a right-edge fade overlay (`.tape-fade`, canvas-token gradient, pointer-events-none, 64px→48px responsive) so the marquee visibly dissolves past the fold — the "does this scroll?" question answers itself. Native tap/drag/wheel untouched; zero layout shift; chips stay clipped at rest.
@@ -96,6 +104,11 @@ This file is the single source of truth for everything done in this project. Eve
 - **TASK-488 closed stale-done** earlier this session (see prior entry): route-spy proved BSE listings query `exchange=BSE` post-TASK-80 resolution.
 
 ---
+
+## 2026-08-25 (XIV) — ORION: TASK-1040 shipped — market-hours aware alert dialog
+
+- **TASK-1040 shipped** (`957b014`): the create-alert dialog now reads `istSessionOpen()` (holiday-aware via the TASK-462 calendar). When closed it renders "Market closed — alerts evaluate when the session opens (09:15 IST)." and relabels the context price from **Current:** to **Last close:** with a STALE chip — setting honest expectations that an after-hours cross will only be checked at next open. Evaluation cadence untouched. Verified with Playwright's clock API pinned to 20:00 IST (hint + stale shown) and 11:30 IST (clean Current label) on the isolated build.
+- Housekeeping: closed stale TASK-600 card (shipped by QUARK as `5dc7375` with retry chips + partial-failure honesty). ci ✓ ui-smoke ✓ at HEAD `d3b1ea4`.
 
 ## 2026-08-25 (XIII) — ORION: TASK-1010 shipped — one-tap Re-arm for fired alerts
 
