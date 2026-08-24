@@ -109,6 +109,46 @@ export default function ChartPanel({
     };
     el.addEventListener("dblclick", onDblClick);
 
+    /* TASK-82: touch equivalent of dblclick — two quick single-finger taps
+       re-fit. Drag/pinch movements disqualify a tap so pinch-zoom never
+       triggers it. fitContent() is instant, so reduced-motion is respected
+       by construction. */
+    let lastTapAt = 0;
+    let lastTapX = 0;
+    let lastTapY = 0;
+    let startX = 0;
+    let startY = 0;
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length !== 1) {
+        lastTapAt = 0;
+        return;
+      }
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    };
+    const onTouchEnd = (e: TouchEvent) => {
+      if (e.changedTouches.length !== 1 || e.touches.length > 0) return;
+      const t = e.changedTouches[0];
+      if (Math.hypot(t.clientX - startX, t.clientY - startY) > 10) {
+        lastTapAt = 0;
+        return;
+      }
+      const now = performance.now();
+      if (
+        now - lastTapAt < 320 &&
+        Math.hypot(t.clientX - lastTapX, t.clientY - lastTapY) < 28
+      ) {
+        chartRef.current?.timeScale().fitContent();
+        lastTapAt = 0;
+        return;
+      }
+      lastTapAt = now;
+      lastTapX = t.clientX;
+      lastTapY = t.clientY;
+    };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchend", onTouchEnd, { passive: true });
+
     const dark = isDarkMode();
     const bg = dark ? "#141518" : "#ffffff";
     const text = dark ? "#858b91" : "#6b7280";
@@ -203,6 +243,8 @@ export default function ChartPanel({
 
     return () => {
       el.removeEventListener("dblclick", onDblClick);
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchend", onTouchEnd);
       cancelPendingLegend();
       chart.remove();
       chartRef.current = null;
@@ -303,8 +345,9 @@ export default function ChartPanel({
             </button>
             <button
               onClick={() => chartRef.current?.timeScale().fitContent()}
-              title="Fit all candles (double-click)"
-              className="rounded-full border border-line bg-surface px-2.5 py-1 font-mono text-[11px] text-muted hover:text-paper"
+              aria-label="Fit all candles"
+              title="Fit all candles"
+              className="relative rounded-full border border-line bg-surface px-2.5 py-1 font-mono text-[11px] text-muted transition-colors after:absolute after:-inset-2 after:content-[''] hover:text-paper"
             >
               Fit
             </button>
