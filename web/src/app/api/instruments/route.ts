@@ -9,10 +9,13 @@ import { findInstrument, isIndexSymbol } from "@/lib/instruments";
  */
 export async function GET(request: NextRequest) {
   /* TASK-866: normalize case — deep links like ?s=reliance must resolve
-     identically to ?s=RELIANCE (the index is exact-uppercase-match) */
+     identically to ?s=RELIANCE (the index is exact-uppercase-match).
+     TASK-358: exchange-suffixed links (?s=RELIANCE.NS / .BO) resolve to the
+     bare symbol the index stores. */
   const s = (request.nextUrl.searchParams.get("s") ?? "")
     .trim()
     .toUpperCase()
+    .replace(/\.(NS|BO)$/, "")
     .slice(0, 64);
   if (!s) return NextResponse.json({ instrument: null });
 
