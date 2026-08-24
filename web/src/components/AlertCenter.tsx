@@ -6,6 +6,7 @@ import Modal from "@/components/Modal";
 import { PRICE_TYPES } from "@/lib/alerts";
 import { getDeviceId } from "@/lib/device";
 import { timeAgo } from "@/lib/format";
+import { istSessionOpen } from "@/lib/session";
 
 const POLL_MS = 30_000;
 
@@ -538,6 +539,9 @@ function CreateAlertDialog({
   const [submitting, setSubmitting] = useState(false);
   const fmtINR = (v: number): string =>
     `₹${v.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  /* TASK-1040: after-hours creation — set expectations about evaluation timing
+     and flag the context price as last close rather than live */
+  const sessionClosed = !istSessionOpen();
   /* TASK-372 AC3: soft relative validation — warn but never block submit */
   const targetNum = Number(price);
   const relativeWarning =
@@ -657,7 +661,19 @@ function CreateAlertDialog({
 
         {currentPrice != null && (
           <p className="text-xs text-muted">
-            Current: <span className="font-mono tabular-nums text-paper">{fmtINR(currentPrice)}</span>
+            {/* TASK-1040: outside the session the context price is last close */}
+            {sessionClosed ? "Last close: " : "Current: "}
+            <span className="font-mono tabular-nums text-paper">{fmtINR(currentPrice)}</span>
+            {sessionClosed && (
+              <span className="ml-1.5 rounded-full bg-panel-2 px-1.5 py-0.5 text-[10px] uppercase tracking-wide">
+                stale
+              </span>
+            )}
+          </p>
+        )}
+        {sessionClosed && (
+          <p className="rounded-lg border border-line bg-canvas px-3 py-2 text-[11px] leading-relaxed text-faint">
+            Market closed — alerts evaluate when the session opens (09:15 IST).
           </p>
         )}
         <label className="flex flex-col gap-1.5">
