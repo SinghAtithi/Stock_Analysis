@@ -13,7 +13,7 @@ registerHooks({
   },
 });
 
-const { istSessionOpen, istNow, chartCacheTtlMs } = await import(
+const { istSessionOpen, istNow, chartCacheTtlMs, istTradingDay, minutesUntilOpen, TRADING_HOLIDAYS } = await import(
   "../../web/src/lib/session.ts"
 );
 
@@ -56,4 +56,25 @@ test("chartCacheTtlMs widens off-session", () => {
   assert.equal(chartCacheTtlMs("1d", false), 30 * 60_000);
   // hourly counts as intraday
   assert.equal(chartCacheTtlMs("1h", true), 60_000);
+});
+
+// TASK-462: trading-holiday awareness
+test("trading holidays close the session on weekdays", () => {
+  assert.ok(TRADING_HOLIDAYS.has("2026-10-02"), "Gandhi Jayanti in calendar");
+  // Oct 2 2026 is a Friday: mid-session UTC time would normally be open
+  assert.equal(istSessionOpen(utc(2026, 10, 2, 6, 0)), false, "holiday Friday closed");
+  assert.equal(istTradingDay(istNow(utc(2026, 10, 2, 6, 0))), false);
+});
+
+test("non-holiday weekday still opens (guard against over-blocking)", () => {
+  assert.equal(istSessionOpen(utc(2026, 10, 9, 6, 0)), true, "Fri Oct 9 open");
+});
+
+test("minutesUntilOpen skips a holiday to the next trading day", () => {
+  // Fri Oct 2 2026 is a holiday; 07:00 IST = 01:30 UTC → after close
+  const now = utc(2026, 10, 2, 1, 30);
+  const mins = minutesUntilOpen(now);
+  // next open: Mon Oct 5 09:15 IST. From Fri 07:00 IST that is
+  // 3*1440 - 420 + 555 = 4500 min
+  assert.equal(mins, 3 * 1440 - 420 + 555);
 });
