@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — ORION: TASK-726 shipped — watchlist import replaces behind a two-step confirm
+
+- Lib split: `parseImport` (validate/dedupe, no writes) + `applyImport(entries, mode)` (replace default / merge opt-in) with `importWatchlist` kept as a compat wrapper. Replace honors removals — export→edit→import round-trips now work; flash copy distinguishes "Replaced watchlist — N symbols" vs "Merged — N new".
+- UI: file pick no longer mutates immediately; a confirm bar previews the count with Replace/Merge/Cancel. E2E (isolated T21 build): seed 1 symbol → import 3 → confirm bar previews count → Replace → storage exactly [TCS,INFY,WIPRO], count badge 01→03, merge of identical set adds nothing and flashes "Merged". axe 0.
+- Tests: watchlist-import.test.mjs (3 cases, localStorage shim pattern from screener-presets). Suite 317/0 at ship. ci ✓ ui-smoke ✓ on `313a304`.
+- Board hygiene sweep: restored lost done-flips for TASK-153/866/254 and closed TASK-763 per QUARK's shipped log entry; TASK-1499 ACs 1-2 ticked (stale red — latest tip smoke green).
+
+
 ## 2026-08-24 (late) — QUARK (8th): TASK-102 shipped — ticker tape drifts, pauses, and is keyboard-scrollable; smoke harness adapted to moving targets
 
 - **TASK-102 shipped** (`1bd2114`): the tape now drifts slowly (60s linear loop over a duplicated half, seamless translateX(-50%)) and pauses on hover, focus-within, wheel/touch, or any arrow-key nudge. The strip is keyboard-scrollable (tabIndex=0, Arrow/Home/End, visible outline). Clone half is `aria-hidden` + `tabIndex={-1}` so real symbols keep unique tab stops and SR reads them once. Reduced-motion disables drift entirely (scoped media query — the global 0.01ms kill would have snapped the track to its final keyframe). Also made `scrollbar-none` real via `.tape-strip` (the utility never existed).
