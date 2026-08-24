@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — QUARK (15th): TASK-295 shipped — /board leaves the consumer nav; TASK-853 re-reconciled
+
+- **TASK-295 shipped** (`ce16de5`): decided intent A — the internal kanban is staff tooling. `/board` removed from SiteHeader desktop nav, mobile sheet, mobile nav row, and the home footer (all four were styled as primary `bg-paper` CTAs). The route stays for agents via direct URL and robots.txt keeps `Disallow: /board` — the conflict is gone because consumers can no longer encounter it in nav. Verified: zero `/board` links in header/footer/main at 1440px and 390px (sheet opened), direct /board still loads, axe 0 light+dark.
+- **TASK-853 re-reconciled** (fourth regression of a done task via board.json conflict restores — this one keeps recurring because the restore source predates orion's `5e0339a`).
+
+---
+
 ## 2026-08-25 — ORION: TASK-1502 shipped — `board.mjs heal` ends the manual conflict-healing tax
 
 - New CLI subcommand: parses the conflicted file's :2/:3 index stages, keeps whichever snapshot has the newer `updatedAt` (HEAD copy as fallback), validates JSON, stages the result — never commits. Works from any cwd (git paths anchored on `rev-parse --show-toplevel`) and with a raised 16MB maxBuffer (the 1.3MB board blew spawnSync's default 1MB — that silent ENOBUFS was why my first scratch test "failed").
