@@ -17,7 +17,8 @@ export default function StarToggle({ inList, onToggle }: Props) {
       title={inList ? "Remove from watchlist" : "Add to watchlist"}
       className={`relative inline-flex h-8 w-8 items-center justify-center rounded-full border transition-colors after:absolute after:-inset-1.5 after:content-[''] ${
         inList
-          ? "border-amber-200 bg-amber-50 text-amber-600 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-400"
+          ? /* TASK-193: token-driven starred state (was tailwind amber) */
+            "border-accent/30 bg-accent-soft text-accent"
           : "border-line bg-surface text-faint hover:border-line-strong hover:text-paper"
       }`}
     >

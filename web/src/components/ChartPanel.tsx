@@ -150,13 +150,18 @@ export default function ChartPanel({
     el.addEventListener("touchend", onTouchEnd, { passive: true });
 
     const dark = isDarkMode();
-    const bg = dark ? "#141518" : "#ffffff";
-    const text = dark ? "#858b91" : "#6b7280";
+    /* TASK-193: read theme colors from the CSS tokens so a token edit flows
+       into the chart; the fallbacks are the current token values verbatim */
+    const token = (name: string, fallback: string): string =>
+      getComputedStyle(document.documentElement).getPropertyValue(name).trim() ||
+      fallback;
+    const bg = token("--color-surface", dark ? "#141518" : "#ffffff");
+    const text = token("--color-muted", dark ? "#858b91" : "#6b7280");
     const gridLine = dark ? "rgba(255,255,255,0.06)" : "rgba(17,18,20,0.06)";
     const cross = dark ? "rgba(236,235,232,0.14)" : "rgba(17,18,20,0.18)";
     const border = dark ? "rgba(255,255,255,0.07)" : "rgba(17,18,20,0.08)";
-    const up = dark ? UP_DARK : UP_LIGHT;
-    const down = dark ? DOWN_DARK : DOWN_LIGHT;
+    const up = token("--color-up", dark ? UP_DARK : UP_LIGHT);
+    const down = token("--color-down", dark ? DOWN_DARK : DOWN_LIGHT);
 
     const chart = createChart(el, {
       autoSize: true,
