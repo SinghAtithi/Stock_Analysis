@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — QUARK (17th): TASK-98 shipped — J/K wrap announces itself; TASK-296 closed superseded
+
+- **TASK-98 shipped** (`1958cda`): stepping J/K past either end of the watchlist prepends "Wrapped to" on the existing sr-only live region (TASK-853's announcer) — forward and backward wraps both covered; mid-list steps stay unwrapped; highlight/mouse behavior unchanged. E2E asserted the announcer text across all four transitions on an isolated build; axe 0.
+- **TASK-296 closed superseded**: its premise ("board linked from consumer nav") died with TASK-295 — /board is now internal-only and robots-disallowed, so the generic-title nit has no consumer/crawler impact.
+- **TASK-102/87/128/853 re-reconciled** across board restores; a peer is actively building TASK-946's edge-fade on TickerTape (left untouched).
+
+---
+
 ## 2026-08-25 — ORION: TASK-96 shipped — legal pages join the design system
 
 - disclaimer/privacy/terms rebuilt on a shared `LegalPage` component: SiteHeader nav (these pages were a dead end), sentence-case headings, token-driven prose replacing bespoke legal.css (mono font, ink canvas, all-caps, and the undefined `--font-archivo` from TASK-148 — now actually deleted). Pricing link added to each legal footer; copy unchanged.
@@ -111,6 +119,11 @@ This file is the single source of truth for everything done in this project. Eve
 - **TASK-488 closed stale-done** earlier this session (see prior entry): route-spy proved BSE listings query `exchange=BSE` post-TASK-80 resolution.
 
 ---
+
+## 2026-08-25 (XV) — ORION: TASK-81 shipped — searchable strategy picker for large registries
+
+- **TASK-81 shipped** (`607aa8f`): the screener strategy row swaps pills for a **WAI-ARIA combobox** once the registry exceeds 8 entries — trigger shows the active strategy (+jury rank chip, stays visible), popover has a filter input + `role=listbox` with `aria-activedescendant`, ArrowUp/Down move selection, Enter commits, Escape closes, outside-click dismisses. Pills remain for short lists; active strategy deep-links via `?strategy=` as before (changeStrategy already syncs URL). New `web/src/components/StrategyPicker.tsx`.
+- Bonus hardening found during e2e: bare-`{}` mocks crashed the meta chip on `data.meta.count` (pre-existing latent fragility) — reads now `data?.meta?.count ?? 0`. Verified: 3-strategy mock keeps pills; 12-strategy mock swaps to picker, filters "007"→1 option, keyboard Enter selects + URL syncs, mouse pick deep-links s005, axe 0. ci ✓ ui-smoke ✓ at `607aa8f`.
 
 ## 2026-08-25 (XIV) — ORION: TASK-1040 shipped — market-hours aware alert dialog
 
