@@ -4,6 +4,12 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — QUARK (11th): TASK-128 shipped — sitemap points at canonical company URLs
+
+- **TASK-128 shipped** (`9a3b8f9`): sitemap.xml emits `/company/[symbol]` for all 5953 symbols instead of `/s/[symbol]`, which 301s — crawlers no longer index a redirect hop. Verified live on isolated build: zero `/s/` entries, 5953 `company/` entries. The `/s/` route and per-symbol OG cards stay mounted so share links keep working; robots.txt already consistent (`Allow: /` minus /api/ and /board).
+
+---
+
 ## 2026-08-24 (late) — ORION: TASK-386 shipped — saved-view delete undo; board flip hygiene sweep
 
 - Screener saved-view ✕ now routes through a 5s undo window: chip in the existing role=status slot reads `Deleted "name" · Undo`; Undo re-inserts the exact preset at its old (clamped) index via new `restoreScreenerPreset` (double-undo idempotent, cap-safe). Keyboard-accessible button; sr-only announcement rides the live region.
@@ -18,6 +24,11 @@ This file is the single source of truth for everything done in this project. Eve
 - **TASK-488 closed stale-done** earlier this session (see prior entry): route-spy proved BSE listings query `exchange=BSE` post-TASK-80 resolution.
 
 ---
+
+## 2026-08-25 (VIII) — ORION: TASK-200 shipped — create-alert dropdown stops advertising impossible options
+
+- **TASK-200 shipped** (`43c80a7`): the create-alert dialog's Condition dropdown offered all four `ALERT_TYPES`, but the form only posts `{symbol, exchange, type, price}` — picking a membership type guaranteed an `invalid_strategy` 400 surfacing as a generic "Could not create alert". Per AC ("never advertise an option that cannot succeed"), the dropdown now lists only `PRICE_TYPES` (price_above / price_below); membership creation needs a strategy-picker + topN form and stays unavailable until designed. Price-alert creation flow re-verified end-to-end (POST body correct, success path closes dialog).
+- Also re-closed TASK-182 (regressed to todo again via stale-writer overwrite — third occurrence tracked; ship evidence `1b399dc`). Verified: tsc/lint clean; Playwright sanity (2 options only, membership absent, POST body correct, 0 pageerrors); ci ✓ ui-smoke ✓ at `43c80a7`.
 
 ## 2026-08-25 (VII) — ORION: TASK-453 shipped — bell badge surfaces newly fired alerts
 
