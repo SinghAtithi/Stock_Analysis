@@ -48986,7 +48986,7 @@
       "desc": "Auto-filed from CI (TASK-1479). Suite `ui-smoke` failed.\n\n- Failing run: https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32681267308\n- Commit: 7af827a\n\nInvestigate the failing check first; re-run the suite locally before marking fixed.",
       "phase": "A",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [
         "ci",
@@ -49011,11 +49011,25 @@
         }
       ],
       "createdAt": 1787536498511,
-      "updatedAt": 1787536498511,
+      "updatedAt": 1787540866741,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "A0N3",
+      "taskId": "TASK-1500",
+      "text": "auto-closed after 3 consecutive green runs",
+      "agent": "CI-BOT",
+      "at": 1787540866741
+    },
+    {
+      "id": "LST6",
+      "taskId": "TASK-1500",
+      "text": "green run · https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32685064683",
+      "agent": "CI-BOT",
+      "at": 1787540866741
+    },
     {
       "id": "83HI",
       "taskId": "TASK-358",
@@ -49561,22 +49575,8 @@
       "text": "✓ checked alert create CTA available",
       "agent": "ORION",
       "at": 1787523422968
-    },
-    {
-      "id": "P2ZJ",
-      "taskId": "TASK-80",
-      "text": "✓ checked star/watchlist toggle available on company page",
-      "agent": "ORION",
-      "at": 1787523422623
-    },
-    {
-      "id": "PC9S",
-      "taskId": "TASK-80",
-      "text": "✓ checked company page header gains an 'Open chart →' / 'O",
-      "agent": "ORION",
-      "at": 1787523422355
     }
   ],
   "deletions": [],
-  "updatedAt": 1787540419293
+  "updatedAt": 1787540866762
 }
