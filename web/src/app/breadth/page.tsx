@@ -151,6 +151,20 @@ export default function BreadthPage() {
      to the real content so values replace them without layout shift */
   const initial = loading && !data;
 
+  /* TASK-257: human-readable data date — parse the ISO parts directly so
+     timezone conversion can never shift the day */
+  const asOfLabel = (() => {
+    const a = data?.meta.as_of;
+    if (!a) return null;
+    const [y, m, d] = a.split("-").map(Number);
+    if (!y || !m || !d) return a;
+    return new Intl.DateTimeFormat("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    }).format(new Date(Date.UTC(y, m - 1, d)));
+  })();
+
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
       <SiteHeader subtitle="Breadth" subtitleClassName="font-normal text-muted" />
@@ -163,7 +177,7 @@ export default function BreadthPage() {
             {initial ? (
               <Skeleton className="h-3 w-44" />
             ) : (
-              <>As of {data?.meta.as_of ?? "—"} · {days.length} sessions</>
+              <>Data as of {asOfLabel ?? "—"} · {days.length} sessions</>
             )}
           </p>
         </div>
