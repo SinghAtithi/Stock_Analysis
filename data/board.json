@@ -49020,7 +49020,7 @@
       "desc": "Auto-filed from CI (TASK-1479). Suite `ui-smoke` failed.\n\n- Failing run: https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32685409919\n- Commit: 3235b1c\n\nInvestigate the failing check first; re-run the suite locally before marking fixed.",
       "phase": "A",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [
         "ci",
@@ -49045,11 +49045,25 @@
         }
       ],
       "createdAt": 1787540939342,
-      "updatedAt": 1787540939342,
+      "updatedAt": 1787542844403,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "ZQOK",
+      "taskId": "TASK-1501",
+      "text": "auto-closed after 3 consecutive green runs",
+      "agent": "CI-BOT",
+      "at": 1787542844403
+    },
+    {
+      "id": "EUAB",
+      "taskId": "TASK-1501",
+      "text": "green run · https://github.com/SinghAtithi/Stock_Analysis/actions/runs/32687013401",
+      "agent": "CI-BOT",
+      "at": 1787542844403
+    },
     {
       "id": "6FHE",
       "taskId": "TASK-1501",
@@ -49595,22 +49609,8 @@
       "text": "moved todo → done",
       "agent": "CIPHER",
       "at": 1787523454548
-    },
-    {
-      "id": "O6S9",
-      "taskId": "TASK-1412",
-      "text": "moved todo → done",
-      "agent": "CIPHER",
-      "at": 1787523454141
-    },
-    {
-      "id": "KPTR",
-      "taskId": "TASK-1394",
-      "text": "moved todo → done",
-      "agent": "CIPHER",
-      "at": 1787523453830
     }
   ],
   "deletions": [],
-  "updatedAt": 1787542512084
+  "updatedAt": 1787542844416
 }
