@@ -133,6 +133,20 @@ export function deleteScreenerPreset(id: string): void {
   write(getScreenerPresetsSnapshot().filter((p) => p.id !== id));
 }
 
+/* TASK-386: undo for delete — re-insert a just-deleted preset at its old
+   position (clamped), so a mis-tap loses nothing. Returns true when the
+   write persisted. */
+export function restoreScreenerPreset(
+  preset: ScreenerPreset,
+  index = 0,
+): boolean {
+  if (typeof window === "undefined") return false;
+  const current = getScreenerPresetsSnapshot().filter((p) => p.id !== preset.id);
+  const i = Math.max(0, Math.min(index, current.length));
+  current.splice(i, 0, preset);
+  return write(current);
+}
+
 export function subscribeScreenerPresets(cb: () => void): () => void {
   if (typeof window === "undefined") return () => {};
   const onStorage = (e: StorageEvent) => {

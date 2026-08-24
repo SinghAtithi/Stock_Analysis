@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "
 import type { SortDir } from "@/components/DataTable";
 import {
   deleteScreenerPreset,
+  restoreScreenerPreset,
   getServerPresetsSnapshot,
   getScreenerPresetsSnapshot,
   saveScreenerPreset,
@@ -38,6 +39,10 @@ export default function ScreenerPresets({
   const [notice, setNotice] = useState<{ ok: boolean; text: string } | null>(
     null,
   );
+  /* TASK-386: one pending delete, 5s undo window */
+  const [pendingDelete, setPendingDelete] = useState<{ preset: (typeof presets)[number]; index: number } | null>(null);
+  const undoTimerRef = useRef<number | null>(null);
+  useEffect(() => () => { if (undoTimerRef.current !== null) window.clearTimeout(undoTimerRef.current); }, []);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -78,6 +83,22 @@ export default function ScreenerPresets({
 
   return (
     <div ref={containerRef} className="ml-auto flex items-center gap-2">
+      {pendingDelete && (
+        <span role="status" aria-live="polite" className="flex items-center gap-1.5 rounded-full border border-line bg-surface px-2 py-0.5 text-xs text-muted">
+          Deleted “{pendingDelete.preset.name}”
+          <button
+            type="button"
+            onClick={() => {
+              if (undoTimerRef.current !== null) window.clearTimeout(undoTimerRef.current);
+              restoreScreenerPreset(pendingDelete.preset, pendingDelete.index);
+              setPendingDelete(null);
+            }}
+            className="rounded-full border border-line bg-panel-2 px-2 py-0.5 text-[11px] font-medium text-paper transition-colors hover:border-line-strong"
+          >
+            Undo
+          </button>
+        </span>
+      )}
       {notice && (
         <span
           role="status"
@@ -172,7 +193,13 @@ export default function ScreenerPresets({
                   </button>
                   <button
                     type="button"
-                    onClick={() => deleteScreenerPreset(p.id)}
+                    onClick={() => {
+                      const index = presets.findIndex((x) => x.id === p.id);
+                      setPendingDelete({ preset: p, index });
+                      deleteScreenerPreset(p.id);
+                      if (undoTimerRef.current !== null) window.clearTimeout(undoTimerRef.current);
+                      undoTimerRef.current = window.setTimeout(() => setPendingDelete(null), 5000);
+                    }}
                     aria-label={`Delete saved view ${p.name}`}
                     className="shrink-0 rounded-full border border-line bg-panel-2 px-2 py-0.5 text-xs text-muted transition-colors hover:text-down"
                   >
