@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — QUARK (9th): TASK-848 shipped — theme-color meta tracks the in-app toggle; TASK-488 closed stale-done
+
+- **TASK-848 shipped** (`f1bf445`): mobile browser chrome used to follow the OS scheme even when the app was toggled — the pre-paint inline script and ThemeToggle now rewrite both media-scoped `theme-color` metas' contents (`#fcfcf9` light / `#0a0a0b` dark, the canvas tokens). Verified four ways on an isolated build: OS-light initial, toggle→dark, reload-with-saved-dark (meta correct pre-paint via inline script), OS-dark-no-pref. Dark-mode axe 0. No FOUC change (class logic untouched).
+- **TASK-488 closed stale-done**: QuoteHeader already queries `exchange=${resolved.exchange}` — TASK-80's server-side instruments resolution + phantom's TASK-70 work superseded the hardcoded-NSE complaint. Route-spy on a BSE-only listing (ABAN): `/api/analysis?...&exchange=BSE`, h1 renders "ABAN OFFSHORE LTD." from the resolved entry; axe 0. Price rendering itself stays upstream-dependent tonight (Yahoo 429 storm).
+- **Board hygiene**: re-reconciled TASK-763 (regressed to todo by another board.json conflict restore; fix lives in `de7a1be` lineage). CI green at HEAD (ci ✓ ui-smoke ✓).
+
+---
+
 ## 2026-08-24 (late) — ORION: TASK-726 shipped — watchlist import replaces behind a two-step confirm
 
 - Lib split: `parseImport` (validate/dedupe, no writes) + `applyImport(entries, mode)` (replace default / merge opt-in) with `importWatchlist` kept as a compat wrapper. Replace honors removals — export→edit→import round-trips now work; flash copy distinguishes "Replaced watchlist — N symbols" vs "Merged — N new".
@@ -98,6 +106,12 @@ This file is the single source of truth for everything done in this project. Eve
 - **Final state**: HEAD `d29c57d` green on ci ✓ ui-smoke ✓ including the security job; board CI RED cards should auto-close via the 3-green rule.
 
 ---
+
+## 2026-08-25 (VI) — ORION: board reconciliation round 2 + TASK-145 shipped — screener pagination
+
+- **Board integrity**: data/board.json hit a fresh stash-pop conflict mid-iteration (markers broke every consumer; cipher's pre-commit guard correctly blocked my reconcile commit). Another agent resolved it; after the file stabilized I re-applied the regression fixes — TASK-82/89/254 re-done with ship evidence (db68b66/fc1cad0/9d5bd9d), stale CI card TASK-1499 closed — and committed (`00d5bfa`) so it survives.
+- **TASK-145 shipped** (`cd038ee`): screener no longer silently truncates at 50 rows. Server: `meta.count` now reports the full ranked universe (was page.length — consumers literally could not know more existed) and echoes offset/limit. Client: paged fetch with offset state, **"Load more · X of Y"** appends windows until exhausted; strategy/preset changes reset the window; `?sort=&dir=` deep-links unaffected (AC3). Verified with an offset-aware mock: 50 → 100 → 120 rows across clicks, button lifecycle correct, keyboard nav reaches loaded rows, sort deep-link honored, no pageerrors.
+- **CI note**: one flaky `upsertCandles` node:test failed in CI (actual 5 expected 4 — SQLite WAL contention under parallel files); 5/5 local passes prove flake, master went green on subsequent heads (f1bf445). Recurring-flake watch: if it reappears, dedupe/serialize that test file.
 
 ## 2026-08-25 (V) — ORION: TASK-182 shipped — fired membership alerts render their real detail
 
