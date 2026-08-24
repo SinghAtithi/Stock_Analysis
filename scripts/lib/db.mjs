@@ -34,6 +34,27 @@ export function loadDriver() {
   );
 }
 
+/* node:sqlite's DatabaseSync lacks better-sqlite3's `.transaction(fn)`
+ * convenience wrapper — scripts written against better-sqlite3 semantics
+ * (ingest-breadth et al) crash under the CI fallback without this shim.
+ * Mirrors the real signature: db.transaction(fn) returns a callable that
+ * wraps fn(args) in BEGIN/COMMIT with ROLLBACK on throw. */
+export function withTransactionShim(db) {
+  if (typeof db.transaction === "function") return db;
+  db.transaction = (fn) => (...args) => {
+    db.exec("BEGIN");
+    try {
+      const result = fn(...args);
+      db.exec("COMMIT");
+      return result;
+    } catch (e) {
+      db.exec("ROLLBACK");
+      throw e;
+    }
+  };
+  return db;
+}
+
 export const DRIVER = loadDriver();
 
 export function openDb(dbPath = DEFAULT_DB_PATH) {
@@ -44,5 +65,5 @@ export function openDb(dbPath = DEFAULT_DB_PATH) {
   db.exec(
     "PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000;"
   );
-  return db;
+  return withTransactionShim(db);
 }
