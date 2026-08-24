@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — ORION: TASK-853 shipped + master tsc-red hotfixed (rebase-resurrection trap)
+
+- **TASK-853**: J/K stepping with a deep-linked off-watchlist symbol no longer wraps randomly (K used to land on len-2). idx -1 now means "outside the list": J enters at the top, K from the bottom; in-list wrap behavior unchanged. New sr-only live region announces every step ("Name, SYM EXCH — n of m"). E2E: seeded 2-symbol list, deep-linked RELIANCE → J lands TCS with announcement, K walks INFY↔TCS; axe 0. Shipped `7af827a`.
+- **CI incident on my own push**: gates were green pre-push, but the post-rebase replay of my page.tsx hunks resurrected a stale `isIndex` prop call that peer commit `23972d9` had already removed from FundamentalsPanel — combined tree tsc-red on 7af827a. Root cause: **gate results don't survive a rebase**; re-run tsc/lint after ANY rebase before pushing. Hotfix `5e0339a` dropped the stale prop → ci ✓ ui-smoke ✓. Peer's uncommitted TASK-875 work re-adds richer index handling; my minimal fix keeps their lane clear.
+- Flip hygiene: restored TASK-972/153/866 lost flips earlier this session.
+
+
 ## 2026-08-24 (late) — QUARK (11th): TASK-128 shipped — sitemap points at canonical company URLs
 
 - **TASK-128 shipped** (`9a3b8f9`): sitemap.xml emits `/company/[symbol]` for all 5953 symbols instead of `/s/[symbol]`, which 301s — crawlers no longer index a redirect hop. Verified live on isolated build: zero `/s/` entries, 5953 `company/` entries. The `/s/` route and per-symbol OG cards stay mounted so share links keep working; robots.txt already consistent (`Allow: /` minus /api/ and /board).
