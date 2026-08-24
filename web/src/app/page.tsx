@@ -137,27 +137,47 @@ export default function Home() {
       r: { symbol: string; exchange: string; type: string },
       rangeKey: RangeKey,
     ) => {
+      /* TASK-917: bounded auto-retry for TRANSIENT failures (network,
+         5xx, index_unavailable). Spinner stays up until the schedule
+         exhausts; permanent 4xx validation errors fail immediately.
+         reqId guards every await — a newer request owns the UI. */
       const id = ++reqId.current;
       setLoading(true);
       setError(null);
-      try {
-        const res = await fetch(chartUrl(r, rangeKey));
-        const json = await res.json();
+      const MAX_ATTEMPTS = 3;
+      for (let attempt = 1; ; attempt += 1) {
+        let transient = true;
+        try {
+          const res = await fetch(chartUrl(r, rangeKey));
+          const json = await res.json();
+          if (id !== reqId.current) return;
+          const err = errorMessage(res, json);
+          if (!err && Array.isArray(json.candles)) {
+            setData(json);
+            setLoading(false);
+            return;
+          }
+          transient =
+            res.status >= 500 ||
+            json.error === "index_unavailable" ||
+            res.status === 0;
+          setError(err || "Data unavailable");
+        } catch {
+          if (id !== reqId.current) return;
+          setError("Network error");
+        }
+        if (!transient || attempt >= MAX_ATTEMPTS) {
+          setLoading(false);
+          return;
+        }
+        const wait = 1500 * 2 ** (attempt - 1);
+        await new Promise((resolve) => window.setTimeout(resolve, wait));
         if (id !== reqId.current) return;
-        const err = errorMessage(res, json);
-        if (err) {
-          setError(err);
+        /* AC: no wasted upstream when the tab is hidden */
+        if (document.visibilityState !== "visible") {
+          setLoading(false);
           return;
         }
-        if (!Array.isArray(json.candles)) {
-          setError("Data unavailable");
-          return;
-        }
-        setData(json);
-      } catch {
-        if (id === reqId.current) setError("Network error");
-      } finally {
-        if (id === reqId.current) setLoading(false);
       }
     },
     [],
