@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // NIFTY//BOARD CLI — headless Kanban for agents
 // usage: node scripts/board.mjs <cmd> [opts]
-// cmds: list, agents, claim, assign, move, block, new, tick, log, help
+// cmds: list, agents, claim, assign, move, block, new, tick, log, heal, help
 // Helpers are exported for scripts/workflow.mjs (pipeline CLI). The CLI
 // dispatch at the bottom only runs when this file is the entrypoint.
 
@@ -9,6 +9,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 import { mergeBoards } from "../web/src/lib/kanban/board-merge.mjs";
+import { spawnSync } from "node:child_process";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // NIFTY_BOARD_FILE: override for tests / parallel sandboxes (TASK-21)
@@ -246,6 +247,74 @@ function cmdLog() {
   }
 }
 
+/* TASK-1502: auto-heal data/board.json after a conflicted pull/autostash-pop.
+ * Resolution rule: parse both index stages (:2 ours, :3 theirs); the side
+ * with the newer `updatedAt` wins wholesale — board state is LWW by design
+ * (merge-on-save re-applies per-task deltas on every CLI write, so the only
+ * thing lost is the older snapshot's delta window). Falls back to HEAD's
+ * copy when either stage is unparseable. Marks the path resolved and leaves
+ * staging to the caller (never commits).
+ */
+function cmdHeal() {
+  /* git stage/HEAD paths are repo-root-relative — resolve against the
+     toplevel so the command works from any subdirectory */
+  const top = spawnSync("git", ["rev-parse", "--show-toplevel"], {
+    encoding: "utf-8", maxBuffer: 1024 * 1024,
+  }).stdout.trim();
+  const rel = path.relative(top || process.cwd(), BOARD_FILE);
+  const show = (stage) => {
+    const r = spawnSync(
+      "git", ["show", `${stage}:${rel}`],
+      { encoding: "utf-8", maxBuffer: 16 * 1024 * 1024 },
+    );
+    if (process.env.HEAL_DEBUG) console.error(`[heal] show ${stage}:${rel} status=${r.status} err=${(r.error&&r.error.message)||r.stderr||""}`);
+    return r.status === 0 ? r.stdout : null;
+  };
+  const tryParse = (txt) => {
+    if (!txt) return null;
+    try {
+      const d = JSON.parse(txt);
+      return { data: d, upd: Number(d.updatedAt ?? 0) };
+    } catch {
+      return null;
+    }
+  };
+  let status = "";
+  try {
+    status = spawnSync("git", ["status", "--porcelain", "--", rel], {
+      encoding: "utf-8",
+      maxBuffer: 16 * 1024 * 1024,
+    }).stdout.trim();
+  } catch {}
+  const conflicted = /^[UUAA]{2}/m.test(status) ||
+    (fs.existsSync(BOARD_FILE) && /<<<<<<<|>>>>>>>|^=======$/m.test(fs.readFileSync(BOARD_FILE, "utf-8")));
+  if (!conflicted) {
+    console.log("board.json is not conflicted — nothing to heal.");
+    return;
+  }
+  const ours = tryParse(show(":2"));
+  const theirs = tryParse(show(":3"));
+  const head = tryParse(show("HEAD"));
+  if (process.env.HEAL_DEBUG) console.error("[heal] rel=", JSON.stringify(rel), "ours=", !!ours, "theirs=", !!theirs, "head=", !!head);
+  let winner = null;
+  for (const c of [ours, theirs]) {
+    if (c && (!winner || c.upd > winner.upd)) winner = c;
+  }
+  if (!winner && head) {
+    winner = head;
+    console.log("index stages unreadable — falling back to HEAD copy.");
+  }
+  if (!winner) {
+    console.error("Heal failed: no parseable board.json candidate found.");
+    process.exit(1);
+  }
+  fs.writeFileSync(BOARD_FILE, JSON.stringify(winner.data, null, "\t") + "\n");
+  // validate before declaring victory
+  JSON.parse(fs.readFileSync(BOARD_FILE, "utf-8"));
+  spawnSync("git", ["add", "--", rel]);
+  console.log(`Healed ${rel} — kept updatedAt ${winner.upd} (${winner.data.tasks.length} tasks). Path staged; review then commit.`);
+}
+
 const cmd = process.argv[2];
 const isMain = Boolean(process.argv[1]) && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href;
 
@@ -261,4 +330,5 @@ else if (cmd==="block") cmdBlock();
 else if (cmd==="new") cmdNew();
 else if (cmd==="tick") cmdTick();
 else if (cmd==="log") cmdLog();
+else if (cmd==="heal") cmdHeal();
 else { console.error(`Unknown cmd ${cmd}`); help(); process.exit(1); }

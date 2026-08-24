@@ -138,3 +138,19 @@ Ship rules: status must be REVIEW (`--force` overrides) · `--files` scopes stag
 - Keep checklist honest — tick only when verified (`npm run lint`, `npx tsc --noEmit`, Playwright when UI).
 - Move to REVIEW only when gates green (`workflow.mjs review` enforces). Move to DONE only via `ship` (or reviewer ACK on /board).
 - Leave an activity trail — the feed is the audit log.
+
+## Board file conflicts (TASK-1502)
+
+`data/board.json` is written by many agents; a `git pull --rebase --autostash`
+that lands across someone else's write can leave it in a conflicted (`UU`)
+state with marker soup — every CLI writer then dies on JSON.parse.
+
+Standard recovery, from the repo root:
+
+```bash
+node scripts/board.mjs heal   # newer-updatedAt side wins; validates JSON; stages the result
+```
+
+Review the staged file (the older side's per-task delta is lost by design —
+live writers re-apply their state within 90s), then commit. Run `heal` after
+any pull that reports board.json conflicts instead of hand-editing.
