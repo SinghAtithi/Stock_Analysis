@@ -9,6 +9,31 @@ import { timeAgo } from "@/lib/format";
 
 const POLL_MS = 30_000;
 
+/* TASK-453: ids of fired alerts the consumer has already seen (dialog opened).
+ * Persisted so a page reload doesn't re-ring the bell for old news. */
+const SEEN_FIRED_KEY = "niftyterm.alerts.seenFired";
+
+function loadSeenFired(): Set<string> {
+  if (typeof window === "undefined") return new Set();
+  try {
+    const raw = window.localStorage.getItem(SEEN_FIRED_KEY);
+    const arr: unknown = raw ? JSON.parse(raw) : [];
+    return new Set(
+      Array.isArray(arr) ? arr.filter((x): x is string => typeof x === "string") : []
+    );
+  } catch {
+    return new Set();
+  }
+}
+
+function saveSeenFired(seen: Set<string>): void {
+  try {
+    window.localStorage.setItem(SEEN_FIRED_KEY, JSON.stringify([...seen].slice(-200)));
+  } catch {
+    /* quota / private mode — badge just resets next visit */
+  }
+}
+
 interface AlertRecord {
   id: string;
   symbol: string | null;
@@ -85,13 +110,14 @@ function BellIcon() {
 }
 
 export default function AlertCenter({ symbol, exchange }: Props) {
-  const [open, setOpen] = useState(false);
-  const [createOpen, setCreateOpen] = useState(false);
+  const [open, setOpen] = useState(false);  const [createOpen, setCreateOpen] = useState(false);
   const [alerts, setAlerts] = useState<AlertRecord[]>([]);
   const [loadedOnce, setLoadedOnce] = useState(false);
   const [listError, setListError] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [announcement, setAnnouncement] = useState("");
+  /* TASK-453: fired-but-unseen tracking (persisted per device) */
+  const [seenFired, setSeenFired] = useState<Set<string>>(() => loadSeenFired());
   const activeIdsRef = useRef<Set<string>>(new Set());
 
   const applyAlerts = useCallback((rows: AlertRecord[]) => {
@@ -228,6 +254,17 @@ export default function AlertCenter({ symbol, exchange }: Props) {
   const fired = alerts.filter(
     (a) => !a.active && a.firedAt != null && a.dismissedAt == null,
   );
+  /* TASK-453: fired alerts the consumer hasn't seen yet drive the bell badge */
+  const unseenFired = fired.filter((a) => !seenFired.has(a.id));
+  const openCenter = () => {
+    setOpen(true);
+    if (fired.length > 0) {
+      const next = new Set(seenFired);
+      fired.forEach((a) => next.add(a.id));
+      setSeenFired(next);
+      saveSeenFired(next);
+    }
+  };
   const dismissed = alerts
     .filter((a) => !a.active && a.dismissedAt != null)
     .sort((a, b) => (b.dismissedAt ?? 0) - (a.dismissedAt ?? 0));
@@ -236,22 +273,28 @@ export default function AlertCenter({ symbol, exchange }: Props) {
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={openCenter}
         aria-label={
-          active.length > 0
-            ? `Alert center, ${active.length} active`
-            : "Alert center"
+          unseenFired.length > 0
+            ? `Alert center, ${unseenFired.length} newly fired, ${active.length} active`
+            : active.length > 0
+              ? `Alert center, ${active.length} active`
+              : "Alert center"
         }
         aria-haspopup="dialog"
         title="Alerts"
         className="relative inline-flex h-8 w-8 items-center justify-center rounded-full border border-line bg-surface text-muted transition-colors hover:text-paper after:absolute after:-inset-1.5 after:content-['']"
       >
         <BellIcon />
-        {active.length > 0 && (
+        {unseenFired.length > 0 ? (
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-down px-1 font-mono text-[10px] font-semibold tabular-nums text-paper">
+            {unseenFired.length}
+          </span>
+        ) : active.length > 0 ? (
           <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-paper px-1 font-mono text-[10px] font-semibold tabular-nums text-ink">
             {active.length}
           </span>
-        )}
+        ) : null}
       </button>
 
       <div role="status" aria-live="polite" className="sr-only">
