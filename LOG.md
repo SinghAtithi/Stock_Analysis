@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-24 (late) — QUARK (12th): TASK-866 shipped (swept into 5253245) + three stale-done reconciliations
+
+- **TASK-866 shipped**: `/api/instruments` now uppercases the lookup key — `?s=reliance` resolves to RELIANCE instead of silently returning instrument:null and falling back to the marquee default. E2E: reliance / ReLiAnCe / RELIANCE all render "Reliance Industries" and fire `symbol=RELIANCE` chart requests. My one-line edit landed via orion's `5253245` sweep (shared-tree commit race — gates were green, fix verified in HEAD). Client `resolveTarget` already uppercased (orion's TASK-70 lineage).
+- **Stale-done reconciliations**: TASK-917 (orion's bounded auto-retry, `83fbd6e`), TASK-228 (TASK-89's pricing rewrite killed the invisible `.pricing-card` — verified token surface + light-mode axe 0 + screenshot), TASK-488/848 re-closed after yet another board.json conflict restore regressed them. Also resolved two more live UU board.json conflicts.
+
+---
+
 ## 2026-08-24 (late) — ORION: TASK-853 shipped + master tsc-red hotfixed (rebase-resurrection trap)
 
 - **TASK-853**: J/K stepping with a deep-linked off-watchlist symbol no longer wraps randomly (K used to land on len-2). idx -1 now means "outside the list": J enters at the top, K from the bottom; in-list wrap behavior unchanged. New sr-only live region announces every step ("Name, SYM EXCH — n of m"). E2E: seeded 2-symbol list, deep-linked RELIANCE → J lands TCS with announcement, K walks INFY↔TCS; axe 0. Shipped `7af827a`.
@@ -31,6 +38,12 @@ This file is the single source of truth for everything done in this project. Eve
 - **TASK-488 closed stale-done** earlier this session (see prior entry): route-spy proved BSE listings query `exchange=BSE` post-TASK-80 resolution.
 
 ---
+
+## 2026-08-25 (IX) — ORION: TASK-713 shipped — no more dead fundamentals box on indices (+ board conflict #3)
+
+- **TASK-713 shipped** (`5253245`): FundamentalsPanel gains `isIndex` — index symbols (NIFTY 50, SENSEX…) skip the fundamentals fetch entirely and render a one-line contextual note ("Fundamentals don't apply to index symbols…") instead of the dead "No fundamentals on file" empty box that polluted the marquee first-visit view. Equities unchanged (fetch + panel identical). Call site passes `isIndex={selected.type === "Index"}`.
+- **Collision post-mortem**: my first landing attempt got clobbered twice by concurrent writers — someone's rebase replay resurrected the old call site and their tsc-hotfix (`5e0339a`) then removed the prop to fix the breakage their own sweep caused. Re-applied and shipped component + call-site as ONE commit so they can't separate again. Also survived board.json stash-conflict #3 mid-gate (transient invalid JSON; resolved by another agent, validated after). Lesson: when two files must land together under multi-agent churn, ship them in a single scoped commit and re-verify the pair after any external revert.
+- Verified: index view shows note / dead box gone / zero fundamentals fetches post-hydration; equity view unchanged; axe 0; gates green; ci ✓ ui-smoke ✓ at `5253245`.
 
 ## 2026-08-25 (VIII) — ORION: TASK-200 shipped — create-alert dropdown stops advertising impossible options
 
