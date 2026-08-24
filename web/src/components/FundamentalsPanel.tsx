@@ -43,7 +43,14 @@ function Shell({ children }: { children: ReactNode }) {
   );
 }
 
-export default function FundamentalsPanel({ symbol }: { symbol: string }) {
+export default function FundamentalsPanel({
+  symbol,
+  isIndex = false,
+}: {
+  symbol: string;
+  /** TASK-713: indices have no PE/ROE/margins — skip the fetch and say why */
+  isIndex?: boolean;
+}) {
   const [data, setData] = useState<Payload | null>(null);
   const [loadedFor, setLoadedFor] = useState<string | null>(null);
   /* keyed to the symbol that failed — one bad fetch must not poison other
@@ -51,6 +58,7 @@ export default function FundamentalsPanel({ symbol }: { symbol: string }) {
   const [failedFor, setFailedFor] = useState<string | null>(null);
 
   useEffect(() => {
+    if (isIndex) return;
     let cancelled = false;
     const tick = async () => {
       try {
@@ -72,7 +80,18 @@ export default function FundamentalsPanel({ symbol }: { symbol: string }) {
     return () => {
       cancelled = true;
     };
-  }, [symbol]);
+  }, [symbol, isIndex]);
+
+  /* TASK-713: a quiet contextual line instead of the dead "no fundamentals"
+     empty box an index would otherwise render on first visit */
+  if (isIndex) {
+    return (
+      <p className="px-1 text-xs leading-relaxed text-faint" role="note">
+        Fundamentals don&apos;t apply to index symbols — an index tracks its
+        constituents&apos; prices, not one company&apos;s financials.
+      </p>
+    );
+  }
 
   const fresh = loadedFor === symbol;
   const m = fresh ? (data?.metrics ?? null) : null;
