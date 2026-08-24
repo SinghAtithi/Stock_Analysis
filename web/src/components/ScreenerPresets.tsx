@@ -67,19 +67,33 @@ export default function ScreenerPresets({
     };
   }, [open, naming]);
 
+  /* TASK-613: overwriting an existing view name requires a second explicit
+     click ("Overwrite"); typing again cancels the confirmation */
+  const [confirmOverwrite, setConfirmOverwrite] = useState(false);
+  const nameExists =
+    name.trim() !== "" &&
+    presets.some((p) => p.name === name.trim());
+  const pendingOverwrite = confirmOverwrite && nameExists;
+
   const save = useCallback(() => {
     const trimmed = name.trim();
     if (!trimmed || !strategy) return;
+    const exists = presets.some((p) => p.name === trimmed);
+    if (exists && !confirmOverwrite) {
+      setConfirmOverwrite(true);
+      return;
+    }
     const persisted = saveScreenerPreset(trimmed, { strategy, sortKey, sortDir });
     setNotice(
       persisted
-        ? { ok: true, text: `View “${trimmed}” saved` }
+        ? { ok: true, text: exists ? `View “${trimmed}” updated` : `View “${trimmed}” saved` }
         : { ok: false, text: "Couldn't save view — storage unavailable" },
     );
     window.setTimeout(() => setNotice(null), 2600);
     setName("");
+    setConfirmOverwrite(false);
     setNaming(false);
-  }, [name, strategy, sortKey, sortDir]);
+  }, [name, strategy, sortKey, sortDir, presets, confirmOverwrite]);
 
   return (
     <div ref={containerRef} className="ml-auto flex items-center gap-2">
@@ -119,24 +133,33 @@ export default function ScreenerPresets({
           <input
             autoFocus
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              setName(e.target.value);
+              setConfirmOverwrite(false);
+            }}
             maxLength={40}
             placeholder="View name"
             aria-label="View name"
             className="w-40 rounded-full border border-line bg-surface px-3 py-1.5 text-sm text-paper focus-visible:outline-2 focus-visible:outline-accent"
           />
+          {pendingOverwrite && (
+            <span className="text-[11px] leading-tight text-down" role="alert">
+              exists — overwrite?
+            </span>
+          )}
           <button
             type="submit"
             disabled={!name.trim()}
             className="rounded-full bg-paper px-3 py-1.5 text-sm font-medium text-ink shadow-sm transition-opacity hover:opacity-90 disabled:opacity-50"
           >
-            Save
+            {pendingOverwrite ? "Overwrite" : "Save"}
           </button>
           <button
             type="button"
             onClick={() => {
               setNaming(false);
               setName("");
+              setConfirmOverwrite(false);
             }}
             className="rounded-full border border-line bg-surface px-3 py-1.5 text-sm text-muted transition-colors hover:text-paper"
           >
