@@ -108,7 +108,9 @@ export default function Modal({
         className={
           sheet
             ? `absolute inset-x-0 bottom-0 max-h-[75vh] overflow-y-auto rounded-t-2xl border-t border-line bg-surface p-5 shadow-md ${panelClassName}`
-            : `relative w-full max-w-md rounded-2xl border border-line bg-surface p-6 shadow-md ${panelClassName}`
+            : /* TASK-933: cap + internal scroll so tall dialogs stay reachable
+                 on short screens while the body behind is scroll-locked */
+              `relative max-h-[85dvh] w-full max-w-md overflow-y-auto rounded-2xl border border-line bg-surface p-6 shadow-md ${panelClassName}`
         }
         style={
           sheet ? { paddingBottom: "calc(1.25rem + env(safe-area-inset-bottom))" } : undefined
