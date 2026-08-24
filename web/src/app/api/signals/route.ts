@@ -226,7 +226,15 @@ function buildBody(params: Params): { status: number; body: unknown } {
         edgeScore: strategyMeta.meta.edgeScore,
         asOf,
       },
-      meta: { count: page.length, universe: "nifty50" },
+      // TASK-145: count is the full ranked universe for this strategy, not the
+      // returned page length — consumers can only discover truncation if the
+      // total is told honestly. offset/limit echo the served window.
+      meta: {
+        count: items.length,
+        universe: "nifty50",
+        offset: params.offset,
+        limit: params.limit,
+      },
       items: page,
     },
   };

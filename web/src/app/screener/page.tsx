@@ -95,6 +95,8 @@ function ScreenerInner() {
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
+  /* TASK-145: window offset for load-more pagination */
+  const [offset, setOffset] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -136,15 +138,25 @@ function ScreenerInner() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`/api/signals?strategy=${encodeURIComponent(strategy)}&limit=50`);
+        /* TASK-145: paged fetch — offset>0 appends the next window so the
+           full ranked universe is reachable instead of silently truncating */
+        const res = await fetch(
+          `/api/signals?strategy=${encodeURIComponent(strategy)}&limit=50&offset=${offset}`
+        );
         const json = await res.json();
         if (cancelled) return;
         if (!res.ok || json.error) {
           setError(json.error ?? "upstream failure");
-          setData(null);
+          if (offset === 0) setData(null);
           return;
         }
-        setData(json);
+        setData((prev) => {
+          const continuing =
+            offset > 0 && prev && prev.strategy?.id === json.strategy?.id;
+          return continuing
+            ? { ...json, items: [...prev.items, ...(json.items ?? [])] }
+            : json;
+        });
         setError(null);
       } catch {
         if (!cancelled) setError("network error");
@@ -156,10 +168,14 @@ function ScreenerInner() {
     return () => {
       cancelled = true;
     };
-  }, [strategy, reloadKey]);
+  }, [strategy, reloadKey, offset]);
 
   const items = data?.items ?? [];
   const meta = data?.strategy;
+
+  /* TASK-145: load-more affordance state */
+  const total = data?.meta.count ?? 0;
+  const loadMore = () => setOffset(items.length);
 
   /* keep ?strategy=&sort=&dir= in step with view state (saved views + deep links) */
   const syncUrl = (nextStrategy: string, nextSortKey: string | null, nextSortDir: SortDir): void => {
@@ -172,6 +188,7 @@ function ScreenerInner() {
     window.history.replaceState(null, "", `/screener?${params.toString()}`);
   };
   const changeStrategy = (id: string): void => {
+    setOffset(0);
     setStrategy(id);
     syncUrl(id, sortKey, sortDir);
   };
@@ -181,6 +198,7 @@ function ScreenerInner() {
     syncUrl(strategy, key, dir);
   };
   const applyPreset = (p: ScreenerPreset): void => {
+    setOffset(0);
     setStrategy(p.strategy);
     setSortKey(p.sortKey);
     setSortDir(p.sortDir);
@@ -246,7 +264,9 @@ function ScreenerInner() {
             <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
               <span className="rounded-full bg-paper px-2.5 py-1 font-medium text-ink">{meta.name}</span>
               <span className="rounded-full border border-line bg-panel-2 px-2.5 py-1 text-muted">{meta.juryRank ? `Jury #${meta.juryRank}` : "Unranked"} · Edge {meta.edgeScore ?? "—"}/10</span>
-              <span className="rounded-full border border-line bg-surface px-2.5 py-1 text-faint">{data?.meta.count ?? 0} rows · {meta.asOf ? new Date(meta.asOf * 1000).toLocaleDateString("en-IN") : "—"}</span>
+              <span className="rounded-full border border-line bg-surface px-2.5 py-1 text-faint">
+                {data?.meta.count ?? 0} ranked · showing {items.length} · {meta.asOf ? new Date(meta.asOf * 1000).toLocaleDateString("en-IN") : "—"}
+              </span>
             </div>
           )}
           <BacktestEvidence strategy={strategies.find((s) => s.id === strategy)} />
@@ -325,6 +345,19 @@ function ScreenerInner() {
           loading={loading}
           empty="No snapshots for this strategy yet"
         />
+
+        {/* TASK-145: load-more when the strategy ranks more than one page */}
+        {!loading && !error && items.length < total && (
+          <div className="flex justify-center">
+            <button
+              type="button"
+              onClick={loadMore}
+              className="rounded-full border border-line bg-surface px-5 py-2 text-sm font-medium text-muted shadow-sm transition-colors hover:border-line-strong hover:text-paper"
+            >
+              Load more · {items.length} of {total}
+            </button>
+          </div>
+        )}
 
         <p className="text-xs leading-relaxed text-faint">
           Click a row to open the chart with <span className="font-mono">?s=SYMBOL</span> · Scores 0–100, higher is stronger · <Link href="/disclaimer" className="underline decoration-line underline-offset-2 hover:text-muted">Not investment advice</Link>
