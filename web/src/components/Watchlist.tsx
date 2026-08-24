@@ -2,8 +2,7 @@
 
 import { useRef, useState } from "react";
 import type { ChangeEvent } from "react";
-import type { WatchlistEntry } from "@/lib/watchlist";
-import { exportWatchlist, importWatchlist } from "@/lib/watchlist";
+import { exportWatchlist, parseImport, applyImport, type WatchlistEntry } from "@/lib/watchlist";
 import Sparkline from "@/components/Sparkline";
 import Link from "next/link";
 
@@ -55,16 +54,36 @@ export default function Watchlist({
     flash(true, "Exported");
   };
 
+  /* TASK-726: import is a confirmed two-step — parse first, preview the
+     count, then Replace (default) or Merge. Round-trips honor removals. */
+  const [pendingImport, setPendingImport] = useState<{ entries: WatchlistEntry[] } | null>(null);
+
   const onFile = (e: ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
     const reader = new FileReader();
     reader.onload = () => {
-      const ok = importWatchlist(String(reader.result ?? ""));
-      flash(ok, ok ? "Watchlist imported" : "Import failed — invalid file");
+      const entries = parseImport(String(reader.result ?? ""));
+      if (!entries) {
+        flash(false, "Import failed — invalid file");
+      } else {
+        setPendingImport({ entries });
+      }
     };
     reader.readAsText(f);
     e.target.value = "";
+  };
+
+  const confirmImport = (mode: "replace" | "merge") => {
+    if (!pendingImport) return;
+    const n = applyImport(pendingImport.entries, mode);
+    setPendingImport(null);
+    flash(
+      n > 0 || mode === "replace",
+      mode === "replace"
+        ? `Replaced watchlist — ${n} symbol${n === 1 ? "" : "s"}`
+        : `Merged — ${n} new symbol${n === 1 ? "" : "s"} added`,
+    );
   };
 
   return (
@@ -79,6 +98,26 @@ export default function Watchlist({
           </span>
         )}
       </div>
+
+      {pendingImport && (
+        <div className="mb-3 rounded-xl border border-line bg-panel-2 px-3 py-2.5">
+          <p className="text-xs text-muted">
+            Import <span className="font-mono">{pendingImport.entries.length}</span> symbol
+            {pendingImport.entries.length === 1 ? "" : "s"} — replace the whole list, or merge into it?
+          </p>
+          <div className="mt-2 flex gap-2">
+            <button type="button" onClick={() => confirmImport("replace")} className="rounded-full bg-paper px-3 py-1 text-xs font-medium text-ink shadow-sm transition-opacity hover:opacity-90">
+              Replace list
+            </button>
+            <button type="button" onClick={() => confirmImport("merge")} className="rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted transition-colors hover:text-paper">
+              Merge
+            </button>
+            <button type="button" onClick={() => setPendingImport(null)} className="rounded-full px-2.5 py-1 text-xs text-faint transition-colors hover:text-muted">
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
 
       {items.length === 0 && (
         <div className="rounded-xl border border-dashed border-line bg-canvas px-4 py-6 text-center">

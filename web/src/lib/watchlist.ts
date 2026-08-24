@@ -141,17 +141,43 @@ export function exportWatchlist(): string {
   return JSON.stringify(read(), null, 2);
 }
 
-export function importWatchlist(json: string): boolean {
+/* TASK-726: validate + normalize an import payload without touching
+   storage, so the UI can preview a count before asking for confirmation. */
+export function parseImport(json: string): WatchlistEntry[] | null {
   try {
     const parsed: unknown = JSON.parse(json);
-    if (!Array.isArray(parsed)) return false;
-    const valid = parsed.filter(isEntry).map(normalize);
-    if (valid.length === 0) return false;
-    write(unique([...read(), ...valid]));
-    return true;
+    if (!Array.isArray(parsed)) return null;
+    const valid = unique(parsed.filter(isEntry).map(normalize));
+    if (valid.length === 0) return null;
+    return valid;
   } catch {
-    return false;
+    return null;
   }
+}
+
+/* TASK-726: import REPLACES the watchlist by default — export→edit→import
+   must honor removals; "merge" keeps the old union behavior for consumers
+   who explicitly opt in. Returns how many entries were written. */
+export function applyImport(
+  entries: WatchlistEntry[],
+  mode: "replace" | "merge" = "replace",
+): number {
+  const valid = unique(entries.filter(isEntry).map(normalize));
+  if (valid.length === 0) return 0;
+  if (mode === "merge") {
+    write(unique([...read(), ...valid]));
+  } else {
+    write(valid);
+  }
+  return valid.length;
+}
+
+export function importWatchlist(
+  json: string,
+  mode: "replace" | "merge" = "replace",
+): number {
+  const entries = parseImport(json);
+  return entries ? applyImport(entries, mode) : -1;
 }
 
 /** Union-merge cloud-mirror entries into localStorage (TASK-62). Existing
