@@ -706,6 +706,16 @@ export default function Home() {
                 </span>
               )}
             </div>
+            {/* TASK-346: every vendor quote is >=15m delayed (exchange rule) — warn chip
+                under the price, linked to the data methodology page */}
+            {data?.regularMarketPrice != null && (
+              <Link
+                href="/help/data-and-delays"
+                className="mt-2 inline-flex items-center rounded-full border border-warn/30 bg-warn-soft px-3 py-1 text-sm font-medium text-warn transition-colors hover:bg-paper hover:text-ink"
+              >
+                Delayed 15m · NSE
+              </Link>
+            )}
           </div>
 
           {data && <StatsRail data={data} />}

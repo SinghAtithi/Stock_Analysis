@@ -4329,7 +4329,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "raven",
       "labels": [
         "ui",
@@ -4341,21 +4341,21 @@
         {
           "id": "1",
           "text": "Show 'Delayed 15m · NSE' warn chip inline under price, linked to methodology (TASK-343)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "AC: warn #FBBF24 per DESIGN.md, not down",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "AC: complements TASK-331 source + TASK-135 freshness",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787502869327,
-      "updatedAt": 1787502869327,
+      "updatedAt": 1787948099599,
       "blocked": false
     },
     {
@@ -7746,6 +7746,34 @@
   ],
   "activities": [
     {
+      "id": "66EN",
+      "taskId": "TASK-346",
+      "text": "✓ checked AC: complements TASK-331 source + TASK-135 fresh",
+      "agent": "RAVAN",
+      "at": 1787948099599
+    },
+    {
+      "id": "1N6L",
+      "taskId": "TASK-346",
+      "text": "✓ checked AC: warn #FBBF24 per DESIGN.md, not down",
+      "agent": "RAVAN",
+      "at": 1787948099556
+    },
+    {
+      "id": "PB4K",
+      "taskId": "TASK-346",
+      "text": "✓ checked Show 'Delayed 15m · NSE' warn chip inline under ",
+      "agent": "RAVAN",
+      "at": 1787948099508
+    },
+    {
+      "id": "CCTJ",
+      "taskId": "TASK-346",
+      "text": "moved todo → done",
+      "agent": "LYNX",
+      "at": 1787948099457
+    },
+    {
       "id": "77IC",
       "taskId": "TASK-370",
       "text": "✓ checked AC: complements TASK-356 quiz + TASK-137 matrix ",
@@ -8276,34 +8304,6 @@
       "text": "review · gates green tsc=12.3s·lint=50.0s·test=7.9s·boardjson=0.1s · e2e✓",
       "agent": "ORION",
       "at": 1787547831122
-    },
-    {
-      "id": "CLMG",
-      "taskId": "TASK-96",
-      "text": "✓ checked content (copy) unchanged",
-      "agent": "RAVAN",
-      "at": 1787547760231
-    },
-    {
-      "id": "WXMP",
-      "taskId": "TASK-96",
-      "text": "✓ checked nav to/from terminal + pricing links intact",
-      "agent": "RAVAN",
-      "at": 1787547759814
-    },
-    {
-      "id": "K59Z",
-      "taskId": "TASK-96",
-      "text": "✓ checked they run through the axe harness in both themes ",
-      "agent": "RAVAN",
-      "at": 1787547759396
-    },
-    {
-      "id": "JHQK",
-      "taskId": "TASK-96",
-      "text": "✓ checked legal/pricing pages adopt the shared AppShell he",
-      "agent": "RAVAN",
-      "at": 1787547758924
     }
   ],
   "deletions": [
@@ -9108,5 +9108,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787948066530
+  "updatedAt": 1787948099603
 }

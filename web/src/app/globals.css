@@ -17,6 +17,9 @@
   --color-up-soft: #e6f4ea;
   --color-down: #c4362b;
   --color-down-soft: #fdecea;
+  /* warn = data-quality amber (DESIGN.md #FBBF24); light theme darkens to #92400e for AA on white/wash */
+  --color-warn: #92400e;
+  --color-warn-soft: #fef3c7;
   --color-accent: #111214;
   --color-accent-soft: #f3f2ef;
   --radius-sm: 6px;
@@ -64,6 +67,8 @@ html.dark {
   --color-up-soft: #13211a;
   --color-down: #e8a09a;
   --color-down-soft: #271a1a;
+  --color-warn: #fbbf24;
+  --color-warn-soft: #2a2415;
   --color-accent: #ecebe8;
   --color-accent-soft: #1c1e21;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 20px rgb(0 0 0 / 0.35);
