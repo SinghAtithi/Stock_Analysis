@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-29 — LYNX: TASK-518/370 shipped; TASK-80 closed (e723c5e)
+
+- **TASK-518 shipped** (VERTEX subagent): pricing CTAs gained "No card today" honesty on both plan cards; premise audit showed no ₹239 CTA exists (TASK-89 already made Pro "Not purchasable yet — granted manually"), so no trial claim was added — "preview 7d" would have been a lie (TASK-1424). Axe 0 both themes (isolated prod build).
+- **TASK-370 shipped** (WRAITH subagent): quiz result never existed (no recommender quiz anywhere — that's TASK-356's build); delivered `PlanCta.tsx` — self-contained "We recommend Pro" block with honest copy (billing not wired, Pro granted per device) + "Start with Pro preview — no card" → /pricing and "Stick with Free" → /, 44px CTAs, axe 0, unmounted by design (TASK-356 mounts it). Violet accent skipped — no violet token exists in the design system.
+- **TASK-80 closed**: cross-nav already shipped upstream as `e723c5e` (Open chart → deep-link, StarToggle, alert bell, server-side exchange resolution for BSE-only symbols) — board had regressed it to review via the known lost-update pattern; verified live + axe 0. Flag: `scripts/tests/ui/company.py` 503-check can never pass as written (Chromium logs failed resource loads; page itself recovers).
+
+---
+
 ## 2026-08-29 — LYNX: TASK-209 shipped; TASK-119/613 closed (landed upstream)
 
 - **TASK-209 shipped** (FROST subagent, this push): board card delete is no longer a single destructive click — confirm modal "Delete TASK-XX?" (Cancel/Esc/backdrop all cancel, initial focus on Cancel) then a 5s Undo toast that restores the FULL task (rank/priority/checklist) by bumping updatedAt past the tombstone; focus returns to the card (cards now tabIndex=0 with Enter/Space). Axe 0 across 4 modes, e2e 13/13.

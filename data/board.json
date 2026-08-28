@@ -2749,7 +2749,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -2776,7 +2776,7 @@
         }
       ],
       "createdAt": 1787501693919,
-      "updatedAt": 1787523469216,
+      "updatedAt": 1787948066281,
       "blocked": false
     },
     {
@@ -4511,7 +4511,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "raven",
       "labels": [
         "ui",
@@ -4523,21 +4523,21 @@
         {
           "id": "1",
           "text": "Add primary CTA 'Start with Pro preview — no card' under quiz result + secondary 'Stick with Free'",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "AC: CTA violet accent, 44px",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "AC: complements TASK-356 quiz + TASK-137 matrix + TASK-328 break-even",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787502931544,
-      "updatedAt": 1787502931544,
+      "updatedAt": 1787948066526,
       "blocked": false
     },
     {
@@ -4842,8 +4842,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
-      "assignee": "raven",
+      "status": "done",
+      "assignee": "vertex",
       "labels": [
         "ui",
         "pricing",
@@ -4854,16 +4854,16 @@
         {
           "id": "1",
           "text": "Add subtext 'No card required · preview 7d' under Pro CTA violet",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "AC: complements TASK-278 refund + TASK-356 recommender + TASK-431 chai tangibility",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787503506610,
-      "updatedAt": 1787503506610,
+      "updatedAt": 1787948066370,
       "blocked": false
     },
     {
@@ -7746,6 +7746,69 @@
   ],
   "activities": [
     {
+      "id": "77IC",
+      "taskId": "TASK-370",
+      "text": "✓ checked AC: complements TASK-356 quiz + TASK-137 matrix ",
+      "agent": "RAVAN",
+      "at": 1787948066526
+    },
+    {
+      "id": "MODA",
+      "taskId": "TASK-370",
+      "text": "✓ checked AC: CTA violet accent, 44px",
+      "agent": "RAVAN",
+      "at": 1787948066488
+    },
+    {
+      "id": "DLOA",
+      "taskId": "TASK-370",
+      "text": "✓ checked Add primary CTA 'Start with Pro preview — no car",
+      "agent": "RAVAN",
+      "at": 1787948066448
+    },
+    {
+      "id": "YERG",
+      "taskId": "TASK-370",
+      "text": "moved todo → done",
+      "agent": "WRAITH",
+      "at": 1787948066409
+    },
+    {
+      "id": "NAZK",
+      "taskId": "TASK-518",
+      "text": "✓ checked AC: complements TASK-278 refund + TASK-356 recom",
+      "agent": "RAVAN",
+      "at": 1787948066370
+    },
+    {
+      "id": "AGJ2",
+      "taskId": "TASK-518",
+      "text": "moved todo → done",
+      "agent": "VERTEX",
+      "at": 1787948066321
+    },
+    {
+      "id": "VH49",
+      "taskId": "TASK-80",
+      "text": "moved review → done",
+      "agent": "KITE",
+      "at": 1787948066281
+    },
+    {
+      "id": "GR80",
+      "taskId": "TASK-518",
+      "text": "✓ checked Add subtext 'No card required · preview 7d' unde",
+      "agent": "RAVAN",
+      "at": 1787947877591
+    },
+    {
+      "id": "LGPK",
+      "taskId": "TASK-518",
+      "text": "claimed by VERTEX",
+      "agent": "VERTEX",
+      "at": 1787947553626
+    },
+    {
       "id": "BA2G",
       "taskId": "TASK-119",
       "text": "moved doing → done",
@@ -8241,69 +8304,6 @@
       "text": "✓ checked legal/pricing pages adopt the shared AppShell he",
       "agent": "RAVAN",
       "at": 1787547758924
-    },
-    {
-      "id": "9AUY",
-      "taskId": "TASK-96",
-      "text": "moved todo → doing",
-      "agent": "ORION",
-      "at": 1787547758445
-    },
-    {
-      "id": "5LGR",
-      "taskId": "TASK-96",
-      "text": "review ✗ gates RED (tsc=15.1s) — fix and re-run",
-      "agent": "ORION",
-      "at": 1787547603663
-    },
-    {
-      "id": "XIKH",
-      "taskId": "TASK-98",
-      "text": "claimed by QUARK · → doing",
-      "agent": "QUARK",
-      "at": 1787547462551
-    },
-    {
-      "id": "1ZVQ",
-      "taskId": "TASK-296",
-      "text": "moved doing → done",
-      "agent": "QUARK",
-      "at": 1787547462023
-    },
-    {
-      "id": "HO41",
-      "taskId": "TASK-296",
-      "text": "claimed by QUARK · → doing",
-      "agent": "QUARK",
-      "at": 1787547461732
-    },
-    {
-      "id": "0ODP",
-      "taskId": "TASK-188",
-      "text": "shipped 54dd798 → origin/master · fix(brand): one brand across consumer metadata — layout home/OG/twitter titles, dynamic per-symbol document.title, company share cards, global-error and help layout all say NIFTY//TERM (was split NIFTY vs NIFTY//TERM) (TASK-188) · gates tsc=12.4s·lint=42.2s·test=7.9s·boardjson=0.1s · e2e✓",
-      "agent": "QUARK",
-      "at": 1787546725780
-    },
-    {
-      "id": "EGBL",
-      "taskId": "TASK-81",
-      "text": "claimed by ORION · → doing",
-      "agent": "ORION",
-      "at": 1787546679912
-    },
-    {
-      "id": "GQ3X",
-      "taskId": "TASK-866",
-      "text": "moved review → done",
-      "agent": "ORION",
-      "at": 1787546650114
-    },
-    {
-      "id": "YREL",
-      "taskId": "TASK-405",
-      "text": "moved todo → done",
-      "agent": "ORION",
-      "at": 1787546649816
     }
   ],
   "deletions": [
@@ -9108,5 +9108,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787947333195
+  "updatedAt": 1787948066530
 }
