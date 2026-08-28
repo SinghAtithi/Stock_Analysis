@@ -132,6 +132,14 @@ export default function BoardPage() {
   const [showFilters, setShowFilters] = useState(true);
   const searchRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  // TASK-209: destructive-delete guard — confirm dialog first, then a 5s
+  // undo toast. pendingUndo stashes the FULL task (rank, priority, checklist)
+  // so a mistaken delete never loses curated fields.
+  const [confirmDelete, setConfirmDelete] = useState<Task | null>(null);
+  const [pendingUndo, setPendingUndo] = useState<Task | null>(null);
+  const undoTimer = useRef<number | null>(null);
+
+  useEffect(() => () => { if (undoTimer.current !== null) window.clearTimeout(undoTimer.current); }, []);
 
   // ---- load
   useEffect(() => {
@@ -308,11 +316,43 @@ export default function BoardPage() {
   };
 
   const deleteTask = (id: string) => {
+    const victim = tasks.find((t) => t.id === id) ?? null;
     setTasks((prev) => prev.filter((t) => t.id !== id));
     // tombstone so server-side merge drops the task instead of resurrecting it
     setDeletions((prev) => [...prev.filter((d) => d.id !== id), { id, at: Date.now() }]);
     setSelected(null);
     pushActivity(id, "deleted");
+    // TASK-209: stash the full task for a 5s undo before the store drops it
+    if (undoTimer.current !== null) window.clearTimeout(undoTimer.current);
+    setPendingUndo(victim);
+    if (victim) {
+      undoTimer.current = window.setTimeout(() => {
+        setPendingUndo(null);
+        undoTimer.current = null;
+      }, 5000);
+    }
+  };
+
+  // TASK-209: restore a deleted task. The tombstone contract hides tasks whose
+  // updatedAt <= tombstone.at — and the "deleted" activity folds into one
+  // server-side — so resurrection must beat that with a fresh updatedAt. The
+  // deletions entry is dropped so no tombstone re-hides the task.
+  const undoDelete = () => {
+    if (!pendingUndo) return;
+    const t = { ...pendingUndo, updatedAt: Date.now() };
+    setTasks((prev) => (prev.some((x) => x.id === t.id) ? prev : [...prev, t]));
+    setDeletions((prev) => prev.filter((d) => d.id !== t.id));
+    if (undoTimer.current !== null) window.clearTimeout(undoTimer.current);
+    undoTimer.current = null;
+    setPendingUndo(null);
+    pushActivity(t.id, "restored after undo");
+  };
+
+  // TASK-209: destructive action needs a confirm — open the guard dialog
+  // (detail modal closes; focus lands on Cancel, Esc cancels).
+  const requestDelete = (t: Task) => {
+    setSelected(null);
+    setConfirmDelete(t);
   };
 
   const duplicateTask = (id: string) => {
@@ -744,6 +784,13 @@ export default function BoardPage() {
                         <article
                           key={t.id}
                           draggable
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              setSelected(t);
+                            }
+                          }}
                           onDragStart={(e) => {
                             e.dataTransfer.setData("text/plain", t.id);
                             e.dataTransfer.effectAllowed = "move";
@@ -754,7 +801,7 @@ export default function BoardPage() {
                             setDragOver(null);
                           }}
                           onClick={() => setSelected(t)}
-                          className={`group relative flex cursor-pointer flex-col gap-2.5 rounded-2xl border bg-surface p-3.5 shadow-sm transition hover:shadow-md hover:border-line-strong ${t.blocked ? "border-down/40 bg-down-soft/30" : "border-line"} ${dragId === t.id ? "opacity-50 ring-2 ring-paper/20" : ""}`}
+                          className={`group relative flex cursor-pointer flex-col gap-2.5 rounded-2xl border bg-surface p-3.5 shadow-sm transition hover:shadow-md hover:border-line-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-paper ${t.blocked ? "border-down/40 bg-down-soft/30" : "border-line"} ${dragId === t.id ? "opacity-50 ring-2 ring-paper/20" : ""}`}
                         >
                           {/* top */}
                           <div className="flex items-start justify-between gap-2">
@@ -1053,7 +1100,7 @@ export default function BoardPage() {
             agentId={agentId}
             onClose={() => setSelected(null)}
             onUpdate={updateTask}
-            onDelete={deleteTask}
+            onRequestDelete={requestDelete}
             onDuplicate={duplicateTask}
             onMove={moveTask}
             pushActivity={pushActivity}
@@ -1098,6 +1145,73 @@ export default function BoardPage() {
           </p>
         </div>
       </Modal>
+
+      {/* TASK-209: destructive-action confirm — the single click on Delete no
+          longer destroys the task outright. Esc cancels; focus returns to the
+          card via Modal's restore. No X button: Cancel + Esc + backdrop all
+          cancel, and initial focus lands on Cancel (the safe action). */}
+      <Modal
+        open={!!confirmDelete}
+        onClose={() => setConfirmDelete(null)}
+        label={`Delete ${confirmDelete?.id ?? "task"}?`}
+        panelClassName="max-w-[420px]"
+      >
+        {confirmDelete && (
+          <div className="flex flex-col gap-4">
+            <div className="border-b border-line pb-3">
+              <h3 className="text-sm font-semibold tracking-tight text-paper">
+                Delete <span className="font-mono text-muted">{confirmDelete.id}</span>?
+              </h3>
+            </div>
+            <p className="text-sm leading-relaxed text-muted">
+              <span className="font-medium text-paper">{confirmDelete.title}</span> leaves the
+              board — rank, priority and checklist included. You have 5 seconds to undo.
+            </p>
+            <div className="flex items-center justify-end gap-2 border-t border-line pt-3">
+              <button
+                onClick={() => setConfirmDelete(null)}
+                className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium text-muted hover:text-paper"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  const id = confirmDelete.id;
+                  setConfirmDelete(null);
+                  deleteTask(id);
+                }}
+                className="inline-flex items-center gap-1.5 rounded-full border border-down/20 bg-down-soft px-4 py-2 text-sm font-medium text-down hover:bg-down hover:text-white"
+              >
+                <Trash2 size={14} /> Delete
+              </button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* TASK-209: undo toast — one pending delete, 5s window. The sr-only
+          region announces the delete for screen readers (TASK-83 pattern). */}
+      <p className="sr-only" role="status" aria-live="polite">
+        {pendingUndo
+          ? `Deleted ${pendingUndo.id}. Undo available for 5 seconds.`
+          : ""}
+      </p>
+      {pendingUndo && (
+        <div className="pointer-events-none fixed inset-x-0 bottom-5 z-[60] flex justify-center px-4">
+          <div className="pointer-events-auto flex items-center gap-3 rounded-full border border-line bg-surface py-1.5 pl-4 pr-1.5 text-sm shadow-md">
+            <span className="text-muted">
+              Deleted <span className="font-mono font-medium text-paper">{pendingUndo.id}</span>
+            </span>
+            <button
+              type="button"
+              onClick={undoDelete}
+              className="rounded-full bg-paper px-3 py-1 text-xs font-medium text-ink transition-colors hover:bg-accent"
+            >
+              Undo
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1107,7 +1221,7 @@ function TaskDetail({
   agentId,
   onClose,
   onUpdate,
-  onDelete,
+  onRequestDelete,
   onDuplicate,
   onMove,
   pushActivity,
@@ -1116,7 +1230,7 @@ function TaskDetail({
   agentId: string | null;
   onClose: () => void;
   onUpdate: (p: Partial<Task> & { id: string }) => void;
-  onDelete: (id: string) => void;
+  onRequestDelete: (t: Task) => void;
   onDuplicate: (id: string) => void;
   onMove: (id: string, to: ColumnId) => void;
   pushActivity: (id: string, text: string) => void;
@@ -1315,7 +1429,7 @@ function TaskDetail({
           <button onClick={() => onDuplicate(task.id)} className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-xs font-medium text-muted hover:text-paper">
             <Copy size={12} /> Duplicate
           </button>
-          <button onClick={() => onDelete(task.id)} className="inline-flex items-center gap-1.5 rounded-full border border-down/20 bg-down-soft px-3 py-1.5 text-xs font-medium text-down hover:bg-down hover:text-white">
+          <button onClick={() => onRequestDelete(task)} className="inline-flex items-center gap-1.5 rounded-full border border-down/20 bg-down-soft px-3 py-1.5 text-xs font-medium text-down hover:bg-down hover:text-white">
             <Trash2 size={12} /> Delete
           </button>
         </div>

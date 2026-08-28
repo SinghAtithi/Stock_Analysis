@@ -4,7 +4,22 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
-## 2026-08-24 (late) — QUARK (17th): TASK-98 shipped — J/K wrap announces itself; TASK-296 closed superseded
+## 2026-08-29 — LYNX: TASK-209 shipped; TASK-119/613 closed (landed upstream)
+
+- **TASK-209 shipped** (FROST subagent, this push): board card delete is no longer a single destructive click — confirm modal "Delete TASK-XX?" (Cancel/Esc/backdrop all cancel, initial focus on Cancel) then a 5s Undo toast that restores the FULL task (rank/priority/checklist) by bumping updatedAt past the tombstone; focus returns to the card (cards now tabIndex=0 with Enter/Space). Axe 0 across 4 modes, e2e 13/13.
+- **TASK-119 closed**: 404 recovery already landed on master — caret-blink keyframe in globals.css (reduced-motion honored) + screener/breadth recovery links; notfound.py oracle green, axe 0.
+- **TASK-613 closed**: screener overwrite confirm already landed on master (`df06879`) — inline "exists — overwrite?" warn + Overwrite re-arm, "View updated" sr-only announcement; screener.py + axe_screener green.
+- **TASK-1392/1375/148/1492 closed superseded**: backlog curation epic (done by TASK-1503 prune), duplicate-title purge (0 dupes remain), --font-archivo (legal.css deleted by TASK-96), ui-smoke CI red (green since TASK-1466; no open CI RED cards).
+
+---
+
+## 2026-08-29 — LYNX: TASK-1503 — board pruned 1,346 → 50 open tasks
+
+- **TASK-1503 done**: pruned `data/board.json` from 1,346 open tasks to exactly 50. Keep rule: all active work (10 doing, 2 review, 1 backlog) + P0 + top P1 todos by recency — survivors are the P0 ui-smoke red (TASK-1492), strategy/fundamentals moat (TASK-57, blocked on TASK-1495 Yahoo cookie+crumb), N+1 company page (TASK-92), deploy/revenue/observability (TASK-1408/1424/1409), curation epics TASK-1392/1437, and every P1 consumer-facing gap.
+- 1,296 tasks removed; 200 newest tombstones recorded in `deletions[]` so synced clients hide them (cap is 200 by design; hydration overwrites stale localStorage anyway). Backup at `/tmp/opencode/board-backup-2026-08-29.json`; full history also recoverable via git (board.json tracked).
+- Gates: tsc ✓, npm test ✓ (332 pass). eslint ✗ on 3 pre-existing `no-sync-scripts` errors in other agents' uncommitted WIP (TASK-1395 CSP: layout.tsx/theme-bootstrap.js, crash-UX: error.tsx/global-error.tsx) — unrelated to this data-only change; left untouched.
+
+---
 
 - **TASK-98 shipped** (`1958cda`): stepping J/K past either end of the watchlist prepends "Wrapped to" on the existing sr-only live region (TASK-853's announcer) — forward and backward wraps both covered; mid-list steps stay unwrapped; highlight/mouse behavior unchanged. E2E asserted the announcer text across all four transitions on an isolated build; axe 0.
 - **TASK-296 closed superseded**: its premise ("board linked from consumer nav") died with TASK-295 — /board is now internal-only and robots-disallowed, so the generic-title nit has no consumer/crawler impact.
@@ -119,6 +134,19 @@ This file is the single source of truth for everything done in this project. Eve
 - **TASK-488 closed stale-done** earlier this session (see prior entry): route-spy proved BSE listings query `exchange=BSE` post-TASK-80 resolution.
 
 ---
+
+## 2026-08-25 (XVIII) — ORION: TASK-90 shipped — alert-cap error gets honest copy + Pricing link
+
+- **TASK-90 shipped** (`01a161f`): the create-alert dialog's error state is now structured ({text, showPricing}); an `alert_cap_reached` 402 renders **"Free plan allows N active alerts — remove one or upgrade for more."** with a keyboard-accessible **See Pricing** link (limit from the API payload, defaulting to 5). Other failures keep their existing copy; backtest-side cap already had its link via TASK-1053, closing this task's second clause. Verified on isolated worktree build: mocked 402 → message + focusable link; gates green in clean tree; ci ✓ ui-smoke ✓ at `01a161f`.
+
+## 2026-08-25 (XVII) — ORION: TASK-257 shipped — breadth data date formatted + clarified
+
+- **TASK-257 shipped** (`7639504`): the breadth "As of 2026-08-21" raw ISO chip now renders **"Data as of 21 Aug 2026"** — parsed by date parts and formatted via Intl en-IN (Date.UTC construction so timezone conversion can never shift the day), with chip copy clarifying it labels the *data*, not the page. Landed from a clean worktree after another agent's in-flight error-boundary WIP (sync-script lint errors) held shared gates red; verified chip text on an isolated build before push. ci ✓ ui-smoke ✓ at `7639504`.
+
+## 2026-08-25 (XVI) — ORION: TASK-113 shipped — global search on every subpage
+
+- **TASK-113 shipped** (`ede9981`): SiteHeader now mounts the shared Search component on **every non-home route** (compact header slot, full-width row on mobile via flex-wrap ordering) — screener, breadth, backtest, company, help users can look up any symbol without navigating home. Selecting a result routes to the terminal with `?s=&e=&r=1y`. Home is auto-excluded by pathname detection so its inline terminal search and `/` keyboard flow stay untouched (verified: no duplicate input, `/` focuses terminal search).
+- Verified across 5 routes with mocked search results; selection routing + axe 0 + no pageerrors. Landed via worktree after another agent's in-flight error-boundary WIP briefly held shared eslint gates red. ci ✓ ui-smoke ✓ at `ede9981`.
 
 ## 2026-08-25 (XV) — ORION: TASK-81 shipped — searchable strategy picker for large registries
 
