@@ -59,7 +59,7 @@ export default function PricingPage() {
             Continue free →
           </Link>
           <p className="mt-2 text-center text-[11px] text-faint">
-            No account needed.
+            No card today — no account needed.
           </p>
         </section>
 
@@ -86,7 +86,7 @@ export default function PricingPage() {
             Request Pro access ↗
           </a>
           <p className="mt-2 text-center text-[11px] text-faint">
-            Opens a GitHub issue — include your device id.
+            No card today — opens a GitHub issue; include your device id.
           </p>
         </section>
       </div>
