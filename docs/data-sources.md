@@ -152,6 +152,43 @@ Rate-limit behavior observed today (2026-08-16): every JSON endpoint returned 42
 2. **ISP/residential proxies** (Bright Data, Oxylabs, SOAX): highest pass rate, expensive (~$5+/GB), overkill for EOD-only data.
 3. **Recommended stance**: we already have working official paths for every pipeline we need (NSE publication APIs + BSE APIs + bhavcopy via BSE session flow in future). A VPS is only justified if we later need live NSE quotes (quote-equity) or bhavcopy archives at scale. Note NSE redistrib-live-data restrictions; our terminal is EOD/delayed, which stays compliant.
 
+## 11. Smart-money radar — NSE bulk/block deals + SAST/insider + promoter pledge (TASK-1415)
+
+Live-verified 2026-08-29 from this machine (Saturday — deal endpoints still served
+the prior week's trading days; announcements feed healthy-empty as expected).
+
+Feed pipeline: `scripts/ingest-smart-money.mjs` (daily) → `smart_money_feed` +
+`smart_money_status` → `GET /api/smart-money` → `/radar` UI.
+
+| Source | Endpoint | Auth | Rate limits | Verdict | Notes |
+|---|---|---|---|---|---|
+| Bulk deals | `GET www.nseindia.com/api/historicalOR/bulk-block-short-deals?optionType=bulk_deals&from=DD-MM-YYYY&to=DD-MM-YYYY[&csv=true]` | none | none observed (rapid probes all 200) | **WORKS** | rows: `BD_SYMBOL, BD_SCRIP_NAME, BD_CLIENT_NAME, BD_BUY_SELL, BD_QTY_TRD, BD_TP_WATP` (trade price), `BD_DT_DATE`; `BD_DT_ORDER` is the UTC-ISO timestamp |
+| Block deals | same endpoint, `optionType=block_deals` | none | same | **WORKS** | same row shape |
+| Insider (SAST) + promoter pledge | `GET www.nseindia.com/api/corporate-announcements?index=equities` | none | none observed | **WORKS (rolling)** | returns the latest ~20 announcements only — a daily poll captures SAST filings (`Disclosure under SEBI (SAST) Regulations`) and pledge intimations (`pledge`/`pledging`) as they are published; items without those tokens are dropped. **Boilerplate guard:** trading-window closure notices quote the *SEBI (Prohibition of Insider Trading) Regulations* without reporting insider activity and are excluded from the insider lane (this was a real false positive in the 2026-08-29 batch — TEMPSENS). |
+
+Dead ends (404/empty, do not use): `/api/bulk-deals`, `/api/block-deals`
+(removed endpoints, Akamai "Resource not found"); `/api/merged-daily-reports?key=*`
+returns `{"data":[],"msg":"No Data Found"}` for every key incl. invalid ones and
+is only populated on trading days; BSE `BulkDealsData/w` 301s to an error page.
+
+Semantics to rely on:
+- Deals only exist on trading days — a Saturday run legitimately sees the
+  prior week's deals; a healthy-empty announcements batch (no filings) is not
+  an error. `smart_money_status` distinguishes healthy-empty (`ok=1`) from a
+  hard refusal (`ok=0`, `detail_json.blocked=true` → UI shows the "Source
+  blocked/offline" empty state).
+- `value = BD_QTY_TRD × BD_TP_WATP` is computed at ingest (₹, unrounded).
+
+ToS posture: these are the exchange's own **publication** endpoints for
+delayed/EOD regulatory disclosures (bulk/block reports and SEBI-mandated
+filings) — same low-risk class as the other working NSE publication APIs in
+§1. Keep daily, single-feed pulls; no per-symbol fan-out, no redistribution.
+Rate limits: none documented by NSE; observed none. We self-impose ~800 ms
+inter-source delay and HostBackoff parks the host on 429 (sustained throttle
+does not trip the ingest circuit breaker). If NSE starts blocking (403), the
+ingest records the refusal and the UI degrades to the honest empty state;
+daily re-runs recover automatically.
+
 ---
 
 ## Recommended data architecture
