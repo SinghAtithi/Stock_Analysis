@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   createChart,
+  createSeriesMarkers,
   CandlestickSeries,
   HistogramSeries,
   ColorType,
@@ -10,9 +11,17 @@ import {
   PriceScaleMode,
   type IChartApi,
   type ISeriesApi,
+  type ISeriesMarkersPluginApi,
+  type Time,
 } from "lightweight-charts";
 import type { ChartData, Candle, RangeKey } from "@/lib/types";
 import { RANGES } from "@/lib/types";
+import {
+  actionsInWindow,
+  fetchCorporateActions,
+  toMarkers,
+  type NormalizedAction,
+} from "@/lib/corporateActions";
 
 const UP_LIGHT = "#0e7a3a";
 const UP_DARK = "#8ec9a8";
@@ -59,8 +68,11 @@ export default function ChartPanel({
   const chartRef = useRef<IChartApi | null>(null);
   const candleRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
   const volRef = useRef<ISeriesApi<"Histogram"> | null>(null);
+  const markersRef = useRef<ISeriesMarkersPluginApi<Time> | null>(null);
   const [legend, setLegend] = useState<Legend>(EMPTY_LEGEND);
   const [logScale, setLogScale] = useState(false);
+  const [actions, setActions] = useState<NormalizedAction[]>([]);
+  const [actionsFor, setActionsFor] = useState<string | null>(null);
 
   const pendingLegend = useRef<Legend | null>(null);
   const legendRaf = useRef<number | null>(null);
@@ -99,6 +111,21 @@ export default function ChartPanel({
       mode: logScale ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal,
     });
   }, [logScale]);
+
+  /* TASK-360: corporate-action history for the current symbol. Best-effort —
+     unknown symbols / failures resolve to [] and the chart stays clean.
+     No symbol ⇒ no chart, and the actionsFor guard below keeps stale
+     actions off a different symbol's canvas, so no reset state is needed. */
+  useEffect(() => {
+    const symbol = data?.symbol;
+    if (!symbol) return;
+    const ctrl = new AbortController();
+    fetchCorporateActions(symbol, ctrl.signal).then((items) => {
+      setActions(items);
+      setActionsFor(symbol);
+    });
+    return () => ctrl.abort();
+  }, [data?.symbol]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -221,6 +248,9 @@ export default function ChartPanel({
       scaleMargins: { top: 0.86, bottom: 0 },
     });
 
+    /* TASK-360: markers for dividends/splits/bonuses; fed by the sync effect */
+    markersRef.current = createSeriesMarkers(candles, []);
+
     chart.subscribeCrosshairMove((param) => {
       const d = param.seriesData.get(candles) as
         | {
@@ -255,8 +285,39 @@ export default function ChartPanel({
       chartRef.current = null;
       candleRef.current = null;
       volRef.current = null;
+      markersRef.current = null;
     };
   }, [queueLegend, cancelPendingLegend]);
+
+/* TASK-360: snap corporate actions to the visible candle window (pure
+     derivation — ex-date epochs are IST-midnight while candle epochs are
+     UTC-midnight, so exact matches never line up; snap within snapDays). */
+  const inViewActions = useMemo(() => {
+    if (!data) return [] as NormalizedAction[];
+    if (actionsFor !== data.symbol) return [] as NormalizedAction[];
+    const iv = data.interval;
+    const snapDays =
+      iv.endsWith("m") || iv.endsWith("h")
+        ? 0
+        : iv === "1wk"
+          ? 12
+          : iv === "1mo"
+            ? 28
+            : 5;
+    return actionsInWindow(actions, data.candles, snapDays);
+  }, [data, actions, actionsFor]);
+
+  /* apply the derived markers to the canvas (external system) */
+  useEffect(() => {
+    if (!data || !markersRef.current) return;
+    const warn =
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--color-warn")
+        .trim() || (isDarkMode() ? "#fbbf24" : "#92400e");
+    markersRef.current.setMarkers(
+      toMarkers(inViewActions, warn) as never,
+    );
+  }, [data, inViewActions]);
 
   useEffect(() => {
     if (!data || !chartRef.current || !candleRef.current || !volRef.current)
@@ -312,6 +373,18 @@ export default function ChartPanel({
           {data.symbol} chart, {data.range} range, {data.candles.length} candles
           from {data.source}. Last close{" "}
           {data.candles[data.candles.length - 1]?.close ?? "—"}.
+        </p>
+      )}
+      {inViewActions.length > 0 && (
+        <p className="sr-only">
+          {inViewActions.length} price-adjusted corporate action
+          {inViewActions.length === 1 ? "" : "s"} on this chart:{" "}
+          {inViewActions
+            .map(
+              (a) =>
+                `${new Date(a.ts * 1000).toISOString().slice(0, 10)} ${a.plain}`,
+            )
+            .join("; ")}.
         </p>
       )}
       <div className="mb-3 flex items-center justify-between gap-3">
@@ -384,6 +457,45 @@ export default function ChartPanel({
         </div>
       ) : (
         <div className="mb-2 h-[32px]" aria-hidden />
+      )}
+
+      {/* corporate-action legend — TASK-360: plain-English annotation for
+          the amber markers; square = dividend, circle = split or bonus */}
+      {inViewActions.length > 0 && (
+        <div className="mb-2 flex flex-wrap items-center gap-1.5">
+          <span
+            className="flex items-center gap-1.5 rounded-lg border border-line bg-panel-2 px-2.5 py-1 text-[11px] font-medium text-muted"
+            title="Square marker = dividend · circle marker = split or bonus"
+          >
+            <span
+              aria-hidden
+              className="h-2 w-2 shrink-0 rounded-sm"
+              style={{ backgroundColor: "var(--color-warn)" }}
+            />
+            Price-adjusted events — a drop here is not a crash
+          </span>
+          {inViewActions.map((a) => (
+            <span
+              key={`${a.ts}-${a.kind}`}
+              title={a.subject ?? undefined}
+              className="flex items-center gap-1.5 rounded-lg border border-line bg-panel-2 px-2.5 py-1 text-[11px] text-muted"
+            >
+              <span
+                aria-hidden
+                className="h-2 w-2 shrink-0 rounded-sm"
+                style={{ backgroundColor: "var(--color-warn)" }}
+              />
+              <span className="font-mono tabular-nums">
+                {new Date(a.ts * 1000).toLocaleDateString("en-IN", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "2-digit",
+                })}
+              </span>
+              <span className="text-paper">{a.plain}</span>
+            </span>
+          ))}
+        </div>
       )}
 
       <div

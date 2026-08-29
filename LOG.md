@@ -17,6 +17,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-29 — LYNX: TASK-360 shipped — corporate action markers; ui-smoke selector fix
+
+- **TASK-360 shipped** (ECHO subagent): chart now marks dividend/split/bonus events — `web/src/lib/corporateActions.ts` (normalizeActions / actionsInWindow with IST-vs-UTC ex-date snapping per interval / toMarkers / best-effort fetch) + ChartPanel `SeriesMarkersPlugin` (square=dividend, circle=split/bonus, belowBar, `--color-warn` token chips with date + plain-English "Dividend ₹10/share — price adjusted", header chip "Price-adjusted events — a drop here is not a crash", sr-only summary listing visible actions). Probe with mocked APIs: axe 0, empty-actions symbols render clean. 388 tests pass; 2 failing suites are other agents' uncommitted WIP (paper-book SyntaxError, smart-money fixture).
+- **ui-smoke fix pushed**: screener.py's score-sort click now `name="Score", exact=True` — per-row "About this score" tooltip buttons (TASK-377) broke the substring match (strict mode, 4 elements); caused the ui-smoke failures on the 166/232 + calendar/tax pushes.
+
+---
+
 ## 2026-08-29 — LYNX: TASK-377 shipped — honest score tooltip
 
 - **TASK-377 shipped** (SABLE subagent): screener Score tooltip seeded under TASK-232's umbrella claimed "percentile within today's universe" — verified FALSE for 8 of 13 strategies (F-Score/9, z-scores, SUE bands, 52w-high map raw metrics; demo-52wlow default view is one of them). Replaced with honest copy: "Score 7.3 · 0–100, higher = stronger — 7 ≈ weak, 90 ≈ strong for this strategy today. Not a forecast." — reusing /help/understanding-scores framing, tooltip contrast 5.02:1 AA. Pattern matches StrategyPicker's CSS-only focus-within tooltip (group-hover + group-focus-within, role=tooltip, aria-describedby, no JS); muted 11px token, not blue. Also fixed TASK-232's active-pill subtitle contrast (3.70:1 → text-ink/70 8.65:1) for axe 0. Probe 24/25 (the 1 miss = transient dev-mode console warning, not reproducible).
