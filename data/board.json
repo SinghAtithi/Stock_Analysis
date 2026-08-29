@@ -6197,7 +6197,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "ghost",
       "labels": [
         "product",
@@ -6208,31 +6208,31 @@
         {
           "id": "1",
           "text": "accept common broker CSV columns (symbol,qty,avg price) with tolerant parser + preview before import",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "sector + cap concentration donut with 'Diversified/Concentrated' verdict",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "overlap % vs Nifty 50 membership",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "factor exposure bar (momentum/value/quality/vol) mapped from latest signal_snapshots percentiles",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "processed client-side only, nothing uploaded",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787510879554,
-      "updatedAt": 1787984127172,
+      "updatedAt": 1787990612298,
       "blocked": false
     },
     {
@@ -6943,7 +6943,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "ghost",
       "labels": [
         "product",
@@ -6954,31 +6954,31 @@
         {
           "id": "1",
           "text": "pick 2 symbols via search inputs synced to URL params",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "side-by-side fundamentals with better-cell highlight per metric",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "chart overlay % since start reusing compare pill pattern (extends TASK-272 beyond index-only)",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "strategy score columns from signal_snapshots for both",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "mobile stacks vertically at 390px",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787511366145,
-      "updatedAt": 1787984127131,
+      "updatedAt": 1787990611703,
       "blocked": false
     },
     {
@@ -7746,6 +7746,90 @@
   ],
   "activities": [
     {
+      "id": "S16V",
+      "taskId": "TASK-1378",
+      "text": "moved doing → done",
+      "agent": "GHOST",
+      "at": 1787990612298
+    },
+    {
+      "id": "YOUR",
+      "taskId": "TASK-1378",
+      "text": "✓ checked processed client-side only, nothing uploaded",
+      "agent": "GHOST",
+      "at": 1787990612260
+    },
+    {
+      "id": "F16I",
+      "taskId": "TASK-1378",
+      "text": "✓ checked factor exposure bar (momentum/value/quality/vol)",
+      "agent": "GHOST",
+      "at": 1787990612221
+    },
+    {
+      "id": "S3VL",
+      "taskId": "TASK-1378",
+      "text": "✓ checked overlap % vs Nifty 50 membership",
+      "agent": "GHOST",
+      "at": 1787990612184
+    },
+    {
+      "id": "HIZB",
+      "taskId": "TASK-1378",
+      "text": "✓ checked sector + cap concentration donut with 'Diversifi",
+      "agent": "GHOST",
+      "at": 1787990612145
+    },
+    {
+      "id": "2WQC",
+      "taskId": "TASK-1378",
+      "text": "✓ checked accept common broker CSV columns (symbol,qty,avg",
+      "agent": "GHOST",
+      "at": 1787990612106
+    },
+    {
+      "id": "4XH9",
+      "taskId": "TASK-1418",
+      "text": "moved doing → done",
+      "agent": "GHOST",
+      "at": 1787990611703
+    },
+    {
+      "id": "KVAX",
+      "taskId": "TASK-1418",
+      "text": "✓ checked mobile stacks vertically at 390px",
+      "agent": "GHOST",
+      "at": 1787990611646
+    },
+    {
+      "id": "NK5F",
+      "taskId": "TASK-1418",
+      "text": "✓ checked strategy score columns from signal_snapshots for",
+      "agent": "GHOST",
+      "at": 1787990611607
+    },
+    {
+      "id": "WTI8",
+      "taskId": "TASK-1418",
+      "text": "✓ checked chart overlay % since start reusing compare pill",
+      "agent": "GHOST",
+      "at": 1787990611566
+    },
+    {
+      "id": "JPH7",
+      "taskId": "TASK-1418",
+      "text": "✓ checked side-by-side fundamentals with better-cell highl",
+      "agent": "GHOST",
+      "at": 1787990611524
+    },
+    {
+      "id": "4UPK",
+      "taskId": "TASK-1418",
+      "text": "✓ checked pick 2 symbols via search inputs synced to URL p",
+      "agent": "GHOST",
+      "at": 1787990611486
+    },
+    {
       "id": "F7XZ",
       "taskId": "TASK-360",
       "text": "✓ checked AC: data from company events (TASK-248) when ava",
@@ -8220,90 +8304,6 @@
       "text": "✓ checked open tasks <= 50",
       "agent": "RAVAN",
       "at": 1787945200926
-    },
-    {
-      "id": "YDV7",
-      "taskId": "TASK-1503",
-      "text": "claimed by LYNX · → doing",
-      "agent": "LYNX",
-      "at": 1787944932071
-    },
-    {
-      "id": "NBYT",
-      "taskId": "TASK-1503",
-      "text": "created in todo",
-      "agent": "LYNX",
-      "at": 1787944917899
-    },
-    {
-      "id": "WFXN",
-      "taskId": "TASK-88",
-      "text": "claimed by ORION · → doing",
-      "agent": "ORION",
-      "at": 1787554305618
-    },
-    {
-      "id": "T52Q",
-      "taskId": "TASK-90",
-      "text": "moved doing → done",
-      "agent": "ORION",
-      "at": 1787553855405
-    },
-    {
-      "id": "4US8",
-      "taskId": "TASK-90",
-      "text": "claimed by ORION · → doing",
-      "agent": "ORION",
-      "at": 1787552933691
-    },
-    {
-      "id": "7IP9",
-      "taskId": "TASK-257",
-      "text": "moved doing → done",
-      "agent": "ORION",
-      "at": 1787552480507
-    },
-    {
-      "id": "K2R2",
-      "taskId": "TASK-257",
-      "text": "claimed by ORION · → doing",
-      "agent": "ORION",
-      "at": 1787550897131
-    },
-    {
-      "id": "EXNT",
-      "taskId": "TASK-821",
-      "text": "review ✗ gates RED (tsc=17.4s·lint=48.8s) — fix and re-run",
-      "agent": "QUARK",
-      "at": 1787550647694
-    },
-    {
-      "id": "26T7",
-      "taskId": "TASK-821",
-      "text": "✓ checked axe 0 violations",
-      "agent": "QUARK",
-      "at": 1787550580837
-    },
-    {
-      "id": "KDR0",
-      "taskId": "TASK-821",
-      "text": "✓ checked reload path still works as a fallback",
-      "agent": "QUARK",
-      "at": 1787550580522
-    },
-    {
-      "id": "I6JY",
-      "taskId": "TASK-821",
-      "text": "✓ checked the error screen either (a) recovers without a f",
-      "agent": "QUARK",
-      "at": 1787550580074
-    },
-    {
-      "id": "YEPI",
-      "taskId": "TASK-113",
-      "text": "moved review → done",
-      "agent": "ORION",
-      "at": 1787550451824
     }
   ],
   "deletions": [
@@ -9108,5 +9108,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787990320429
+  "updatedAt": 1787990612301
 }
