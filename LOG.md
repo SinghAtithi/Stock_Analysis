@@ -1,5 +1,11 @@
 ---
 
+## 2026-08-29 — LYNX: TASK-366 shipped — high-contrast mode
+
+- **TASK-366 shipped** (MANTIS subagent): third theme mode html.contrast — tokens recomputed for WCAG AAA (muted #626870→#4d4d4d 8.45:1, faint #696f77→#565656 7.34:1, up 8.15:1, down 7.93:1, paper/ink 21:1, warn 8.36:1; the ticket's #9BA1AC was a proposal, not in the codebase — it fails even AA). ThemeToggle cycles light→dark→contrast (Moon/Sun/Contrast, aria-pressed, persisted in nifty-theme); contrast paints post-hydration (bootstrap untouched — one-frame light flash on contrast reloads, documented tradeoff while TASK-1395 CSP work owns layout). Probe 38/38, axe 0 in all three modes, ratios verified against computed styles.
+
+------
+
 ## 2026-08-29 — LYNX: TASK-236 closed superseded
 
 - **TASK-236 closed superseded**: 'Screener has no saved views' — saved views have shipped since TASK-62 (save/load), TASK-776 (announcement), TASK-386 (undo), TASK-613 (overwrite confirm); the board card predates them.

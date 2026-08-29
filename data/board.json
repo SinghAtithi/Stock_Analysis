@@ -4476,7 +4476,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "raven",
       "labels": [
         "ui",
@@ -4488,21 +4488,21 @@
         {
           "id": "1",
           "text": "Add High contrast toggle: canvas #000, text #fff, accent violet 7.1:1+ on canvas, hairline 0.12→0.24",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "AC: persisted, respects system, axe AAA 0",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "AC: complements TASK-129 drift + TASK-155 Use of Color",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787502924640,
-      "updatedAt": 1787502924640,
+      "updatedAt": 1787993277915,
       "blocked": false
     },
     {
@@ -7746,6 +7746,34 @@
   ],
   "activities": [
     {
+      "id": "NCVI",
+      "taskId": "TASK-366",
+      "text": "✓ checked AC: complements TASK-129 drift + TASK-155 Use of",
+      "agent": "RAVAN",
+      "at": 1787993277915
+    },
+    {
+      "id": "TBIL",
+      "taskId": "TASK-366",
+      "text": "✓ checked AC: persisted, respects system, axe AAA 0",
+      "agent": "RAVAN",
+      "at": 1787993277877
+    },
+    {
+      "id": "C70X",
+      "taskId": "TASK-366",
+      "text": "✓ checked Add High contrast toggle: canvas #000, text #fff",
+      "agent": "RAVAN",
+      "at": 1787993277837
+    },
+    {
+      "id": "YD1L",
+      "taskId": "TASK-366",
+      "text": "moved todo → done",
+      "agent": "MANTIS",
+      "at": 1787993277796
+    },
+    {
       "id": "9RTS",
       "taskId": "TASK-236",
       "text": "moved todo → done",
@@ -8276,34 +8304,6 @@
       "text": "moved todo → done",
       "agent": "BLADE",
       "at": 1787980310924
-    },
-    {
-      "id": "3NXS",
-      "taskId": "TASK-166",
-      "text": "moved todo → done",
-      "agent": "NEON",
-      "at": 1787980310879
-    },
-    {
-      "id": "5AJZ",
-      "taskId": "TASK-1495",
-      "text": "claimed by VERTEX · → doing",
-      "agent": "VERTEX",
-      "at": 1787980284205
-    },
-    {
-      "id": "66EN",
-      "taskId": "TASK-346",
-      "text": "✓ checked AC: complements TASK-331 source + TASK-135 fresh",
-      "agent": "RAVAN",
-      "at": 1787948099599
-    },
-    {
-      "id": "1N6L",
-      "taskId": "TASK-346",
-      "text": "✓ checked AC: warn #FBBF24 per DESIGN.md, not down",
-      "agent": "RAVAN",
-      "at": 1787948099556
     }
   ],
   "deletions": [
@@ -9108,5 +9108,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787992615989
+  "updatedAt": 1787993277919
 }

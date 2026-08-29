@@ -117,6 +117,42 @@ html.dark ::-webkit-scrollbar-thumb:hover {
   background: #363a41;
 }
 
+/* TASK-366: high-contrast mode (html.contrast) — near-black on pure white,
+   every text token ≥ 7:1 (WCAG AAA), borders ≥ 3:1 (1.4.11 non-text).
+   Declared after html.dark so it wins if both classes ever coexist. */
+html.contrast {
+  color-scheme: light;
+  --color-canvas: #ffffff;
+  --color-paper: #000000;
+  --color-ink: #ffffff;
+  --color-panel: #ffffff;
+  --color-panel-2: #fafafa;
+  --color-surface: #ffffff;
+  --color-line: #7a7a7a;
+  --color-line-strong: #5c5c5c;
+  --color-muted: #4d4d4d;
+  --color-faint: #565656;
+  --color-hairline: #949494;
+  --color-hairline-strong: #707070;
+  --color-up: #0a5c2a;
+  --color-up-soft: #e8f5ec;
+  --color-down: #9e1e13;
+  --color-down-soft: #fdeeec;
+  --color-warn: #7f3a0c;
+  --color-warn-soft: #fef3c7;
+  --color-accent: #000000;
+  --color-accent-soft: #f4f4f4;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.25), 0 4px 12px rgb(0 0 0 / 0.15);
+  --shadow-md: 0 4px 16px rgb(0 0 0 / 0.3), 0 1px 3px rgb(0 0 0 / 0.2);
+}
+html.contrast ::-webkit-scrollbar-thumb {
+  background: #949494;
+  border-color: var(--color-canvas);
+}
+html.contrast ::-webkit-scrollbar-thumb:hover {
+  background: #7a7a7a;
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
