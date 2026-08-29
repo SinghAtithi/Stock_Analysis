@@ -4,6 +4,13 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-29 — LYNX: TASK-377 shipped — honest score tooltip
+
+- **TASK-377 shipped** (SABLE subagent): screener Score tooltip seeded under TASK-232's umbrella claimed "percentile within today's universe" — verified FALSE for 8 of 13 strategies (F-Score/9, z-scores, SUE bands, 52w-high map raw metrics; demo-52wlow default view is one of them). Replaced with honest copy: "Score 7.3 · 0–100, higher = stronger — 7 ≈ weak, 90 ≈ strong for this strategy today. Not a forecast." — reusing /help/understanding-scores framing, tooltip contrast 5.02:1 AA. Pattern matches StrategyPicker's CSS-only focus-within tooltip (group-hover + group-focus-within, role=tooltip, aria-describedby, no JS); muted 11px token, not blue. Also fixed TASK-232's active-pill subtitle contrast (3.70:1 → text-ink/70 8.65:1) for axe 0. Probe 24/25 (the 1 miss = transient dev-mode console warning, not reproducible).
+- **Flagged for TASK-744**: /help/understanding-scores still frames ALL scores as percentiles — false for the 8 non-percentile strategies; the help page should be reconciled when TASK-744 (score breakdown) is done.
+
+---
+
 ## 2026-08-29 — LYNX: TASK-166/232 shipped; orchestrator prompt published
 
 - **TASK-166 shipped** (NEON subagent): SiteHeader nav unified across every route — Screener · Breadth · Backtest · Board · Help on desktop, drawer on mobile, `aria-current=page` + `bg-paper text-ink shadow-sm` active state; board page header aligned to the same set (dropped its Terminal quick-link; logo still links home); home's inline search + TASK-113 search slot untouched. Probe: nav row present on 7 routes, aria-current correct per route, axe 0.

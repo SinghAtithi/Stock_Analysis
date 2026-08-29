@@ -223,13 +223,20 @@ function ScreenerInner() {
       sortValue: (r) => r.score,
       width: "w-20",
       /* TASK-377: a bare number has no plain meaning — the tooltip restates
-         the score as the percentile it is, reusing the /help/understanding-scores
-         copy ("percentile within today's universe… stronger than ~9 of 10
-         symbols on this strategy today"). CSS-only tooltip, same pattern as
-         the StrategyPicker one (TASK-232): hover + keyboard focus, no JS state.
-         Anchored bottom-full so the table's overflow-auto can't clip it on the
-         last rows. Score is strategy-agnostic — no factor name here because a
-         claim like "20d momentum" would be false for 188 of 190 strategies. */
+         the code's real semantics (types.ts: "Cross-sectional score 0-100;
+         higher = stronger signal") without inventing factor claims. Verified
+         against the registry: the score is a percentile rank only for
+         S100/S101/S105/roc20/quality — the rest map raw metrics (F-Score/9,
+         z-scores, SUE bands, 52w-high distance), so "Top 10% 20d momentum
+         vs Nifty500" (the issue's guess) and even "percentile" are false for
+         8 of 13 strategies, including the default view (demo-52wlow). The
+         honest frame from /help/understanding-scores is kept: 0-100, higher
+         = stronger, not a forecast. CSS-only tooltip, same pattern as the
+         StrategyPicker one (TASK-232): hover + keyboard focus, no JS state.
+         Anchored bottom-full so the table's overflow-auto can't clip it on
+         the last rows. Score is strategy-agnostic — no factor name here
+         because a claim like "20d momentum" would be false for most of the
+         registry. */
       render: (r) => (
         <span className="group relative inline-flex items-center gap-1">
           <span className="rounded-full bg-paper px-2 py-0.5 font-mono text-xs font-medium text-ink">{r.score.toFixed(1)}</span>
@@ -247,7 +254,7 @@ function ScreenerInner() {
             role="tooltip"
             className="pointer-events-none absolute bottom-full right-0 z-40 mb-1.5 w-60 rounded-lg border border-line bg-panel-2 px-3 py-2 text-[11px] leading-relaxed text-muted opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
           >
-            Score {r.score.toFixed(1)} · percentile within today&apos;s universe — stronger than ~{Math.round(r.score)} of 100 symbols on this strategy today
+            Score {r.score.toFixed(1)} · 0–100, higher = stronger — 7 ≈ weak, 90 ≈ strong for this strategy today. Not a forecast.
           </span>
         </span>
       ),
@@ -324,7 +331,7 @@ function ScreenerInner() {
                 className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${strategy === s.id ? "border-paper bg-paper text-ink shadow-sm" : "border-line bg-surface text-muted hover:border-line-strong hover:text-paper"}`}
               >
                 <span className="block leading-tight">{s.name}</span>
-                <span className="block font-mono text-[10px] tabular-nums leading-tight text-faint">
+                <span className={`block font-mono text-[10px] tabular-nums leading-tight ${strategy === s.id ? "text-ink/70" : "text-faint"}`}>
                   {s.id} · {s.subtitle}
                   {s.juryRank != null ? ` · Jury #${s.juryRank}` : ""}
                 </span>
