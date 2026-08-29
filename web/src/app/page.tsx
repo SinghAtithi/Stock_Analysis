@@ -19,6 +19,7 @@ import Odometer from "@/components/Odometer";
 import Watchlist, { type WatchQuote } from "@/components/Watchlist";
 import StarToggle from "@/components/StarToggle";
 import SiteHeader from "@/components/SiteHeader";
+import HeroValueProp from "@/components/HeroValueProp";
 import Modal from "@/components/Modal";
 import type {
   ChartData,
@@ -216,7 +217,11 @@ export default function Home() {
         rangeParam && RANGES.some((x) => x.range === rangeParam)
           ? rangeParam
           : "1y";
-      setPicked(target);
+      /* TASK-242: the landing chart is an implicit default (watchlist head
+         or NIFTY 50 fallback) — it must not count as a pick, or the hero
+         value prop would never be seen by a fresh visitor. Only a resolved
+         deep link (or an explicit pick) sets `picked`, which hides the hero. */
+      setPicked(resolved);
       setRange(startRange);
       void load(target, startRange);
     })();
@@ -571,6 +576,10 @@ export default function Home() {
       />
 
       <TickerTape items={ticker} onSelect={pick} />
+
+      {/* TASK-242: landing value prop — only while nothing is picked; the
+          terminal stays clean on any symbol-loaded state */}
+      {!picked && <HeroValueProp />}
 
       <main id="main-content" tabIndex={-1} className="flex min-h-0 flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row lg:px-6">
         {/* sidebar desktop — viewport-bounded so long watchlists scroll internally (TASK-839) */}

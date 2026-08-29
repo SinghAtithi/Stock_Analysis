@@ -1,4 +1,10 @@
-# Project Log
+---
+
+## 2026-08-29 — LYNX: TASK-242 shipped — landing hero value prop
+
+- **TASK-242 shipped** (HAWK subagent): new HeroValueProp band above the terminal — 'Every Indian market signal — one terminal' with NSE & BSE · 190 strategies chips, proof pills ('Jury-ranked · 6 independent models', 'Delayed 15m — exchange rule', 'No account · no card'), persisted dismiss (nifty.heroDismissed); shows only while nothing is picked, never crowds the terminal. mount now sets picked only from resolved deep links (landing chart stays implicit — chart always renders via selected). Probe: hero on cold load, gone after pick/deep-link, '/' search intact, dismiss persists, axe 0 light+dark.
+
+---# Project Log
 
 This file is the single source of truth for everything done in this project. Every session, change, and decision must be documented here with a timestamp.
 

@@ -4160,7 +4160,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "raven",
       "labels": [
         "ui",
@@ -4172,21 +4172,21 @@
         {
           "id": "1",
           "text": "Add hero subhead: 'NSE & BSE · 190 strategies · breadth + backtest' + 3 proof pills",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "AC: appears only when watchlist empty (TASK-77), dismissible",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "AC: violet accent not blue, axe 0",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787502506277,
-      "updatedAt": 1787502506277,
+      "updatedAt": 1787991232070,
       "blocked": false
     },
     {
@@ -6153,8 +6153,8 @@
       "desc": "",
       "phase": "C",
       "priority": "P1",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "ghost",
       "labels": [
         "product",
         "moat"
@@ -6188,7 +6188,7 @@
         }
       ],
       "createdAt": 1787510879282,
-      "updatedAt": 1787510879282,
+      "updatedAt": 1787990709248,
       "blocked": false
     },
     {
@@ -7746,6 +7746,41 @@
   ],
   "activities": [
     {
+      "id": "G79G",
+      "taskId": "TASK-242",
+      "text": "✓ checked AC: violet accent not blue, axe 0",
+      "agent": "RAVAN",
+      "at": 1787991232070
+    },
+    {
+      "id": "Q8VP",
+      "taskId": "TASK-242",
+      "text": "✓ checked AC: appears only when watchlist empty (TASK-77),",
+      "agent": "RAVAN",
+      "at": 1787991232026
+    },
+    {
+      "id": "IRGI",
+      "taskId": "TASK-242",
+      "text": "✓ checked Add hero subhead: 'NSE & BSE · 190 strategies · ",
+      "agent": "RAVAN",
+      "at": 1787991231986
+    },
+    {
+      "id": "TVCJ",
+      "taskId": "TASK-242",
+      "text": "moved todo → done",
+      "agent": "HAWK",
+      "at": 1787991231945
+    },
+    {
+      "id": "7D5T",
+      "taskId": "TASK-1377",
+      "text": "claimed by GHOST · → doing",
+      "agent": "GHOST",
+      "at": 1787990709248
+    },
+    {
       "id": "S16V",
       "taskId": "TASK-1378",
       "text": "moved doing → done",
@@ -8269,41 +8304,6 @@
       "text": "✓ checked LOG.md entry appended",
       "agent": "RAVAN",
       "at": 1787945383791
-    },
-    {
-      "id": "02L2",
-      "taskId": "TASK-1503",
-      "text": "review ✗ gates RED (tsc=2.3s·lint=8.8s) — fix and re-run",
-      "agent": "LYNX",
-      "at": 1787945232848
-    },
-    {
-      "id": "K02W",
-      "taskId": "TASK-1503",
-      "text": "✓ checked backup exists",
-      "agent": "RAVAN",
-      "at": 1787945201065
-    },
-    {
-      "id": "CA6N",
-      "taskId": "TASK-1503",
-      "text": "✓ checked top P1 todos by recency kept",
-      "agent": "RAVAN",
-      "at": 1787945201021
-    },
-    {
-      "id": "SJXW",
-      "taskId": "TASK-1503",
-      "text": "✓ checked active work (doing/review/backlog) + P0 all kept",
-      "agent": "RAVAN",
-      "at": 1787945200975
-    },
-    {
-      "id": "J9CH",
-      "taskId": "TASK-1503",
-      "text": "✓ checked open tasks <= 50",
-      "agent": "RAVAN",
-      "at": 1787945200926
     }
   ],
   "deletions": [
@@ -9108,5 +9108,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787990612301
+  "updatedAt": 1787991232074
 }
