@@ -142,6 +142,7 @@ const meta: StrategyMeta = {
   edgeScore: 9.67,
   universe: "nifty50",
   inputs: [`driftWindowDays=${DRIFT_WINDOW_DAYS}`, `stdRangeDivisor=${STD_RANGE_DIVISOR}`],
+  subtitle: "Prices keep drifting after earnings surprises",
   description:
     "Post-Earnings-Announcement Drift: SUE = (actual EPS − consensus) / estimate std (std from analyst low/high range ÷ 4), direction-signed 0-100 score, 60-day drift confirmation window. Falls back to YoY EPS surprise when estimates are missing.",
 };

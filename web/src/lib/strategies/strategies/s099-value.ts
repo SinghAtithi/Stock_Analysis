@@ -285,6 +285,7 @@ export const s099HmlStrategy = makeStrategy(
     edgeScore: 8.5,
     universe: "nifty500",
     inputs: ["metric=bookToMarket"],
+    subtitle: "Cheap stocks by book value vs market price",
     description:
       "Fama-French HML proxy: book-to-market (B/M) z-scored across the universe; 0-100.",
   },
@@ -300,6 +301,7 @@ export const s076NcavStrategy = makeStrategy(
     edgeScore: 8.67,
     universe: "nifty500",
     inputs: ["metric=ncavToMarketCap"],
+    subtitle: "Stocks priced below their net current asset value",
     description:
       "Graham net-net: (currentAssets - totalLiabilities) / marketCap, z-scored; 0-100.",
   },
@@ -315,6 +317,7 @@ export const s078LowPeStrategy = makeStrategy(
     edgeScore: 7.17,
     universe: "nifty500",
     inputs: ["metric=earningsYield"],
+    subtitle: "Stocks with low price-to-earnings ratios",
     description:
       "Low P/E via earnings yield (1/trailingPE), z-scored across the universe; 0-100.",
   },
@@ -330,6 +333,7 @@ export const s080MagicFormulaStrategy = makeStrategy(
     edgeScore: 8.83,
     universe: "nifty500",
     inputs: ["metrics=ebitToEv,roic"],
+    subtitle: "Earnings yield and return on capital, combined",
     description:
       "Magic formula: equal-weight z-composite of EBIT/EV and ROIC, ranked 0-100.",
   },

@@ -11,6 +11,9 @@ export interface StrategyMeta {
   id: string;
   /** Human-readable name. */
   name: string;
+  /** 1-line plain-English subtitle for retail users (TASK-232), derived from
+   * the strategy's description — shown on screener picker cards. */
+  subtitle: string;
   /** Family, mirroring RANKINGS.md groupings, e.g. "momentum", "value". */
   category: string;
   /** Final jury rank from RANKINGS.md (1 = best). null for strategies not yet juried. */

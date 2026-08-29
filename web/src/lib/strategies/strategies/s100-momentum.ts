@@ -48,6 +48,7 @@ const meta: StrategyMeta = {
   edgeScore: 9.83,
   universe: "nifty50",
   inputs: ["12m return", "1m skip", "pctRank"],
+  subtitle: "12-month return momentum, skipping the latest month",
   description:
     "Jegadeesh-Titman cross-sectional momentum: trailing 12-month return skipping the last ~1 month, scored as the percentile rank of momentum12 across the universe.",
 };

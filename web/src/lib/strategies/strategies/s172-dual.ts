@@ -113,6 +113,7 @@ const meta: StrategyMeta = {
   edgeScore: 8.83,
   universe: "nifty50",
   inputs: [`smaPeriod=${SMA_PERIOD}`, `retWindow=12m-1m`, `assets=${ASSETS.join("|")}+${CASH}`],
+  subtitle: "Strongest of Nifty, Sensex and gold — holds cash when all are weak",
   description:
     "Asset-level dual momentum: 200d SMA absolute-momentum gate + 12-1 return relative ranking over NIFTY 50/SENSEX/GOLDBEES; cash regime when the top asset's 12-1 return is negative. Score 100 at top of the risk-on stack, 0 in cash.",
 };

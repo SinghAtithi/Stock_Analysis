@@ -414,7 +414,7 @@ export default function BoardPage() {
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
       {/* header */}
-      <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-line bg-surface/85 px-4 py-3 backdrop-blur sm:px-6">
+      <header className="sticky top-0 z-30 flex flex-wrap items-center justify-between gap-3 border-b border-line bg-surface/85 px-4 py-3 backdrop-blur sm:px-6">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2.5">
             <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-paper text-[11px] font-bold tracking-widest text-ink">N</span>
@@ -423,19 +423,22 @@ export default function BoardPage() {
             </span>
             <span className="rounded-full border border-line bg-panel-2 px-2 py-0.5 font-mono text-[10px] font-medium tracking-wide text-muted sm:ml-1">KANBAN</span>
           </Link>
-          <nav className="hidden items-center gap-1 text-sm lg:flex">
-            <Link href="/" className="rounded-full px-3 py-1.5 text-muted transition-colors hover:bg-panel-2 hover:text-paper">
-              Terminal
-            </Link>
+          <nav className="hidden items-center gap-1 text-sm lg:flex" aria-label="Site">
             <Link href="/screener" className="rounded-full px-3 py-1.5 text-muted transition-colors hover:bg-panel-2 hover:text-paper">
               Screener
             </Link>
             <Link href="/breadth" className="rounded-full px-3 py-1.5 text-muted transition-colors hover:bg-panel-2 hover:text-paper">
               Breadth
             </Link>
+            <Link href="/backtest" className="rounded-full px-3 py-1.5 text-muted transition-colors hover:bg-panel-2 hover:text-paper">
+              Backtest
+            </Link>
             <span aria-current="page" className="rounded-full bg-paper px-3 py-1.5 text-sm font-medium text-ink shadow-sm">
               Board
             </span>
+            <Link href="/help" className="rounded-full px-3 py-1.5 text-muted transition-colors hover:bg-panel-2 hover:text-paper">
+              Help
+            </Link>
           </nav>
         </div>
 
@@ -463,6 +466,27 @@ export default function BoardPage() {
             <ChevronDown size={12} className="text-faint" />
           </button>
         </div>
+
+        <nav
+          aria-label="Site"
+          className="-mx-4 flex w-full basis-full gap-1 overflow-x-auto border-t border-line px-4 pb-2 pt-2 lg:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          <Link href="/screener" className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:bg-panel-2 hover:text-paper">
+            Screener
+          </Link>
+          <Link href="/breadth" className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:bg-panel-2 hover:text-paper">
+            Breadth
+          </Link>
+          <Link href="/backtest" className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:bg-panel-2 hover:text-paper">
+            Backtest
+          </Link>
+          <span aria-current="page" className="shrink-0 rounded-full bg-paper px-3 py-1.5 text-sm font-medium text-ink shadow-sm">
+            Board
+          </span>
+          <Link href="/help" className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:bg-panel-2 hover:text-paper">
+            Help
+          </Link>
+        </nav>
       </header>
 
       {/* subheader stats */}

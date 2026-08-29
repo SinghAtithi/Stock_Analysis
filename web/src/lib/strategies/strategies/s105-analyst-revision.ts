@@ -147,6 +147,7 @@ const meta: StrategyMeta = {
   edgeScore: 8.17,
   universe: "nifty50",
   inputs: [`w30=${W_30D}`, `w90=${W_90D}`, `minSamples=${MIN_SAMPLES}`],
+  subtitle: "Rides the drift after analyst estimate revisions",
   description:
     "Analyst Revision Drift: consensus EPS revisions predict continued drift (Chan-Jegadeesh-Lakonishok 1996). Revision momentum = 0.6·(30d consensus change %) + 0.4·(90d consensus change %) from analyst_data.revisionTrend, percentile-ranked cross-sectionally to 0-100. Null without analyst coverage.",
 };

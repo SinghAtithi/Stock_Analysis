@@ -12,16 +12,23 @@ interface SiteHeaderProps {
   subtitle: string;
   subtitleClassName?: string;
   sticky?: boolean;
-  nav?: boolean;
   onHelp?: () => void;
   alerts?: { symbol: string; exchange: string; price?: number | null } | null;
 }
+
+/* TASK-166: one nav row on every route — desktop inline, drawer on mobile */
+const NAV_LINKS = [
+  { href: "/screener", label: "Screener" },
+  { href: "/breadth", label: "Breadth" },
+  { href: "/backtest", label: "Backtest" },
+  { href: "/board", label: "Board" },
+  { href: "/help", label: "Help" },
+] as const;
 
 export default function SiteHeader({
   subtitle,
   subtitleClassName = "ml-1 hidden text-xs font-normal text-muted sm:inline",
   sticky = false,
-  nav = false,
   onHelp,
   alerts = null,
 }: SiteHeaderProps) {
@@ -33,6 +40,12 @@ export default function SiteHeader({
   const isHome = pathname === "/";
   const pickFromHeader = (r: { symbol: string; exchange: string }) =>
     router.push(`/?s=${encodeURIComponent(r.symbol)}&e=${encodeURIComponent(r.exchange)}&r=1y`);
+  const navClassName = (href: string) =>
+    `rounded-full px-3 py-1.5 text-sm transition-colors ${
+      pathname === href
+        ? "bg-paper font-medium text-ink shadow-sm"
+        : "text-muted hover:bg-panel-2 hover:text-paper"
+    }`;
   return (
     <header
       className={`flex flex-wrap items-center justify-between gap-4 border-b border-line px-4 py-3 sm:flex-nowrap sm:px-6 ${
@@ -55,54 +68,26 @@ export default function SiteHeader({
         </div>
       )}
 
-      {nav && (
-        <nav className="hidden items-center gap-1 text-sm sm:flex">
+      <nav className="hidden items-center gap-1 sm:flex" aria-label="Site">
+        {NAV_LINKS.map((link) => (
           <Link
-            href="/screener"
-            className="rounded-full px-3 py-1.5 text-muted transition-colors hover:bg-panel-2 hover:text-paper"
+            key={link.href}
+            href={link.href}
+            aria-current={pathname === link.href ? "page" : undefined}
+            className={navClassName(link.href)}
           >
-            Screener
+            {link.label}
           </Link>
-          <Link
-            href="/breadth"
-            className="rounded-full px-3 py-1.5 text-muted transition-colors hover:bg-panel-2 hover:text-paper"
-          >
-            Breadth
-          </Link>
-          <Link
-            href="/help"
-            className="rounded-full px-3 py-1.5 text-muted transition-colors hover:bg-panel-2 hover:text-paper"
-          >
-            Help
-          </Link>
-        </nav>
-      )}
+        ))}
+      </nav>
 
-      <div
-        className={`flex items-center ${nav ? "gap-2 sm:gap-3" : "gap-3 sm:gap-4"}`}
-      >
+      <div className="flex items-center gap-2 sm:gap-3">
         {alerts && <AlertCenter symbol={alerts.symbol} exchange={alerts.exchange} price={"price" in alerts ? alerts.price : null} />}
         <span className="hidden font-mono text-xs tabular-nums text-faint sm:inline">
           {clock ? `${clock} IST` : "—"}
         </span>
         <MarketStatus />
         <ThemeToggle />
-        {!nav && (
-          <>
-            <Link
-              href="/help"
-              className="rounded-full border border-line bg-surface px-3 py-1.5 text-sm font-medium text-paper hover:bg-panel-2"
-            >
-              Help
-            </Link>
-            <Link
-              href="/"
-              className="rounded-full border border-line bg-surface px-3 py-1.5 text-sm font-medium text-paper hover:bg-panel-2"
-            >
-              ← Terminal
-            </Link>
-          </>
-        )}
         {onHelp && (
           <button
             onClick={onHelp}
@@ -113,31 +98,21 @@ export default function SiteHeader({
           </button>
         )}
       </div>
-      {nav && (
-        <nav
-          aria-label="Site"
-          className="-mx-4 flex w-full basis-full gap-1 overflow-x-auto border-t border-line px-4 pb-2 pt-2 sm:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        >
+      <nav
+        aria-label="Site"
+        className="-mx-4 flex w-full basis-full gap-1 overflow-x-auto border-t border-line px-4 pb-2 pt-2 sm:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {NAV_LINKS.map((link) => (
           <Link
-            href="/screener"
-            className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:bg-panel-2 hover:text-paper"
+            key={link.href}
+            href={link.href}
+            aria-current={pathname === link.href ? "page" : undefined}
+            className={`shrink-0 ${navClassName(link.href)}`}
           >
-            Screener
+            {link.label}
           </Link>
-          <Link
-            href="/breadth"
-            className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:bg-panel-2 hover:text-paper"
-          >
-            Breadth
-          </Link>
-          <Link
-            href="/help"
-            className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:bg-panel-2 hover:text-paper"
-          >
-            Help
-          </Link>
-        </nav>
-      )}
+        ))}
+      </nav>
     </header>
   );
 }

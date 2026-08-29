@@ -366,6 +366,7 @@ const meta: StrategyMeta = {
   edgeScore: 9.0,
   universe: "nifty500",
   inputs: ["accrualModel=noa|cfo", "weights=equal", "zClamp=3", "minZSample=3"],
+  subtitle: "Profitable companies with clean, low-accrual earnings",
   description:
     "T18 quality trio composite: S096 Novy-Marx gross profitability (GP/assets), " +
     "S102 FF operating profitability proxy (OP/revenue), S095 Sloan accruals " +

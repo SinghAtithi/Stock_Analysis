@@ -104,6 +104,7 @@ const meta: StrategyMeta = {
   edgeScore: 9.5,
   universe: "nifty50",
   inputs: [`retWindow=12m-1m`, `volTarget=${VOL_TARGET}`, `volWindow=${VOL_WINDOW}d`, `assets=${ASSETS.join("|")}+${CASH}`],
+  subtitle: "Trend-following: each asset's own past 12-month direction",
   description:
     "Asset-level time-series momentum: direction = sign of 12-1 return (skip last month) per asset; exposure scaled by volTarget/realizedVol. Score maps exposure to 0-100 (50 neutral, 100 full-target long, 0 full short).",
 };

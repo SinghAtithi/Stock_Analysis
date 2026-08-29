@@ -37,6 +37,7 @@ interface SignalsResponse {
 interface StrategyMeta {
   id: string;
   name: string;
+  subtitle: string;
   category: string;
   juryRank: number | null;
   edgeScore: number | null;
@@ -52,8 +53,8 @@ interface StrategyMeta {
 }
 
 const FALLBACK_STRATEGIES: StrategyMeta[] = [
-  { id: "demo-52wlow", name: "52W High Distance", category: "trend", juryRank: null, edgeScore: null, universe: "nifty500", inputs: [] },
-  { id: "demo-roc20", name: "ROC(20) Momentum", category: "momentum", juryRank: null, edgeScore: null, universe: "nifty500", inputs: [] },
+  { id: "demo-52wlow", name: "52W High Distance", subtitle: "Closeness to the 52-week high", category: "trend", juryRank: null, edgeScore: null, universe: "nifty500", inputs: [] },
+  { id: "demo-roc20", name: "ROC(20) Momentum", subtitle: "20-day momentum, short-term rate of change", category: "momentum", juryRank: null, edgeScore: null, universe: "nifty500", inputs: [] },
 ];
 
 /* column keys eligible for ?sort= deep links + saved views */
@@ -221,7 +222,35 @@ function ScreenerInner() {
       align: "right",
       sortValue: (r) => r.score,
       width: "w-20",
-      render: (r) => <span className="rounded-full bg-paper px-2 py-0.5 font-mono text-xs font-medium text-ink">{r.score.toFixed(1)}</span>,
+      /* TASK-377: a bare number has no plain meaning — the tooltip restates
+         the score as the percentile it is, reusing the /help/understanding-scores
+         copy ("percentile within today's universe… stronger than ~9 of 10
+         symbols on this strategy today"). CSS-only tooltip, same pattern as
+         the StrategyPicker one (TASK-232): hover + keyboard focus, no JS state.
+         Anchored bottom-full so the table's overflow-auto can't clip it on the
+         last rows. Score is strategy-agnostic — no factor name here because a
+         claim like "20d momentum" would be false for 188 of 190 strategies. */
+      render: (r) => (
+        <span className="group relative inline-flex items-center gap-1">
+          <span className="rounded-full bg-paper px-2 py-0.5 font-mono text-xs font-medium text-ink">{r.score.toFixed(1)}</span>
+          <button
+            type="button"
+            aria-label="About this score"
+            aria-describedby={`score-tip-${r.symbol}`}
+            onClick={(e) => e.stopPropagation()}
+            className="grid h-6 w-6 shrink-0 place-items-center rounded-full border border-line bg-surface text-[11px] font-medium text-muted transition-colors hover:border-line-strong hover:text-paper focus-visible:outline-2 focus-visible:outline-accent"
+          >
+            i
+          </button>
+          <span
+            id={`score-tip-${r.symbol}`}
+            role="tooltip"
+            className="pointer-events-none absolute bottom-full right-0 z-40 mb-1.5 w-60 rounded-lg border border-line bg-panel-2 px-3 py-2 text-[11px] leading-relaxed text-muted opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
+          >
+            Score {r.score.toFixed(1)} · percentile within today&apos;s universe — stronger than ~{Math.round(r.score)} of 100 symbols on this strategy today
+          </span>
+        </span>
+      ),
     },
     {
       key: "price",
@@ -291,10 +320,14 @@ function ScreenerInner() {
                 key={s.id}
                 onClick={() => changeStrategy(s.id)}
                 aria-pressed={strategy === s.id}
-                title={s.juryRank ? `${s.name} · jury #${s.juryRank} · edge ${s.edgeScore ?? "—"}/10` : `${s.name} · unranked`}
+                title={s.juryRank ? `${s.name} · ${s.subtitle} · jury #${s.juryRank} · edge ${s.edgeScore ?? "—"}/10` : `${s.name} · ${s.subtitle} · unranked`}
                 className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${strategy === s.id ? "border-paper bg-paper text-ink shadow-sm" : "border-line bg-surface text-muted hover:border-line-strong hover:text-paper"}`}
               >
-                {s.name}
+                <span className="block leading-tight">{s.name}</span>
+                <span className="block font-mono text-[10px] tabular-nums leading-tight text-faint">
+                  {s.id} · {s.subtitle}
+                  {s.juryRank != null ? ` · Jury #${s.juryRank}` : ""}
+                </span>
               </button>
             ))
           )}

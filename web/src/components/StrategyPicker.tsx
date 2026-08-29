@@ -5,7 +5,10 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 interface StrategyOption {
   id: string;
   name: string;
+  subtitle: string;
+  category: string;
   juryRank: number | null;
+  edgeScore: number | null;
 }
 
 interface Props {
@@ -154,22 +157,59 @@ export default function StrategyPicker({
               const isSelected = s.id === value;
               return (
                 <li key={s.id}>
-                  <button
-                    type="button"
-                    id={`${listboxId}-opt-${i}`}
-                    role="option"
-                    aria-selected={isSelected}
-                    onMouseEnter={() => setActiveIdx(i)}
-                    onClick={() => commit(s.id)}
-                    className={`flex w-full items-baseline justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
-                      i === active ? "bg-panel-2 text-paper" : "text-muted hover:bg-panel-2 hover:text-paper"
-                    } ${isSelected ? "font-medium" : ""}`}
+                  <div
+                    className={`flex items-center gap-1.5 rounded-lg px-3 py-2 transition-colors ${
+                      i === active ? "bg-panel-2" : "hover:bg-panel-2"
+                    }`}
                   >
-                    <span className="min-w-0 truncate">{s.name}</span>
-                    <span className="shrink-0 font-mono text-[10px] tabular-nums text-faint">
-                      {s.juryRank != null ? `#${s.juryRank}` : s.id}
+                    <button
+                      type="button"
+                      id={`${listboxId}-opt-${i}`}
+                      role="option"
+                      aria-selected={isSelected}
+                      onMouseEnter={() => setActiveIdx(i)}
+                      onClick={() => commit(s.id)}
+                      className={`min-w-0 flex-1 text-left text-sm transition-colors ${
+                        isSelected ? "font-medium text-paper" : "text-muted hover:text-paper"
+                      }`}
+                    >
+                      {/* TASK-232: opaque ids mean nothing to a retail user —
+                          card shows id · plain-English subtitle · jury rank */}
+                      <span className="block truncate">{s.name}</span>
+                      <span className="block truncate font-mono text-[10px] tabular-nums text-faint">
+                        {s.id} · {s.subtitle}
+                        {s.juryRank != null ? ` · Jury #${s.juryRank}` : ""}
+                      </span>
+                    </button>
+                    <span className="group relative shrink-0">
+                      <button
+                        type="button"
+                        aria-label={`About ${s.name}`}
+                        aria-describedby={`${listboxId}-tip-${i}`}
+                        onMouseEnter={() => setActiveIdx(i)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Escape") {
+                            setOpen(false);
+                            inputRef.current?.focus();
+                          }
+                        }}
+                        className="grid h-6 w-6 place-items-center rounded-full border border-line bg-surface text-[11px] font-medium text-muted transition-colors hover:border-line-strong hover:text-paper focus-visible:outline-2 focus-visible:outline-accent"
+                      >
+                        i
+                      </button>
+                      {/* native tooltip: opens on hover and on keyboard focus
+                          (focus-within covers Tab focus), no JS state */}
+                      <span
+                        id={`${listboxId}-tip-${i}`}
+                        role="tooltip"
+                        className="pointer-events-none absolute right-0 top-full z-40 mt-1.5 w-60 rounded-lg border border-line bg-panel-2 px-3 py-2 text-xs leading-relaxed text-muted opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
+                      >
+                        {s.juryRank != null ? `Jury #${s.juryRank} · Edge ${s.edgeScore ?? "—"}/10` : "Unranked — no jury verdict yet"}
+                        {" · "}
+                        {s.category}
+                      </span>
                     </span>
-                  </button>
+                  </div>
                 </li>
               );
             })}

@@ -3769,7 +3769,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "raven",
       "labels": [
         "ui",
@@ -3781,21 +3781,21 @@
         {
           "id": "1",
           "text": "Unify SiteHeader nav across all routes: show Screener · Breadth · Backtest · Board on desktop, drawer on mobile",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "AC: active state uses aria-current=page + bg-paper text-ink",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "AC: no hardcoded hex, axe 0",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787502235717,
-      "updatedAt": 1787502235717,
+      "updatedAt": 1787980311049,
       "blocked": false
     },
     {
@@ -4090,7 +4090,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "raven",
       "labels": [
         "ui",
@@ -4102,21 +4102,21 @@
         {
           "id": "1",
           "text": "Add 1-line plain English subtitle per strategy + info tooltip with edge/jury plain copy",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "AC: card shows 'ROC20 · 20-day momentum · Jury #12'",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "AC: complements TASK-81 pill row + TASK-232 detail",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787502462462,
-      "updatedAt": 1787502462462,
+      "updatedAt": 1787980311182,
       "blocked": false
     },
     {
@@ -7455,8 +7455,8 @@
       "desc": "",
       "phase": "B",
       "priority": "P1",
-      "status": "todo",
-      "assignee": null,
+      "status": "doing",
+      "assignee": "vertex",
       "labels": [
         "api",
         "data",
@@ -7491,7 +7491,7 @@
         }
       ],
       "createdAt": 1787513100852,
-      "updatedAt": 1787513100852,
+      "updatedAt": 1787980284205,
       "blocked": false
     },
     {
@@ -7745,6 +7745,69 @@
     }
   ],
   "activities": [
+    {
+      "id": "6FQU",
+      "taskId": "TASK-232",
+      "text": "✓ checked AC: complements TASK-81 pill row + TASK-232 deta",
+      "agent": "RAVAN",
+      "at": 1787980311182
+    },
+    {
+      "id": "8XR9",
+      "taskId": "TASK-232",
+      "text": "✓ checked AC: card shows 'ROC20 · 20-day momentum · Jury #",
+      "agent": "RAVAN",
+      "at": 1787980311141
+    },
+    {
+      "id": "DPN0",
+      "taskId": "TASK-232",
+      "text": "✓ checked Add 1-line plain English subtitle per strategy +",
+      "agent": "RAVAN",
+      "at": 1787980311095
+    },
+    {
+      "id": "8V74",
+      "taskId": "TASK-166",
+      "text": "✓ checked AC: no hardcoded hex, axe 0",
+      "agent": "RAVAN",
+      "at": 1787980311049
+    },
+    {
+      "id": "LZTI",
+      "taskId": "TASK-166",
+      "text": "✓ checked AC: active state uses aria-current=page + bg-pap",
+      "agent": "RAVAN",
+      "at": 1787980311010
+    },
+    {
+      "id": "PS47",
+      "taskId": "TASK-166",
+      "text": "✓ checked Unify SiteHeader nav across all routes: show Scr",
+      "agent": "RAVAN",
+      "at": 1787980310965
+    },
+    {
+      "id": "UI5O",
+      "taskId": "TASK-232",
+      "text": "moved todo → done",
+      "agent": "BLADE",
+      "at": 1787980310924
+    },
+    {
+      "id": "3NXS",
+      "taskId": "TASK-166",
+      "text": "moved todo → done",
+      "agent": "NEON",
+      "at": 1787980310879
+    },
+    {
+      "id": "5AJZ",
+      "taskId": "TASK-1495",
+      "text": "claimed by VERTEX · → doing",
+      "agent": "VERTEX",
+      "at": 1787980284205
+    },
     {
       "id": "66EN",
       "taskId": "TASK-346",
@@ -8241,69 +8304,6 @@
       "text": "✓ checked selected highlight moves",
       "agent": "QUARK",
       "at": 1787548452468
-    },
-    {
-      "id": "YCJI",
-      "taskId": "TASK-98",
-      "text": "✓ checked J/K stepping past either end of the watchlist gi",
-      "agent": "QUARK",
-      "at": 1787548452174
-    },
-    {
-      "id": "4FEB",
-      "taskId": "TASK-81",
-      "text": "shipped 607aa8f → origin/master · feat(screener): searchable strategy picker past 8 registry entries — WAI-ARIA combobox (aria-expanded/controls/activedescendant, Arrow/Enter/Escape keyboard) replaces the endless pill row; pills remain for short lists; active strategy stays visible + deep-linkable via ?strategy=; also hardens meta?.count reads against bare-{} payloads (TASK-81) · gates tsc=11.7s·lint=48.7s·test=8.0s·boardjson=0.2s · e2e✓",
-      "agent": "ORION",
-      "at": 1787548122764
-    },
-    {
-      "id": "F01R",
-      "taskId": "TASK-81",
-      "text": "moved doing → review",
-      "agent": "ORION",
-      "at": 1787548050746
-    },
-    {
-      "id": "PMKB",
-      "taskId": "TASK-96",
-      "text": "shipped bc0e574 → origin/master · feat(legal): disclaimer/privacy/terms adopt the shared shell — SiteHeader nav, sentence-case headings via a token-driven LegalPage component replacing bespoke legal.css (mono/ink/undefined --font-archivo/all-caps retired); pricing link added to the legal footer; copy unchanged; axe 0 in both themes on all three pages (TASK-96) · gates tsc=11.6s·lint=45.3s·test=8.2s·boardjson=0.2s · e2e✓",
-      "agent": "ORION",
-      "at": 1787548039391
-    },
-    {
-      "id": "FF0L",
-      "taskId": "TASK-81",
-      "text": "✓ checked keyboard accessible (aria-expanded/selected) + a",
-      "agent": "ORION",
-      "at": 1787547983711
-    },
-    {
-      "id": "MRYD",
-      "taskId": "TASK-81",
-      "text": "✓ checked active strategy stays visible/deep-linkable (?st",
-      "agent": "ORION",
-      "at": 1787547983380
-    },
-    {
-      "id": "MSHJ",
-      "taskId": "TASK-81",
-      "text": "✓ checked pills remain for short lists",
-      "agent": "ORION",
-      "at": 1787547982998
-    },
-    {
-      "id": "84DO",
-      "taskId": "TASK-81",
-      "text": "✓ checked strategy selector degrades to a searchable dropd",
-      "agent": "ORION",
-      "at": 1787547982532
-    },
-    {
-      "id": "VXRO",
-      "taskId": "TASK-96",
-      "text": "review · gates green tsc=12.3s·lint=50.0s·test=7.9s·boardjson=0.1s · e2e✓",
-      "agent": "ORION",
-      "at": 1787547831122
     }
   ],
   "deletions": [
@@ -9108,5 +9108,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787948099603
+  "updatedAt": 1787980311186
 }

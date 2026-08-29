@@ -75,6 +75,7 @@ const meta: StrategyMeta = {
   edgeScore: 8.67,
   universe: "nifty500",
   inputs: [],
+  subtitle: "9-point financial health score from the Piotroski checklist",
   description:
     "Piotroski F-Score: 9-point fundamental health screen (profitability, accrual quality, leverage/liquidity, efficiency), scored 0-100 as (fscore/9)*100.",
 };

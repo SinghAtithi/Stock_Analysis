@@ -4,6 +4,14 @@ This file is the single source of truth for everything done in this project. Eve
 
 ---
 
+## 2026-08-29 — LYNX: TASK-166/232 shipped; orchestrator prompt published
+
+- **TASK-166 shipped** (NEON subagent): SiteHeader nav unified across every route — Screener · Breadth · Backtest · Board · Help on desktop, drawer on mobile, `aria-current=page` + `bg-paper text-ink shadow-sm` active state; board page header aligned to the same set (dropped its Terminal quick-link; logo still links home); home's inline search + TASK-113 search slot untouched. Probe: nav row present on 7 routes, aria-current correct per route, axe 0.
+- **TASK-232 shipped** (BLADE subagent): strategy ids get plain-English subtitles — `StrategyMeta.subtitle` added across the registry (derived from each strategy's own description, nothing invented), served by `/api/strategies`, rendered 'S100 · 12-month return momentum · Jury #1' on picker cards + pills; CSS-only focus-within info tooltip (Jury rank · Edge · category), keyboard + hover, Escape closes; combobox contract untouched. 332 tests pass, axe 0 both picker states. NOTE: /api/strategies payload change — :3000 stays stale (other agents' WIP blocks rebuild); fallbacks handle missing subtitle.
+- **Orchestrator prompt published** at `docs/orchestrator-prompt.md` — reusable protocol for concurrent agent sessions (collision-free claiming, WIP file rules, rolling subagent queue, stuck/cancel handling, shipping + 5th-push CI check).
+
+---
+
 ## 2026-08-29 — LYNX: TASK-518/370 shipped; TASK-80 closed (e723c5e)
 
 - **TASK-518 shipped** (VERTEX subagent): pricing CTAs gained "No card today" honesty on both plan cards; premise audit showed no ₹239 CTA exists (TASK-89 already made Pro "Not purchasable yet — granted manually"), so no trial claim was added — "preview 7d" would have been a lie (TASK-1424). Axe 0 both themes (isolated prod build).

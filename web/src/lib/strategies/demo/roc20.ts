@@ -19,6 +19,7 @@ const meta: StrategyMeta = {
   edgeScore: null,
   universe: "nifty500",
   inputs: [`rocPeriod=${ROC_PERIOD}`],
+  subtitle: "20-day momentum, short-term rate of change",
   description:
     "Demo strategy: 20-day rate of change, scored as the percentile rank of ROC across the universe.",
 };

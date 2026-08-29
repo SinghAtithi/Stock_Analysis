@@ -558,7 +558,6 @@ export default function Home() {
       <SiteHeader
         subtitle="Indian Market"
         sticky
-        nav
         onHelp={() => setHelpOpen(true)}
         alerts={
           selected

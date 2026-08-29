@@ -85,6 +85,7 @@ export function GET() {
       return {
         id: s.meta.id,
         name: s.meta.name,
+        subtitle: s.meta.subtitle,
         category: s.meta.category,
         juryRank: s.meta.juryRank,
         edgeScore: s.meta.edgeScore,

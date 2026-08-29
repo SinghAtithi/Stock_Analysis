@@ -45,6 +45,7 @@ const meta: StrategyMeta = {
   edgeScore: 8.83,
   universe: "nifty50",
   inputs: ["126d realized vol", "annualized √252", "inverted pctRank"],
+  subtitle: "Prefers calmer, lower-volatility stocks",
   description:
     "Low-volatility anomaly: annualized standard deviation of the last 126 daily returns, scored so that LOWER volatility earns a HIGHER percentile across the universe.",
 };

@@ -16,6 +16,7 @@ const meta: StrategyMeta = {
   edgeScore: null,
   universe: "nifty500",
   inputs: [`highWindow=${HIGH_WINDOW}`],
+  subtitle: "Closeness to the 52-week high",
   description:
     "Demo strategy: distance from the trailing 52-week high, inverted — closer to the high scores higher (0-100).",
 };
