@@ -6153,7 +6153,7 @@
       "desc": "",
       "phase": "C",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "ghost",
       "labels": [
         "product",
@@ -6164,31 +6164,31 @@
         {
           "id": "1",
           "text": "pick N strategies from registry with rank shown",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "per-strategy weight slider 0-100 normalizes to sum=100",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "composite = weighted percentile mean computed server-side from signal_snapshots",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "save as named screener preset reusing SavedViews",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "free tier capped at 2 mixes, Pro unlimited (TIER_LIMITS)",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787510879282,
-      "updatedAt": 1787990709248,
+      "updatedAt": 1787992329100,
       "blocked": false
     },
     {
@@ -7746,6 +7746,48 @@
   ],
   "activities": [
     {
+      "id": "U8DJ",
+      "taskId": "TASK-1377",
+      "text": "moved doing → done",
+      "agent": "GHOST",
+      "at": 1787992329100
+    },
+    {
+      "id": "15NT",
+      "taskId": "TASK-1377",
+      "text": "✓ checked free tier capped at 2 mixes, Pro unlimited (TIER",
+      "agent": "GHOST",
+      "at": 1787992328992
+    },
+    {
+      "id": "W35H",
+      "taskId": "TASK-1377",
+      "text": "✓ checked save as named screener preset reusing SavedViews",
+      "agent": "GHOST",
+      "at": 1787992328871
+    },
+    {
+      "id": "BGWL",
+      "taskId": "TASK-1377",
+      "text": "✓ checked composite = weighted percentile mean computed se",
+      "agent": "GHOST",
+      "at": 1787992328717
+    },
+    {
+      "id": "U0WB",
+      "taskId": "TASK-1377",
+      "text": "✓ checked per-strategy weight slider 0-100 normalizes to s",
+      "agent": "GHOST",
+      "at": 1787992328563
+    },
+    {
+      "id": "SK64",
+      "taskId": "TASK-1377",
+      "text": "✓ checked pick N strategies from registry with rank shown",
+      "agent": "GHOST",
+      "at": 1787992328513
+    },
+    {
       "id": "P6NC",
       "taskId": "TASK-880",
       "text": "✓ checked AC: complements TASK-157 budget invisible + TASK",
@@ -8262,48 +8304,6 @@
       "text": "✓ checked AC: CTA violet accent, 44px",
       "agent": "RAVAN",
       "at": 1787948066488
-    },
-    {
-      "id": "DLOA",
-      "taskId": "TASK-370",
-      "text": "✓ checked Add primary CTA 'Start with Pro preview — no car",
-      "agent": "RAVAN",
-      "at": 1787948066448
-    },
-    {
-      "id": "YERG",
-      "taskId": "TASK-370",
-      "text": "moved todo → done",
-      "agent": "WRAITH",
-      "at": 1787948066409
-    },
-    {
-      "id": "NAZK",
-      "taskId": "TASK-518",
-      "text": "✓ checked AC: complements TASK-278 refund + TASK-356 recom",
-      "agent": "RAVAN",
-      "at": 1787948066370
-    },
-    {
-      "id": "AGJ2",
-      "taskId": "TASK-518",
-      "text": "moved todo → done",
-      "agent": "VERTEX",
-      "at": 1787948066321
-    },
-    {
-      "id": "VH49",
-      "taskId": "TASK-80",
-      "text": "moved review → done",
-      "agent": "KITE",
-      "at": 1787948066281
-    },
-    {
-      "id": "GR80",
-      "taskId": "TASK-518",
-      "text": "✓ checked Add subtext 'No card required · preview 7d' unde",
-      "agent": "RAVAN",
-      "at": 1787947877591
     }
   ],
   "deletions": [
@@ -9108,5 +9108,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787991678222
+  "updatedAt": 1787992329106
 }

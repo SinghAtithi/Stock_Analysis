@@ -11,6 +11,7 @@ function LimitTable({ tier, limits }: { tier: string; limits: Record<string, num
   const rows: { key: keyof typeof limits; label: string; unit: string }[] = [
     { key: "backtestRunsPerDay", label: "Backtest runs", unit: "per rolling 24h" },
     { key: "activeAlertsMax", label: "Active alerts", unit: "at once" },
+    { key: "savedMixesMax", label: "Saved strategy mixes", unit: "at once" },
   ];
   return (
     <div className="rounded-2xl border border-line bg-surface p-4 shadow-sm sm:p-5">
@@ -28,7 +29,9 @@ function LimitTable({ tier, limits }: { tier: string; limits: Record<string, num
               <td className="py-2 pr-4 font-sans text-muted">
                 {r.label} <span className="text-faint">· {r.unit}</span>
               </td>
-              <td className="py-2 text-right text-paper">{limits[r.key]}</td>
+              <td className="py-2 text-right text-paper">
+                {limits[r.key] >= 1_000_000 ? "Unlimited" : limits[r.key]}
+              </td>
             </tr>
           ))}
         </tbody>

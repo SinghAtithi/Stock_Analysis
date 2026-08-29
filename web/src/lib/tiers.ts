@@ -5,11 +5,11 @@
  * will need a shared store before these caps are load-bearing. */
 
 export type Tier = "free" | "pro";
-export type CapKind = "backtestRunsPerDay" | "activeAlertsMax";
+export type CapKind = "backtestRunsPerDay" | "activeAlertsMax" | "savedMixesMax";
 
 export const TIER_LIMITS: Record<Tier, Record<CapKind, number>> = {
-  free: { backtestRunsPerDay: 3, activeAlertsMax: 5 },
-  pro: { backtestRunsPerDay: 100, activeAlertsMax: 50 },
+  free: { backtestRunsPerDay: 3, activeAlertsMax: 5, savedMixesMax: 2 },
+  pro: { backtestRunsPerDay: 100, activeAlertsMax: 50, savedMixesMax: Number.MAX_SAFE_INTEGER },
 };
 
 export type CapVerdict =
@@ -51,8 +51,13 @@ export function checkCap(tier: Tier, kind: CapKind, used: number): CapVerdict {
   return {
     ok: false,
     tier,
-    status: kind === "activeAlertsMax" ? 402 : 429,
-    reason: kind === "activeAlertsMax" ? "alert_cap_reached" : "daily_cap_reached",
+    status: kind === "backtestRunsPerDay" ? 429 : 402,
+    reason:
+      kind === "backtestRunsPerDay"
+        ? "daily_cap_reached"
+        : kind === "savedMixesMax"
+          ? "mix_cap_reached"
+          : "alert_cap_reached",
     limit,
   };
 }

@@ -1,5 +1,11 @@
 ---
 
+## 2026-08-29 — GHOST: TASK-1377 shipped — strategy mixer
+
+- **TASK-1377 shipped** (GHOST subagent): new `/mixer` route — pick top-10 jury-ranked strategies (Jury #N badges), per-strategy weight sliders 0-100 with live normalization to sum=100 (zero drops contribution, all-zero hint), server-side composite = weighted percentile mean from signal_snapshots via new POST /api/mixer (clientKey rate-limited, 60s bounded cache, per-strategy sub-scores, honest asOf/coverage handling for strategies without snapshots), named preset save/load/delete/undo reusing saved-view discipline (`niftyterm.mixer-presets.v1`, screenerPresets pattern), tier cap via new `savedMixesMax` CapKind in tiers.ts (2 free / unlimited pro, third save blocked; client-side since saves are localStorage-only — compute API rate-limited but not tier-gated, flagged). `web/src/lib/mixer.ts` storage + `web/src/lib/mixerMath.ts` server-safe pure math (Next 16 refuses "use client" imports from routes). help/plans-and-limits table gains mixer row + 'Unlimited' pro rendering. 431 tests pass (paper-book now green too), tsc + eslint clean, probe 28/28 (axe 0 light/dark, 390px, API edge cases 400/clamp/empty).
+
+---
+
 ## 2026-08-29 — LYNX: TASK-880 shipped — alert capacity at create
 
 - **TASK-880 shipped** (FROST subagent): alert create dialog shows live capacity 'Free: 2/5 alerts used — 3 left' (real cap from tiers.ts: 5 free / 50 pro, live active count) with TASK-90's See Pricing CTA + sr-only polite announcement; at capacity the line swaps to TASK-90's exact honest copy with role=alert and the submit button disables ('New alert' stays clickable to explain). 431 tests pass, probe 12/12, axe 0 both themes.
