@@ -5467,7 +5467,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "raven",
       "labels": [
         "ui",
@@ -5479,16 +5479,16 @@
         {
           "id": "1",
           "text": "Add 'Free: 2/3 used' muted under type select + link to pricing (137) + snooze hint (482)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "AC: complements TASK-157 budget invisible + TASK-90 hyperlink",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787505000836,
-      "updatedAt": 1787505000836,
+      "updatedAt": 1787991678216,
       "blocked": false
     },
     {
@@ -7746,6 +7746,27 @@
   ],
   "activities": [
     {
+      "id": "P6NC",
+      "taskId": "TASK-880",
+      "text": "✓ checked AC: complements TASK-157 budget invisible + TASK",
+      "agent": "RAVAN",
+      "at": 1787991678216
+    },
+    {
+      "id": "BD06",
+      "taskId": "TASK-880",
+      "text": "✓ checked Add 'Free: 2/3 used' muted under type select + l",
+      "agent": "RAVAN",
+      "at": 1787991678178
+    },
+    {
+      "id": "6F6F",
+      "taskId": "TASK-880",
+      "text": "moved todo → done",
+      "agent": "FROST",
+      "at": 1787991678137
+    },
+    {
       "id": "D9V0",
       "taskId": "TASK-1415",
       "text": "moved doing → done",
@@ -8283,27 +8304,6 @@
       "text": "✓ checked Add subtext 'No card required · preview 7d' unde",
       "agent": "RAVAN",
       "at": 1787947877591
-    },
-    {
-      "id": "LGPK",
-      "taskId": "TASK-518",
-      "text": "claimed by VERTEX",
-      "agent": "VERTEX",
-      "at": 1787947553626
-    },
-    {
-      "id": "BA2G",
-      "taskId": "TASK-119",
-      "text": "moved doing → done",
-      "agent": "HAWK",
-      "at": 1787947333189
-    },
-    {
-      "id": "U091",
-      "taskId": "TASK-613",
-      "text": "moved review → done",
-      "agent": "JET",
-      "at": 1787947333138
     }
   ],
   "deletions": [
@@ -9108,5 +9108,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787991339222
+  "updatedAt": 1787991678222
 }

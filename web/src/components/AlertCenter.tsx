@@ -6,6 +6,7 @@ import Link from "next/link";
 import Modal from "@/components/Modal";
 import { PRICE_TYPES } from "@/lib/alerts";
 import { getDeviceId } from "@/lib/device";
+import { TIER_LIMITS, tierForDevice } from "@/lib/tiers";
 import { timeAgo } from "@/lib/format";
 import { istSessionOpen } from "@/lib/session";
 
@@ -123,6 +124,11 @@ export default function AlertCenter({ symbol, exchange, price }: Props) {
   /* TASK-453: fired-but-unseen tracking (persisted per device) */
   const [seenFired, setSeenFired] = useState<Set<string>>(() => loadSeenFired());
   const activeIdsRef = useRef<Set<string>>(new Set());
+  /* TASK-880: capacity shown at create time — tier mirrors mixer's client
+     pattern (env-granted pro is enforced server-side; client falls back to
+     free), usage is the live active count from the polled list */
+  const [tier] = useState(() => tierForDevice(getDeviceId()));
+  const alertLimit = TIER_LIMITS[tier].activeAlertsMax;
 
   const applyAlerts = useCallback((rows: AlertRecord[]) => {
     const prevActive = activeIdsRef.current;
@@ -509,6 +515,8 @@ export default function AlertCenter({ symbol, exchange, price }: Props) {
             symbol={symbol}
             exchange={exchange}
             currentPrice={price ?? null}
+            activeCount={active.length}
+            limit={alertLimit}
             onCreated={() => void refresh()}
           />
         </>,
@@ -524,6 +532,8 @@ function CreateAlertDialog({
   symbol,
   exchange,
   currentPrice,
+  activeCount,
+  limit,
   onCreated,
 }: {
   open: boolean;
@@ -531,6 +541,9 @@ function CreateAlertDialog({
   symbol: string;
   exchange: string;
   currentPrice: number | null;
+  /* TASK-880: live capacity — usage from the polled list, cap from TIER_LIMITS */
+  activeCount: number;
+  limit: number;
   onCreated: () => void;
 }) {
   interface AlertError {
@@ -544,6 +557,10 @@ function CreateAlertDialog({
   const [error, setError] = useState<AlertError | null>(null);  const [submitting, setSubmitting] = useState(false);
   const fmtINR = (v: number): string =>
     `₹${v.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  /* TASK-880: remaining capacity at create time — at capacity the submit is
+     disabled and the TASK-90 honest copy takes over */
+  const remaining = Math.max(0, limit - activeCount);
+  const atCapacity = activeCount >= limit;
   /* TASK-1040: after-hours creation — set expectations about evaluation timing
      and flag the context price as last close rather than live */
   const sessionClosed = !istSessionOpen();
@@ -640,6 +657,43 @@ function CreateAlertDialog({
         >
           ✕
         </button>
+      </div>
+
+      {/* TASK-880: live capacity at create time. Under the cap: usage + See
+          Pricing. At the cap: the TASK-90 honest copy (same wording the
+          402 path shows), submit disabled. */}
+      {atCapacity ? (
+        <p role="alert" className="mb-3 text-xs text-down">
+          Free plan allows {limit} active alerts — remove one or upgrade for more.{" "}
+          <Link
+            href="/pricing"
+            className="font-medium underline decoration-line underline-offset-2 hover:text-muted focus-visible:outline-2 focus-visible:outline-accent"
+          >
+            See Pricing
+          </Link>
+        </p>
+      ) : (
+        <div className="mb-3 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-lg border border-line bg-panel-2 px-3 py-2">
+          <p className="text-xs text-muted">
+            Free:{" "}
+            <span className="font-mono tabular-nums text-paper">
+              {activeCount}/{limit}
+            </span>{" "}
+            alerts used —{" "}
+            <span className="font-mono tabular-nums text-paper">{remaining}</span> left{" "}
+            <Link
+              href="/pricing"
+              className="font-medium underline decoration-line underline-offset-2 hover:text-muted focus-visible:outline-2 focus-visible:outline-accent"
+            >
+              See Pricing
+            </Link>
+          </p>
+        </div>
+      )}
+      <div role="status" aria-live="polite" className="sr-only">
+        {atCapacity
+          ? `All ${limit} active alert slots used`
+          : `${activeCount} of ${limit} active alerts used — ${remaining} left`}
       </div>
 
       <form
@@ -746,7 +800,7 @@ function CreateAlertDialog({
           </button>
           <button
             type="submit"
-            disabled={submitting || !symbol}
+            disabled={submitting || !symbol || atCapacity}
             className="rounded-full bg-paper px-3.5 py-1.5 text-sm font-medium text-ink shadow-sm transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             Create alert

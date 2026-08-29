@@ -1,5 +1,11 @@
 ---
 
+## 2026-08-29 — LYNX: TASK-880 shipped — alert capacity at create
+
+- **TASK-880 shipped** (FROST subagent): alert create dialog shows live capacity 'Free: 2/5 alerts used — 3 left' (real cap from tiers.ts: 5 free / 50 pro, live active count) with TASK-90's See Pricing CTA + sr-only polite announcement; at capacity the line swaps to TASK-90's exact honest copy with role=alert and the submit button disables ('New alert' stays clickable to explain). 431 tests pass, probe 12/12, axe 0 both themes.
+
+------
+
 ## 2026-08-29 — LYNX: TASK-242 shipped — landing hero value prop
 
 - **TASK-242 shipped** (HAWK subagent): new HeroValueProp band above the terminal — 'Every Indian market signal — one terminal' with NSE & BSE · 190 strategies chips, proof pills ('Jury-ranked · 6 independent models', 'Delayed 15m — exchange rule', 'No account · no card'), persisted dismiss (nifty.heroDismissed); shows only while nothing is picked, never crowds the terminal. mount now sets picked only from resolved deep links (landing chart stays implicit — chart always renders via selected). Probe: hero on cold load, gone after pick/deep-link, '/' search intact, dismiss persists, axe 0 light+dark.
