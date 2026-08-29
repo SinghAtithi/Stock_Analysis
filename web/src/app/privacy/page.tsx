@@ -23,7 +23,7 @@ const SECTIONS = [
   {
     h: "03 — NO ANALYTICS, NO TRACKING",
     p: [
-      "The site ships no analytics, advertising, or third-party tracking scripts. Requests to data endpoints (Yahoo, NSE, etc.) happen server-side and contain no personal identifiers beyond your IP address, which those providers may log.",
+      "The site runs first-party analytics only (page visits, symbol searches, pricing views) — stored on your device and sent to our own server without cookies, advertising, or third-party tracking scripts. Requests to data endpoints (Yahoo, NSE, etc.) happen server-side and contain no personal identifiers beyond your IP address, which those providers may log.",
     ],
   },
   {
@@ -57,7 +57,7 @@ export default function PrivacyPage() {{
   {
     h: "03 — NO ANALYTICS, NO TRACKING",
     p: [
-      "The site ships no analytics, advertising, or third-party tracking scripts. Requests to data endpoints (Yahoo, NSE, etc.) happen server-side and contain no personal identifiers beyond your IP address, which those providers may log.",
+      "The site runs first-party analytics only (page visits, symbol searches, pricing views) — stored on your device and sent to our own server without cookies, advertising, or third-party tracking scripts. Requests to data endpoints (Yahoo, NSE, etc.) happen server-side and contain no personal identifiers beyond your IP address, which those providers may log.",
     ],
   },
   {

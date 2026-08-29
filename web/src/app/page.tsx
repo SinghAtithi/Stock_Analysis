@@ -44,6 +44,7 @@ import {
 } from "@/lib/watchlist";
 import { useWatchlistMirror } from "@/lib/watchlistMirror";
 import { stripExchangeSuffix } from "@/lib/instruments";
+import { track } from "@/lib/analytics";
 
 const chartUrl = (
   r: { symbol: string; exchange: string; type: string },
@@ -222,6 +223,7 @@ export default function Home() {
          value prop would never be seen by a fresh visitor. Only a resolved
          deep link (or an explicit pick) sets `picked`, which hides the hero. */
       setPicked(resolved);
+      if (resolved) track("chart_pick", resolved.symbol);
       setRange(startRange);
       void load(target, startRange);
     })();
@@ -293,6 +295,7 @@ export default function Home() {
 
   const pick = useCallback(
     (r: SearchResult) => {
+      track("chart_pick", r.symbol);
       setPicked(r);
       setMissSymbol(null);
       setRange("1y");

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import type { SearchResult } from "@/lib/types";
 import { Search as SearchIcon } from "lucide-react";
+import { track } from "@/lib/analytics";
 
 interface Props {
   onSelect: (r: SearchResult) => void;
@@ -136,6 +137,7 @@ export default function Search({ onSelect }: Props) {
   const pick = (r: SearchResult) => {
     onSelect(r);
     saveRecent(r);
+    track("search_select", r.symbol);
     setQuery("");
     setResults([]);
     setOpen(false);

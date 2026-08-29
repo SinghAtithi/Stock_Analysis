@@ -6331,7 +6331,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "orion",
       "labels": [
         "api",
@@ -6342,17 +6342,17 @@
         {
           "id": "1",
           "text": "events table in SQLite via migration + tiny POST /api/events ingest (batched, no PII, 2KB cap)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "page_view + symbol_search_select + chart_range_change + screener_export + pricing_cta_click wired through lib helper",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "weekly rollup query or /api/events/summary for CTO review",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
@@ -6361,7 +6361,7 @@
         }
       ],
       "createdAt": 1787510953920,
-      "updatedAt": 1787510953920,
+      "updatedAt": 1787994227216,
       "blocked": false
     },
     {
@@ -7746,6 +7746,34 @@
   ],
   "activities": [
     {
+      "id": "R7XL",
+      "taskId": "TASK-1388",
+      "text": "✓ checked weekly rollup query or /api/events/summary for C",
+      "agent": "RAVAN",
+      "at": 1787994227216
+    },
+    {
+      "id": "OEON",
+      "taskId": "TASK-1388",
+      "text": "✓ checked page_view + symbol_search_select + chart_range_c",
+      "agent": "RAVAN",
+      "at": 1787994227179
+    },
+    {
+      "id": "VSEF",
+      "taskId": "TASK-1388",
+      "text": "✓ checked events table in SQLite via migration + tiny POST",
+      "agent": "RAVAN",
+      "at": 1787994227138
+    },
+    {
+      "id": "749D",
+      "taskId": "TASK-1388",
+      "text": "moved todo → done",
+      "agent": "VERTEX",
+      "at": 1787994227101
+    },
+    {
       "id": "NCVI",
       "taskId": "TASK-366",
       "text": "✓ checked AC: complements TASK-129 drift + TASK-155 Use of",
@@ -8276,34 +8304,6 @@
       "text": "✓ checked Add 1-line plain English subtitle per strategy +",
       "agent": "RAVAN",
       "at": 1787980311095
-    },
-    {
-      "id": "8V74",
-      "taskId": "TASK-166",
-      "text": "✓ checked AC: no hardcoded hex, axe 0",
-      "agent": "RAVAN",
-      "at": 1787980311049
-    },
-    {
-      "id": "LZTI",
-      "taskId": "TASK-166",
-      "text": "✓ checked AC: active state uses aria-current=page + bg-pap",
-      "agent": "RAVAN",
-      "at": 1787980311010
-    },
-    {
-      "id": "PS47",
-      "taskId": "TASK-166",
-      "text": "✓ checked Unify SiteHeader nav across all routes: show Scr",
-      "agent": "RAVAN",
-      "at": 1787980310965
-    },
-    {
-      "id": "UI5O",
-      "taskId": "TASK-232",
-      "text": "moved todo → done",
-      "agent": "BLADE",
-      "at": 1787980310924
     }
   ],
   "deletions": [
@@ -9108,5 +9108,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787993277919
+  "updatedAt": 1787994227220
 }

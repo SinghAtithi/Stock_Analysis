@@ -16,6 +16,9 @@ scripts/.cache/
 data/raw/
 .next-*/
 
+# first-party analytics store (runtime artifact, TASK-1388)
+data/analytics.json
+
 # local scratch / tooling state
 tmp/
 nohup.out

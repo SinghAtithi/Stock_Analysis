@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import AnalyticsView from "@/components/AnalyticsView";
 import { TIER_LIMITS } from "@/lib/tiers";
 
 export const metadata: Metadata = {
@@ -33,6 +34,7 @@ export default function PricingPage() {
     <div className="flex min-h-dvh flex-col bg-canvas">
       <SiteHeader subtitle="Pricing" subtitleClassName="ml-1 hidden text-xs font-normal text-muted sm:inline" />
       <main id="main-content" className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:px-6">
+      <AnalyticsView kind="pricing_view" />
       <h1 className="text-2xl font-semibold tracking-tight text-paper">Pricing</h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
         NIFTY//TERM is a research terminal, not a trading product. The free

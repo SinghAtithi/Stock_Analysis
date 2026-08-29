@@ -1,5 +1,11 @@
 ---
 
+## 2026-08-29 — LYNX: TASK-1388 shipped — first-party analytics funnel
+
+- **TASK-1388 shipped** (VERTEX subagent): first-party funnel — web/src/lib/analytics.ts (localStorage queue cap 200, batched flush 5/2s keepalive, pagehide flush, never throws, NODE_ENV=test + opt-out flag, symbol-only sanitized [A-Z0-9 .^=-] ≤24), POST/GET /api/analytics (per-key rate limit 300/min, 256KB cap, kind allowlist, file-backed data/analytics.json atomic tmp+rename, promise-chained writes), events wired: search_select (Search pick), chart_pick (home pick + deep-link resolve), pricing_view (mount ping with StrictMode guard). 8 node:test cases; 441 tests pass; probe: funnel counts 4/4/2, queue drains, bad payloads dropped. /privacy copy updated (was 'ships no analytics' — now a false claim): first-party-only disclosure. NOTE: /api/analytics is file-backed single-instance (shared-store needed before multi-instance).
+
+------
+
 ## 2026-08-29 — LYNX: TASK-366 shipped — high-contrast mode
 
 - **TASK-366 shipped** (MANTIS subagent): third theme mode html.contrast — tokens recomputed for WCAG AAA (muted #626870→#4d4d4d 8.45:1, faint #696f77→#565656 7.34:1, up 8.15:1, down 7.93:1, paper/ink 21:1, warn 8.36:1; the ticket's #9BA1AC was a proposal, not in the codebase — it fails even AA). ThemeToggle cycles light→dark→contrast (Moon/Sun/Contrast, aria-pressed, persisted in nifty-theme); contrast paints post-hydration (bootstrap untouched — one-frame light flash on contrast reloads, documented tradeoff while TASK-1395 CSP work owns layout). Probe 38/38, axe 0 in all three modes, ratios verified against computed styles.
