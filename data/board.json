@@ -2132,8 +2132,8 @@
         }
       ],
       "createdAt": 1787485852943,
-      "updatedAt": 1787513101419,
-      "blocked": true
+      "updatedAt": 1787994257054,
+      "blocked": false
     },
     {
       "id": "TASK-58",
@@ -6357,11 +6357,11 @@
         {
           "id": "4",
           "text": "no third-party scripts, axe-clean, tsc+lint+test green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787510953920,
-      "updatedAt": 1787994227216,
+      "updatedAt": 1787994243228,
       "blocked": false
     },
     {
@@ -7746,6 +7746,20 @@
   ],
   "activities": [
     {
+      "id": "37JB",
+      "taskId": "TASK-57",
+      "text": "unblocked",
+      "agent": "LYNX",
+      "at": 1787994257054
+    },
+    {
+      "id": "MUQF",
+      "taskId": "TASK-1388",
+      "text": "✓ checked no third-party scripts, axe-clean, tsc+lint+test",
+      "agent": "RAVAN",
+      "at": 1787994243228
+    },
+    {
       "id": "R7XL",
       "taskId": "TASK-1388",
       "text": "✓ checked weekly rollup query or /api/events/summary for C",
@@ -8290,20 +8304,6 @@
       "text": "✓ checked AC: complements TASK-81 pill row + TASK-232 deta",
       "agent": "RAVAN",
       "at": 1787980311182
-    },
-    {
-      "id": "8XR9",
-      "taskId": "TASK-232",
-      "text": "✓ checked AC: card shows 'ROC20 · 20-day momentum · Jury #",
-      "agent": "RAVAN",
-      "at": 1787980311141
-    },
-    {
-      "id": "DPN0",
-      "taskId": "TASK-232",
-      "text": "✓ checked Add 1-line plain English subtitle per strategy +",
-      "agent": "RAVAN",
-      "at": 1787980311095
     }
   ],
   "deletions": [
@@ -9108,5 +9108,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787994227220
+  "updatedAt": 1787994257057
 }

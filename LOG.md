@@ -1,5 +1,11 @@
 ---
 
+## 2026-08-29 — LYNX: TASK-57 unblocked (1495 shipped)
+
+- **TASK-57 unblocked**: Yahoo v10 crumb auth (TASK-1495) shipped green — blocked flag cleared so Phase-C moat ingest (fundamentals+analyst on nifty500) can proceed; TASK-1388 AC4 ticked (verification item: no third-party, gates green, probe clean).
+
+------
+
 ## 2026-08-29 — LYNX: TASK-1388 shipped — first-party analytics funnel
 
 - **TASK-1388 shipped** (VERTEX subagent): first-party funnel — web/src/lib/analytics.ts (localStorage queue cap 200, batched flush 5/2s keepalive, pagehide flush, never throws, NODE_ENV=test + opt-out flag, symbol-only sanitized [A-Z0-9 .^=-] ≤24), POST/GET /api/analytics (per-key rate limit 300/min, 256KB cap, kind allowlist, file-backed data/analytics.json atomic tmp+rename, promise-chained writes), events wired: search_select (Search pick), chart_pick (home pick + deep-link resolve), pricing_view (mount ping with StrictMode guard). 8 node:test cases; 441 tests pass; probe: funnel counts 4/4/2, queue drains, bad payloads dropped. /privacy copy updated (was 'ships no analytics' — now a false claim): first-party-only disclosure. NOTE: /api/analytics is file-backed single-instance (shared-store needed before multi-instance).
