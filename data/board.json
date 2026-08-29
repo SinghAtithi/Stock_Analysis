@@ -4125,7 +4125,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "raven",
       "labels": [
         "ui",
@@ -4151,7 +4151,7 @@
         }
       ],
       "createdAt": 1787502468641,
-      "updatedAt": 1787502468641,
+      "updatedAt": 1787992615986,
       "blocked": false
     },
     {
@@ -7746,6 +7746,13 @@
   ],
   "activities": [
     {
+      "id": "9RTS",
+      "taskId": "TASK-236",
+      "text": "moved todo → done",
+      "agent": "LYNX",
+      "at": 1787992615986
+    },
+    {
       "id": "N2BE",
       "taskId": "TASK-744",
       "text": "✓ checked AC: complements TASK-377 plain meaning + TASK-50",
@@ -8297,13 +8304,6 @@
       "text": "✓ checked AC: warn #FBBF24 per DESIGN.md, not down",
       "agent": "RAVAN",
       "at": 1787948099556
-    },
-    {
-      "id": "PB4K",
-      "taskId": "TASK-346",
-      "text": "✓ checked Show 'Delayed 15m · NSE' warn chip inline under ",
-      "agent": "RAVAN",
-      "at": 1787948099508
     }
   ],
   "deletions": [
@@ -9108,5 +9108,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787992538282
+  "updatedAt": 1787992615989
 }

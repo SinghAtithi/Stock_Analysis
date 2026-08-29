@@ -1,5 +1,11 @@
 ---
 
+## 2026-08-29 — LYNX: TASK-236 closed superseded
+
+- **TASK-236 closed superseded**: 'Screener has no saved views' — saved views have shipped since TASK-62 (save/load), TASK-776 (announcement), TASK-386 (undo), TASK-613 (overwrite confirm); the board card predates them.
+
+------
+
 ## 2026-08-29 — LYNX: TASK-744 shipped — score factor breakdown
 
 - **TASK-744 shipped** (JET subagent): score tooltip gains a factor table from the API's components_json (real per-factor data — 5252/5252 snapshot rows; 44 known component keys labeled sentence-case, unknown fall back to prettified camelCase, nothing invented; S100: momentum12/momentum1/pctRank..., S104: sue/surprisePct/eventDate...). Fetch now sends &include=components; TASK-377 copy untouched, hairline divider + rows only when components exist, muted 11px mono tabular, graceful null/{} degradation. Also fixed the signals LRU cache-key omission (includeComponents was missing — /compare and /portfolio could serve a components-less body to the screener for up to 60s). 431 tests pass, probe axe 0 light+dark.
