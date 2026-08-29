@@ -59,8 +59,9 @@ with sync_playwright() as p:
     check("h1 renders", (pg.locator("h1").text_content() or "").strip() != "")
     check("3 mocked rows", pg.locator("tbody tr").count() == 3)
     first_before = pg.locator("tbody tr").first.locator("td").nth(4).text_content()
-    # sort by score — tri-state asc puts the lowest first
-    pg.get_by_role("button", name="SCORE").click()
+    # sort by score — tri-state asc puts the lowest first. exact=True: per-row
+    # 'About this score' tooltip buttons (TASK-377) contain 'score' as substring
+    pg.get_by_role("button", name="Score", exact=True).click()
     pg.wait_for_timeout(400)
     first_after = pg.locator("tbody tr").first.locator("td").nth(4).text_content()
     check(f"score sort reorders ({first_before} -> {first_after})", first_before != first_after)
