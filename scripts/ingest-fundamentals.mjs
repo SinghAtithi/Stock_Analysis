@@ -8,9 +8,18 @@
  *
  * Fetch: one v10 quoteSummary request per symbol, 7 modules joined by comma.
  *   query1 host, retry query2 on failure; HostBackoff on 429 (per-host).
- *   Circuit breaker: 3 consecutive Yahoo failures => skip the rest fast.
+ *   Circuit breaker: 3 consecutive non-throttle failures => skip the rest fast.
+ *   Rate-limited (429) failures park the host for the backoff window and do
+ *   NOT trip the breaker — the run pauses instead of burning the universe.
  *   Raw payload cached to data/raw/fund/<symbol>.json; a fetch failure falls
  *   back to the cached payload (degraded, counted separately) before failing.
+ *
+ * Auth: Yahoo v10 quoteSummary requires a crumb. getCrumb() (lib/curl.mjs)
+ *   bootstraps an A3 session cookie from fc.yahoo.com, exchanges it for a
+ *   crumb via v1/test/getcrumb, and caches {crumb, cookieJar} per process.
+ *   Crumb TTL: 50 min (A3 session lifetime); expired crumbs are refreshed
+ *   lazily on the next fetch. Every quoteSummary URL carries
+ *   crumb=...&lang=en-US&region=US and reuses the shared cookie jar.
  *
  * Store: fundamentals(symbol, module_json, metrics_json, fetched_at) upsert.
  *   module_json = quoteSummary.result[0] exactly as returned.
@@ -25,7 +34,7 @@ import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { openDb, REPO_ROOT } from "./lib/db.mjs";
-import { HostBackoff } from "./lib/curl.mjs";
+import { HostBackoff, getCrumb, appendCrumb } from "./lib/curl.mjs";
 
 const MODULES =
   "defaultKeyStatistics,financialData,incomeStatementHistory," +
@@ -78,20 +87,22 @@ export function resolveUniverse({ universe = "nifty500", limit = 0 } = {}) {
 
 /* ---------------- fetch ---------------- */
 
-export function quoteSummaryUrl(host, yahooSymbol) {
-  return (
+export function quoteSummaryUrl(host, yahooSymbol, crumb) {
+  const url =
     `https://${host}.finance.yahoo.com/v10/finance/quoteSummary/` +
-    `${encodeURIComponent(yahooSymbol)}?modules=${MODULES}`
-  );
+    `${encodeURIComponent(yahooSymbol)}?modules=${MODULES}`;
+  return crumb ? appendCrumb(url, crumb) : url;
 }
 
 export async function fetchQuoteSummary(yahooSymbol, { backoff = new HostBackoff(), timeoutMs = 30_000 } = {}) {
+  const { crumb, cookieJar } = await getCrumb();
   let lastErr;
   for (const host of ["query1", "query2"]) {
     try {
-      const data = await backoff.getJson(quoteSummaryUrl(host, yahooSymbol), {
+      const data = await backoff.getJson(quoteSummaryUrl(host, yahooSymbol, crumb), {
         maxRetries: 2,
         timeoutMs,
+        cookieJar,
       });
       const err = data?.quoteSummary?.error;
       if (err) throw new Error(String(err.message ?? err) || "quoteSummary error");
@@ -200,7 +211,7 @@ export function cachePath(yahooSymbol, dir = CACHE_DIR) {
   return join(dir, `${yahooSymbol.replace(/[^A-Za-z0-9._-]/g, "_")}.json`);
 }
 
-export async function ingestFundamentals(db, { symbols, fetchFn, force = false, now = Date.now(), onSymbol = null, cacheDir = CACHE_DIR } = {}) {
+export async function ingestFundamentals(db, { symbols, fetchFn, force = false, now = Date.now(), onSymbol = null, cacheDir = CACHE_DIR, backoff = null } = {}) {
   const upsert = db.prepare(
     `INSERT INTO fundamentals (symbol, module_json, metrics_json, fetched_at)
      VALUES (?, ?, ?, ?)
@@ -251,6 +262,12 @@ export async function ingestFundamentals(db, { symbols, fetchFn, force = false, 
       summary.fetched += 1;
       if (onSymbol) onSymbol({ symbol, status: degraded ? "cached" : "fetched", degraded });
     } catch (e) {
+      if (e?.rateLimited) {
+        summary.failed.push(symbol);
+        if (onSymbol) onSymbol({ symbol, status: "failed", error: String(e?.message ?? e) });
+        if (backoff && e?.host) await backoff.waitIfNeeded(e.host);
+        continue;
+      }
       consecutiveFailures += 1;
       if (consecutiveFailures >= BREAKER_THRESHOLD) summary.breakerOpened = true;
       summary.failed.push(symbol);
@@ -305,6 +322,7 @@ async function main() {
   const summary = await ingestFundamentals(db, {
     symbols,
     force,
+    backoff,
     fetchFn: (yahoo) => fetchQuoteSummary(yahoo, { backoff }),
     onSymbol: ({ symbol, status, reason, error, degraded }) => {
       if (status === "failed")

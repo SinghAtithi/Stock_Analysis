@@ -6,6 +6,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { openDb } from "../lib/db.mjs";
 import { applyMigrations } from "../migrate.mjs";
+import { HostBackoff } from "../lib/curl.mjs";
 import {
   flattenDerived,
   pctChange,
@@ -297,6 +298,33 @@ test("ingest: circuit opens after 3 consecutive failures, remaining marked faile
   assert.equal(s.failed.length, 5); /* rest marked failed, no crash */
   assert.match(s.failed[4].error, /circuit open/);
   assert.equal(db.prepare("SELECT COUNT(*) AS c FROM analyst_data").get().c, 0);
+});
+
+test("ingest: rate-limited failures park the host, don't trip the circuit breaker", async () => {
+  const db = memoryDb();
+  const backoff = new HostBackoff({ jitter: 0, baseDelayMs: 10, parkMs: 50, maxRetries: 0 });
+  let calls = 0;
+  const fetchImpl = async (b, sym) => {
+    calls += 1;
+    if (sym === "D.NS") return FULL_FIXTURE;
+    const e = new Error("429 Too Many Requests");
+    e.rateLimited = true;
+    e.host = "query1.finance.yahoo.com";
+    throw e;
+  };
+  const instruments = makeInstruments(["A", "B", "C", "D"]);
+  const s = await runIngest(db, {
+    universe: "nifty50",
+    instruments,
+    fetchImpl,
+    cacheDir: null,
+    delayMs: 0,
+    backoff,
+  });
+  assert.equal(calls, 4, "universe not burned — D attempted after three parked 429s");
+  assert.equal(s.failed.length, 3);
+  assert.equal(s.fetched.length, 1);
+  assert.ok(!s.failed.some((r) => /circuit open/.test(r.error)), "no circuit-skip entries");
 });
 
 /* ---------- universe ---------- */

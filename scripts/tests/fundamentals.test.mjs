@@ -5,6 +5,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { openDb } from "../lib/db.mjs";
 import { applyMigrations } from "../migrate.mjs";
+import { HostBackoff } from "../lib/curl.mjs";
 import {
   flattenMetrics,
   extractAccruals,
@@ -235,4 +236,25 @@ test("ingest: circuit breaker skips the rest after 3 consecutive failures", asyn
   assert.equal(run.failed.length, 5, "all five recorded as failed");
   assert.ok(run.failed.some((f) => f.includes("circuit")), "remaining symbols marked circuit-skipped");
   assert.equal(run.coveragePct, 0);
+});
+
+test("ingest: rate-limited failures park via backoff, don't open the circuit breaker", async (t) => {
+  const { dir, db } = tempDb(t);
+  const symbols = ["A", "B", "C", "D"].map((s) => ({ symbol: s, name: s, yahoo: `${s}.NS` }));
+  const backoff = new HostBackoff({ jitter: 0, baseDelayMs: 10, parkMs: 50, maxRetries: 0 });
+  let calls = 0;
+  const fetchFn = async (yahoo) => {
+    calls += 1;
+    if (yahoo === "D.NS") return wrap(fixtureResult());
+    const e = new Error("429 Too Many Requests");
+    e.rateLimited = true;
+    e.host = "query1.finance.yahoo.com";
+    throw e;
+  };
+  const run = await ingestFundamentals(db, { symbols, fetchFn, backoff, now: NOW });
+  assert.equal(run.breakerOpened, false, "sustained throttle never opens the breaker");
+  assert.equal(run.failed.length, 3);
+  assert.equal(run.fetched, 1, "D still fetched after three parked 429s — universe not burned");
+  assert.equal(calls, 4);
+  assert.ok(!run.failed.some((f) => f.includes("circuit")), "no circuit-skip entries");
 });

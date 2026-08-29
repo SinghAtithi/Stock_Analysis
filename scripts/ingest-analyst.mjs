@@ -7,6 +7,15 @@
  *
  * Resilience: query1 -> query2 host retry, HostBackoff on 429, per-symbol cache
  * in data/raw/analyst/. Partial failure exits 0 (summary printed).
+ * Rate-limited (429) failures park the host for the backoff window and do NOT
+ * trip the circuit breaker — the run pauses instead of burning the universe.
+ *
+ * Auth: Yahoo v10 quoteSummary requires a crumb. getCrumb() (lib/curl.mjs)
+ *   bootstraps an A3 session cookie from fc.yahoo.com, exchanges it for a
+ *   crumb via v1/test/getcrumb, and caches {crumb, cookieJar} per process.
+ *   Crumb TTL: 50 min (A3 session lifetime); expired crumbs are refreshed
+ *   lazily on the next fetch. Every quoteSummary URL carries
+ *   crumb=...&lang=en-US&region=US and reuses the shared cookie jar.
  *
  * Usage:
  *   node scripts/ingest-analyst.mjs [--universe nifty50|nifty100|all] [--limit N] [--force]
@@ -16,7 +25,7 @@ import path from "node:path";
 import { mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { openDb, REPO_ROOT } from "./lib/db.mjs";
-import { HostBackoff, isRateLimited } from "./lib/curl.mjs";
+import { HostBackoff, isRateLimited, getCrumb, appendCrumb } from "./lib/curl.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const INSTRUMENTS_PATH = path.join(REPO_ROOT, "web", "src", "data", "instruments.json");
@@ -184,20 +193,21 @@ export function flattenDerived(payload) {
 
 /* ---------- fetch (query1 -> query2, HostBackoff on 429) ---------- */
 
-export function quoteSummaryUrls(sym) {
+export function quoteSummaryUrls(sym, crumb) {
   const enc = encodeURIComponent(sym);
   const pathStr = `/v10/finance/quoteSummary/${enc}?modules=${MODULES}`;
   return [
     `https://query1.finance.yahoo.com${pathStr}`,
     `https://query2.finance.yahoo.com${pathStr}`,
-  ];
+  ].map((url) => (crumb ? appendCrumb(url, crumb) : url));
 }
 
 export async function fetchQuoteSummary(backoff, sym, { timeoutMs = 12_000 } = {}) {
+  const { crumb, cookieJar } = await getCrumb();
   let lastErr;
-  for (const url of quoteSummaryUrls(sym)) {
+  for (const url of quoteSummaryUrls(sym, crumb)) {
     try {
-      return await backoff.getJson(url, { timeoutMs });
+      return await backoff.getJson(url, { timeoutMs, cookieJar });
     } catch (err) {
       lastErr = err;
       if (!isRateLimited(err)) continue; /* try the second host on any failure */
@@ -228,7 +238,13 @@ export async function ingestOne(
   try {
     payload = await fetchImpl(backoff, sym);
   } catch (err) {
-    return { symbol: sym, status: "failed", error: String(err?.message ?? err) };
+    return {
+      symbol: sym,
+      status: "failed",
+      error: String(err?.message ?? err),
+      rateLimited: err?.rateLimited ?? false,
+      host: err?.host ?? null,
+    };
   }
   if (!payload?.quoteSummary?.result?.[0]) {
     return { symbol: sym, status: "empty", error: "quoteSummary result missing" };
@@ -279,6 +295,11 @@ export async function runIngest(
     }
     const res = await ingestOne(db, sym, { force, fetchImpl, backoff, cacheDir });
     summary[res.status].push(res);
+    if (res.rateLimited) {
+      onLog(`  FAILED ${sym}: ${res.error} (parking ${res.host ?? "host"} for backoff window)`);
+      if (backoff && res.host) await backoff.waitIfNeeded(res.host);
+      continue; /* throttled — park the host, do not trip the circuit breaker */
+    }
     consecutiveFailures = res.status === "fetched" || res.status === "skipped" ? 0 : consecutiveFailures + 1;
     if (res.status === "failed" || res.status === "empty") {
       onLog(`  ${res.status.toUpperCase()} ${sym}: ${res.error}`);
