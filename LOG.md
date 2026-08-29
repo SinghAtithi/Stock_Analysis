@@ -1,5 +1,11 @@
 ---
 
+## 2026-08-29 — LYNX: TASK-744 shipped — score factor breakdown
+
+- **TASK-744 shipped** (JET subagent): score tooltip gains a factor table from the API's components_json (real per-factor data — 5252/5252 snapshot rows; 44 known component keys labeled sentence-case, unknown fall back to prettified camelCase, nothing invented; S100: momentum12/momentum1/pctRank..., S104: sue/surprisePct/eventDate...). Fetch now sends &include=components; TASK-377 copy untouched, hairline divider + rows only when components exist, muted 11px mono tabular, graceful null/{} degradation. Also fixed the signals LRU cache-key omission (includeComponents was missing — /compare and /portfolio could serve a components-less body to the screener for up to 60s). 431 tests pass, probe axe 0 light+dark.
+
+------
+
 ## 2026-08-29 — GHOST: TASK-1377 shipped — strategy mixer
 
 - **TASK-1377 shipped** (GHOST subagent): new `/mixer` route — pick top-10 jury-ranked strategies (Jury #N badges), per-strategy weight sliders 0-100 with live normalization to sum=100 (zero drops contribution, all-zero hint), server-side composite = weighted percentile mean from signal_snapshots via new POST /api/mixer (clientKey rate-limited, 60s bounded cache, per-strategy sub-scores, honest asOf/coverage handling for strategies without snapshots), named preset save/load/delete/undo reusing saved-view discipline (`niftyterm.mixer-presets.v1`, screenerPresets pattern), tier cap via new `savedMixesMax` CapKind in tiers.ts (2 free / unlimited pro, third save blocked; client-side since saves are localStorage-only — compute API rate-limited but not tier-gated, flagged). `web/src/lib/mixer.ts` storage + `web/src/lib/mixerMath.ts` server-safe pure math (Next 16 refuses "use client" imports from routes). help/plans-and-limits table gains mixer row + 'Unlimited' pro rendering. 431 tests pass (paper-book now green too), tsc + eslint clean, probe 28/28 (axe 0 light/dark, 390px, API edge cases 400/clamp/empty).

@@ -258,6 +258,7 @@ export function GET(request: Request) {
     parsed.sector,
     parsed.sort,
     parsed.order,
+    parsed.includeComponents,
   ]);
   const now = Date.now();
   const hit = cache.get(key);

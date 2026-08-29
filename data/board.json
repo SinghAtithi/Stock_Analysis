@@ -5139,7 +5139,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "raven",
       "labels": [
         "ui",
@@ -5151,16 +5151,16 @@
         {
           "id": "1",
           "text": "Add modal on score pill with factor breakdown table + jury rank link",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "AC: complements TASK-377 plain meaning + TASK-503 affordance + TASK-232 opaque ids",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787504314286,
-      "updatedAt": 1787504314286,
+      "updatedAt": 1787992538278,
       "blocked": false
     },
     {
@@ -7746,6 +7746,27 @@
   ],
   "activities": [
     {
+      "id": "N2BE",
+      "taskId": "TASK-744",
+      "text": "✓ checked AC: complements TASK-377 plain meaning + TASK-50",
+      "agent": "RAVAN",
+      "at": 1787992538278
+    },
+    {
+      "id": "HIS9",
+      "taskId": "TASK-744",
+      "text": "✓ checked Add modal on score pill with factor breakdown ta",
+      "agent": "RAVAN",
+      "at": 1787992538243
+    },
+    {
+      "id": "2HFA",
+      "taskId": "TASK-744",
+      "text": "moved todo → done",
+      "agent": "JET",
+      "at": 1787992538205
+    },
+    {
       "id": "U8DJ",
       "taskId": "TASK-1377",
       "text": "moved doing → done",
@@ -8283,27 +8304,6 @@
       "text": "✓ checked Show 'Delayed 15m · NSE' warn chip inline under ",
       "agent": "RAVAN",
       "at": 1787948099508
-    },
-    {
-      "id": "CCTJ",
-      "taskId": "TASK-346",
-      "text": "moved todo → done",
-      "agent": "LYNX",
-      "at": 1787948099457
-    },
-    {
-      "id": "77IC",
-      "taskId": "TASK-370",
-      "text": "✓ checked AC: complements TASK-356 quiz + TASK-137 matrix ",
-      "agent": "RAVAN",
-      "at": 1787948066526
-    },
-    {
-      "id": "MODA",
-      "taskId": "TASK-370",
-      "text": "✓ checked AC: CTA violet accent, 44px",
-      "agent": "RAVAN",
-      "at": 1787948066488
     }
   ],
   "deletions": [
@@ -9108,5 +9108,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787992329106
+  "updatedAt": 1787992538282
 }

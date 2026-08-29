@@ -73,6 +73,92 @@ const readSortParams = (): { sortKey: string | null; sortDir: SortDir } => {
   };
 };
 
+/* TASK-744: human-readable labels for the per-strategy factor breakdown the
+   API ships in components_json (?include=components). Keys are the strategy
+   authors' own — the table shows exactly what the strategy computed, never
+   invented factors. Unknown keys fall back to a camelCase prettify. */
+const COMPONENT_LABELS: Record<string, string> = {
+  momentum12: "Momentum 12m",
+  momentum1: "Momentum 1m",
+  pctRank: "Percentile rank",
+  sampleSize: "Sample size",
+  lookbackDays: "Lookback (days)",
+  momentumWindow: "Momentum window",
+  skipSessions: "Skip sessions",
+  vol126: "Realized vol 126d",
+  invertedPctRank: "Low-vol percentile",
+  volWindow: "Vol window (days)",
+  sue: "SUE",
+  surprisePct: "Earnings surprise",
+  eventDate: "Event date",
+  drift60d: "60d post-event drift",
+  mode: "Mode",
+  bm: "Book-to-market",
+  ncav: "NCAV / market cap",
+  ey: "Earnings yield",
+  ebitEv: "EBIT / EV",
+  roic: "ROIC",
+  composite: "Composite",
+  fscore: "Piotroski F-Score",
+  momentum: "Revision momentum",
+  rev7d: "Revisions 7d",
+  rev30d: "Revisions 30d",
+  rev90d: "Revisions 90d",
+  analysts: "Analysts",
+  sma200: "SMA 200",
+  ret12: "Return 12m",
+  regime: "Regime",
+  rank: "Rank",
+  sign: "Sign",
+  vol: "Volatility",
+  volTarget: "Vol target",
+  exposure: "Exposure",
+  gpA: "Gross profitability",
+  opMargin: "Operating margin",
+  accruals: "Accruals",
+  zGp: "Z gross profitability",
+  zOp: "Z operating margin",
+  zAcc: "Z accruals",
+  accrualModel: "Accrual model",
+  fiftyTwoWeekHigh: "52-week high",
+  lastClose: "Last close",
+  distancePct: "Distance from 52w high",
+  windowDays: "Window (days)",
+  roc20: "ROC 20d",
+  rocPeriod: "ROC period",
+};
+
+/* TASK-744: the score tooltip's factor breakdown. Rows render straight from
+   the strategy's components payload; values are the raw numbers the engine
+   stored — no units invented beyond what the key itself says. */
+function FactorBreakdown({
+  components,
+}: {
+  components: Record<string, number | string | null>;
+}) {
+  const labelOf = (key: string): string =>
+    COMPONENT_LABELS[key] ??
+    key.replace(/([a-z])([A-Z0-9])/g, "$1 $2").replace(/^./, (c) => c.toUpperCase());
+  const fmt = (key: string, v: number | string | null): string => {
+    if (v === null || typeof v === "string") return v ?? "—";
+    if (!Number.isFinite(v)) return "—";
+    if (key === "eventDate") return new Date(v * 1000).toLocaleDateString("en-IN");
+    const s =
+      Math.abs(v) >= 100 ? v.toFixed(0) : Math.abs(v) >= 1 ? v.toFixed(2) : v.toFixed(3);
+    return String(Number(s));
+  };
+  return (
+    <ul className="mt-1 space-y-0.5">
+      {Object.entries(components).map(([key, v]) => (
+        <li key={key} className="flex items-baseline justify-between gap-3">
+          <span className="min-w-0">{labelOf(key)}</span>
+          <span className="shrink-0 font-mono tabular-nums">{fmt(key, v)}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export default function ScreenerPage() {
   return (
     <Suspense fallback={<div className="p-6 text-muted">Loading…</div>}>
@@ -146,7 +232,7 @@ function ScreenerInner() {
         /* TASK-145: paged fetch — offset>0 appends the next window so the
            full ranked universe is reachable instead of silently truncating */
         const res = await fetch(
-          `/api/signals?strategy=${encodeURIComponent(strategy)}&limit=50&offset=${offset}`
+          `/api/signals?strategy=${encodeURIComponent(strategy)}&limit=50&offset=${offset}&include=components`
         );
         const json = await res.json();
         if (cancelled) return;
@@ -222,21 +308,24 @@ function ScreenerInner() {
       align: "right",
       sortValue: (r) => r.score,
       width: "w-20",
-      /* TASK-377: a bare number has no plain meaning — the tooltip restates
-         the code's real semantics (types.ts: "Cross-sectional score 0-100;
-         higher = stronger signal") without inventing factor claims. Verified
-         against the registry: the score is a percentile rank only for
-         S100/S101/S105/roc20/quality — the rest map raw metrics (F-Score/9,
-         z-scores, SUE bands, 52w-high distance), so "Top 10% 20d momentum
-         vs Nifty500" (the issue's guess) and even "percentile" are false for
-         8 of 13 strategies, including the default view (demo-52wlow). The
-         honest frame from /help/understanding-scores is kept: 0-100, higher
-         = stronger, not a forecast. CSS-only tooltip, same pattern as the
-         StrategyPicker one (TASK-232): hover + keyboard focus, no JS state.
-         Anchored bottom-full so the table's overflow-auto can't clip it on
-         the last rows. Score is strategy-agnostic — no factor name here
-         because a claim like "20d momentum" would be false for most of the
-         registry. */
+/* TASK-377: a bare number has no plain meaning — the tooltip restates
+          the code's real semantics (types.ts: "Cross-sectional score 0-100;
+          higher = stronger signal") without inventing factor claims. Verified
+          against the registry: the score is a percentile rank only for
+          S100/S101/S105/roc20/quality — the rest map raw metrics (F-Score/9,
+          z-scores, SUE bands, 52w-high distance), so "Top 10% 20d momentum
+          vs Nifty500" (the issue's guess) and even "percentile" are false for
+          8 of 13 strategies, including the default view (demo-52wlow). The
+          honest frame from /help/understanding-scores is kept: 0-100, higher
+          = stronger, not a forecast. CSS-only tooltip, same pattern as the
+          StrategyPicker one (TASK-232): hover + keyboard focus, no JS state.
+          Anchored bottom-full so the table's overflow-auto can't clip it on
+          the last rows. Score is strategy-agnostic — no factor name here
+          because a claim like "20d momentum" would be false for most of the
+          registry.
+          TASK-744: the tooltip also carries a factor breakdown table when the
+          API ships components (?include=components) — the strategy's own
+          components_json rows, labelled, no invented factors. */
       render: (r) => (
         <span className="group relative inline-flex items-center gap-1">
           <span className="rounded-full bg-paper px-2 py-0.5 font-mono text-xs font-medium text-ink">{r.score.toFixed(1)}</span>
@@ -255,6 +344,12 @@ function ScreenerInner() {
             className="pointer-events-none absolute bottom-full right-0 z-40 mb-1.5 w-60 rounded-lg border border-line bg-panel-2 px-3 py-2 text-[11px] leading-relaxed text-muted opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
           >
             Score {r.score.toFixed(1)} · 0–100, higher = stronger — 7 ≈ weak, 90 ≈ strong for this strategy today. Not a forecast.
+            {r.components && Object.keys(r.components).length > 0 && (
+              <>
+                <span aria-hidden="true" className="mt-1.5 block border-t border-hairline pt-1.5" />
+                <FactorBreakdown components={r.components} />
+              </>
+            )}
           </span>
         </span>
       ),
