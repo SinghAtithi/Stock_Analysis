@@ -7742,9 +7742,50 @@
       "createdAt": 1787944917899,
       "updatedAt": 1787945383850,
       "blocked": false
+    },
+    {
+      "id": "TASK-1504",
+      "title": "CI RED: ui-smoke @ 5e7d4c1",
+      "desc": "Auto-filed from CI (TASK-1479). Suite `ui-smoke` failed.\n\n- Failing run: https://github.com/SinghAtithi/Stock_Analysis/actions/runs/33235607508\n- Commit: 5e7d4c1\n\nInvestigate the failing check first; re-run the suite locally before marking fixed.",
+      "phase": "A",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "ci",
+        "ops"
+      ],
+      "estimate": 2,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "inspect failing run log",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "reproduce locally + fix",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "verify 3 consecutive green scheduled runs",
+          "done": false
+        }
+      ],
+      "createdAt": 1787980504230,
+      "updatedAt": 1787980504230,
+      "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "YY4R",
+      "taskId": "TASK-1504",
+      "text": "created in todo · failed run https://github.com/SinghAtithi/Stock_Analysis/actions/runs/33235607508",
+      "agent": "CI-BOT",
+      "at": 1787980504230
+    },
     {
       "id": "6FQU",
       "taskId": "TASK-232",
@@ -8297,13 +8338,6 @@
       "text": "✓ checked no change to mouse/scroll behavior",
       "agent": "QUARK",
       "at": 1787548452726
-    },
-    {
-      "id": "VENC",
-      "taskId": "TASK-98",
-      "text": "✓ checked selected highlight moves",
-      "agent": "QUARK",
-      "at": 1787548452468
     }
   ],
   "deletions": [
@@ -9108,5 +9142,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787980311186
+  "updatedAt": 1787980504233
 }
