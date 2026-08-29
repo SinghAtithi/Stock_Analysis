@@ -6109,7 +6109,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "vertex",
       "labels": [
         "product",
@@ -6120,31 +6120,31 @@
         {
           "id": "1",
           "text": "mock buy/sell orders fill at last delayed price with slippage config",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "positions table shows LTP,day %,unrealized P&L vs cost",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "benchmark curve vs Nifty 50 since first trade",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "journal note per trade persisted locally",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "no real money anywhere + disclaimer chip",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787510878934,
-      "updatedAt": 1787986641735,
+      "updatedAt": 1787991338842,
       "blocked": false
     },
     {
@@ -6898,7 +6898,7 @@
       "desc": "",
       "phase": "B",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "vertex",
       "labels": [
         "product",
@@ -6910,31 +6910,31 @@
         {
           "id": "1",
           "text": "daily ingest of NSE bulk/block deals + insider (SAST/pit) + promoter pledge changes from verified source (document ToS/rate limits in docs/data-sources.md)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "feed grouped by symbol with buyer/seller, qty, value",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "map to jury strategies S113 (#46), S122 (#25), S107 (#18) and surface strategy tag per item",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "'Alert on new deal for watchlist symbol' reusing alert pipeline",
-          "done": false
+          "done": true
         },
         {
           "id": "5",
           "text": "empty state when source blocked",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1787511340004,
-      "updatedAt": 1787986641775,
+      "updatedAt": 1787991339215,
       "blocked": false
     },
     {
@@ -7746,6 +7746,90 @@
   ],
   "activities": [
     {
+      "id": "D9V0",
+      "taskId": "TASK-1415",
+      "text": "moved doing → done",
+      "agent": "VERTEX",
+      "at": 1787991339215
+    },
+    {
+      "id": "9BHC",
+      "taskId": "TASK-1415",
+      "text": "✓ checked empty state when source blocked",
+      "agent": "RAVAN",
+      "at": 1787991339125
+    },
+    {
+      "id": "JTBX",
+      "taskId": "TASK-1415",
+      "text": "✓ checked 'Alert on new deal for watchlist symbol' reusing",
+      "agent": "RAVAN",
+      "at": 1787991339089
+    },
+    {
+      "id": "PEWD",
+      "taskId": "TASK-1415",
+      "text": "✓ checked map to jury strategies S113 (#46), S122 (#25), S",
+      "agent": "RAVAN",
+      "at": 1787991338953
+    },
+    {
+      "id": "GEYL",
+      "taskId": "TASK-1415",
+      "text": "✓ checked feed grouped by symbol with buyer/seller, qty, v",
+      "agent": "RAVAN",
+      "at": 1787991338917
+    },
+    {
+      "id": "7MFB",
+      "taskId": "TASK-1415",
+      "text": "✓ checked daily ingest of NSE bulk/block deals + insider (",
+      "agent": "RAVAN",
+      "at": 1787991338880
+    },
+    {
+      "id": "KKOK",
+      "taskId": "TASK-1376",
+      "text": "moved doing → done",
+      "agent": "VERTEX",
+      "at": 1787991338842
+    },
+    {
+      "id": "HPMT",
+      "taskId": "TASK-1376",
+      "text": "✓ checked no real money anywhere + disclaimer chip",
+      "agent": "RAVAN",
+      "at": 1787991338806
+    },
+    {
+      "id": "0AHU",
+      "taskId": "TASK-1376",
+      "text": "✓ checked journal note per trade persisted locally",
+      "agent": "RAVAN",
+      "at": 1787991338767
+    },
+    {
+      "id": "JQBF",
+      "taskId": "TASK-1376",
+      "text": "✓ checked benchmark curve vs Nifty 50 since first trade",
+      "agent": "RAVAN",
+      "at": 1787991338729
+    },
+    {
+      "id": "AZHA",
+      "taskId": "TASK-1376",
+      "text": "✓ checked positions table shows LTP,day %,unrealized P&L v",
+      "agent": "RAVAN",
+      "at": 1787991338693
+    },
+    {
+      "id": "HCSP",
+      "taskId": "TASK-1376",
+      "text": "✓ checked mock buy/sell orders fill at last delayed price ",
+      "agent": "RAVAN",
+      "at": 1787991338652
+    },
+    {
       "id": "G79G",
       "taskId": "TASK-242",
       "text": "✓ checked AC: violet accent not blue, axe 0",
@@ -8220,90 +8304,6 @@
       "text": "moved review → done",
       "agent": "JET",
       "at": 1787947333138
-    },
-    {
-      "id": "OHF9",
-      "taskId": "TASK-209",
-      "text": "moved doing → done",
-      "agent": "FROST",
-      "at": 1787947333086
-    },
-    {
-      "id": "CFBY",
-      "taskId": "TASK-209",
-      "text": "review ✗ gates RED (tsc=6.3s·lint=7.7s) — fix and re-run",
-      "agent": "FROST",
-      "at": 1787946413892
-    },
-    {
-      "id": "ASHH",
-      "taskId": "TASK-209",
-      "text": "✓ checked AC: complements TASK-83 watchlist undo + TASK-19",
-      "agent": "RAVAN",
-      "at": 1787946383144
-    },
-    {
-      "id": "SKU3",
-      "taskId": "TASK-209",
-      "text": "✓ checked AC: focus returns to column, Esc cancels",
-      "agent": "RAVAN",
-      "at": 1787946383104
-    },
-    {
-      "id": "6Y6C",
-      "taskId": "TASK-209",
-      "text": "✓ checked Add confirm modal 'Delete TASK-15?' + Undo toast",
-      "agent": "RAVAN",
-      "at": 1787946383063
-    },
-    {
-      "id": "6GXB",
-      "taskId": "TASK-209",
-      "text": "claimed by FROST · → doing",
-      "agent": "FROST",
-      "at": 1787945680744
-    },
-    {
-      "id": "O36E",
-      "taskId": "TASK-1492",
-      "text": "moved backlog → done",
-      "agent": "LYNX",
-      "at": 1787945643378
-    },
-    {
-      "id": "F5YF",
-      "taskId": "TASK-148",
-      "text": "moved doing → done",
-      "agent": "LYNX",
-      "at": 1787945643328
-    },
-    {
-      "id": "VSVO",
-      "taskId": "TASK-1375",
-      "text": "moved todo → done",
-      "agent": "LYNX",
-      "at": 1787945643271
-    },
-    {
-      "id": "2GWG",
-      "taskId": "TASK-1392",
-      "text": "moved todo → done",
-      "agent": "LYNX",
-      "at": 1787945643213
-    },
-    {
-      "id": "IN3E",
-      "taskId": "TASK-1503",
-      "text": "moved doing → done",
-      "agent": "LYNX",
-      "at": 1787945383850
-    },
-    {
-      "id": "MOQT",
-      "taskId": "TASK-1503",
-      "text": "✓ checked LOG.md entry appended",
-      "agent": "RAVAN",
-      "at": 1787945383791
     }
   ],
   "deletions": [
@@ -9108,5 +9108,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787991232074
+  "updatedAt": 1787991339222
 }
