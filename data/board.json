@@ -7742,9 +7742,50 @@
       "createdAt": 1787944917899,
       "updatedAt": 1787945383850,
       "blocked": false
+    },
+    {
+      "id": "TASK-1504",
+      "title": "CI RED: ci @ b85b333",
+      "desc": "Auto-filed from CI (TASK-1479). Suite `ci` failed.\n\n- Failing run: https://github.com/SinghAtithi/Stock_Analysis/actions/runs/34303890353\n- Commit: b85b333\n\nInvestigate the failing check first; re-run the suite locally before marking fixed.",
+      "phase": "A",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": null,
+      "labels": [
+        "ci",
+        "ops"
+      ],
+      "estimate": 2,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "inspect failing run log",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "reproduce locally + fix",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "verify 3 consecutive green scheduled runs",
+          "done": false
+        }
+      ],
+      "createdAt": 1788921410499,
+      "updatedAt": 1788921410499,
+      "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "VCL3",
+      "taskId": "TASK-1504",
+      "text": "created in todo · failed run https://github.com/SinghAtithi/Stock_Analysis/actions/runs/34303890353",
+      "agent": "CI-BOT",
+      "at": 1788921410499
+    },
     {
       "id": "37JB",
       "taskId": "TASK-57",
@@ -8297,13 +8338,6 @@
       "text": "claimed by GHOST · → doing",
       "agent": "GHOST",
       "at": 1787980404997
-    },
-    {
-      "id": "6FQU",
-      "taskId": "TASK-232",
-      "text": "✓ checked AC: complements TASK-81 pill row + TASK-232 deta",
-      "agent": "RAVAN",
-      "at": 1787980311182
     }
   ],
   "deletions": [
@@ -9108,5 +9142,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1787994257057
+  "updatedAt": 1788921410503
 }
