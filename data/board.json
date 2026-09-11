@@ -7780,6 +7780,13 @@
   ],
   "activities": [
     {
+      "id": "JGRF",
+      "taskId": "TASK-1504",
+      "text": "still red @ d5bc158 · https://github.com/SinghAtithi/Stock_Analysis/actions/runs/34617696063",
+      "agent": "CI-BOT",
+      "at": 1789141352859
+    },
+    {
       "id": "4KRH",
       "taskId": "TASK-1504",
       "text": "still red @ ee200bf · https://github.com/SinghAtithi/Stock_Analysis/actions/runs/34589199280",
@@ -8331,13 +8338,6 @@
       "text": "✓ checked empty state when no scheduled dates known",
       "agent": "GHOST",
       "at": 1787983701308
-    },
-    {
-      "id": "92ZE",
-      "taskId": "TASK-1383",
-      "text": "✓ checked ICS download per event reusing TASK-512 helper",
-      "agent": "GHOST",
-      "at": 1787983701265
     }
   ],
   "deletions": [
@@ -9142,5 +9142,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1789122387782
+  "updatedAt": 1789141352862
 }
