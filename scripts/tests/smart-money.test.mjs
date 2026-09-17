@@ -293,9 +293,14 @@ test("runIngest with fixture fetchers persists rows + per-source status", async 
       fixture("block_deals.json"),
     "https://www.nseindia.com/api/corporate-announcements?index=equities": fixture("announcements.json"),
   };
+  /* Fixture URLs are pinned to the 25–29 Aug 2026 window — pin `now` so the
+   * test does not time-bomb when the calendar moves on (was green 29 Aug,
+   * red from Sep: generated from/to no longer matched fixture keys). */
+  const now = new Date(2026, 7, 29, 12, 0, 0);
   const summary = await runIngest(db, {
     force: true,
     days: 5,
+    now,
     cacheDir: tempDir(t),
     fetchImpl: (url) => {
       const hit = fetchers[url];
@@ -321,11 +326,14 @@ test("runIngest with fixture fetchers persists rows + per-source status", async 
 test("runIngest skips when fresh rows exist unless --force", async (t) => {
   const db = tempDb(t);
   const cacheDir = tempDir(t);
+  /* Same time-pin as above: freshness window must cover the Aug-25 fixture
+   * trade_dates, otherwise the second run re-ingests instead of skipping. */
+  const now = new Date(2026, 7, 29, 12, 0, 0);
   const mk = (url) => () => Promise.resolve(url.includes("bulk_deals") ? fixture("bulk_deals.json") : { data: [] });
-  await runIngest(db, { force: true, cacheDir, fetchImpl: mk("bulk_deals") });
+  await runIngest(db, { force: true, cacheDir, now, fetchImpl: mk("bulk_deals") });
   const before = db.prepare("SELECT COUNT(*) AS n FROM smart_money_feed").get().n;
   assert.ok(before > 0);
-  const skipped = await runIngest(db, { cacheDir, fetchImpl: mk("bulk_deals"), onLog: () => {} });
+  const skipped = await runIngest(db, { cacheDir, now, fetchImpl: mk("bulk_deals"), onLog: () => {} });
   assert.equal(skipped.fetched, 0, "fresh window short-circuits");
   const after = db.prepare("SELECT COUNT(*) AS n FROM smart_money_feed").get().n;
   assert.equal(after, before);

@@ -1,5 +1,23 @@
 ---
 
+## 2026-09-17 — AXIOM: TASK-1506 shipped — CI RED fixed (smart-money time-bomb + next/sharp audit)
+
+- **Gates fix**: `scripts/tests/smart-money.test.mjs` — pinned `now` to local-noon 29 Aug 2026 in both `runIngest` integration tests so generated `from/to` (25–29 Aug) matches fixture URL keys and the freshness window covers Aug-25 trade_dates; was green 29 Aug, red from Sep (0 rows persisted / 140 re-ingested instead of skip). Verified 18/18 locally.
+- **Audit fix**: `web/package.json` + lock — `next` 16.3.1→16.3.5 and `eslint-config-next` lockstep; transitive `sharp` 0.35.3→0.35.4. `npm audit --omit=dev` now 0 vulns (remaining js-yaml high is dev-only, not in CI gate). Full `npm test` 439 pass/0 fail/2 skip, `tsc` green; scoped eslint clean (full `npm run lint` red is pre-existing TASK-1395/1379 WIP, untouched per orchestrator §2).
+- **Swarm note**: complements VIPER's entry below — TASK-1505 closed dup, TASK-1506 owned the fix; package.json revert mid-session (concurrent churn) re-applied and committed scoped. Untracked `web/src/app/error.tsx` + `proxy.ts` + mixer/crash WIP left untouched.
+
+------
+
+## 2026-09-17 — VIPER: agent-swarm check — CI RED root-caused, crew distributed, duplicate P0 deduped
+
+- **CI RED root cause (run 35212422421, still red on master)**: (a) `gates/node:test` — 2 fails in scripts/tests/smart-money.test.mjs, date-drift time-bomb: fixture URLs pinned to 25–29 Aug 2026 but runIngest derived from/to from `now`, so Sep runs miss fixture keys (0 rows) and the freshness window no longer covers Aug trade_dates (140 re-ingested instead of skip). (b) `security/npm audit` — next 16.3.1 critical (GHSA-p293-qw3h-jr36, GHSA-2xp9-vwfh-vxw4) + transitive sharp 0.35.3 high.
+- **Crew (6 leads + 3 subagent probes)**: VIPER (swarm lead/CI verify), AXIOM (CI fix owner — TASK-1506), SPECTRE (swarm map — TASK-1504), CIPHER-2 (audit triage: next 16.3.1→16.3.5 + eslint-config-next lockstep, `npm install --package-lock-only`, no sharp override needed), ORION-2 (board triage: 23 open, pull order + orphan map), RAVEN-2 (UI pre-check: WIP likely gate-green, 4 minor notes incl. proxy.ts Buffer-at-edge risk).
+- **Dedupe**: TASK-1505 (viper) closed done as duplicate — TASK-1506 (axiom) owns the identical fix and is further along (AC1–3 done). Verified axiom's working-tree fix locally: smart-money 18/18, `npm audit --omit=dev` 0 vulns, full `npm test` 439 pass/0 fail/2 skip, `tsc` green.
+- **Lint caveat (NOT CI)**: local `npm run lint` shows 3 errors, all `@next/next/no-sync-scripts` from uncommitted TASK-1395/1379 WIP (layout.tsx:58, global-error.tsx:53, error.tsx:40) — master CI eslint is green; that WIP must add `next/script` strategy or eslint carve-out before ship.
+- **Next**: axiom ships TASK-1506 (scoped commit: smart-money.test.mjs + package.json/lock); orion order: TASK-85 ticks (shipped 04f21d6), TASK-821 ship (3/3 AC), N+1 chain 92+183, backtest chain 180→157→470 (serialize vs TASK-88 WIP), TASK-57 ingest; founder-gated 1408/1424/1398 parked per TASK-1449.
+
+------
+
 ## 2026-08-29 — LYNX: TASK-57 unblocked (1495 shipped)
 
 - **TASK-57 unblocked**: Yahoo v10 crumb auth (TASK-1495) shipped green — blocked flag cleared so Phase-C moat ingest (fundamentals+analyst on nifty500) can proceed; TASK-1388 AC4 ticked (verification item: no third-party, gates green, probe clean).
