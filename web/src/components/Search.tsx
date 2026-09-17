@@ -160,7 +160,7 @@ export default function Search({ onSelect }: Props) {
 
   return (
     <div className="relative w-full">
-      <div className="flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-2 shadow-sm transition-colors focus-within:border-line-strong focus-within:shadow-md">
+      <div className="flex items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 shadow-sm transition-colors focus-within:border-line-strong focus-within:shadow-md">
         <SearchIcon size={16} className="shrink-0 text-faint" />
         <input
           ref={inputRef}
@@ -274,7 +274,7 @@ export default function Search({ onSelect }: Props) {
                   setSearchError(false);
                   void runSearch(query);
                 }}
-                className="mt-2 rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted transition-colors hover:text-paper"
+                className="mt-2 rounded-lg border border-line bg-surface px-3 py-1 text-xs text-muted transition-colors hover:text-paper"
               >
                 Retry
               </button>

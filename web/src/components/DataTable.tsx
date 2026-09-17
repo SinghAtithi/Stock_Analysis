@@ -180,7 +180,7 @@ export default function DataTable<T>({
                   {c.sortable ? (
                     <button
                       onClick={() => setSort(c)}
-                      className={`inline-flex items-center gap-1 rounded-full px-2 py-1 transition-colors hover:bg-surface ${key === c.key ? "bg-paper text-ink shadow-sm" : ""} ${c.align === "right" ? "flex-row-reverse" : ""}`}
+                      className={`inline-flex items-center gap-1 rounded-md px-2 py-1 transition-colors hover:bg-surface ${key === c.key ? "bg-paper text-ink shadow-sm" : ""} ${c.align === "right" ? "flex-row-reverse" : ""}`}
                     >
                       {c.label}
                       <span aria-hidden className="text-faint">

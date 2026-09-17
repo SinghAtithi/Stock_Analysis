@@ -113,7 +113,7 @@ export default function StrategyPicker({
         aria-haspopup="listbox"
         aria-label={`Strategy: ${selected?.name ?? value}. Change strategy`}
         title={selected ? `${selected.name}${selected.juryRank ? ` · jury #${selected.juryRank}` : ""}` : value}
-        className="flex max-w-[220px] items-center gap-1.5 rounded-full bg-paper px-3.5 py-1.5 text-sm font-medium text-ink shadow-sm transition-colors hover:bg-accent sm:max-w-none"
+        className="flex max-w-[220px] items-center gap-1.5 rounded-lg bg-paper px-3.5 py-1.5 text-sm font-medium text-ink shadow-sm transition-colors hover:bg-accent sm:max-w-none"
       >
         <span className="truncate">{selected?.name ?? value}</span>
         {selected?.juryRank != null && (

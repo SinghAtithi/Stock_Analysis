@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import { exportWatchlist, parseImport, applyImport, type WatchlistEntry } from "@/lib/watchlist";
+import { X } from "lucide-react";
 import Sparkline from "@/components/Sparkline";
 import Link from "next/link";
 
@@ -106,13 +107,13 @@ export default function Watchlist({
             {pendingImport.entries.length === 1 ? "" : "s"} — replace the whole list, or merge into it?
           </p>
           <div className="mt-2 flex gap-2">
-            <button type="button" onClick={() => confirmImport("replace")} className="rounded-full bg-paper px-3 py-1 text-xs font-medium text-ink shadow-sm transition-opacity hover:opacity-90">
+            <button type="button" onClick={() => confirmImport("replace")} className="rounded-lg bg-paper px-3 py-1 text-xs font-medium text-ink shadow-sm transition-opacity hover:opacity-90">
               Replace list
             </button>
-            <button type="button" onClick={() => confirmImport("merge")} className="rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted transition-colors hover:text-paper">
+            <button type="button" onClick={() => confirmImport("merge")} className="rounded-lg border border-line bg-surface px-3 py-1 text-xs text-muted transition-colors hover:text-paper">
               Merge
             </button>
-            <button type="button" onClick={() => setPendingImport(null)} className="rounded-full px-2.5 py-1 text-xs text-faint transition-colors hover:text-muted">
+            <button type="button" onClick={() => setPendingImport(null)} className="rounded-lg px-2.5 py-1 text-xs text-faint transition-colors hover:text-muted">
               Cancel
             </button>
           </div>
@@ -199,7 +200,7 @@ export default function Watchlist({
                   title={`Remove ${q.symbol}`}
                   className={`relative ml-2 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm leading-none transition-colors after:absolute after:-inset-2 after:content-[''] ${isSel ? "text-ink/60 hover:bg-ink/10 hover:text-ink" : "text-faint hover:bg-surface hover:text-down"}`}
                 >
-                  ×
+                  <X size={14} aria-hidden />
                 </button>
               </div>
             </li>

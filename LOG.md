@@ -1,5 +1,13 @@
 ---
 
+## 2026-09-17 — AXIOM: de-slop slice 5 shipped — pill rationing + Watchlist remove glyph (TASK-1519)
+
+- **Fix** (UNSLOPIFY rule 2/3, files verified clean first): `Search` input wrapper + retry button `rounded-full` → `rounded-lg` (input is not a pill); `Watchlist` import confirm bar's 3 buttons → `rounded-lg`; `StrategyPicker` combobox trigger → `rounded-lg` (rank badge inside stays a pill — badges are sanctioned); `DataTable` sort header button → `rounded-md`; `Watchlist` remove `×` text glyph → Lucide `X` size 14 (aria-label/title unchanged). Chips/toggles/badges (MarketStatus, change % chip, avatars, Star/Theme toggles, exchange/type tags) intentionally left as pills.
+- **Verified**: `tsc` + scoped eslint green; `npm run ui:tokens` clean (HAWK's TASK-1518 checker); isolated `next dev -p 3223` probe — search computed radius 12px, remove button = `svg.lucide-x` with no glyph text, table sort radius 8px, screener axe 0, zero pageerrors. Home axe shows 2 best-practice violations (`region`, `skip-link`) — **proven pre-existing** by stashing only my 4 files and re-scanning (identical violations without my diff); owner WIP (layout/page/hero) is the source, not this slice.
+- **Board note**: accidentally force-claimed TASK-1518 (HAWK, in review) during a task-id mixup — restored to `review | hawk` within the same minute; TASK-1518's palette-enforcement checker (`scripts/check-ui-tokens.mjs` + `ui:tokens` + CI step) landed under HAWK and this slice runs it clean.
+
+---
+
 ## 2026-09-17 — AXIOM: de-slop slice 1 shipped — board-blue quarantine + pricing glyphs → Lucide (TASK-1515)
 
 - **Fix**: `web/src/lib/kanban/types.ts` + `agents.ts` gained a board-only palette quarantine note (phase/priority/callsign hex `#2563eb`+ washes are internal kanban chrome; verified importers are only `app/board/page.tsx`, `app/api/board/route.ts`, internal `merge.ts` — zero product imports, UNSLOPIFY rule 4). `app/pricing/page.tsx` ✓ glyphs → `lucide-react` `Check` (size 14, `aria-hidden`, `mt-0.5 shrink-0` to keep first-line alignment; UNSLOPIFY rule 3).
@@ -26,6 +34,15 @@
 
 ---
 
+## 2026-09-17 — KITE: UNSLOPIFY swarm convergence — 1513 closed (merged into VIPER's v1.0), 1516/1517 in REVIEW
+
+- **TASK-1513 closed done (superseded)**: the shipped `UNSLOPIFY.md` is VIPER's v1.0 (TASK-1511) — a fuller constitution (scorecard 7/10, full 3-theme palette table with AA notes, color/type/space/radius/motion laws, component etiquette, de-slop queue, PR checklist). KITE's draft converged into it; no divergent copy left. `AGENTS.md` design section + `DESIGN.md` superseded banner landed alongside (TASK-1509/1511).
+- **TASK-1516 → REVIEW** (gates green: tsc 6.7s, eslint 31.0s, node:test 7.0s, board parse): `✕` glyph → lucide `X` in `HeroValueProp`, `ScreenerPresets`, `mixer/page`, `page.tsx` help/watchlist dialogs. Full `npm run lint` now 0 errors (8 img warnings in kalyan WIP, non-blocking).
+- **TASK-1517 → REVIEW** (gates green): OG share card re-skinned; live render verified HTTP 200 1200x630 PNG with sampled canvas/ink pixels. Awaiting reviewer ACK → ship.
+- **Swarm state**: VIPER queue items 1–6 shipped (header glass removed, chips 6→3, backtest tokens, glyphs, DESIGN banner); HAWK's token guard TASK-1518 in REVIEW; queue #7–10 (scrollbar tokens, display face, radius sweep, 11px unify) still open — #8 is a founder call. No commits made by KITE this session (working tree carries 1516/1517 for the shipper).
+
+---
+
 ## 2026-09-17 — KITE: de-slop slice 3 shipped — OG share card re-skinned to the paper palette (TASK-1517)
 
 - **Fix**: `web/src/app/s/[symbol]/opengraph-image.tsx` dropped the neon-lime-on-black gamer card (`#c6f534` / `#0a0a0b`) for the shipped palette as literals mirrored from `globals.css` (ImageResponse can't read CSS vars): canvas `#fcfcf9`, ink `#111214`, muted `#626870`, line `#ece9e3`, up `#0e7a3a` / down `#c4362b`; sparkline now direction-colored, not decorative lime. UNSLOPIFY rule 8.
@@ -39,6 +56,16 @@
 - **Fix**: `✕` text glyphs replaced with `lucide-react` `X` (aria-hidden, size 12/14) in `HeroValueProp` (dismiss), `ScreenerPresets` (delete saved view), `mixer/page` (delete mix), `page.tsx` (help + watchlist modal closes). Buttons switched from `px/py + text-size` to `grid place-items-center p-1/p-1.5` so icon centering stays stable. Complements AXIOM's slice 1 (pricing ✓ + board-blue quarantine).
 - **Left alone** (owned by other WIP): `AlertCenter`, `backtest/page`, error shells (TASK-1379/1395 in flight).
 - **Gates**: `npx tsc --noEmit` green; `npx eslint` clean on all 4 files. Remaining `✕`/`✓` in product UI: AlertCenter + backtest + page dialogs pending other owners; UNSLOPIFY §3 rule 3 tracks the rest.
+
+---
+
+## 2026-09-17 — HAWK: TASK-1518 shipped — token-discipline guard (palette now enforced, not just documented)
+
+- **Shipped fc8eae8 (pushed)**: `scripts/check-ui-tokens.mjs` scans `web/src/**/*.{ts,tsx}` for hardcoded hex/rgb/hsl and fails CI on anything unsanctioned. Sanctioned with written reasons in-file: `token("--name", "#fallback")` reads (ChartPanel/backtest pattern — the fallback is the token value verbatim), neutral alpha overlays (`rgba`/`rgb` with max−min ≤ 4 and alpha < 1 — chart grid/crosshair/shadows), and 9 whole-file exceptions (crash shells that render without globals.css, ImageResponse OG routes, board-callsign chrome quarantine, theme-color metas). Chromatic rgba (e.g. blue at any alpha) and opaque rgb are flagged.
+- **State of the palette when enforced**: 73 literal hits in 11 files → only 3 lines were outside the sanctioned patterns at build time, and the one real violation (backtest equity-chart theme literals) was already migrated to `token()` reads by a concurrent session while this was being built — verified by the guard, not by editing the contended file. Today the tree is **clean at 0 violations**.
+- **Wiring**: `npm run ui:tokens` (web) + a `ui tokens (palette discipline)` step in `ci.yml` gates job — first UI gate that is machine-enforced rather than prose. 6 node:test cases for the checker (hex/overlay/rgb/hsl/allowlist glob).
+- **Race note**: AXIOM claimed TASK-1518 14s before moving to TASK-1519 (pill-rationing slice) — a double-claim, no duplicate guard exists; force-shipped my verified work, board notice TASK-1520 filed. My callsign this session: HAWK (KITE, SPECTRE, RAVEN all had live sessions — the collision TASK-1514 flagged).
+- **Next for UI (unowned fix-queue)**: alert badge `bg-down`/`text-paper` contrast check, remaining 8 lint warnings, UNSLOPIFY §4 evidence refresh after slices 1/2/5 land.
 
 ---
 
@@ -59,7 +86,15 @@
 
 ------
 
-## 2026-09-17 — VIPER: agent-swarm check — CI RED root-caused, crew distributed, duplicate P0 deduped
+## 2026-09-17 — VIPER: UNSLOPIFY shipped (UI constitution + de-slop fixes) · CSP-hydration blocker filed
+
+- **UNSLOPIFY.md** (repo root, v1.0): UI scorecard (7/10: typography 2.5, color/depth 2, density 1.5, micro-interactions 1), what-to-keep list, slop tells, **the unified palette table** (all 20 tokens × light/dark/contrast, mirroring `globals.css` verbatim), typography/radius/elevation/motion laws, chip discipline, 11-item de-slop queue, reviewer checklist. AGENTS.md now points to it; stale `DESIGN.md` (violet/dark "MIDNIGHT TERMINAL") carries a SUPERSEDED banner.
+- **De-slop fixes landed (queue 1–6)**: header `backdrop-blur` glass removed; backtest chart reads `--color-up/--color-faint/--color-muted` tokens (killed off-palette `#6b7280/#9ba1ac/#85891/#9aa0a8`); ChartPanel fallback → token value; hero 6 pills → 3 chips + one meta sentence; `✕` glyphs → lucide `X` (backtest + AlertCenter); DESIGN.md banner. Other agents extended the queue in-place (§7 scrollbar tokens, §11 pulse softening) — file is live.
+- **Verification**: `workflow.mjs verify` ALL GATES GREEN (tsc 6.5s · eslint 32s · node:test 439 pass/0 fail/2 skip · board.json parse). `check-ui-tokens.mjs` clean. `next build` green. Board duplicate TASK-1511 closed done (deliverable landed; pipeline owned by TASK-1509/1518/1519).
+- **BLOCKER filed (TASK-1522, P0)**: `web/src/proxy.ts` (untracked TASK-1395 WIP, mtime 08-29) sets a nonce CSP on every response, but Next 16 static pages ship nonce-less inline bootstrap scripts → every inline script CSP-blocked → React error #412, no hydration, e2e 13-check red on this tree. Repro: `curl -s :3000/ | grep nonce=` → no attributes, while CSP demands `'nonce-…'`; console shows `Executing inline script violates …` ×3 + `pageerror #412`. Fix direction: make nonce reach Next's scripts (dynamic render or `'strict-dynamic'`-compatible approach) or revert to the TASK-1372 baseline until TASK-1395 is completed. NOT committed; master stays green.
+- **Product gaps worth scheduling** (from the audit, unowned): mobile-first PWA shell; guided "start here" onboarding path; strategy follow (register a jury strategy → alert on its rank changes); screener→paper-trade handoff; weekly portfolio review digest; Hindi/localized help pages. Propose picking top 3 in the next CTO pass.
+
+------
 
 - **CI RED root cause (run 35212422421, still red on master)**: (a) `gates/node:test` — 2 fails in scripts/tests/smart-money.test.mjs, date-drift time-bomb: fixture URLs pinned to 25–29 Aug 2026 but runIngest derived from/to from `now`, so Sep runs miss fixture keys (0 rows) and the freshness window no longer covers Aug trade_dates (140 re-ingested instead of skip). (b) `security/npm audit` — next 16.3.1 critical (GHSA-p293-qw3h-jr36, GHSA-2xp9-vwfh-vxw4) + transitive sharp 0.35.3 high.
 - **Crew (6 leads + 3 subagent probes)**: VIPER (swarm lead/CI verify), AXIOM (CI fix owner — TASK-1506), SPECTRE (swarm map — TASK-1504), CIPHER-2 (audit triage: next 16.3.1→16.3.5 + eslint-config-next lockstep, `npm install --package-lock-only`, no sharp override needed), ORION-2 (board triage: 23 open, pull order + orphan map), RAVEN-2 (UI pre-check: WIP likely gate-green, 4 minor notes incl. proxy.ts Buffer-at-edge risk).

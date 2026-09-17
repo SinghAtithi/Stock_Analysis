@@ -7919,7 +7919,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "doing",
+      "status": "review",
       "assignee": "vertex",
       "labels": [],
       "estimate": 3,
@@ -7927,26 +7927,26 @@
         {
           "id": "1",
           "text": "UI audit scored (good/bad) across home/screener/backtest/breadth/company",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "UNSLOPIFY.md written with common palette + natural-UI rules",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "top de-slop fixes landed (token drift, hardcoded hex, gradient/glass/emoji sweep)",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "tsc+lint green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1789658352508,
-      "updatedAt": 1789658489226,
+      "updatedAt": 1789659159742,
       "blocked": false
     },
     {
@@ -7991,7 +7991,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "viper",
       "labels": [],
       "estimate": 3,
@@ -7999,26 +7999,26 @@
         {
           "id": "1",
           "text": "UI scored good/bad with evidence",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "UNSLOPIFY.md written with palette + rules",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "palette single-sourced in tokens, no new hardcoded colors",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "tsc+lint green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1789658503060,
-      "updatedAt": 1789658624591,
+      "updatedAt": 1789659250984,
       "blocked": false
     },
     {
@@ -8063,7 +8063,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "doing",
+      "status": "done",
       "assignee": "kite",
       "labels": [],
       "estimate": 3,
@@ -8090,7 +8090,7 @@
         }
       ],
       "createdAt": 1789658559511,
-      "updatedAt": 1789658595403,
+      "updatedAt": 1789659141253,
       "blocked": false
     },
     {
@@ -8166,7 +8166,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "kite",
       "labels": [],
       "estimate": 3,
@@ -8188,7 +8188,7 @@
         }
       ],
       "createdAt": 1789658727919,
-      "updatedAt": 1789658816508,
+      "updatedAt": 1789659089469,
       "blocked": false
     },
     {
@@ -8197,7 +8197,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "kite",
       "labels": [],
       "estimate": 3,
@@ -8219,12 +8219,115 @@
         }
       ],
       "createdAt": 1789658838823,
-      "updatedAt": 1789658967791,
+      "updatedAt": 1789659136637,
       "blocked": false
     },
     {
       "id": "TASK-1518",
       "title": "Palette enforcement: token-only UI guard (scripts/check-ui-tokens.mjs) + CI wiring",
+      "desc": "",
+      "phase": "D",
+      "priority": "P1",
+      "status": "done",
+      "assignee": "hawk",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "checker flags hardcoded hex/rgb/hsl outside sanctioned allowlist (with reasons)",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "backtest/page.tsx theme literals fixed via token() reads",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "npm script ui:tokens + ci.yml step wired",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "gates green (tsc, lint, test, ui:tokens 0 violations)",
+          "done": true
+        }
+      ],
+      "createdAt": 1789658870330,
+      "updatedAt": 1789659174512,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1519",
+      "title": "De-slop slice 5: pill rationing on clean surfaces — search input/retry, watchlist import buttons, picker trigger, table sort + remove glyph",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "done",
+      "assignee": "axiom",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "search input+retry, watchlist confirm buttons, picker trigger rounded-lg",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "table sort rounded-md",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "watchlist remove uses Lucide X",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "tsc+scoped eslint green",
+          "done": true
+        },
+        {
+          "id": "5",
+          "text": "home+screener probe clean",
+          "done": true
+        }
+      ],
+      "createdAt": 1789659094441,
+      "updatedAt": 1789659249575,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1520",
+      "title": "HAWK shipped TASK-1518 (token guard, fc8eae8 pushed) — AXIOM claimed 1518 14s before AXIOM moved to TASK-1519; do not duplicate the guard",
+      "desc": "",
+      "phase": "E",
+      "priority": "P3",
+      "status": "backlog",
+      "assignee": "hawk",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "reviewed: no duplicate guard file exists",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "axiom confirms 1519 slice only",
+          "done": false
+        }
+      ],
+      "createdAt": 1789659189826,
+      "updatedAt": 1789659189826,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1521",
+      "title": "Alert badge contrast: AlertCenter unread count is bg-down/text-paper — 3.49:1 light, 1.77:1 dark, 2.65:1 contrast (AA fail all three)",
       "desc": "",
       "phase": "D",
       "priority": "P1",
@@ -8235,31 +8338,300 @@
       "checklist": [
         {
           "id": "1",
-          "text": "checker flags hardcoded hex/rgb/hsl outside sanctioned allowlist (with reasons)",
+          "text": "badge uses bg-down-soft/text-down pattern",
           "done": false
         },
         {
           "id": "2",
-          "text": "backtest/page.tsx theme literals fixed via token() reads",
+          "text": "contrast >= 4.5 in light/dark/contrast (computed)",
           "done": false
         },
         {
           "id": "3",
-          "text": "npm script ui:tokens + ci.yml step wired",
+          "text": "axe probe with badge visible reports 0 violations",
           "done": false
         },
         {
           "id": "4",
-          "text": "gates green (tsc, lint, test, ui:tokens 0 violations)",
+          "text": "scoped ship",
           "done": false
         }
       ],
-      "createdAt": 1789658870330,
-      "updatedAt": 1789658880977,
+      "createdAt": 1789659228648,
+      "updatedAt": 1789659228902,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1522",
+      "title": "BLOCKER TASK-1395: nonce CSP blocks Next hydration on static pages (React #412) — e2e red while proxy.ts in tree",
+      "desc": "",
+      "phase": "E",
+      "priority": "P0",
+      "status": "todo",
+      "assignee": "viper",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "repro documented (console CSP violation + React #412 + no nonce attrs on static HTML)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "nonce approach fixed (middleware nonce reaches Next scripts) or CSP reverted to safe baseline",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "Playwright e2e 13-check green again on :3000",
+          "done": false
+        }
+      ],
+      "createdAt": 1789659242426,
+      "updatedAt": 1789659242426,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "JTZZ",
+      "taskId": "TASK-1511",
+      "text": "moved doing → done",
+      "agent": "VIPER",
+      "at": 1789659250984
+    },
+    {
+      "id": "XHVS",
+      "taskId": "TASK-1519",
+      "text": "moved doing → done",
+      "agent": "AXIOM",
+      "at": 1789659249575
+    },
+    {
+      "id": "0N8S",
+      "taskId": "TASK-1519",
+      "text": "✓ checked home+screener probe clean",
+      "agent": "AXIOM",
+      "at": 1789659249503
+    },
+    {
+      "id": "DT7N",
+      "taskId": "TASK-1519",
+      "text": "✓ checked tsc+scoped eslint green",
+      "agent": "AXIOM",
+      "at": 1789659249422
+    },
+    {
+      "id": "BOEQ",
+      "taskId": "TASK-1519",
+      "text": "✓ checked watchlist remove uses Lucide X",
+      "agent": "AXIOM",
+      "at": 1789659249355
+    },
+    {
+      "id": "Y20J",
+      "taskId": "TASK-1519",
+      "text": "✓ checked table sort rounded-md",
+      "agent": "AXIOM",
+      "at": 1789659249284
+    },
+    {
+      "id": "4YW6",
+      "taskId": "TASK-1519",
+      "text": "✓ checked search input+retry, watchlist confirm buttons, p",
+      "agent": "AXIOM",
+      "at": 1789659249187
+    },
+    {
+      "id": "LRXT",
+      "taskId": "TASK-1511",
+      "text": "✓ checked tsc+lint green",
+      "agent": "VIPER",
+      "at": 1789659247177
+    },
+    {
+      "id": "BW1J",
+      "taskId": "TASK-1511",
+      "text": "✓ checked palette single-sourced in tokens, no new hardcod",
+      "agent": "VIPER",
+      "at": 1789659247105
+    },
+    {
+      "id": "PQCH",
+      "taskId": "TASK-1511",
+      "text": "✓ checked UNSLOPIFY.md written with palette + rules",
+      "agent": "VIPER",
+      "at": 1789659247027
+    },
+    {
+      "id": "J611",
+      "taskId": "TASK-1511",
+      "text": "✓ checked UI scored good/bad with evidence",
+      "agent": "VIPER",
+      "at": 1789659246931
+    },
+    {
+      "id": "RV9R",
+      "taskId": "TASK-1522",
+      "text": "created in todo",
+      "agent": "VIPER",
+      "at": 1789659242426
+    },
+    {
+      "id": "JMBT",
+      "taskId": "TASK-1521",
+      "text": "claimed by HAWK · → doing",
+      "agent": "HAWK",
+      "at": 1789659228903
+    },
+    {
+      "id": "D6PE",
+      "taskId": "TASK-1521",
+      "text": "created in todo",
+      "agent": "HAWK",
+      "at": 1789659228648
+    },
+    {
+      "id": "DPJY",
+      "taskId": "TASK-1520",
+      "text": "created in backlog",
+      "agent": "HAWK",
+      "at": 1789659189826
+    },
+    {
+      "id": "I4HF",
+      "taskId": "TASK-1518",
+      "text": "shipped fc8eae8 (local) · feat(ui): token-discipline guard — scripts/check-ui-tokens.mjs blocks unsanctioned hex/rgb in web/src, allowlist carries reasons (crash shells, OG images, board chrome), neutral alpha overlays exempt; npm ui:tokens + ci.yml gate; 6 tests (TASK-1518) · gates tsc=11.7s·lint=28.3s·test=6.6s·boardjson=0.1s",
+      "agent": "HAWK",
+      "at": 1789659174512
+    },
+    {
+      "id": "K3FP",
+      "taskId": "TASK-1509",
+      "text": "review · gates green tsc=8.3s·lint=32.9s·test=6.9s·boardjson=0.0s",
+      "agent": "VERTEX",
+      "at": 1789659159742
+    },
+    {
+      "id": "1KGC",
+      "taskId": "TASK-1513",
+      "text": "moved doing → done",
+      "agent": "KITE",
+      "at": 1789659141253
+    },
+    {
+      "id": "BU8P",
+      "taskId": "TASK-1517",
+      "text": "review · gates green tsc=6.6s·lint=28.8s·test=7.1s·boardjson=0.1s",
+      "agent": "KITE",
+      "at": 1789659136638
+    },
+    {
+      "id": "E55M",
+      "taskId": "TASK-1519",
+      "text": "claimed by AXIOM · → doing",
+      "agent": "AXIOM",
+      "at": 1789659108000
+    },
+    {
+      "id": "QW1E",
+      "taskId": "TASK-1518",
+      "text": "moved doing → review",
+      "agent": "HAWK",
+      "at": 1789659107780
+    },
+    {
+      "id": "DW7I",
+      "taskId": "TASK-1518",
+      "text": "assigned to HAWK",
+      "agent": "HAWK",
+      "at": 1789659107681
+    },
+    {
+      "id": "CIN6",
+      "taskId": "TASK-1509",
+      "text": "✓ checked tsc+lint green",
+      "agent": "RAVAN",
+      "at": 1789659107196
+    },
+    {
+      "id": "0AZB",
+      "taskId": "TASK-1509",
+      "text": "✓ checked top de-slop fixes landed (token drift, hardcoded",
+      "agent": "RAVAN",
+      "at": 1789659107086
+    },
+    {
+      "id": "LRP2",
+      "taskId": "TASK-1509",
+      "text": "✓ checked UNSLOPIFY.md written with common palette + natur",
+      "agent": "RAVAN",
+      "at": 1789659106932
+    },
+    {
+      "id": "BX0R",
+      "taskId": "TASK-1509",
+      "text": "✓ checked UI audit scored (good/bad) across home/screener/",
+      "agent": "RAVAN",
+      "at": 1789659106802
+    },
+    {
+      "id": "BB40",
+      "taskId": "TASK-1518",
+      "text": "claimed by AXIOM · → doing",
+      "agent": "AXIOM",
+      "at": 1789659094565
+    },
+    {
+      "id": "GY1E",
+      "taskId": "TASK-1519",
+      "text": "created in todo",
+      "agent": "AXIOM",
+      "at": 1789659094441
+    },
+    {
+      "id": "5I2L",
+      "taskId": "TASK-1516",
+      "text": "review · gates green tsc=6.7s·lint=31.0s·test=7.0s·boardjson=0.1s",
+      "agent": "KITE",
+      "at": 1789659089469
+    },
+    {
+      "id": "ERGH",
+      "taskId": "TASK-1518",
+      "text": "review · gates green tsc=6.4s·lint=30.0s·test=7.3s·boardjson=0.1s",
+      "agent": "HAWK",
+      "at": 1789659080990
+    },
+    {
+      "id": "FCRW",
+      "taskId": "TASK-1518",
+      "text": "✓ checked gates green (tsc, lint, test, ui:tokens 0 violat",
+      "agent": "RAVAN",
+      "at": 1789659037047
+    },
+    {
+      "id": "VFV5",
+      "taskId": "TASK-1518",
+      "text": "✓ checked npm script ui:tokens + ci.yml step wired",
+      "agent": "RAVAN",
+      "at": 1789659036902
+    },
+    {
+      "id": "KI13",
+      "taskId": "TASK-1518",
+      "text": "✓ checked backtest/page.tsx theme literals fixed via token",
+      "agent": "RAVAN",
+      "at": 1789659036784
+    },
+    {
+      "id": "XKY3",
+      "taskId": "TASK-1518",
+      "text": "✓ checked checker flags hardcoded hex/rgb/hsl outside sanc",
+      "agent": "RAVAN",
+      "at": 1789659036659
+    },
     {
       "id": "773G",
       "taskId": "TASK-1517",
@@ -8581,244 +8953,6 @@
       "text": "claimed by VERTEX · → doing",
       "agent": "VERTEX",
       "at": 1789658489226
-    },
-    {
-      "id": "KC6L",
-      "taskId": "TASK-1509",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1789658352510
-    },
-    {
-      "id": "CUAW",
-      "taskId": "TASK-1507",
-      "text": "review · gates green tsc=6.0s·lint=21.8s·test=6.2s·boardjson=0.0s",
-      "agent": "VERTEX",
-      "at": 1789658046467
-    },
-    {
-      "id": "L3EF",
-      "taskId": "TASK-1506",
-      "text": "moved doing → done",
-      "agent": "AXIOM",
-      "at": 1789658038945
-    },
-    {
-      "id": "3RGV",
-      "taskId": "TASK-1506",
-      "text": "✓ checked tsc+lint+test green",
-      "agent": "AXIOM",
-      "at": 1789658028211
-    },
-    {
-      "id": "YB8H",
-      "taskId": "TASK-1507",
-      "text": "✓ checked npx tsc --noEmit green",
-      "agent": "RAVAN",
-      "at": 1789658001813
-    },
-    {
-      "id": "EWL3",
-      "taskId": "TASK-1507",
-      "text": "✓ checked npm run lint reports 0 errors",
-      "agent": "RAVAN",
-      "at": 1789658001741
-    },
-    {
-      "id": "902F",
-      "taskId": "TASK-1507",
-      "text": "✓ checked error.tsx + global-error.tsx sync theme script c",
-      "agent": "RAVAN",
-      "at": 1789658001657
-    },
-    {
-      "id": "7EJA",
-      "taskId": "TASK-1507",
-      "text": "✓ checked layout.tsx theme bootstrap uses next/script befo",
-      "agent": "RAVAN",
-      "at": 1789658001556
-    },
-    {
-      "id": "G2OT",
-      "taskId": "TASK-1505",
-      "text": "moved doing → done",
-      "agent": "VIPER",
-      "at": 1789657991308
-    },
-    {
-      "id": "FQ2U",
-      "taskId": "TASK-1505",
-      "text": "✓ checked npm audit prod clean or documented",
-      "agent": "VIPER",
-      "at": 1789657986196
-    },
-    {
-      "id": "ZDZO",
-      "taskId": "TASK-1505",
-      "text": "✓ checked smart-money tests pinned to fixture window, gree",
-      "agent": "VIPER",
-      "at": 1789657986098
-    },
-    {
-      "id": "C4HJ",
-      "taskId": "TASK-1508",
-      "text": "claimed by KITE · → doing",
-      "agent": "KITE",
-      "at": 1789657973815
-    },
-    {
-      "id": "PO1B",
-      "taskId": "TASK-1508",
-      "text": "created in todo",
-      "agent": "KITE",
-      "at": 1789657965362
-    },
-    {
-      "id": "PDY2",
-      "taskId": "TASK-1507",
-      "text": "claimed by VERTEX · → doing",
-      "agent": "VERTEX",
-      "at": 1789657934407
-    },
-    {
-      "id": "FBIZ",
-      "taskId": "TASK-1507",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1789657926861
-    },
-    {
-      "id": "JZYH",
-      "taskId": "TASK-1506",
-      "text": "✓ checked bump next 16.3.1->16.3.5 + sharp fix, audit clea",
-      "agent": "AXIOM",
-      "at": 1789657849861
-    },
-    {
-      "id": "J0N5",
-      "taskId": "TASK-1506",
-      "text": "✓ checked time-pin runIngest tests to 2026-08-29 fixture w",
-      "agent": "AXIOM",
-      "at": 1789657806924
-    },
-    {
-      "id": "65EV",
-      "taskId": "TASK-1506",
-      "text": "✓ checked repro smart-money 2 fails + audit 2 vulns locall",
-      "agent": "AXIOM",
-      "at": 1789657770763
-    },
-    {
-      "id": "ONGP",
-      "taskId": "TASK-1506",
-      "text": "claimed by AXIOM · → doing",
-      "agent": "AXIOM",
-      "at": 1789657740704
-    },
-    {
-      "id": "0H8Y",
-      "taskId": "TASK-1505",
-      "text": "claimed by VIPER · → doing",
-      "agent": "VIPER",
-      "at": 1789657718257
-    },
-    {
-      "id": "G3WE",
-      "taskId": "TASK-1506",
-      "text": "created in todo",
-      "agent": "AXIOM",
-      "at": 1789657711480
-    },
-    {
-      "id": "XQUQ",
-      "taskId": "TASK-1505",
-      "text": "created in todo",
-      "agent": "VIPER",
-      "at": 1789657709225
-    },
-    {
-      "id": "9PSC",
-      "taskId": "TASK-1504",
-      "text": "claimed by SPECTRE · → doing",
-      "agent": "SPECTRE",
-      "at": 1789657684083
-    },
-    {
-      "id": "93J8",
-      "taskId": "TASK-1504",
-      "text": "created in todo",
-      "agent": "SPECTRE",
-      "at": 1789657671863
-    },
-    {
-      "id": "37JB",
-      "taskId": "TASK-57",
-      "text": "unblocked",
-      "agent": "LYNX",
-      "at": 1787994257054
-    },
-    {
-      "id": "MUQF",
-      "taskId": "TASK-1388",
-      "text": "✓ checked no third-party scripts, axe-clean, tsc+lint+test",
-      "agent": "RAVAN",
-      "at": 1787994243228
-    },
-    {
-      "id": "R7XL",
-      "taskId": "TASK-1388",
-      "text": "✓ checked weekly rollup query or /api/events/summary for C",
-      "agent": "RAVAN",
-      "at": 1787994227216
-    },
-    {
-      "id": "OEON",
-      "taskId": "TASK-1388",
-      "text": "✓ checked page_view + symbol_search_select + chart_range_c",
-      "agent": "RAVAN",
-      "at": 1787994227179
-    },
-    {
-      "id": "VSEF",
-      "taskId": "TASK-1388",
-      "text": "✓ checked events table in SQLite via migration + tiny POST",
-      "agent": "RAVAN",
-      "at": 1787994227138
-    },
-    {
-      "id": "749D",
-      "taskId": "TASK-1388",
-      "text": "moved todo → done",
-      "agent": "VERTEX",
-      "at": 1787994227101
-    },
-    {
-      "id": "NCVI",
-      "taskId": "TASK-366",
-      "text": "✓ checked AC: complements TASK-129 drift + TASK-155 Use of",
-      "agent": "RAVAN",
-      "at": 1787993277915
-    },
-    {
-      "id": "TBIL",
-      "taskId": "TASK-366",
-      "text": "✓ checked AC: persisted, respects system, axe AAA 0",
-      "agent": "RAVAN",
-      "at": 1787993277877
-    },
-    {
-      "id": "C70X",
-      "taskId": "TASK-366",
-      "text": "✓ checked Add High contrast toggle: canvas #000, text #fff",
-      "agent": "RAVAN",
-      "at": 1787993277837
-    },
-    {
-      "id": "YD1L",
-      "taskId": "TASK-366",
-      "text": "moved todo → done",
-      "agent": "MANTIS",
-      "at": 1787993277796
     }
   ],
   "deletions": [
@@ -9623,5 +9757,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1789658967804
+  "updatedAt": 1789659250997
 }
