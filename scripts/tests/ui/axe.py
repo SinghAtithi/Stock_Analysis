@@ -1,16 +1,19 @@
 from playwright.sync_api import sync_playwright
 
 import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from axe_load import load_axe  # TASK-1532: CSP-safe axe injection
 BASE = sys.argv[sys.argv.index("--url") + 1] if "--url" in sys.argv else "http://localhost:3000"
 
-AXE = "scripts/tests/ui/vendor/axe.min.js"
-
+# TASK-1530/1532: axe is served same-origin (see axe_load) so `script-src
+# 'self'` allows it — no CSP bypass, the app's real policy stays enforced.
 with sync_playwright() as p:
     b = p.chromium.launch()
     pg = b.new_page(viewport={"width": 1440, "height": 900})
     pg.goto(f"{BASE}/?s=RELIANCE&e=NSE&r=1y", wait_until="domcontentloaded", timeout=60000)
     pg.wait_for_timeout(7000)
-    pg.add_script_tag(path=AXE)
+    load_axe(pg)
     pg.wait_for_timeout(1500)
     res = pg.evaluate("""async () => {
       const r = await window.axe.run(document, {

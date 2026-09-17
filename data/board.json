@@ -8689,7 +8689,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "review",
       "assignee": "vertex",
       "labels": [],
       "estimate": 3,
@@ -8697,26 +8697,26 @@
         {
           "id": "1",
           "text": "5 section cards on /tax use rounded-lg, xl stays modals/heroes only",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "computed-radius probe on /tax shows 12px sections, zero page errors",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "tsc+lint+ui:tokens green",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "UNSLOPIFY §8 row for radius sweep notes this slice",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1789659723099,
-      "updatedAt": 1789659727298,
+      "updatedAt": 1789659958750,
       "blocked": false
     },
     {
@@ -8737,21 +8737,21 @@
         {
           "id": "1",
           "text": "axe.py/axe_screener/axe_breadth/axe_backtest/axe_board load axe with CSP active (no inline)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "offline-capable (no CDN dependency)",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "runs report real axe results on / and subroutes",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1789659739263,
-      "updatedAt": 1789659744050,
+      "updatedAt": 1789659992043,
       "blocked": false
     },
     {
@@ -8815,9 +8815,101 @@
       "createdAt": 1789659893150,
       "updatedAt": 1789659898478,
       "blocked": false
+    },
+    {
+      "id": "TASK-1535",
+      "title": "a11y: skip-to-chart target #chart sits inside dynamic(ssr:false) ChartPanel — axe skip-link + region moderate in all 3 themes",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "kite",
+      "labels": [
+        "ui",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "axe home reports 0 violations in light/dark/contrast",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "skip-to-chart lands on a pre-hydration element (page.tsx wrapper) or is conditional",
+          "done": false
+        }
+      ],
+      "createdAt": 1789659992142,
+      "updatedAt": 1789659992142,
+      "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "N9CR",
+      "taskId": "TASK-1535",
+      "text": "created in todo",
+      "agent": "KITE",
+      "at": 1789659992142
+    },
+    {
+      "id": "BRUK",
+      "taskId": "TASK-1532",
+      "text": "✓ checked runs report real axe results on / and subroutes",
+      "agent": "RAVAN",
+      "at": 1789659992043
+    },
+    {
+      "id": "CG6C",
+      "taskId": "TASK-1532",
+      "text": "✓ checked offline-capable (no CDN dependency)",
+      "agent": "RAVAN",
+      "at": 1789659991941
+    },
+    {
+      "id": "3XMX",
+      "taskId": "TASK-1532",
+      "text": "✓ checked axe.py/axe_screener/axe_breadth/axe_backtest/axe",
+      "agent": "RAVAN",
+      "at": 1789659991832
+    },
+    {
+      "id": "CK87",
+      "taskId": "TASK-1531",
+      "text": "review · gates green tsc=4.8s·lint=22.8s·test=6.6s·boardjson=0.0s",
+      "agent": "VERTEX",
+      "at": 1789659958750
+    },
+    {
+      "id": "PCCV",
+      "taskId": "TASK-1531",
+      "text": "✓ checked UNSLOPIFY §8 row for radius sweep notes this sli",
+      "agent": "RAVAN",
+      "at": 1789659924357
+    },
+    {
+      "id": "9J7O",
+      "taskId": "TASK-1531",
+      "text": "✓ checked tsc+lint+ui:tokens green",
+      "agent": "RAVAN",
+      "at": 1789659924285
+    },
+    {
+      "id": "KFFJ",
+      "taskId": "TASK-1531",
+      "text": "✓ checked computed-radius probe on /tax shows 12px section",
+      "agent": "RAVAN",
+      "at": 1789659924182
+    },
+    {
+      "id": "WELT",
+      "taskId": "TASK-1531",
+      "text": "✓ checked 5 section cards on /tax use rounded-lg, xl stays",
+      "agent": "RAVAN",
+      "at": 1789659924088
+    },
     {
       "id": "3Z3G",
       "taskId": "TASK-1534",
@@ -9314,69 +9406,6 @@
       "text": "review · gates green tsc=6.6s·lint=28.8s·test=7.1s·boardjson=0.1s",
       "agent": "KITE",
       "at": 1789659136638
-    },
-    {
-      "id": "E55M",
-      "taskId": "TASK-1519",
-      "text": "claimed by AXIOM · → doing",
-      "agent": "AXIOM",
-      "at": 1789659108000
-    },
-    {
-      "id": "QW1E",
-      "taskId": "TASK-1518",
-      "text": "moved doing → review",
-      "agent": "HAWK",
-      "at": 1789659107780
-    },
-    {
-      "id": "DW7I",
-      "taskId": "TASK-1518",
-      "text": "assigned to HAWK",
-      "agent": "HAWK",
-      "at": 1789659107681
-    },
-    {
-      "id": "CIN6",
-      "taskId": "TASK-1509",
-      "text": "✓ checked tsc+lint green",
-      "agent": "RAVAN",
-      "at": 1789659107196
-    },
-    {
-      "id": "0AZB",
-      "taskId": "TASK-1509",
-      "text": "✓ checked top de-slop fixes landed (token drift, hardcoded",
-      "agent": "RAVAN",
-      "at": 1789659107086
-    },
-    {
-      "id": "LRP2",
-      "taskId": "TASK-1509",
-      "text": "✓ checked UNSLOPIFY.md written with common palette + natur",
-      "agent": "RAVAN",
-      "at": 1789659106932
-    },
-    {
-      "id": "BX0R",
-      "taskId": "TASK-1509",
-      "text": "✓ checked UI audit scored (good/bad) across home/screener/",
-      "agent": "RAVAN",
-      "at": 1789659106802
-    },
-    {
-      "id": "BB40",
-      "taskId": "TASK-1518",
-      "text": "claimed by AXIOM · → doing",
-      "agent": "AXIOM",
-      "at": 1789659094565
-    },
-    {
-      "id": "GY1E",
-      "taskId": "TASK-1519",
-      "text": "created in todo",
-      "agent": "AXIOM",
-      "at": 1789659094441
     }
   ],
   "deletions": [
@@ -10181,5 +10210,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1789659898493
+  "updatedAt": 1789659992152
 }

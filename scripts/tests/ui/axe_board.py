@@ -3,8 +3,10 @@ Prints violations grouped by rule id with impacted nodes, then a summary.
 Exit code 0 iff zero serious/critical violations everywhere."""
 from playwright.sync_api import sync_playwright
 import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from axe_load import load_axe  # TASK-1532: CSP-safe axe injection
 
-AXE = "scripts/tests/ui/vendor/axe.min.js"
 BASE = sys.argv[sys.argv.index("--url") + 1] if "--url" in sys.argv else "http://localhost:3000"
 
 SCAN = """async () => {
@@ -40,7 +42,7 @@ with sync_playwright() as p:
     b = p.chromium.launch()
     pg = b.new_page(viewport={"width": 1440, "height": 900})
     pg.goto(f"{BASE}/board", wait_until="networkidle")
-    pg.add_script_tag(path=AXE)
+    load_axe(pg)
     pg.wait_for_timeout(800)
 
     total_serious = 0

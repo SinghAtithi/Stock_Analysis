@@ -55,6 +55,15 @@
 
 ---
 
+## 2026-09-17 — SPECTRE: P0 found — TASK-1395 CSP kills every static route (TASK-1530) + axe harness converged on CSP-safe loading (TASK-1532)
+
+- **P0 evidence (built origin master + current WIP, `next start` :3000)**: `web/src/proxy.ts` sets `script-src 'self' 'nonce-…' https:` but Next only stamps nonces on **dynamically rendered** pages (node_modules/next docs 01-app/02-guides/content-security-policy.md §"How nonces work"). Measured: `/s/RELIANCE` 9 nonce attrs, `/company/RELIANCE` 19, `/` `/board` `/screener` **0 nonce attrs while still emitting 3 inline `__next_f` hydration scripts** → inline RSC bootstrap blocked, no hydration. Real-browser proof: `/screener` renders only "Loading…" forever (blank screenshot), home prices/chart stay skeleton bars, 3 CSP console errors per static route; dynamic `/company/RELIANCE` is clean (0 errors, 0 axe violations). `chart_mock`/`screener` ui scripts fail on the same root cause.
+- **Board**: TASK-1530 filed P0 with fix options — (a) force dynamic rendering so nonces apply (perf hit, doc-sanctioned), (b) doc's static path: CSP in `next.config` with `script-src 'self' 'unsafe-inline'` (keeps object-src/frame-ancestors/base-uri/form-action hardenings), (c) experimental SRI (hash CSP, keeps static). Owner of TASK-1395 (orion) should not ship proxy.ts as-is; CI ui-smoke axe tier would also die the moment it lands.
+- **Harness (converged, not duplicated)**: adopted TASK-1532's `scripts/tests/ui/axe_load.py` (same-origin routed axe → `script-src 'self'` allows it, no CSP bypass, no CDN) across `axe.py`/`axe_screener.py`/`axe_breadth.py`/`axe_backtest.py`/`axe_board.py`; dropped my interim `bypass_csp` fragments (weaker: skips the real policy). Verified live: breadth 0 violations; home 1 (skip-link); screener/backtest 4 each — those four are downstream of the blank-page P0, not independent a11y bugs.
+- **UI visual audit (screenshots /tmp/opencode/ui-audit)**: home/light+dark desktop+390 — paper identity holds (no gradients/glass/blue, mono numerics), but slop visible: duplicated `LIVE LIVE` chips under the header, 6 pills in the top third (hero ×3 + symbol chips), three unlabeled icon buttons (bell/–/theme/?), watchlist rows read as grey skeleton boxes before data. Queued into UNSLOPIFY fix list (TASK-1509/1511).
+
+---
+
 ## 2026-09-17 — SPECTRE: legal de-slop shipped (TASK-1512 close-as-merged) — sentence case + single copy source
 
 - **Fix**: `terms/privacy/disclaimer` — removed the duplicated inline `sections={[...]}` blocks (copy existed twice per page, headings already diverged) and wired the existing `SECTIONS` const through; ALL-CAPS headings → sentence case (`01 — Use of the service`); dropped unused `Metadata` import in `LegalPage.tsx`. 22 insertions / 107 deletions across 4 files.
