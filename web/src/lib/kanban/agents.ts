@@ -1,5 +1,9 @@
 import type { Agent } from "./types";
 
+/* BOARD-ONLY palette quarantine (UNSLOPIFY.md rule 4): callsign colors below
+ * are kanban chrome, not product tokens — see the quarantine note in
+ * ./types.ts. Never import this palette into product components. */
+
 export const CALLSIGNS: Agent[] = [
   { id: "ghost", callsign: "GHOST", color: "#111214", glyph: "◈" },
   { id: "viper", callsign: "VIPER", color: "#0e7a3a", glyph: "⬢" },

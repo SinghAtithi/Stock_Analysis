@@ -1,5 +1,13 @@
 ---
 
+## 2026-09-17 — AXIOM: de-slop slice 1 shipped — board-blue quarantine + pricing glyphs → Lucide (TASK-1515)
+
+- **Fix**: `web/src/lib/kanban/types.ts` + `agents.ts` gained a board-only palette quarantine note (phase/priority/callsign hex `#2563eb`+ washes are internal kanban chrome; verified importers are only `app/board/page.tsx`, `app/api/board/route.ts`, internal `merge.ts` — zero product imports, UNSLOPIFY rule 4). `app/pricing/page.tsx` ✓ glyphs → `lucide-react` `Check` (size 14, `aria-hidden`, `mt-0.5 shrink-0` to keep first-line alignment; UNSLOPIFY rule 3).
+- **Verified**: `npx tsc --noEmit` + scoped eslint green; isolated `next dev -p 3221` probe — `/pricing` 200, 8 `svg.lucide-check`, 0 `✓` glyphs, axe 0 violations light **and** dark, zero pageerrors. Dev server stopped after check (:3000 untouched).
+- **Swarm note**: concurrent KITE slices (1516 glyphs / 1517 OG card) and SPECTRE 1512 spotted as uncommitted WIP — untouched per orchestrator §2; this commit stages only my 3 files + board + LOG.
+
+---
+
 ## 2026-09-17 — SPECTRE: legal de-slop shipped (TASK-1512 close-as-merged) — sentence case + single copy source
 
 - **Fix**: `terms/privacy/disclaimer` — removed the duplicated inline `sections={[...]}` blocks (copy existed twice per page, headings already diverged) and wired the existing `SECTIONS` const through; ALL-CAPS headings → sentence case (`01 — Use of the service`); dropped unused `Metadata` import in `LegalPage.tsx`. 22 insertions / 107 deletions across 4 files.
@@ -15,6 +23,14 @@
 - **TASK-1510 → done as duplicate**: shipped independently as d38df95 (TASK-1506, axiom). Verified hunk-identical to diagnosis; pre-commit verified smart-money 18/18 + full suite 439 pass / 0 fail / 2 skip + tsc green in dirty tree. Zero code changes by this session (read-only probes, /tmp worktree, board ops only); an attempted scoped commit correctly no-op'd after the concurrent ship reset the index.
 - **UNSLOPIFY.md verification (KITE's file, TASK-1513)**: palette §1 confirmed against web/src/app/globals.css (light/dark/contrast values match; components consume var(--color-*) broadly). Evidence deltas: `rounded-full` is 307 hits, not "~100"; `uppercase` in 15 files, not 4 (TickerTape/StatsRail/FundamentalsPanel/breadth + backtest/paper×3/screener/radar/kalyan/calendar/portfolio/AlertCenter/Watchlist); legal SECTIONS arrays still inline in all 3 pages (warnings fixed by wiring `sections=` through, not dedup — checkbox overstates); lint moved 3 errors+12 warnings → 0 errors+8 warnings during the session (other crew fixed no-sync-scripts + 4 dead-var warnings). Independent score: **6.5/10** (system is real; slop surface bigger than filed).
 - **TASK-1514 filed (P3)**: SPECTRE callsign collision (this session vs the "SPECTRE audit" credited in UNSLOPIFY §3) + TASK-1511 (viper)/TASK-1512 overlap → rename + merge. Pull order: defer to VIPER's (LOG 2026-09-17 VIPER entry), no competing plan.
+
+---
+
+## 2026-09-17 — KITE: de-slop slice 3 shipped — OG share card re-skinned to the paper palette (TASK-1517)
+
+- **Fix**: `web/src/app/s/[symbol]/opengraph-image.tsx` dropped the neon-lime-on-black gamer card (`#c6f534` / `#0a0a0b`) for the shipped palette as literals mirrored from `globals.css` (ImageResponse can't read CSS vars): canvas `#fcfcf9`, ink `#111214`, muted `#626870`, line `#ece9e3`, up `#0e7a3a` / down `#c4362b`; sparkline now direction-colored, not decorative lime. UNSLOPIFY rule 8.
+- **Verified**: `npm run build` green; `next start` on :3000 → `GET /s/RELIANCE/opengraph-image` = HTTP 200 `image/png` 1200x630 (55KB), corner pixel sampled == canvas (252,252,249), text pixel == ink (17,18,20); bogus symbol fallback card also 200 (35KB). Server stopped after check (port 3000 freed). `tsc --noEmit` + scoped eslint green.
+- **Left for next slices**: pill audit (UNSLOPIFY #1), ChartPanel/backtest canvas hex quarantine (#3 remainder), `DESIGN.md` reconcile-or-delete (#5). `AlertCenter`/`backtest` glyphs owned by their WIP authors.
 
 ---
 

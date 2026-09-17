@@ -1,3 +1,11 @@
+/* BOARD-ONLY palette quarantine (UNSLOPIFY.md rule 4).
+ * The hex colors below (phase dots, priority dots, tailwind blue/amber
+ * washes) belong to the internal /board kanban ONLY. They are deliberately
+ * outside the product token set and must never be imported by product
+ * components — product color comes from globals.css tokens
+ * (canvas/paper/ink/panel/line/muted/up/down/accent/warn) exclusively.
+ * Verified importers of lib/kanban: app/board/page.tsx, app/api/board/route.ts
+ * (plus internal merge.ts). Keep it that way. */
 export type ColumnId = "backlog" | "todo" | "doing" | "review" | "done";
 export type Priority = "P0" | "P1" | "P2" | "P3";
 export type PhaseId = "A" | "B" | "C" | "D" | "E";

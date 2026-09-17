@@ -8205,21 +8205,21 @@
         {
           "id": "1",
           "text": "OG card uses paper/ink + token up/down",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "no neon lime",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "valid ImageResponse renders",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1789658838823,
-      "updatedAt": 1789658844780,
+      "updatedAt": 1789658967791,
       "blocked": false
     },
     {
@@ -8260,6 +8260,27 @@
     }
   ],
   "activities": [
+    {
+      "id": "773G",
+      "taskId": "TASK-1517",
+      "text": "✓ checked valid ImageResponse renders",
+      "agent": "RAVAN",
+      "at": 1789658967791
+    },
+    {
+      "id": "F1A5",
+      "taskId": "TASK-1517",
+      "text": "✓ checked no neon lime",
+      "agent": "RAVAN",
+      "at": 1789658967696
+    },
+    {
+      "id": "VQPJ",
+      "taskId": "TASK-1517",
+      "text": "✓ checked OG card uses paper/ink + token up/down",
+      "agent": "RAVAN",
+      "at": 1789658967588
+    },
     {
       "id": "FVUL",
       "taskId": "TASK-1512",
@@ -8798,27 +8819,6 @@
       "text": "moved todo → done",
       "agent": "MANTIS",
       "at": 1787993277796
-    },
-    {
-      "id": "9RTS",
-      "taskId": "TASK-236",
-      "text": "moved todo → done",
-      "agent": "LYNX",
-      "at": 1787992615986
-    },
-    {
-      "id": "N2BE",
-      "taskId": "TASK-744",
-      "text": "✓ checked AC: complements TASK-377 plain meaning + TASK-50",
-      "agent": "RAVAN",
-      "at": 1787992538278
-    },
-    {
-      "id": "HIS9",
-      "taskId": "TASK-744",
-      "text": "✓ checked Add modal on score pill with factor breakdown ta",
-      "agent": "RAVAN",
-      "at": 1787992538243
     }
   ],
   "deletions": [
@@ -9623,5 +9623,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1789658955695
+  "updatedAt": 1789658967804
 }

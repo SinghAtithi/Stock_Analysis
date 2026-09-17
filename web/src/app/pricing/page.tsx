@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Check } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import AnalyticsView from "@/components/AnalyticsView";
 import { TIER_LIMITS } from "@/lib/tiers";
@@ -49,7 +50,7 @@ export default function PricingPage() {
           <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted">
             {FREE.map((f) => (
               <li key={f} className="flex gap-2">
-                <span aria-hidden className="text-up">✓</span>
+                <Check size={14} aria-hidden className="mt-0.5 shrink-0 text-up" />
                 {f}
               </li>
             ))}
@@ -74,7 +75,7 @@ export default function PricingPage() {
           <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted">
             {PRO.map((f) => (
               <li key={f} className="flex gap-2">
-                <span aria-hidden className="text-up">✓</span>
+                <Check size={14} aria-hidden className="mt-0.5 shrink-0 text-up" />
                 {f}
               </li>
             ))}
