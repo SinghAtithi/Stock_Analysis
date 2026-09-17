@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 /* TASK-96: shared shell for the legal pages — token-driven prose, sentence

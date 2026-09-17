@@ -1,5 +1,40 @@
 ---
 
+## 2026-09-17 — SPECTRE: legal de-slop shipped (TASK-1512 close-as-merged) — sentence case + single copy source
+
+- **Fix**: `terms/privacy/disclaimer` — removed the duplicated inline `sections={[...]}` blocks (copy existed twice per page, headings already diverged) and wired the existing `SECTIONS` const through; ALL-CAPS headings → sentence case (`01 — Use of the service`); dropped unused `Metadata` import in `LegalPage.tsx`. 22 insertions / 107 deletions across 4 files.
+- **Verify**: `npx tsc --noEmit` green; `npm run lint` 0 errors / 8 warnings (was 3 errors / 12 warnings); prod build + `next start` smoke — `/terms` `/privacy` `/disclaimer` all 200 with content.
+- **Board**: TASK-1512 closed as merged — UNSLOPIFY.md deliverable owned by KITE (TASK-1513, WIP-safe), this entry is its legal slice. Remaining UNSLOPIFY queue stays on TASK-1509/1511.
+- **Swarm note**: touched no file owned by concurrent WIP (AlertCenter/backtest/error shells/UNSLOPIFY.md untouched). UNSLOPIFY.md observed mid-rewrite by KITE — not edited or committed here.
+
+---
+
+## 2026-09-17 — SPECTRE: swarm-check closed (TASK-1504) + CI-dup closed (TASK-1510) + UNSLOPIFY verification
+
+- **TASK-1504 done**: 6-lead map (data/quant, web/ui, ops/ci/security, a11y/perf, board-ops, product) + 3 read-only explore probes (no gate contention per TASK-35). Independently root-caused master's `ci` red via clean-HEAD worktree (/tmp, symlinked node_modules): tsc green, eslint 0 errors, `npm test` 437 pass / 2 fail — both in scripts/tests/smart-money.test.mjs (calendar time-bomb: fixture URLs + freshness window pinned to 25–29 Aug 2026, live clock in Sep misses keys → 0 rows / re-ingests 140). ui-smoke green explained (no node:test step). Did NOT catch the second cause (npm audit next/sharp) — AXIOM TASK-1506 did; converged on identical test fix.
+- **TASK-1510 → done as duplicate**: shipped independently as d38df95 (TASK-1506, axiom). Verified hunk-identical to diagnosis; pre-commit verified smart-money 18/18 + full suite 439 pass / 0 fail / 2 skip + tsc green in dirty tree. Zero code changes by this session (read-only probes, /tmp worktree, board ops only); an attempted scoped commit correctly no-op'd after the concurrent ship reset the index.
+- **UNSLOPIFY.md verification (KITE's file, TASK-1513)**: palette §1 confirmed against web/src/app/globals.css (light/dark/contrast values match; components consume var(--color-*) broadly). Evidence deltas: `rounded-full` is 307 hits, not "~100"; `uppercase` in 15 files, not 4 (TickerTape/StatsRail/FundamentalsPanel/breadth + backtest/paper×3/screener/radar/kalyan/calendar/portfolio/AlertCenter/Watchlist); legal SECTIONS arrays still inline in all 3 pages (warnings fixed by wiring `sections=` through, not dedup — checkbox overstates); lint moved 3 errors+12 warnings → 0 errors+8 warnings during the session (other crew fixed no-sync-scripts + 4 dead-var warnings). Independent score: **6.5/10** (system is real; slop surface bigger than filed).
+- **TASK-1514 filed (P3)**: SPECTRE callsign collision (this session vs the "SPECTRE audit" credited in UNSLOPIFY §3) + TASK-1511 (viper)/TASK-1512 overlap → rename + merge. Pull order: defer to VIPER's (LOG 2026-09-17 VIPER entry), no competing plan.
+
+---
+
+## 2026-09-17 — KITE: de-slop slice 2 shipped — text glyphs → Lucide X in 4 surfaces (TASK-1516)
+
+- **Fix**: `✕` text glyphs replaced with `lucide-react` `X` (aria-hidden, size 12/14) in `HeroValueProp` (dismiss), `ScreenerPresets` (delete saved view), `mixer/page` (delete mix), `page.tsx` (help + watchlist modal closes). Buttons switched from `px/py + text-size` to `grid place-items-center p-1/p-1.5` so icon centering stays stable. Complements AXIOM's slice 1 (pricing ✓ + board-blue quarantine).
+- **Left alone** (owned by other WIP): `AlertCenter`, `backtest/page`, error shells (TASK-1379/1395 in flight).
+- **Gates**: `npx tsc --noEmit` green; `npx eslint` clean on all 4 files. Remaining `✕`/`✓` in product UI: AlertCenter + backtest + page dialogs pending other owners; UNSLOPIFY §3 rule 3 tracks the rest.
+
+---
+
+## 2026-09-17 — KITE: UNSLOPIFY.md shipped — UI scorecard 7.5/10 + single palette + anti-slop rules (TASK-1513)
+
+- **Scorecard**: color tokens 8/10, no-slop bans 9/10, typography 7/10, radius/shadow 6/10 (pill-everything is the #1 tell), motion 8/10, copy 7/10. Evidence via grep: no glass/blue-gradients/emoji in product UI; `✕`/`✓` glyphs should become Lucide icons; hardcoded hex in ChartPanel/backtest/OG cards needs token quarantine.
+- **Palette**: single source = `globals.css` tokens (light/dark/contrast-AAA values codified); up/down are data-only, warn is data-quality-only; no new color without AA check.
+- **Drift found**: `DESIGN.md` v2 "MIDNIGHT TERMINAL" (violet accent, dark-only, Archivo, overline caps) contradicts shipped reality — marked STALE in UNSLOPIFY, needs reconcile-or-delete (fix-list #5).
+- **Swarm note**: CI RED already shipped by AXIOM (TASK-1506) + VIPER triage above — KITE did not touch code, docs-only `UNSLOPIFY.md`, no collisions with TASK-1504/1505/1506/1507 owners.
+
+---
+
 ## 2026-09-17 — AXIOM: TASK-1506 shipped — CI RED fixed (smart-money time-bomb + next/sharp audit)
 
 - **Gates fix**: `scripts/tests/smart-money.test.mjs` — pinned `now` to local-noon 29 Aug 2026 in both `runIngest` integration tests so generated `from/to` (25–29 Aug) matches fixture URL keys and the freshness window covers Aug-25 trade_dates; was green 29 Aug, red from Sep (0 rows persisted / 140 re-ingested instead of skip). Verified 18/18 locally.
