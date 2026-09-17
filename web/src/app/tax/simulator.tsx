@@ -21,7 +21,7 @@ function Row({ label, value, cls = "" }: { label: string; value: string; cls?: s
 export default function Simulator({ lots, config, asOf }: Props) {
   if (lots.length === 0) {
     return (
-      <section aria-labelledby="sim-heading" className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
+      <section aria-labelledby="sim-heading" className="rounded-lg border border-line bg-surface p-5 shadow-sm">
         <h2 id="sim-heading" className="text-sm font-semibold text-paper">
           What-if sale
         </h2>
@@ -33,7 +33,7 @@ export default function Simulator({ lots, config, asOf }: Props) {
   }
   const p = projectSale(lots, asOf, config);
   return (
-    <section aria-labelledby="sim-heading" className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
+    <section aria-labelledby="sim-heading" className="rounded-lg border border-line bg-surface p-5 shadow-sm">
       <div className="flex items-baseline justify-between gap-3">
         <h2 id="sim-heading" className="text-sm font-semibold text-paper">
           What-if sale — {lots.length} lot{lots.length === 1 ? "" : "s"}

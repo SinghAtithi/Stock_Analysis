@@ -100,7 +100,7 @@ export default function TaxPage() {
         </p>
       </header>
 
-      <div className="rounded-2xl border border-warn/30 bg-warn-soft px-4 py-3 text-xs leading-relaxed text-warn">
+      <div className="rounded-lg border border-warn/30 bg-warn-soft px-4 py-3 text-xs leading-relaxed text-warn">
         <strong className="font-semibold">Estimates only.</strong> Holding-period thresholds,
         rates and the exemption are configurable in the settings panel and default to the
         current regime; the law changes, and brokerage, cess, surcharge and indexation nuances

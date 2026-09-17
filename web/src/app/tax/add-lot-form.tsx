@@ -47,7 +47,7 @@ export default function AddLotForm({ onAdd }: Props) {
   };
 
   return (
-    <section aria-labelledby="add-lot-heading" className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
+    <section aria-labelledby="add-lot-heading" className="rounded-lg border border-line bg-surface p-5 shadow-sm">
       <h2 id="add-lot-heading" className="text-sm font-semibold text-paper">
         Add a lot
       </h2>

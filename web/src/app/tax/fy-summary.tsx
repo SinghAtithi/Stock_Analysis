@@ -23,7 +23,7 @@ export default function FySummary({ lots, config, asOf }: Props) {
   };
 
   return (
-    <section aria-labelledby="fy-heading" className="rounded-2xl border border-line bg-surface shadow-sm">
+    <section aria-labelledby="fy-heading" className="rounded-lg border border-line bg-surface shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-3 px-5 pt-4">
         <div>
           <h2 id="fy-heading" className="text-sm font-semibold text-paper">

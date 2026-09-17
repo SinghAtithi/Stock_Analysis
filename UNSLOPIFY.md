@@ -191,7 +191,7 @@ This table mirrors the tokens verbatim; update both in the same commit.
 | 6 | Superseded banner on stale `DESIGN.md` | `DESIGN.md` | ✅ 2026-09-17 |
 | 7 | Tokenize scrollbar thumbs (`--color-bar` / `--color-bar-strong`, all 3 themes) | `globals.css` | ✅ 2026-09-17 |
 | 8 | Display face decision: keep Inter vs add a display companion for H1/prices | repo-wide | queued (founder call) |
-| 9 | Radius sweep: audit every `rounded-2xl` → §5 ladder | repo-wide | queued |
+| 9 | Radius sweep: audit every `rounded-2xl` → §5 ladder | repo-wide | in progress — tax page family done 2026-09-17 (TASK-1531); audit continues |
 | 10 | `text-[11px]` micro-chips → unify to `text-xs` where space allows | repo-wide | queued |
 | 11 | Skeleton pulse softened product-wide: `@keyframes pulse` floor 0.62, 2.6s (`animate-pulse` override) | `globals.css` | ✅ 2026-09-17 |
 | 12 | Fired-alert badge `bg-down text-paper` (3.49/1.77/2.65:1) → `bg-down-soft text-down` (4.70/7.95/7.03:1) | `AlertCenter.tsx` | ✅ 2026-09-17 (HAWK, TASK-1521) |

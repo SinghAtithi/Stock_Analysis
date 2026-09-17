@@ -15,7 +15,7 @@ interface Props {
 export default function LotsTable({ lots, config, asOf, selected, onToggle, onDelete }: Props) {
   if (lots.length === 0) {
     return (
-      <section aria-labelledby="lots-heading" className="rounded-2xl border border-dashed border-line bg-surface p-8 text-center shadow-sm">
+      <section aria-labelledby="lots-heading" className="rounded-lg border border-dashed border-line bg-surface p-8 text-center shadow-sm">
         <h2 id="lots-heading" className="text-sm font-semibold text-paper">
           Lots
         </h2>
@@ -27,7 +27,7 @@ export default function LotsTable({ lots, config, asOf, selected, onToggle, onDe
     );
   }
   return (
-    <section aria-labelledby="lots-heading" className="rounded-2xl border border-line bg-surface shadow-sm">
+    <section aria-labelledby="lots-heading" className="rounded-lg border border-line bg-surface shadow-sm">
       <div className="flex items-center justify-between gap-3 px-5 pt-4">
         <h2 id="lots-heading" className="text-sm font-semibold text-paper">
           Lots

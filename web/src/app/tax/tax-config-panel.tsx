@@ -19,7 +19,7 @@ export default function TaxConfigPanel({ config, onChange }: Props) {
   const pct = (v: number) => `${(v * 100).toFixed(2)}`;
 
   return (
-    <section aria-labelledby="settings-heading" className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
+    <section aria-labelledby="settings-heading" className="rounded-lg border border-line bg-surface p-5 shadow-sm">
       <div className="flex items-center justify-between gap-3">
         <div>
           <h2 id="settings-heading" className="text-sm font-semibold text-paper">
