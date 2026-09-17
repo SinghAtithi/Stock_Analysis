@@ -1,5 +1,18 @@
 ---
 
+## 2026-09-17 — VERTEX: DIAGNOSIS — nonce CSP cannot work on prerendered routes (TASK-1528, feeds TASK-1395/TASK-1525)
+
+- **Symptom**: `:3000` serves a CSP with a per-request nonce (`script-src 'self' 'nonce-…' https:`), but every inline script is blocked — `chart_mock`/`tape_mock`/`axe` harness red, `/` hydration dead (`#chart` never mounts, tape buttons 0), 8 console CSP errors per page.
+- **Root cause (measured, not guessed)**: `curl /` shows **0 `nonce=` attributes in the HTML**, while response headers are `x-nextjs-prerender: 1`, `x-nextjs-cache: HIT`, `Cache-Control: s-maxage=31536000`. The page is statically prerendered at build time, so a per-request nonce can never appear in it — yet `web/src/proxy.ts` applies the nonce CSP to document routes. The inline bootstraps that die are Next's own: `<script>(self.__next_s=…).push(["/theme-bootstrap.js",{}])` and the `__next_f` hydration payload.
+- **Fix options for TASK-1395 (orion)** — pick one; current state is the worst of both:
+  1. **Dynamic rendering** for routes under the nonce CSP (`await headers()` in layout / `export const dynamic = "force-dynamic"`), so Next injects the request nonce into the inline bootstraps. Correct per Next's documented nonce pattern; cost = loss of static prerender on those routes.
+  2. **Hash-based CSP** (`'sha256-…'` + `'self'`) — viable only for the two stable bootstraps; the `__next_f` payload is per-page/per-build, so this needs a build-time hash generator. Keeps static perf.
+  3. **Scope the nonce CSP to dynamic routes only** and serve a nonce-free policy for prerendered pages, so static HTML is not blocked. Least invasive, partial hardening.
+- **Team impact**: while this stands, every UI ship gate on `:3000` is unreliable; `ui-smoke` in CI is unaffected (untracked `web/src/proxy.ts` is not in a fresh checkout).
+- **Handoff**: not orion's card to steal — evidence + options recorded here and on TASK-1525 for TASK-1395's owner.
+
+---
+
 ## 2026-09-17 — AXIOM: UNSLOPIFY.md committed verbatim (TASK-1527)
 
 - **Gap**: VIPER's TASK-1511 (`UNSLOPIFY.md` v1.0, 195-line UI constitution: scorecard 7/10, full 3-theme palette table, color/typography/radius/motion laws, de-slop queue, PR checklist) existed only as an untracked working-tree file — both owning tasks (1511/1513) are done, so the doc the token-guard checker and AGENTS.md cite was absent from git.
@@ -48,6 +61,17 @@
 - **TASK-1510 → done as duplicate**: shipped independently as d38df95 (TASK-1506, axiom). Verified hunk-identical to diagnosis; pre-commit verified smart-money 18/18 + full suite 439 pass / 0 fail / 2 skip + tsc green in dirty tree. Zero code changes by this session (read-only probes, /tmp worktree, board ops only); an attempted scoped commit correctly no-op'd after the concurrent ship reset the index.
 - **UNSLOPIFY.md verification (KITE's file, TASK-1513)**: palette §1 confirmed against web/src/app/globals.css (light/dark/contrast values match; components consume var(--color-*) broadly). Evidence deltas: `rounded-full` is 307 hits, not "~100"; `uppercase` in 15 files, not 4 (TickerTape/StatsRail/FundamentalsPanel/breadth + backtest/paper×3/screener/radar/kalyan/calendar/portfolio/AlertCenter/Watchlist); legal SECTIONS arrays still inline in all 3 pages (warnings fixed by wiring `sections=` through, not dedup — checkbox overstates); lint moved 3 errors+12 warnings → 0 errors+8 warnings during the session (other crew fixed no-sync-scripts + 4 dead-var warnings). Independent score: **6.5/10** (system is real; slop surface bigger than filed).
 - **TASK-1514 filed (P3)**: SPECTRE callsign collision (this session vs the "SPECTRE audit" credited in UNSLOPIFY §3) + TASK-1511 (viper)/TASK-1512 overlap → rename + merge. Pull order: defer to VIPER's (LOG 2026-09-17 VIPER entry), no competing plan.
+
+---
+
+## 2026-09-17 — KITE: UI verification sweep + SHIP-GATE found in nonce-CSP WIP (TASK-1526; verifies 1516/1517 claim)
+
+- **Method**: rebuilt `web/`, then verified against a **coherent** server (a teammate's `next dev` on :3100). First attempt hit :3000 where a stale v16.3.1 server was serving HTML whose chunks no longer existed (all `_next/static/*` 500 + `text/plain`) — that was concurrent-build interference (AGENTS.md OPS RULE), **not** a source regression; discarded those readings.
+- **Functionally green on :3100**: landing renders hero + 4 price nodes + 6 stats-rail cells + market status; deep link `?s=RELIANCE` → price/stats/BARS/fundamentals present, hero correctly hidden. Confirms 1516/1517 (icon/OG slices) did not regress the terminal.
+- **SHIP-GATE found → TASK-1526 (P1, orion, ui/sec/ci)**: the untracked nonce-CSP WIP (`web/src/proxy.ts` + `web/public/theme-bootstrap.js`) causes (a) **hydration mismatch** — `<Script src="/theme-bootstrap.js" strategy="beforeInteractive">` renders `nonce=""` server vs `nonce={undefined}` client (React prints the exact diff), and (b) **axe harness blindness** — `scripts/tests/ui/axe.py:13` injects axe via `add_script_tag(path=…)` (inline) which the CSP blocks, so every `axe*.py` scan and the CI ui-smoke axe tier will fail the moment proxy.ts ships. Suggested: pass the request nonce to the Script (or drop the attribute server-side to match), switch axe injection to an external URL (`script-src https:` already allows the CDN) or make the harness nonce-aware.
+- **Local hygiene note (no card)**: `web/node_modules/next` is 16.3.1 while `web/package.json` pins 16.3.5 (audit fix d38df95 was package.json/lock only) — CI is unaffected (`npm ci`), but local builds run the old Next; run `npm install` in `web/` before trusting local browser checks.
+- **13-check e2e on :3100 — 11/13 PASS**, the 2 failures being the single hydration error above (`0 console/page errors`, `mobile no errors`). Passing: wordmark, market status, price ₹, stats rail 6 cells, 8-range sweep (readout `298 bars · MONEYCONTROL · 1MO`), search → title + `s=` url + fundamentals, star toggle, mobile sheet open/close, reduced-motion. So the UI work shipped this session is not the cause; one WIP defect accounts for all remaining console noise.
+- **Board hygiene**: 1526 filed with owner orion; no code touched in others' WIP files; no commits by KITE.
 
 ---
 

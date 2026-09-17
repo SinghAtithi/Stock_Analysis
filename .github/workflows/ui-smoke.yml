@@ -72,7 +72,7 @@ jobs:
         run: |
           set -u
           fail=0
-          for f in chart_mock tape_mock mob2 foot screener axe axe_screener axe_breadth; do
+          for f in chart_mock tape_mock mob2 foot screener axe axe_screener axe_breadth alert_badge; do
             echo "::group::$f"
             timeout 120 python3 "scripts/tests/ui/$f.py" || fail=1
             echo "::endgroup::"

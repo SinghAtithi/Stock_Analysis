@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import { X } from "lucide-react";
 import Modal from "@/components/Modal";
 import { PRICE_TYPES } from "@/lib/alerts";
 import { getDeviceId } from "@/lib/device";
@@ -318,7 +319,7 @@ export default function AlertCenter({ symbol, exchange, price }: Props) {
       >
         <BellIcon />
         {unseenFired.length > 0 ? (
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-down px-1 font-mono text-[10px] font-semibold tabular-nums text-paper">
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-down-soft px-1 font-mono text-[10px] font-semibold tabular-nums text-down">
             {unseenFired.length}
           </span>
         ) : active.length > 0 ? (
@@ -350,9 +351,9 @@ export default function AlertCenter({ symbol, exchange, price }: Props) {
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close alert center"
-              className="rounded-full border border-line bg-surface px-2 py-1 text-sm text-muted hover:text-paper"
+              className="grid h-7 w-7 place-items-center rounded-full border border-line bg-surface text-muted hover:text-paper"
             >
-              ✕
+              <X size={14} aria-hidden />
             </button>
           </div>
         </div>
@@ -653,9 +654,9 @@ function CreateAlertDialog({
             onClose();
           }}
           aria-label="Close create alert"
-          className="rounded-full border border-line bg-surface px-2 py-1 text-sm text-muted hover:text-paper"
+          className="grid h-7 w-7 place-items-center rounded-full border border-line bg-surface text-muted hover:text-paper"
         >
-          ✕
+          <X size={14} aria-hidden />
         </button>
       </div>
 
