@@ -32,6 +32,17 @@
 - Three themes (light/dark/contrast) all pass axe-core 0 violations.
 - Zero emoji in the product. Keep it that way.
 
+### 0.1.1 Enforcement (shipped 2026-09-17 — HAWK)
+
+- `npm run ui:tokens` → `scripts/check-ui-tokens.mjs`: fails on any unsanctioned
+  hex/rgb/hsl in `web/src`. Allowlist carries a written reason per file; `token()`
+  fallbacks and neutral alpha overlays (grid/crosshair/shadows) are exempt.
+  Wired into `ci.yml` (`ui tokens (palette discipline)` step) — §2 is now machine-checked.
+- `scripts/tests/ui/alert_badge.py` (ui-smoke blocking tier): axe reports the
+  absolutely-positioned fired badge as **incomplete**, never a violation — the probe
+  measures the rendered fg/bg ratio itself (`>= 4.5` all themes) so contrast debt
+  cannot hide behind a green axe run. Use it as the template for floating chips.
+
 ### 0.2 Slop tells found (fixed or queued in §8)
 
 1. **Glass header** — `SiteHeader.tsx:52` `bg-surface/80 backdrop-blur` violates "NO glass". *Fix: solid + hairline.*
@@ -97,6 +108,9 @@ This table mirrors the tokens verbatim; update both in the same commit.
    (`ChartPanel.tsx:182` is the reference implementation) and use the table value as fallback only.
 6. `color-scheme` + `theme-color` hexes in `layout.tsx` metadata and the `__next_error__` shell
    (`global-error.tsx`) are the **only** legitimate hardcoded copies; they must equal `canvas`.
+7. **Enforcement:** `npm run ui:tokens` (`scripts/check-ui-tokens.mjs`, CI-blocking) is the
+   machine reading of this section. If a literal is structurally required, add the file to
+   the checker's `ALLOWED_FILES` **with a reason** — an unexplained allowlist entry is a bug.
 
 ---
 
@@ -180,13 +194,18 @@ This table mirrors the tokens verbatim; update both in the same commit.
 | 9 | Radius sweep: audit every `rounded-2xl` → §5 ladder | repo-wide | queued |
 | 10 | `text-[11px]` micro-chips → unify to `text-xs` where space allows | repo-wide | queued |
 | 11 | Skeleton pulse softened product-wide: `@keyframes pulse` floor 0.62, 2.6s (`animate-pulse` override) | `globals.css` | ✅ 2026-09-17 |
+| 12 | Fired-alert badge `bg-down text-paper` (3.49/1.77/2.65:1) → `bg-down-soft text-down` (4.70/7.95/7.03:1) | `AlertCenter.tsx` | ✅ 2026-09-17 (HAWK, TASK-1521) |
+| 13 | Palette enforcement guard + CI step; `alert_badge.py` ratio probe in ui-smoke | `check-ui-tokens.mjs`, `ci.yml`, `ui-smoke.yml` | ✅ 2026-09-17 (HAWK, TASK-1518/1521) |
+| 14 | CSP nonce breaks `add_script_tag` in axe probes — migrate to evaluate-injection | `scripts/tests/ui/axe*.py` | queued (TASK-1524) |
 
 ---
 
 ## 9. Reviewer checklist (paste into every UI PR)
 
+- [ ] `npm run ui:tokens` clean (no new literal escapes the checker; allowlist reasons intact)
 - [ ] No new hex outside `globals.css` (metadata exception noted in §2 law 6)
 - [ ] Palette additions: AA-checked in light + dark + contrast, added to §2 table
+- [ ] Floating chips/badges: ratio measured from rendered styles (axe marks them *incomplete*) — `alert_badge.py` is the template
 - [ ] No glass / gradient / glow / blue / violet / emoji
 - [ ] Radius and shadow from the §5 ladder; no third page-level radius
 - [ ] Chips ≤ 3 per cluster; sentence case copy
