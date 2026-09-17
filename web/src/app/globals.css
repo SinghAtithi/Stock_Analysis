@@ -22,6 +22,9 @@
   --color-warn-soft: #fef3c7;
   --color-accent: #111214;
   --color-accent-soft: #f3f2ef;
+  /* scrollbar - quiet paper furniture, never a UI highlight */
+  --color-bar: #d6d3cd;
+  --color-bar-strong: #c2beba;
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
@@ -71,6 +74,8 @@ html.dark {
   --color-warn-soft: #2a2415;
   --color-accent: #ecebe8;
   --color-accent-soft: #1c1e21;
+  --color-bar: #2a2d32;
+  --color-bar-strong: #363a41;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 20px rgb(0 0 0 / 0.35);
   --shadow-md: 0 8px 24px rgb(0 0 0 / 0.5), 0 2px 8px rgb(0 0 0 / 0.4);
 }
@@ -102,19 +107,19 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d6d3cd;
+  background: var(--color-bar);
   border-radius: 999px;
   border: 2px solid var(--color-canvas);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #c2beba;
+  background: var(--color-bar-strong);
 }
 html.dark ::-webkit-scrollbar-thumb {
-  background: #2a2d32;
+  background: var(--color-bar);
   border-color: var(--color-canvas);
 }
 html.dark ::-webkit-scrollbar-thumb:hover {
-  background: #363a41;
+  background: var(--color-bar-strong);
 }
 
 /* TASK-366: high-contrast mode (html.contrast) — near-black on pure white,
@@ -142,15 +147,17 @@ html.contrast {
   --color-warn-soft: #fef3c7;
   --color-accent: #000000;
   --color-accent-soft: #f4f4f4;
+  --color-bar: #949494;
+  --color-bar-strong: #7a7a7a;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.25), 0 4px 12px rgb(0 0 0 / 0.15);
   --shadow-md: 0 4px 16px rgb(0 0 0 / 0.3), 0 1px 3px rgb(0 0 0 / 0.2);
 }
 html.contrast ::-webkit-scrollbar-thumb {
-  background: #949494;
+  background: var(--color-bar);
   border-color: var(--color-canvas);
 }
 html.contrast ::-webkit-scrollbar-thumb:hover {
-  background: #7a7a7a;
+  background: var(--color-bar-strong);
 }
 
 @keyframes fade-up {
@@ -165,6 +172,22 @@ html.contrast ::-webkit-scrollbar-thumb:hover {
 }
 .animate-fade-up {
   animation: fade-up 0.32s ease both;
+}
+
+/* UNSLOPIFY: skeletons are paper, not a disco — softer, slower pulse than
+   Tailwind's stock 1 → .5 @2s. One global override keeps every
+   `animate-pulse` (shared Skeleton + inline uses) consistent. */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.62;
+  }
+}
+.animate-pulse {
+  animation-duration: 2.6s;
 }
 
 @keyframes caret-blink {
