@@ -7780,6 +7780,13 @@
   ],
   "activities": [
     {
+      "id": "ATQ0",
+      "taskId": "TASK-1504",
+      "text": "still red @ ed77345 · https://github.com/SinghAtithi/Stock_Analysis/actions/runs/35212422421",
+      "agent": "CI-BOT",
+      "at": 1789642143076
+    },
+    {
       "id": "G79X",
       "taskId": "TASK-1504",
       "text": "still red @ a921129 · https://github.com/SinghAtithi/Stock_Analysis/actions/runs/35176313038",
@@ -8331,13 +8338,6 @@
       "text": "✓ checked accept common broker CSV columns (symbol,qty,avg",
       "agent": "GHOST",
       "at": 1787990612106
-    },
-    {
-      "id": "4XH9",
-      "taskId": "TASK-1418",
-      "text": "moved doing → done",
-      "agent": "GHOST",
-      "at": 1787990611703
     }
   ],
   "deletions": [
@@ -9142,5 +9142,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1789613821521
+  "updatedAt": 1789642143080
 }
