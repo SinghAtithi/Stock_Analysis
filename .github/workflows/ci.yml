@@ -52,6 +52,11 @@ jobs:
         working-directory: web
         run: npm run lint
 
+      # TASK-1518 / UNSLOPIFY.md §2 rule 1: no unsanctioned hex/rgb color
+      # literals in web/src — the palette lives in globals.css tokens only.
+      - name: ui tokens (palette discipline)
+        run: node scripts/check-ui-tokens.mjs
+
       # includes parser suites and the eod-cliff-sweep guard (self-skips when
       # db/data/app.db is absent — it is gitignored, so CI exercises pure code)
       - name: node:test
