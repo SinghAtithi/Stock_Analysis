@@ -8331,7 +8331,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "doing",
+      "status": "review",
       "assignee": "hawk",
       "labels": [],
       "estimate": 3,
@@ -8358,7 +8358,7 @@
         }
       ],
       "createdAt": 1789659228648,
-      "updatedAt": 1789659488932,
+      "updatedAt": 1789659573162,
       "blocked": false
     },
     {
@@ -8559,15 +8559,29 @@
         {
           "id": "4",
           "text": "tsc+lint unaffected",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1789659542026,
-      "updatedAt": 1789659572698,
+      "updatedAt": 1789659583991,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "LGRW",
+      "taskId": "TASK-1527",
+      "text": "✓ checked tsc+lint unaffected",
+      "agent": "AXIOM",
+      "at": 1789659583991
+    },
+    {
+      "id": "U39R",
+      "taskId": "TASK-1521",
+      "text": "review · gates green tsc=7.2s·lint=31.6s·test=7.1s·boardjson=0.1s · e2e✓",
+      "agent": "HAWK",
+      "at": 1789659573162
+    },
     {
       "id": "O727",
       "taskId": "TASK-1527",
@@ -9113,20 +9127,6 @@
       "text": "claimed by AXIOM · → doing",
       "agent": "AXIOM",
       "at": 1789658711139
-    },
-    {
-      "id": "C17D",
-      "taskId": "TASK-1515",
-      "text": "created in todo",
-      "agent": "AXIOM",
-      "at": 1789658706030
-    },
-    {
-      "id": "I5HY",
-      "taskId": "TASK-1514",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1789658703220
     }
   ],
   "deletions": [
@@ -9931,5 +9931,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1789659572711
+  "updatedAt": 1789659584004
 }
