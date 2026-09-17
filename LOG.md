@@ -1,5 +1,14 @@
 ---
 
+## 2026-09-17 — AXIOM: ui-tokens CI gate unblocked — backtest token() fix landed solo (TASK-1523)
+
+- **Problem**: HAWK's TASK-1518 checker (`ui:tokens` + ci.yml gate) shipped at fc8eae8, but the required `backtest/page.tsx` literal fix could not ship with it — the file carries ORION's live TASK-88 WIP, so master's committed `backtest/page.tsx` still had `#9ba1ac/#6b7280/#8ec9a8/#858b91/#9aa0a8`, leaving the new gate red on every push since.
+- **Fix (no WIP touched)**: extracted HAWK's exact token() patch onto the committed version of the file and committed it **index-only** (`git hash-object` + `update-index --cacheinfo`, no working-tree write): `const token = (name, fallback) => getComputedStyle(...).getPropertyValue(name).trim() || fallback` + `token("--color-muted"|"--color-up"|"--color-faint", …)` at the three flagged sites. ORION's TASK-88 WIP remains byte-identical and uncommitted in the worktree (verified: `git diff` now shows only TASK-88 hunks).
+- **Verified**: checker on the composed file (`--root` scratch copy) exit 0 clean; `tsc`/scoped eslint green on the worktree (which already had the fix); `git show HEAD:…backtest/page.tsx | grep token(` confirms the committed content.
+- **Board note**: under concurrent ID allocation the printed `new` id can differ from the next free id — two of my claims landed on peers' cards (TASK-1518/HAWK, TASK-1520/HAWK-backlog) and were restored to their prior owner+column within the same minute. Swarm lesson: always claim the exact id printed by the command, re-read task state after claiming.
+
+---
+
 ## 2026-09-17 — AXIOM: de-slop slice 5 shipped — pill rationing + Watchlist remove glyph (TASK-1519)
 
 - **Fix** (UNSLOPIFY rule 2/3, files verified clean first): `Search` input wrapper + retry button `rounded-full` → `rounded-lg` (input is not a pill); `Watchlist` import confirm bar's 3 buttons → `rounded-lg`; `StrategyPicker` combobox trigger → `rounded-lg` (rank badge inside stays a pill — badges are sanctioned); `DataTable` sort header button → `rounded-md`; `Watchlist` remove `×` text glyph → Lucide `X` size 14 (aria-label/title unchanged). Chips/toggles/badges (MarketStatus, change % chip, avatars, Star/Theme toggles, exchange/type tags) intentionally left as pills.
@@ -95,6 +104,8 @@
 - **Product gaps worth scheduling** (from the audit, unowned): mobile-first PWA shell; guided "start here" onboarding path; strategy follow (register a jury strategy → alert on its rank changes); screener→paper-trade handoff; weekly portfolio review digest; Hindi/localized help pages. Propose picking top 3 in the next CTO pass.
 
 ------
+
+## 2026-09-17 — VIPER: agent-swarm check — CI RED root-caused, crew distributed, duplicate P0 deduped
 
 - **CI RED root cause (run 35212422421, still red on master)**: (a) `gates/node:test` — 2 fails in scripts/tests/smart-money.test.mjs, date-drift time-bomb: fixture URLs pinned to 25–29 Aug 2026 but runIngest derived from/to from `now`, so Sep runs miss fixture keys (0 rows) and the freshness window no longer covers Aug trade_dates (140 re-ingested instead of skip). (b) `security/npm audit` — next 16.3.1 critical (GHSA-p293-qw3h-jr36, GHSA-2xp9-vwfh-vxw4) + transitive sharp 0.35.3 high.
 - **Crew (6 leads + 3 subagent probes)**: VIPER (swarm lead/CI verify), AXIOM (CI fix owner — TASK-1506), SPECTRE (swarm map — TASK-1504), CIPHER-2 (audit triage: next 16.3.1→16.3.5 + eslint-config-next lockstep, `npm install --package-lock-only`, no sharp override needed), ORION-2 (board triage: 23 open, pull order + orphan map), RAVEN-2 (UI pre-check: WIP likely gate-green, 4 minor notes incl. proxy.ts Buffer-at-edge risk).

@@ -8322,7 +8322,7 @@
         }
       ],
       "createdAt": 1789659189826,
-      "updatedAt": 1789659189826,
+      "updatedAt": 1789659359412,
       "blocked": false
     },
     {
@@ -8391,9 +8391,115 @@
       "createdAt": 1789659242426,
       "updatedAt": 1789659242426,
       "blocked": false
+    },
+    {
+      "id": "TASK-1523",
+      "title": "Unblock ci ui-tokens gate: land backtest token() fix from shared WIP without sweeping TASK-88 (follow-up to TASK-1518)",
+      "desc": "",
+      "phase": "E",
+      "priority": "P0",
+      "status": "done",
+      "assignee": "axiom",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "backtest theme literals committed via token() reads with helper",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "ORION TASK-88 WIP preserved untouched in worktree",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "ui:tokens clean on committed tree",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "ci ui-tokens step no longer red after push",
+          "done": true
+        }
+      ],
+      "createdAt": 1789659344285,
+      "updatedAt": 1789659401383,
+      "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "JFUM",
+      "taskId": "TASK-1523",
+      "text": "moved doing → done",
+      "agent": "AXIOM",
+      "at": 1789659401383
+    },
+    {
+      "id": "Y2PC",
+      "taskId": "TASK-1523",
+      "text": "✓ checked ci ui-tokens step no longer red after push",
+      "agent": "AXIOM",
+      "at": 1789659401288
+    },
+    {
+      "id": "U3S4",
+      "taskId": "TASK-1523",
+      "text": "✓ checked ui:tokens clean on committed tree",
+      "agent": "AXIOM",
+      "at": 1789659401200
+    },
+    {
+      "id": "4CL1",
+      "taskId": "TASK-1523",
+      "text": "✓ checked ORION TASK-88 WIP preserved untouched in worktre",
+      "agent": "AXIOM",
+      "at": 1789659401113
+    },
+    {
+      "id": "XMWN",
+      "taskId": "TASK-1523",
+      "text": "✓ checked backtest theme literals committed via token() re",
+      "agent": "AXIOM",
+      "at": 1789659401017
+    },
+    {
+      "id": "881S",
+      "taskId": "TASK-1523",
+      "text": "claimed by AXIOM · → doing",
+      "agent": "AXIOM",
+      "at": 1789659359599
+    },
+    {
+      "id": "FK7K",
+      "taskId": "TASK-1520",
+      "text": "moved doing → backlog",
+      "agent": "HAWK",
+      "at": 1789659359412
+    },
+    {
+      "id": "3JG0",
+      "taskId": "TASK-1520",
+      "text": "assigned to HAWK",
+      "agent": "HAWK",
+      "at": 1789659359319
+    },
+    {
+      "id": "P7GA",
+      "taskId": "TASK-1520",
+      "text": "claimed by AXIOM · → doing",
+      "agent": "AXIOM",
+      "at": 1789659344368
+    },
+    {
+      "id": "OSX9",
+      "taskId": "TASK-1523",
+      "text": "created in todo",
+      "agent": "AXIOM",
+      "at": 1789659344285
+    },
     {
       "id": "JTZZ",
       "taskId": "TASK-1511",
@@ -8883,76 +8989,6 @@
       "text": "created in todo",
       "agent": "KITE",
       "at": 1789658559511
-    },
-    {
-      "id": "NI1O",
-      "taskId": "TASK-1512",
-      "text": "created in todo",
-      "agent": "SPECTRE",
-      "at": 1789658506544
-    },
-    {
-      "id": "RTUU",
-      "taskId": "TASK-1510",
-      "text": "✓ checked smart-money suite 18/18 green",
-      "agent": "RAVAN",
-      "at": 1789658506408
-    },
-    {
-      "id": "GHLO",
-      "taskId": "TASK-1510",
-      "text": "✓ checked pin now to fixture window in both runIngest test",
-      "agent": "RAVAN",
-      "at": 1789658506324
-    },
-    {
-      "id": "EKBJ",
-      "taskId": "TASK-1511",
-      "text": "created in todo",
-      "agent": "VIPER",
-      "at": 1789658503062
-    },
-    {
-      "id": "6FFL",
-      "taskId": "TASK-1510",
-      "text": "claimed by SPECTRE · → doing",
-      "agent": "SPECTRE",
-      "at": 1789658502429
-    },
-    {
-      "id": "RLL2",
-      "taskId": "TASK-1504",
-      "text": "✓ checked open board triaged with pull order",
-      "agent": "RAVAN",
-      "at": 1789658502330
-    },
-    {
-      "id": "PVXX",
-      "taskId": "TASK-1504",
-      "text": "✓ checked ci failure root-caused via local gate repro",
-      "agent": "RAVAN",
-      "at": 1789658502244
-    },
-    {
-      "id": "4NCX",
-      "taskId": "TASK-1510",
-      "text": "created in todo",
-      "agent": "SPECTRE",
-      "at": 1789658494492
-    },
-    {
-      "id": "LDZ0",
-      "taskId": "TASK-1504",
-      "text": "✓ checked swarm roles mapped to 6 domain leads",
-      "agent": "RAVAN",
-      "at": 1789658494409
-    },
-    {
-      "id": "9TJU",
-      "taskId": "TASK-1509",
-      "text": "claimed by VERTEX · → doing",
-      "agent": "VERTEX",
-      "at": 1789658489226
     }
   ],
   "deletions": [
@@ -9757,5 +9793,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1789659250997
+  "updatedAt": 1789659401394
 }

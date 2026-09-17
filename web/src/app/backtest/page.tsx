@@ -185,7 +185,12 @@ function BacktestInner() {
     const el = chartRef.current;
     if (!el) return;
     const dark = document.documentElement.classList.contains("dark");
-    const text = dark ? "#9ba1ac" : "#6b7280";
+    /* UNSLOPIFY §2: read theme colors from tokens (ChartPanel.tsx:182 pattern) —
+       fallbacks are the current token values verbatim, never off-palette grays */
+    const token = (name: string, fallback: string): string =>
+      getComputedStyle(document.documentElement).getPropertyValue(name).trim() ||
+      fallback;
+    const text = token("--color-muted", dark ? "#a8adb2" : "#626870");
     const grid = dark ? "rgba(255,255,255,0.05)" : "rgba(17,18,20,0.05)";
     const chart = createChart(el, {
       autoSize: true,
@@ -197,12 +202,12 @@ function BacktestInner() {
     });
     chartApi.current = chart;
     stratSeries.current = chart.addSeries(LineSeries, {
-      color: dark ? "#8ec9a8" : "#0e7a3a",
+      color: token("--color-up", dark ? "#8ec9a8" : "#0e7a3a"),
       lineWidth: 2,
       title: "Strategy",
     });
     benchSeries.current = chart.addSeries(LineSeries, {
-      color: dark ? "#858b91" : "#9aa0a8",
+      color: token("--color-faint", dark ? "#858b91" : "#696f77"),
       lineWidth: 1,
       lineStyle: 2,
       title: "Benchmark",
