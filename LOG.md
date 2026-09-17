@@ -1,5 +1,13 @@
 ---
 
+## 2026-09-17 — AXIOM: UNSLOPIFY.md committed verbatim (TASK-1527)
+
+- **Gap**: VIPER's TASK-1511 (`UNSLOPIFY.md` v1.0, 195-line UI constitution: scorecard 7/10, full 3-theme palette table, color/typography/radius/motion laws, de-slop queue, PR checklist) existed only as an untracked working-tree file — both owning tasks (1511/1513) are done, so the doc the token-guard checker and AGENTS.md cite was absent from git.
+- **Fix**: committed byte-identical (no edits — owner content) at repo root. Verified `git show HEAD:UNSLOPIFY.md` matches the reviewed on-disk file; no code touched.
+- **Team note**: the doc's de-slop queue §8 now tracks landed slices — #1 header glass, #2 backtest tokens (TASK-1523), #3 ChartPanel fallback, #4 hero chips, #6 DESIGN.md banner, #7 scrollbar tokens, #11 pulse softening: all ✅ as of tonight's swarm. Remaining queued: #8 display face (founder call), #9 radius sweep, #10 micro-chip unification.
+
+---
+
 ## 2026-09-17 — AXIOM: ui-tokens CI gate unblocked — backtest token() fix landed solo (TASK-1523)
 
 - **Problem**: HAWK's TASK-1518 checker (`ui:tokens` + ci.yml gate) shipped at fc8eae8, but the required `backtest/page.tsx` literal fix could not ship with it — the file carries ORION's live TASK-88 WIP, so master's committed `backtest/page.tsx` still had `#9ba1ac/#6b7280/#8ec9a8/#858b91/#9aa0a8`, leaving the new gate red on every push since.
@@ -65,6 +73,16 @@
 - **Fix**: `✕` text glyphs replaced with `lucide-react` `X` (aria-hidden, size 12/14) in `HeroValueProp` (dismiss), `ScreenerPresets` (delete saved view), `mixer/page` (delete mix), `page.tsx` (help + watchlist modal closes). Buttons switched from `px/py + text-size` to `grid place-items-center p-1/p-1.5` so icon centering stays stable. Complements AXIOM's slice 1 (pricing ✓ + board-blue quarantine).
 - **Left alone** (owned by other WIP): `AlertCenter`, `backtest/page`, error shells (TASK-1379/1395 in flight).
 - **Gates**: `npx tsc --noEmit` green; `npx eslint` clean on all 4 files. Remaining `✕`/`✓` in product UI: AlertCenter + backtest + page dialogs pending other owners; UNSLOPIFY §3 rule 3 tracks the rest.
+
+---
+
+## 2026-09-17 — HAWK: TASK-1521 shipped — alert badge AA fix + probe that axe structurally could not write
+
+- **Defect (rendered, measured)**: AlertCenter's fired-alert count badge was `bg-down text-paper` — 3.49:1 light, 1.77:1 dark, 2.65:1 contrast theme (AA needs 4.5). Fixed to `bg-down-soft text-down` (the pattern 20 other components use): 4.70 / 7.95 / 7.03:1.
+- **Why every axe run missed it**: axe parks the badge in **incomplete**, not violations (`axe_inc=1` before, 0 after) — absolutely positioned over the bell button, axe will not resolve the background. The fix was found by computing WCAG ratios from tokens, then verified against rendered computed styles.
+- **Guard**: new `scripts/tests/ui/alert_badge.py` (added to ui-smoke blocking tier) route-mocks one fired unseen alert, asserts the badge renders in all three themes, measures the rendered fg/bg ratio itself (>= 4.5), and reports axe incomplete/violations. Negative control run: the old classes FAIL at exactly 3.49/1.77/2.65 — the probe catches the regression, unlike axe.
+- **CSP finding (TASK-1524 filed, P1)**: the nonce-CSP (TASK-1395 WIP) blocks `page.add_script_tag()` — all three existing axe probes will fail the moment it ships. `alert_badge.py` injects axe via `Runtime.evaluate` (CDP, CSP-immune) as the working pattern; the others need the same treatment.
+- **Ops note**: verified against a private `next dev -p 3100` because :3000 still serves a pre-16.3.5 prod build (stale artifact, left untouched).
 
 ---
 

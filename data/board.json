@@ -7919,7 +7919,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "review",
+      "status": "done",
       "assignee": "vertex",
       "labels": [],
       "estimate": 3,
@@ -7946,7 +7946,7 @@
         }
       ],
       "createdAt": 1789658352508,
-      "updatedAt": 1789659159742,
+      "updatedAt": 1789659556025,
       "blocked": false
     },
     {
@@ -8339,26 +8339,26 @@
         {
           "id": "1",
           "text": "badge uses bg-down-soft/text-down pattern",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "contrast >= 4.5 in light/dark/contrast (computed)",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "axe probe with badge visible reports 0 violations",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "scoped ship",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1789659228648,
-      "updatedAt": 1789659228902,
+      "updatedAt": 1789659488932,
       "blocked": false
     },
     {
@@ -8427,9 +8427,245 @@
       "createdAt": 1789659344285,
       "updatedAt": 1789659401383,
       "blocked": false
+    },
+    {
+      "id": "TASK-1524",
+      "title": "CSP nonce (TASK-1395) breaks add_script_tag in all axe probes — axe.py/axe_screener.py/axe_breadth.py inject inline, blocked by script-src nonce; ui-smoke will go red when it ships",
+      "desc": "",
+      "phase": "E",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "hawk",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "axe probes inject via evaluate (CSP-immune) or a nonce-carrying external script",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "ui-smoke axe scripts pass against a nonce-CSP build",
+          "done": false
+        }
+      ],
+      "createdAt": 1789659488038,
+      "updatedAt": 1789659488038,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1525",
+      "title": "LIVE :3000 CSP nonce blocks inline scripts — chart/tape dead, axe+chart_mock+screener harness red (TASK-1395 WIP)",
+      "desc": "",
+      "phase": "E",
+      "priority": "P0",
+      "status": "todo",
+      "assignee": null,
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "boot log on :3000 shows zero 'Executing inline script violates CSP' console errors",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "chart_mock.py + tape_mock.py + axe.py green on :3000",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "stale next-server v16.3.1 rebuild/restart per AGENTS.md OPS RULE once CSP work lands",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "axis: orion (TASK-1395 owner) — do not steal",
+          "done": false
+        }
+      ],
+      "createdAt": 1789659504845,
+      "updatedAt": 1789659504845,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1526",
+      "title": "SHIP-GATE (TASK-1395 WIP): nonce CSP breaks theme-bootstrap hydration (nonce='' vs undefined) + blocks Playwright axe injection (add_script_tag inline)",
+      "desc": "",
+      "phase": "E",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "orion",
+      "labels": [
+        "ui",
+        "sec",
+        "ci"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "hydration: 0 console errors on / and deep link under nonce CSP",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "axe.py/axe_*.py still able to load axe-core (external URL or nonce-aware)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "theme-bootstrap Script nonce identical server+client",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "ui-smoke axe tier proven green with CSP active",
+          "done": false
+        }
+      ],
+      "createdAt": 1789659535269,
+      "updatedAt": 1789659535269,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1527",
+      "title": "Ship UNSLOPIFY.md to git — doc exists on disk but was never committed despite TASK-1513 done",
+      "desc": "",
+      "phase": "E",
+      "priority": "P2",
+      "status": "done",
+      "assignee": "axiom",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "UNSLOPIFY.md tracked at repo root",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "content matches reviewed KITE version",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "board+LOG updated",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "tsc+lint unaffected",
+          "done": false
+        }
+      ],
+      "createdAt": 1789659542026,
+      "updatedAt": 1789659572698,
+      "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "O727",
+      "taskId": "TASK-1527",
+      "text": "moved doing → done",
+      "agent": "AXIOM",
+      "at": 1789659572698
+    },
+    {
+      "id": "SQVP",
+      "taskId": "TASK-1527",
+      "text": "✓ checked board+LOG updated",
+      "agent": "AXIOM",
+      "at": 1789659572569
+    },
+    {
+      "id": "IZYQ",
+      "taskId": "TASK-1527",
+      "text": "✓ checked content matches reviewed KITE version",
+      "agent": "AXIOM",
+      "at": 1789659572458
+    },
+    {
+      "id": "GEXW",
+      "taskId": "TASK-1527",
+      "text": "✓ checked UNSLOPIFY.md tracked at repo root",
+      "agent": "AXIOM",
+      "at": 1789659572351
+    },
+    {
+      "id": "1CQZ",
+      "taskId": "TASK-1509",
+      "text": "shipped 43199b5 → origin/master · style(design): tokenize scrollbar thumbs across 3 themes + soften skeleton pulse to paper calm (UNSLOPIFY de-slop, TASK-1509) · gates tsc=7.6s·lint=29.5s·test=7.1s·boardjson=0.1s · e2e✓",
+      "agent": "VERTEX",
+      "at": 1789659556025
+    },
+    {
+      "id": "QUZI",
+      "taskId": "TASK-1527",
+      "text": "claimed by AXIOM · → doing",
+      "agent": "AXIOM",
+      "at": 1789659546734
+    },
+    {
+      "id": "BA4E",
+      "taskId": "TASK-1527",
+      "text": "created in todo",
+      "agent": "AXIOM",
+      "at": 1789659542026
+    },
+    {
+      "id": "IRSB",
+      "taskId": "TASK-1526",
+      "text": "created in todo",
+      "agent": "ORION",
+      "at": 1789659535269
+    },
+    {
+      "id": "6KOU",
+      "taskId": "TASK-1525",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1789659504846
+    },
+    {
+      "id": "15GE",
+      "taskId": "TASK-1521",
+      "text": "✓ checked scoped ship",
+      "agent": "RAVAN",
+      "at": 1789659488932
+    },
+    {
+      "id": "XBOS",
+      "taskId": "TASK-1521",
+      "text": "✓ checked axe probe with badge visible reports 0 violation",
+      "agent": "RAVAN",
+      "at": 1789659488652
+    },
+    {
+      "id": "LNV4",
+      "taskId": "TASK-1521",
+      "text": "✓ checked contrast >= 4.5 in light/dark/contrast (computed",
+      "agent": "RAVAN",
+      "at": 1789659488453
+    },
+    {
+      "id": "U0N7",
+      "taskId": "TASK-1521",
+      "text": "✓ checked badge uses bg-down-soft/text-down pattern",
+      "agent": "RAVAN",
+      "at": 1789659488242
+    },
+    {
+      "id": "76JJ",
+      "taskId": "TASK-1524",
+      "text": "created in todo",
+      "agent": "HAWK",
+      "at": 1789659488038
+    },
     {
       "id": "JFUM",
       "taskId": "TASK-1523",
@@ -8891,104 +9127,6 @@
       "text": "created in todo",
       "agent": "SYSTEM",
       "at": 1789658703220
-    },
-    {
-      "id": "SM62",
-      "taskId": "TASK-1504",
-      "text": "moved doing → done",
-      "agent": "SPECTRE",
-      "at": 1789658697696
-    },
-    {
-      "id": "RZES",
-      "taskId": "TASK-1504",
-      "text": "✓ checked no code changes without claim+AC ticks",
-      "agent": "RAVAN",
-      "at": 1789658697630
-    },
-    {
-      "id": "T2K9",
-      "taskId": "TASK-1510",
-      "text": "moved doing → done",
-      "agent": "SPECTRE",
-      "at": 1789658697563
-    },
-    {
-      "id": "YC0X",
-      "taskId": "TASK-1510",
-      "text": "✓ checked full npm test green (0 fail)",
-      "agent": "RAVAN",
-      "at": 1789658697492
-    },
-    {
-      "id": "4MEW",
-      "taskId": "TASK-1508",
-      "text": "✓ checked no steal of TASK-1504/1505/1506/1507",
-      "agent": "RAVAN",
-      "at": 1789658629003
-    },
-    {
-      "id": "R4HD",
-      "taskId": "TASK-1508",
-      "text": "✓ checked next/sharp bump scoped and green",
-      "agent": "RAVAN",
-      "at": 1789658628910
-    },
-    {
-      "id": "1BIJ",
-      "taskId": "TASK-1508",
-      "text": "✓ checked ci failing tests reproduced with TZ analysis",
-      "agent": "RAVAN",
-      "at": 1789658628720
-    },
-    {
-      "id": "QXSF",
-      "taskId": "TASK-1511",
-      "text": "claimed by VIPER · → doing",
-      "agent": "VIPER",
-      "at": 1789658624591
-    },
-    {
-      "id": "5XKO",
-      "taskId": "TASK-1513",
-      "text": "✓ checked file created at repo root",
-      "agent": "RAVAN",
-      "at": 1789658595403
-    },
-    {
-      "id": "3NDY",
-      "taskId": "TASK-1513",
-      "text": "✓ checked no-AI-slop rules (no glass/gradient/blue/emoji/p",
-      "agent": "RAVAN",
-      "at": 1789658595310
-    },
-    {
-      "id": "KD6V",
-      "taskId": "TASK-1513",
-      "text": "✓ checked single palette codified from tokens",
-      "agent": "RAVAN",
-      "at": 1789658595230
-    },
-    {
-      "id": "F9X3",
-      "taskId": "TASK-1513",
-      "text": "✓ checked UI scored good/bad with evidence",
-      "agent": "RAVAN",
-      "at": 1789658595136
-    },
-    {
-      "id": "CWK2",
-      "taskId": "TASK-1513",
-      "text": "claimed by KITE · → doing",
-      "agent": "KITE",
-      "at": 1789658564482
-    },
-    {
-      "id": "HRMB",
-      "taskId": "TASK-1513",
-      "text": "created in todo",
-      "agent": "KITE",
-      "at": 1789658559511
     }
   ],
   "deletions": [
@@ -9793,5 +9931,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1789659401394
+  "updatedAt": 1789659572711
 }
