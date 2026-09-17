@@ -13,6 +13,15 @@
 
 ---
 
+## 2026-09-17 — AXIOM: de-slop slice 6 shipped — radius ladder on second-wave routes (TASK-1529)
+
+- **Fix** (UNSLOPIFY §5 ladder, queue item #9): 29 `rounded-2xl` (16px template rhythm) removed from the five second-wave routes — hero card → `rounded-lg` (12px), repeated section cards → `rounded-md` (8px, §5 default), dashed empty states + list containers + skeleton tiles → `rounded-lg`/`rounded-md`, plus `paper` refresh-error strip `rounded-xl` → `rounded-lg`. Result: each page carries a deliberate 12/8 hierarchy instead of one uniform 16px card class (the §0.2 item-5 "correct 3 times, template at 30" tell).
+- **Files**: `app/radar`, `app/portfolio`, `app/breadth`, `app/paper`, `app/calendar`.
+- **Verified**: `tsc` + scoped eslint + `ui:tokens` clean; isolated `next dev -p 3224` probe — computed radii confirm hierarchy (breadth hero 12px / sections 8px; paper 12/12/12/8/8; radar+calendar+portfolio heroes 12px), **axe 0** (wcag2a/2aa/21aa) on all five routes + breadth dark, zero pageerrors. Dev server stopped (:3000 untouched).
+- **Queued**: TASK-1533 (unclaimed) — retire `uppercase` micro-labels product-wide (25 hits; §3 sentence-case law; breadth/calendar/radar lead).
+
+---
+
 ## 2026-09-17 — AXIOM: UNSLOPIFY.md committed verbatim (TASK-1527)
 
 - **Gap**: VIPER's TASK-1511 (`UNSLOPIFY.md` v1.0, 195-line UI constitution: scorecard 7/10, full 3-theme palette table, color/typography/radius/motion laws, de-slop queue, PR checklist) existed only as an untracked working-tree file — both owning tasks (1511/1513) are done, so the doc the token-guard checker and AGENTS.md cite was absent from git.

@@ -170,7 +170,7 @@ export default function BreadthPage() {
       <SiteHeader subtitle="Breadth" subtitleClassName="font-normal text-muted" />
 
       <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col gap-4 p-4 sm:p-6">
-        <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
+        <div className="rounded-lg border border-line bg-surface p-5 shadow-sm sm:p-6">
           <h1 className="text-xl font-semibold tracking-tight text-paper sm:text-2xl">Market breadth</h1>
           <p className="mt-1 text-sm text-muted">Advance/decline, VIX and FII/DII flows. Updated every few minutes.</p>
           <p className="mt-3 inline-flex min-h-[1.65rem] items-center rounded-full border border-line bg-panel-2 px-3 py-1 text-xs text-muted">
@@ -196,7 +196,7 @@ export default function BreadthPage() {
         )}
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <section className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
+          <section className="rounded-md border border-line bg-surface p-5 shadow-sm">
             <p className="text-xs font-medium tracking-wide text-faint uppercase">India VIX</p>
             {initial ? (
               <div className="mt-2"><Skeleton className="h-8 w-20" /></div>
@@ -209,7 +209,7 @@ export default function BreadthPage() {
             {!data?.meta.sources.vix && <p className="mt-2 text-xs text-faint">No data — source blocked</p>}
           </section>
 
-          <section className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
+          <section className="rounded-md border border-line bg-surface p-5 shadow-sm">
             <p className="text-xs font-medium tracking-wide text-faint uppercase">Advance / Decline</p>
             {initial ? (
               <div className="mt-2"><Skeleton className="h-8 w-24" /></div>
@@ -237,7 +237,7 @@ export default function BreadthPage() {
             {!data?.meta.sources.ad && <p className="mt-2 text-xs text-faint">No data — source blocked</p>}
           </section>
 
-          <section className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
+          <section className="rounded-md border border-line bg-surface p-5 shadow-sm">
             <p className="text-xs font-medium tracking-wide text-faint uppercase">FII flows (₹ cr)</p>
             {initial ? (
               <div className="mt-2"><Skeleton className="h-8 w-28" /></div>
@@ -260,7 +260,7 @@ export default function BreadthPage() {
             {!data?.meta.sources.fii && <p className="mt-2 text-xs text-faint">No data — source blocked</p>}
           </section>
 
-          <section className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
+          <section className="rounded-md border border-line bg-surface p-5 shadow-sm">
             <p className="text-xs font-medium tracking-wide text-faint uppercase">DII flows (₹ cr)</p>
             {initial ? (
               <div className="mt-2"><Skeleton className="h-8 w-28" /></div>
@@ -289,7 +289,7 @@ export default function BreadthPage() {
           </section>
         </div>
 
-        <section className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
+        <section className="rounded-md border border-line bg-surface p-5 shadow-sm">
           <p className="text-xs font-medium tracking-wide text-faint uppercase">52-week highs / lows</p>
           <div className="mt-3 flex flex-wrap items-baseline gap-6">
             {initial ? (

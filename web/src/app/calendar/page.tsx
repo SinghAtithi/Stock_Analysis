@@ -252,7 +252,7 @@ export default function CalendarPage() {
       <SiteHeader subtitle="Earnings calendar" subtitleClassName="font-normal text-muted" />
 
       <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col gap-4 p-4 sm:p-6">
-        <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
+        <div className="rounded-lg border border-line bg-surface p-5 shadow-sm sm:p-6">
           <h1 className="text-xl font-semibold tracking-tight text-paper sm:text-2xl">Earnings calendar</h1>
           <p className="mt-1 text-sm text-muted">
             Upcoming quarterly results for your watchlist and the NIFTY universe. Dates are as confirmed by companies.
@@ -309,10 +309,10 @@ export default function CalendarPage() {
         {loading ? (
           <div className="flex flex-col gap-3">
             <Skeleton className="h-6 w-40" />
-            <Skeleton className="h-40 w-full rounded-2xl" />
+            <Skeleton className="h-40 w-full rounded-md" />
           </div>
         ) : visible.length === 0 ? (
-          <section className="rounded-2xl border border-dashed border-line bg-surface px-5 py-12 text-center">
+          <section className="rounded-lg border border-dashed border-line bg-surface px-5 py-12 text-center">
             <p className="text-sm font-medium text-paper">
               {tab === "watchlist" && watchSymbols.size === 0
                 ? "Your watchlist is empty"
@@ -336,7 +336,7 @@ export default function CalendarPage() {
           weeks.map(([key, list]) => (
             <section key={key} aria-label={weeks.length > 1 ? undefined : "Scheduled results"}>
               <h2 className="mb-2 px-1 text-xs font-medium tracking-wide text-muted uppercase">{weekOf(list[0].date).label}</h2>
-              <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-sm">
+              <div className="overflow-hidden rounded-lg border border-line bg-surface shadow-sm">
                 <div className="hidden grid-cols-[5.5rem_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_auto] gap-3 border-b border-line bg-panel-2 px-4 py-2 text-[11px] font-medium tracking-wide text-faint uppercase sm:grid">
                   <span>Date</span>
                   <span>Symbol</span>

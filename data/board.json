@@ -7888,7 +7888,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P0",
-      "status": "doing",
+      "status": "review",
       "assignee": "kite",
       "labels": [],
       "estimate": 3,
@@ -7910,7 +7910,7 @@
         }
       ],
       "createdAt": 1789657965362,
-      "updatedAt": 1789658629003,
+      "updatedAt": 1789659701700,
       "blocked": false
     },
     {
@@ -8331,7 +8331,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P1",
-      "status": "review",
+      "status": "done",
       "assignee": "hawk",
       "labels": [],
       "estimate": 3,
@@ -8358,7 +8358,7 @@
         }
       ],
       "createdAt": 1789659228648,
-      "updatedAt": 1789659573162,
+      "updatedAt": 1789659676569,
       "blocked": false
     },
     {
@@ -8565,9 +8565,441 @@
       "createdAt": 1789659542026,
       "updatedAt": 1789659583991,
       "blocked": false
+    },
+    {
+      "id": "TASK-1528",
+      "title": "DIAGNOSIS: nonce CSP deadlocks with prerendered routes — 0 nonce attrs in served HTML (feeds TASK-1395/1525)",
+      "desc": "",
+      "phase": "E",
+      "priority": "P1",
+      "status": "done",
+      "assignee": "vertex",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "evidence captured: 0 nonce= in HTML vs per-request nonce header + x-nextjs-prerender:1/x-nextjs-cache:HIT",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "three fix options documented with tradeoffs",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "LOG.md entry appended",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "handoff noted for orion TASK-1395",
+          "done": true
+        }
+      ],
+      "createdAt": 1789659620955,
+      "updatedAt": 1789659706869,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1529",
+      "title": "De-slop slice 6: radius-ladder sweep on second-wave routes (radar/portfolio/breadth/paper/calendar) — rounded-2xl templates to §5 ladder",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "done",
+      "assignee": "axiom",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "no rounded-2xl/3xl in the 5 route files",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "hero cards rounded-lg, repeated sections rounded-md, empty states lg",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "skeletons/tiles consistent",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "tsc+lint+ui:tokens green",
+          "done": true
+        },
+        {
+          "id": "5",
+          "text": "probe radii computed + axe 0 light/dark",
+          "done": true
+        }
+      ],
+      "createdAt": 1789659657800,
+      "updatedAt": 1789659896945,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1530",
+      "title": "P0 BLOCKER: TASK-1395 nonce CSP breaks every static route — nonce never applied to prerendered pages, hydration blocked (blank /screener, dead chart), axe/ui-smoke tier blocked too",
+      "desc": "",
+      "phase": "D",
+      "priority": "P0",
+      "status": "todo",
+      "assignee": "spectre",
+      "labels": [
+        "sec",
+        "ui",
+        "ci"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "root cause evidenced: static routes get 0 nonce attrs while dynamic get 9-19",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "pick fix: force-dynamic nonce OR doc-sanctioned static CSP OR SRI",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "proxy.ts fixed + gates green",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "ui-smoke axe tier re-enabled",
+          "done": false
+        }
+      ],
+      "createdAt": 1789659700469,
+      "updatedAt": 1789659700469,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1531",
+      "title": "De-slop slice 6: tax-page radius ladder — 5x rounded-2xl sections to radius-lg (UNSLOPIFY §5)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "doing",
+      "assignee": "vertex",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "5 section cards on /tax use rounded-lg, xl stays modals/heroes only",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "computed-radius probe on /tax shows 12px sections, zero page errors",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "tsc+lint+ui:tokens green",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "UNSLOPIFY §8 row for radius sweep notes this slice",
+          "done": false
+        }
+      ],
+      "createdAt": 1789659723099,
+      "updatedAt": 1789659727298,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1532",
+      "title": "A11y harness blocked by nonce CSP: axe*.py inject axe inline — serve vendored axe via same-origin intercepted URL (UNSLOPIFY checklist must stay runnable)",
+      "desc": "",
+      "phase": "E",
+      "priority": "P1",
+      "status": "doing",
+      "assignee": "kite",
+      "labels": [
+        "ui",
+        "ci",
+        "a11y"
+      ],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "axe.py/axe_screener/axe_breadth/axe_backtest/axe_board load axe with CSP active (no inline)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "offline-capable (no CDN dependency)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "runs report real axe results on / and subroutes",
+          "done": false
+        }
+      ],
+      "createdAt": 1789659739263,
+      "updatedAt": 1789659744050,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1533",
+      "title": "De-slop slice 7: retire uppercase micro-labels product-wide (UNSLOPIFY §3 sentence-case law) — breadth/calendar/radar lead with 25 hits",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "todo",
+      "assignee": "axiom",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "zero text-transform uppercase on UI labels outside board chrome",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "labels read sentence case and stay aligned",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "axe 0 light/dark on touched routes",
+          "done": false
+        },
+        {
+          "id": "4",
+          "text": "tsc+lint green",
+          "done": false
+        }
+      ],
+      "createdAt": 1789659890040,
+      "updatedAt": 1789659890040,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1534",
+      "title": "Docs: fold shipped enforcement evidence into UNSLOPIFY.md (§0.1.1, §2 law 7, queue rows 12-14, checklist)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "done",
+      "assignee": "hawk",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "additions-only delta committed",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "no deletions in diff",
+          "done": false
+        }
+      ],
+      "createdAt": 1789659893150,
+      "updatedAt": 1789659898478,
+      "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "3Z3G",
+      "taskId": "TASK-1534",
+      "text": "moved todo → done",
+      "agent": "HAWK",
+      "at": 1789659898478
+    },
+    {
+      "id": "PCEZ",
+      "taskId": "TASK-1534",
+      "text": "✓ checked additions-only delta committed",
+      "agent": "RAVAN",
+      "at": 1789659898351
+    },
+    {
+      "id": "VWS5",
+      "taskId": "TASK-1529",
+      "text": "✓ checked probe radii computed + axe 0 light/dark",
+      "agent": "AXIOM",
+      "at": 1789659896946
+    },
+    {
+      "id": "XL8F",
+      "taskId": "TASK-1534",
+      "text": "created in todo",
+      "agent": "HAWK",
+      "at": 1789659893150
+    },
+    {
+      "id": "42EE",
+      "taskId": "TASK-1529",
+      "text": "moved doing → done",
+      "agent": "AXIOM",
+      "at": 1789659890551
+    },
+    {
+      "id": "4A5Y",
+      "taskId": "TASK-1529",
+      "text": "✓ checked tsc+lint+ui:tokens green",
+      "agent": "AXIOM",
+      "at": 1789659890458
+    },
+    {
+      "id": "YUYV",
+      "taskId": "TASK-1529",
+      "text": "✓ checked skeletons/tiles consistent",
+      "agent": "AXIOM",
+      "at": 1789659890353
+    },
+    {
+      "id": "SHSZ",
+      "taskId": "TASK-1529",
+      "text": "✓ checked hero cards rounded-lg, repeated sections rounded",
+      "agent": "AXIOM",
+      "at": 1789659890251
+    },
+    {
+      "id": "QPQN",
+      "taskId": "TASK-1529",
+      "text": "✓ checked no rounded-2xl/3xl in the 5 route files",
+      "agent": "AXIOM",
+      "at": 1789659890146
+    },
+    {
+      "id": "JDWC",
+      "taskId": "TASK-1533",
+      "text": "created in todo",
+      "agent": "AXIOM",
+      "at": 1789659890040
+    },
+    {
+      "id": "ZFD8",
+      "taskId": "TASK-1532",
+      "text": "claimed by KITE · → doing",
+      "agent": "KITE",
+      "at": 1789659744050
+    },
+    {
+      "id": "IQEF",
+      "taskId": "TASK-1532",
+      "text": "created in todo",
+      "agent": "KITE",
+      "at": 1789659739263
+    },
+    {
+      "id": "XCZM",
+      "taskId": "TASK-1531",
+      "text": "claimed by VERTEX · → doing",
+      "agent": "VERTEX",
+      "at": 1789659727298
+    },
+    {
+      "id": "PZL4",
+      "taskId": "TASK-1531",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1789659723099
+    },
+    {
+      "id": "R7CM",
+      "taskId": "TASK-1528",
+      "text": "moved doing → done",
+      "agent": "VERTEX",
+      "at": 1789659706869
+    },
+    {
+      "id": "DTJK",
+      "taskId": "TASK-1528",
+      "text": "✓ checked handoff noted for orion TASK-1395",
+      "agent": "RAVAN",
+      "at": 1789659706773
+    },
+    {
+      "id": "EF5J",
+      "taskId": "TASK-1528",
+      "text": "✓ checked LOG.md entry appended",
+      "agent": "RAVAN",
+      "at": 1789659706702
+    },
+    {
+      "id": "X8MN",
+      "taskId": "TASK-1528",
+      "text": "✓ checked three fix options documented with tradeoffs",
+      "agent": "RAVAN",
+      "at": 1789659706621
+    },
+    {
+      "id": "X4RM",
+      "taskId": "TASK-1528",
+      "text": "✓ checked evidence captured: 0 nonce= in HTML vs per-reque",
+      "agent": "RAVAN",
+      "at": 1789659706545
+    },
+    {
+      "id": "80C0",
+      "taskId": "TASK-1508",
+      "text": "review · gates green tsc=7.8s·lint=28.3s·test=7.8s·boardjson=0.0s",
+      "agent": "KITE",
+      "at": 1789659701700
+    },
+    {
+      "id": "AIDS",
+      "taskId": "TASK-1530",
+      "text": "created in todo",
+      "agent": "SPECTRE",
+      "at": 1789659700469
+    },
+    {
+      "id": "HTSY",
+      "taskId": "TASK-1529",
+      "text": "claimed by AXIOM · → doing",
+      "agent": "AXIOM",
+      "at": 1789659685615
+    },
+    {
+      "id": "NX9Y",
+      "taskId": "TASK-1521",
+      "text": "shipped 8fbc3b1 → origin/master · fix(a11y): alert fired-badge AA — bg-down/text-paper (3.49/1.77/2.65:1) to bg-down-soft/text-down (4.70/7.95/7.03:1); alert_badge.py probe measures rendered ratio itself (axe reports incomplete) and joins ui-smoke blocking tier (TASK-1521) · gates tsc=6.6s·lint=31.1s·test=8.1s·boardjson=0.1s · e2e✓",
+      "agent": "HAWK",
+      "at": 1789659676569
+    },
+    {
+      "id": "Y364",
+      "taskId": "TASK-1529",
+      "text": "created in todo",
+      "agent": "AXIOM",
+      "at": 1789659657800
+    },
+    {
+      "id": "MYLS",
+      "taskId": "TASK-1528",
+      "text": "claimed by VERTEX · → doing",
+      "agent": "VERTEX",
+      "at": 1789659625701
+    },
+    {
+      "id": "MUKX",
+      "taskId": "TASK-1528",
+      "text": "created in todo",
+      "agent": "SYSTEM",
+      "at": 1789659620955
+    },
     {
       "id": "LGRW",
       "taskId": "TASK-1527",
@@ -8945,188 +9377,6 @@
       "text": "created in todo",
       "agent": "AXIOM",
       "at": 1789659094441
-    },
-    {
-      "id": "5I2L",
-      "taskId": "TASK-1516",
-      "text": "review · gates green tsc=6.7s·lint=31.0s·test=7.0s·boardjson=0.1s",
-      "agent": "KITE",
-      "at": 1789659089469
-    },
-    {
-      "id": "ERGH",
-      "taskId": "TASK-1518",
-      "text": "review · gates green tsc=6.4s·lint=30.0s·test=7.3s·boardjson=0.1s",
-      "agent": "HAWK",
-      "at": 1789659080990
-    },
-    {
-      "id": "FCRW",
-      "taskId": "TASK-1518",
-      "text": "✓ checked gates green (tsc, lint, test, ui:tokens 0 violat",
-      "agent": "RAVAN",
-      "at": 1789659037047
-    },
-    {
-      "id": "VFV5",
-      "taskId": "TASK-1518",
-      "text": "✓ checked npm script ui:tokens + ci.yml step wired",
-      "agent": "RAVAN",
-      "at": 1789659036902
-    },
-    {
-      "id": "KI13",
-      "taskId": "TASK-1518",
-      "text": "✓ checked backtest/page.tsx theme literals fixed via token",
-      "agent": "RAVAN",
-      "at": 1789659036784
-    },
-    {
-      "id": "XKY3",
-      "taskId": "TASK-1518",
-      "text": "✓ checked checker flags hardcoded hex/rgb/hsl outside sanc",
-      "agent": "RAVAN",
-      "at": 1789659036659
-    },
-    {
-      "id": "773G",
-      "taskId": "TASK-1517",
-      "text": "✓ checked valid ImageResponse renders",
-      "agent": "RAVAN",
-      "at": 1789658967791
-    },
-    {
-      "id": "F1A5",
-      "taskId": "TASK-1517",
-      "text": "✓ checked no neon lime",
-      "agent": "RAVAN",
-      "at": 1789658967696
-    },
-    {
-      "id": "VQPJ",
-      "taskId": "TASK-1517",
-      "text": "✓ checked OG card uses paper/ink + token up/down",
-      "agent": "RAVAN",
-      "at": 1789658967588
-    },
-    {
-      "id": "FVUL",
-      "taskId": "TASK-1512",
-      "text": "moved todo → done",
-      "agent": "SPECTRE",
-      "at": 1789658955681
-    },
-    {
-      "id": "SX0M",
-      "taskId": "TASK-1518",
-      "text": "assigned to HAWK",
-      "agent": "HAWK",
-      "at": 1789658880977
-    },
-    {
-      "id": "HDGR",
-      "taskId": "TASK-1518",
-      "text": "claimed by KITE · → doing",
-      "agent": "KITE",
-      "at": 1789658875226
-    },
-    {
-      "id": "IQF8",
-      "taskId": "TASK-1518",
-      "text": "created in todo",
-      "agent": "KITE",
-      "at": 1789658870330
-    },
-    {
-      "id": "ZE9Q",
-      "taskId": "TASK-1515",
-      "text": "moved doing → done",
-      "agent": "AXIOM",
-      "at": 1789658867589
-    },
-    {
-      "id": "5QZD",
-      "taskId": "TASK-1515",
-      "text": "✓ checked pricing probe clean",
-      "agent": "AXIOM",
-      "at": 1789658867489
-    },
-    {
-      "id": "2ACY",
-      "taskId": "TASK-1515",
-      "text": "✓ checked pricing two check glyphs are Lucide Check with s",
-      "agent": "AXIOM",
-      "at": 1789658867397
-    },
-    {
-      "id": "OQQT",
-      "taskId": "TASK-1517",
-      "text": "claimed by KITE · → doing",
-      "agent": "KITE",
-      "at": 1789658844780
-    },
-    {
-      "id": "5GAC",
-      "taskId": "TASK-1517",
-      "text": "created in todo",
-      "agent": "KITE",
-      "at": 1789658838823
-    },
-    {
-      "id": "L9D8",
-      "taskId": "TASK-1516",
-      "text": "✓ checked no touch of pricing/board/AlertCenter/backtest (",
-      "agent": "RAVAN",
-      "at": 1789658816508
-    },
-    {
-      "id": "TGZX",
-      "taskId": "TASK-1516",
-      "text": "✓ checked tsc+lint green",
-      "agent": "RAVAN",
-      "at": 1789658816429
-    },
-    {
-      "id": "5Q6G",
-      "taskId": "TASK-1516",
-      "text": "✓ checked no text-glyph close buttons remain in the 4 file",
-      "agent": "RAVAN",
-      "at": 1789658816367
-    },
-    {
-      "id": "4R3H",
-      "taskId": "TASK-1515",
-      "text": "✓ checked tsc+scoped eslint green",
-      "agent": "AXIOM",
-      "at": 1789658767847
-    },
-    {
-      "id": "623N",
-      "taskId": "TASK-1515",
-      "text": "✓ checked kanban types.ts+agents.ts carry board-only palet",
-      "agent": "AXIOM",
-      "at": 1789658767753
-    },
-    {
-      "id": "DHVP",
-      "taskId": "TASK-1516",
-      "text": "claimed by KITE · → doing",
-      "agent": "KITE",
-      "at": 1789658731853
-    },
-    {
-      "id": "AP89",
-      "taskId": "TASK-1516",
-      "text": "created in todo",
-      "agent": "KITE",
-      "at": 1789658727919
-    },
-    {
-      "id": "5HK2",
-      "taskId": "TASK-1515",
-      "text": "claimed by AXIOM · → doing",
-      "agent": "AXIOM",
-      "at": 1789658711139
     }
   ],
   "deletions": [
@@ -9931,5 +10181,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1789659584004
+  "updatedAt": 1789659898493
 }

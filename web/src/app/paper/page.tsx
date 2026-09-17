@@ -301,7 +301,7 @@ export default function PaperPage() {
       <SiteHeader subtitle="Paper trading" subtitleClassName="font-normal text-muted" />
 
       <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col gap-4 p-4 sm:p-6">
-        <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
+        <div className="rounded-lg border border-line bg-surface p-5 shadow-sm sm:p-6">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <h1 className="text-xl font-semibold tracking-tight text-paper sm:text-2xl">
@@ -322,7 +322,7 @@ export default function PaperPage() {
 
         <section
           aria-label="Book summary"
-          className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line shadow-sm lg:grid-cols-6"
+          className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-line bg-line shadow-sm lg:grid-cols-6"
         >
           {[
             { label: "Cash available", value: inrCompact(book.cash), cls: "text-paper" },
@@ -346,7 +346,7 @@ export default function PaperPage() {
         {refreshError && (
           <p
             role="alert"
-            className="flex flex-wrap items-center gap-3 rounded-xl border border-down/20 bg-down-soft px-4 py-3 text-sm text-down"
+            className="flex flex-wrap items-center gap-3 rounded-lg border border-down/20 bg-down-soft px-4 py-3 text-sm text-down"
           >
             <span className="flex-1">
               Quotes feed unreachable — showing last known prices.
@@ -364,7 +364,7 @@ export default function PaperPage() {
         {fresh && (
           <section
             aria-label="Getting started"
-            className="rounded-2xl border border-dashed border-line bg-surface px-5 py-6 text-sm leading-relaxed text-muted"
+            className="rounded-lg border border-dashed border-line bg-surface px-5 py-6 text-sm leading-relaxed text-muted"
           >
             <p className="font-medium text-paper">
               Start your virtual book with ₹10,00,000
@@ -403,7 +403,7 @@ export default function PaperPage() {
 
         <section
           aria-labelledby="benchmark-heading"
-          className="rounded-2xl border border-line bg-surface p-5 shadow-sm"
+          className="rounded-md border border-line bg-surface p-5 shadow-sm"
         >
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <h2
@@ -436,7 +436,7 @@ export default function PaperPage() {
 
         <section
           aria-labelledby="settings-heading"
-          className="rounded-2xl border border-line bg-surface p-5 shadow-sm"
+          className="rounded-md border border-line bg-surface p-5 shadow-sm"
         >
           <h2 id="settings-heading" className="text-sm font-semibold text-paper">
             Slippage &amp; book

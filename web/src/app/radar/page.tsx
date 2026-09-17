@@ -165,7 +165,7 @@ export default function RadarPage() {
       <SiteHeader subtitle="Smart-money radar" subtitleClassName="font-normal text-muted" />
 
       <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col gap-4 p-4 sm:p-6">
-        <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
+        <div className="rounded-lg border border-line bg-surface p-5 shadow-sm sm:p-6">
           <h1 className="text-xl font-semibold tracking-tight text-paper sm:text-2xl">Smart-money radar</h1>
           <p className="mt-1 text-sm text-muted">
             Block and bulk deals, insider (SAST) filings and promoter pledge changes, mapped to the jury
@@ -226,10 +226,10 @@ export default function RadarPage() {
         {loading ? (
           <div className="flex flex-col gap-3">
             <Skeleton className="h-6 w-40" />
-            <Skeleton className="h-40 w-full rounded-2xl" />
+            <Skeleton className="h-40 w-full rounded-md" />
           </div>
         ) : watchlistEmpty ? (
-          <section className="rounded-2xl border border-dashed border-line bg-surface px-5 py-12 text-center">
+          <section className="rounded-lg border border-dashed border-line bg-surface px-5 py-12 text-center">
             <p className="text-sm font-medium text-paper">Your watchlist is empty</p>
             <p className="mx-auto mt-2 max-w-md text-sm text-muted">
               Add stocks to your watchlist to see block/bulk deals, insider filings and pledge changes for
@@ -243,7 +243,7 @@ export default function RadarPage() {
             </Link>
           </section>
         ) : blocked ? (
-          <section className="rounded-2xl border border-dashed border-line bg-surface px-5 py-12 text-center">
+          <section className="rounded-lg border border-dashed border-line bg-surface px-5 py-12 text-center">
             <p className="text-sm font-medium text-paper">Source blocked/offline — data unavailable today</p>
             <p className="mx-auto mt-2 max-w-md text-sm text-muted">
               The exchange publication feed refused the request. The radar resumes automatically once the
@@ -251,7 +251,7 @@ export default function RadarPage() {
             </p>
           </section>
         ) : healthyEmpty ? (
-          <section className="rounded-2xl border border-dashed border-line bg-surface px-5 py-12 text-center">
+          <section className="rounded-lg border border-dashed border-line bg-surface px-5 py-12 text-center">
             <p className="text-sm font-medium text-paper">No smart-money activity recorded yet</p>
             <p className="mx-auto mt-2 max-w-md text-sm text-muted">
               Bulk/block deals, SAST filings and pledge intimations appear here as the exchange publishes
@@ -259,7 +259,7 @@ export default function RadarPage() {
             </p>
           </section>
         ) : visible.length === 0 ? (
-          <section className="rounded-2xl border border-dashed border-line bg-surface px-5 py-12 text-center">
+          <section className="rounded-lg border border-dashed border-line bg-surface px-5 py-12 text-center">
             <p className="text-sm font-medium text-paper">No smart-money activity for your watchlist</p>
             <p className="mx-auto mt-2 max-w-md text-sm text-muted">
               Nothing in the recent feed matches your watchlist symbols yet.
@@ -269,7 +269,7 @@ export default function RadarPage() {
           <div className="flex flex-col gap-3">
             {visible.map((g) => (
               <section key={g.symbol} aria-label={`${g.symbol} smart-money activity`}>
-                <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-sm">
+                <div className="overflow-hidden rounded-lg border border-line bg-surface shadow-sm">
                   <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line bg-panel-2 px-4 py-2.5">
                     <div className="flex items-baseline gap-2">
                       <Link

@@ -272,7 +272,7 @@ export default function PortfolioPage() {
         </header>
 
         <section
-          className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6"
+          className="rounded-lg border border-line bg-surface p-5 shadow-sm sm:p-6"
           aria-label="Import holdings"
         >
           <h2 className="text-base font-semibold tracking-tight text-paper">
@@ -402,7 +402,7 @@ export default function PortfolioPage() {
         {imported.length > 0 && (
           <>
             <section
-              className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6"
+              className="rounded-lg border border-line bg-surface p-5 shadow-sm sm:p-6"
               aria-label="Allocation verdict"
             >
               <div className="flex flex-wrap items-center gap-3">
@@ -443,7 +443,7 @@ export default function PortfolioPage() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <section
-                className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6"
+                className="rounded-lg border border-line bg-surface p-5 shadow-sm sm:p-6"
                 aria-label="Sector concentration"
               >
                 <h2 className="text-base font-semibold tracking-tight text-paper">
@@ -495,7 +495,7 @@ export default function PortfolioPage() {
               </section>
 
               <section
-                className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6"
+                className="rounded-lg border border-line bg-surface p-5 shadow-sm sm:p-6"
                 aria-label="Cap allocation"
               >
                 <h2 className="text-base font-semibold tracking-tight text-paper">
@@ -535,7 +535,7 @@ export default function PortfolioPage() {
               </section>
 
               <section
-                className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6"
+                className="rounded-lg border border-line bg-surface p-5 shadow-sm sm:p-6"
                 aria-label="Overlap with Nifty 50"
               >
                 <h2 className="text-base font-semibold tracking-tight text-paper">
@@ -558,7 +558,7 @@ export default function PortfolioPage() {
               </section>
 
               <section
-                className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6"
+                className="rounded-lg border border-line bg-surface p-5 shadow-sm sm:p-6"
                 aria-label="Factor exposure"
               >
                 <div className="flex items-center justify-between gap-2">
@@ -647,7 +647,7 @@ export default function PortfolioPage() {
             </div>
 
             <section
-              className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6"
+              className="rounded-lg border border-line bg-surface p-5 shadow-sm sm:p-6"
               aria-label="Holdings"
             >
               <h2 className="text-base font-semibold tracking-tight text-paper">
