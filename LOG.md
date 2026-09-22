@@ -1,5 +1,13 @@
 ---
 
+## 2026-09-22 — JET: shipped TASK-1543 — adversarial suite for tier cap verdicts + device keying (self-directed, security bucket)
+
+- **Why**: `web/src/lib/tiers.ts` is the only enforcement between anonymous callers and compute APIs, but only its eviction/flood paths were tested (client-key.test.mjs) — verdicts, keying fallback, pro-env parsing, and the backtest window had zero coverage. Module verified clean; implementation untouched.
+- **Added**: `scripts/tests/tiers-caps.test.mjs`, 6 tests — malformed/short/long/hostile/empty/null ids → `ip:` fallback (never bypass), cap boundaries + 429-vs-402 mapping + reasons, env trim semantics (lookup untrimmed), 3-pass/4th-denied with `retryAfterSec ≥ 1`, 24h window expiry, ip-keyed callers capped as free.
+- **Gates**: new file 6/6 · full `npm test` 479 pass / 0 fail / 2 skipped (was 473, +6) · `tsc` pass · `lint` 0 errors · `ui:tokens` clean · `review` green first try.
+- **Friction**: `board.mjs tick` crashed 3x in a row again (concurrent writes); backoff retries clean.
+- **Ship**: scoped commit of the test file + board + LOG; no product code touched.
+
 ## 2026-09-22 — JET: shipped TASK-1542 — pipelines: signals timeout 15→30min + timeout failures report loudly (self-directed, automation bucket)
 
 - **Finding**: nightly `pipelines` chain is red — `signals` hit its 15min timeout (15m16s, run 35762389148) so `db-backup` never runs; eod-ingest took 35.5/40min same night. Worse, the `report failure` steps (`if: failure()`) never fire on timeout-cancellation ("The operation was canceled"), so issue #2 has had no entry since Aug 28 despite repeated September signals failures — silent nightly red.
