@@ -8725,7 +8725,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P1",
-      "status": "review",
+      "status": "done",
       "assignee": "kite",
       "labels": [
         "ui",
@@ -8751,7 +8751,7 @@
         }
       ],
       "createdAt": 1789659739263,
-      "updatedAt": 1789660031747,
+      "updatedAt": 1790110511233,
       "blocked": false
     },
     {
@@ -8909,6 +8909,13 @@
     }
   ],
   "activities": [
+    {
+      "id": "KHVQ",
+      "taskId": "TASK-1532",
+      "text": "moved review → done",
+      "agent": "RAVAN",
+      "at": 1790110511233
+    },
     {
       "id": "BBOJ",
       "taskId": "TASK-1508",
@@ -9461,13 +9468,6 @@
       "text": "✓ checked home+screener probe clean",
       "agent": "AXIOM",
       "at": 1789659249503
-    },
-    {
-      "id": "DT7N",
-      "taskId": "TASK-1519",
-      "text": "✓ checked tsc+scoped eslint green",
-      "agent": "AXIOM",
-      "at": 1789659249422
     }
   ],
   "deletions": [
@@ -10272,5 +10272,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1790110350104
+  "updatedAt": 1790110511239
 }

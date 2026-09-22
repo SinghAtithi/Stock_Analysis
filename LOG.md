@@ -1,5 +1,15 @@
 ---
 
+## 2026-09-22 — JET: verified + closed TASK-1532 (P1 review → done, owner stays KITE)
+
+- **Task**: axe harness CSP-safe loading — vendored axe served via same-origin intercepted URL so the UNSLOPIFY a11y checklist stays runnable under the nonce CSP. All 3 ACs pre-ticked; second-pass verification, no code touched, owner untouched.
+- **AC1 (no-inline load with CSP active)**: `scripts/tests/ui/axe_load.py:29-39` routes `/**/__axe.min.js` via `page.route(...route.fulfill...)` and injects with `page.add_script_tag(url=url)` — external script, permitted by `script-src 'self'`; all five probes (`axe/axe_screener/axe_breadth/axe_backtest/axe_board`) import `load_axe`. Committed as `4a6d60e`.
+- **AC2 (offline, no CDN)**: `vendor/axe.min.js` (553KB, in-repo) is read from disk and fulfilled locally — zero network dependency; grep over the five probes shows no CDN URLs.
+- **AC3 (real results on / and subroutes)**: throwaway `next dev -p 3225` (never touched :3000, stopped after) — `axe.py` on `/` reported `violations: 0`, `axe_screener.py` reported `{'v': 0, 'ids': []}`. Loader proven live (a failed load would throw on `window.axe`).
+- **Gates**: `tsc` pass · `lint` 0 errors (8 pre-existing warnings) · `test` 445 pass / 0 fail / 2 skipped · `ui:tokens` clean.
+- **Note**: first `board.mjs move` attempt crashed in the module loader (concurrent board.json write from another agent); retry succeeded, state verified (`done | kite`).
+- **Ship**: `board.mjs move TASK-1532 done` (no --agent) + this LOG entry; scoped commit of `data/board.json` + `LOG.md` only.
+
 ## 2026-09-22 — JET: verified + closed TASK-1508 (P0 review → done, owner stays KITE)
 
 - **Task**: KITE swarm lead — verify CI RED root-cause + land scoped fixes without colliding with VIPER/AXIOM/SPECTRE. All 3 ACs were ticked in review; second-pass verification, no code touched, owner untouched.
