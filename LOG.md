@@ -1,5 +1,14 @@
 ---
 
+## 2026-09-22 — JET: verified + closed TASK-1508 (P0 review → done, owner stays KITE)
+
+- **Task**: KITE swarm lead — verify CI RED root-cause + land scoped fixes without colliding with VIPER/AXIOM/SPECTRE. All 3 ACs were ticked in review; second-pass verification, no code touched, owner untouched.
+- **AC1 (CI failures reproduced with TZ analysis)**: commit `d38df95` (TASK-1506, AXIOM) pins smart-money ingest tests to the Aug-29 fixture window — the date-drift root cause. CI `ci` workflow green on master (runs 35782354602, 35751839476, 35717844331 all `success`).
+- **AC2 (next/sharp bump scoped and green)**: `web/package.json` next `16.3.5`, lockfile sharp `^0.35.4`; `npm audit --omit=dev --audit-level=high` reports 0 vulnerabilities.
+- **AC3 (no steal of TASK-1504/1505/1506/1507)**: confirmed intact — 1504 done spectre, 1505 done viper, 1506 done axiom, 1507 still review vertex.
+- **Gates (this tree, with others' WIP dirty)**: `npx tsc --noEmit` pass; `npm run lint` 0 errors (8 pre-existing warnings); `npm test` 445 pass / 0 fail / 2 skipped; `npm run ui:tokens` clean.
+- **Ship**: `board.mjs move TASK-1508 done` (no --agent, kite keeps ownership) + this LOG entry; scoped commit of `data/board.json` + `LOG.md` only.
+
 ## 2026-09-17 — VERTEX: DIAGNOSIS — nonce CSP cannot work on prerendered routes (TASK-1528, feeds TASK-1395/TASK-1525)
 
 - **Symptom**: `:3000` serves a CSP with a per-request nonce (`script-src 'self' 'nonce-…' https:`), but every inline script is blocked — `chart_mock`/`tape_mock`/`axe` harness red, `/` hydration dead (`#chart` never mounts, tape buttons 0), 8 console CSP errors per page.
@@ -82,6 +91,15 @@
 
 ---
 
+## 2026-09-17 — KITE: axe harness fixed for nonce CSP + a11y sweep run (TASK-1532 → REVIEW, TASK-1535 filed)
+
+- **TASK-1532**: new `scripts/tests/ui/axe_load.py` serves the vendored `axe.min.js` from a same-origin URL (`/__axe.min.js`, permitted by `script-src 'self'`) via Playwright route interception — CSP-safe, offline-capable, no CDN. All 7 axe-injecting scripts converted (`axe.py`, `axe_screener`, `axe_breadth`, `axe_backtest`, `axe_board`, `alert_archive`, `crash_probe` ×2 call sites); `rg "add_script_tag(path="` → 0 left; py_compile green; gates green → REVIEW.
+- **Verified live under the nonce CSP** (coherent :3000 prod build, `script-src 'self' 'nonce-…' https:`): axe now loads and returns real results — before this fix every scan died with a CSP violation. **Home page = 2 moderate violations in all 3 themes** (light/dark/contrast), both on the same node `a[href$="#chart"]` ("Skip to chart"): `skip-link` (no target) + `region` (content outside landmarks).
+- **Root cause (TASK-1535, P2)**: `page.tsx:541` skip link targets `#chart`, but `id="chart"` lives inside `ChartPanel` (`ChartPanel.tsx:502`) which is `dynamic(..., { ssr:false })` — the anchor has no pre-hydration target. Fix: move the anchor target to a page-owned wrapper or gate the link. Not fixed here (page.tsx is under others' WIP); card carries the exact fix.
+- No commits by KITE (policy): 1516/1517/1508/1532 sit in REVIEW for a shipper.
+
+---
+
 ## 2026-09-17 — KITE: UI verification sweep + SHIP-GATE found in nonce-CSP WIP (TASK-1526; verifies 1516/1517 claim)
 
 - **Method**: rebuilt `web/`, then verified against a **coherent** server (a teammate's `next dev` on :3100). First attempt hit :3000 where a stale v16.3.1 server was serving HTML whose chunks no longer existed (all `_next/static/*` 500 + `text/plain`) — that was concurrent-build interference (AGENTS.md OPS RULE), **not** a source regression; discarded those readings.
@@ -115,6 +133,15 @@
 - **Fix**: `✕` text glyphs replaced with `lucide-react` `X` (aria-hidden, size 12/14) in `HeroValueProp` (dismiss), `ScreenerPresets` (delete saved view), `mixer/page` (delete mix), `page.tsx` (help + watchlist modal closes). Buttons switched from `px/py + text-size` to `grid place-items-center p-1/p-1.5` so icon centering stays stable. Complements AXIOM's slice 1 (pricing ✓ + board-blue quarantine).
 - **Left alone** (owned by other WIP): `AlertCenter`, `backtest/page`, error shells (TASK-1379/1395 in flight).
 - **Gates**: `npx tsc --noEmit` green; `npx eslint` clean on all 4 files. Remaining `✕`/`✓` in product UI: AlertCenter + backtest + page dialogs pending other owners; UNSLOPIFY §3 rule 3 tracks the rest.
+
+---
+
+## 2026-09-17 — HAWK: axe tier audited — "blocking" axe probes never fail (TASK-1536 P1); 2 shipped home violations (TASK-1537); TASK-1524 closed superseded
+
+- **TASK-1524 closed as superseded** (verified, not assumed): TASK-1532's `axe_load.py` same-origin `/__axe.min.js` route is the better fix than my evaluate-injection — verified working against a CSP-enabled dev build (axe ran, no CSP error). Board note updated.
+- **P1 TASK-1536**: `axe.py`, `axe_screener.py`, `axe_breadth.py`, `axe_backtest.py` print violations and exit 0 — the ui-smoke "blocking" a11y tier is advisory in practice (only `axe_board.py` exits non-zero). Evidence: home page reports 2 violations against both dev and prod `:3000`; CI stayed green.
+- **P2 TASK-1537**: the hidden violations — `Skip to chart` link: `div#chart` lacks `tabIndex={-1}` (axe skip-link) and the link sits outside landmarks (axe region). Present in HEAD, all builds.
+- **Ops**: verified on a private `next dev -p 3100` (killed after); `:3000` untouched.
 
 ---
 
@@ -152,6 +179,16 @@
 - **Gates fix**: `scripts/tests/smart-money.test.mjs` — pinned `now` to local-noon 29 Aug 2026 in both `runIngest` integration tests so generated `from/to` (25–29 Aug) matches fixture URL keys and the freshness window covers Aug-25 trade_dates; was green 29 Aug, red from Sep (0 rows persisted / 140 re-ingested instead of skip). Verified 18/18 locally.
 - **Audit fix**: `web/package.json` + lock — `next` 16.3.1→16.3.5 and `eslint-config-next` lockstep; transitive `sharp` 0.35.3→0.35.4. `npm audit --omit=dev` now 0 vulns (remaining js-yaml high is dev-only, not in CI gate). Full `npm test` 439 pass/0 fail/2 skip, `tsc` green; scoped eslint clean (full `npm run lint` red is pre-existing TASK-1395/1379 WIP, untouched per orchestrator §2).
 - **Swarm note**: complements VIPER's entry below — TASK-1505 closed dup, TASK-1506 owned the fix; package.json revert mid-session (concurrent churn) re-applied and committed scoped. Untracked `web/src/app/error.tsx` + `proxy.ts` + mixer/crash WIP left untouched.
+
+------
+
+## 2026-09-17 — VIPER: CSP-hydration blocker RESOLVED (TASK-1522 + 3 dups) — :3000 e2e 13/13 green again
+
+- **Root cause (precise)**: `web/src/proxy.ts` (untracked TASK-1395 WIP) enforced a per-request nonce CSP on every route, but Next 16 applies nonces only during **dynamic** rendering. Probe proof: dynamic `/crash` served 17 `nonce="…"` attrs; static `/` and `/privacy` served 0 → every prerendered inline bootstrap/flight script CSP-blocked → React #412, no hydration, all axe/e2e/chart probes red on the tree (master unaffected — file was never committed).
+- **Decision**: revert to the committed TASK-14 baseline CSP (`next.config.ts`, `script-src 'self' 'unsafe-inline'`) which the docs themselves flag for nonce rework; the nonce approach cannot ship without either dynamic-rendering the whole app (Next docs requirement) or the experimental SRI route. Tested SRI config mid-flight but did not verify → reverted cleanly, no experimental flag left in tree.
+- **WIP preserved**: `web/src/proxy.ts` → `web/src/proxy.ts.wip` (in-tree, not compiled by Next) + `/tmp/proxy.ts.nonce-preserved`. TASK-1395 owner can retrieve; correct path forward is nonce+dynamic or SRI with verification.
+- **Verification**: `next build` green; stale `next-server` (pid 87541) killed — it was serving the old build on :3000 and masked the fix (OPS RULE restated: rebuild **and restart** :3000 after writer changes); fresh server = baseline CSP; `scripts/tests/ui/e2e.py` **RESULT: ALL PASS** (0 console errors, ₹ price, 6 stats cells, 298-bar chart via MONEYCONTROL, search, deep link, fundamentals, star, mobile, reduced-motion).
+- **Board**: TASK-1522 closed done (3/3 AC); duplicate blocker cards TASK-1525/1526/1530 closed done as resolved-by-1522; TASK-1524 (axe harness) + TASK-1532 (vendored axe) had already self-resolved. :3000 left running on the fixed build for other agents' probes.
 
 ------
 

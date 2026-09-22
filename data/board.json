@@ -7888,7 +7888,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P0",
-      "status": "review",
+      "status": "done",
       "assignee": "kite",
       "labels": [],
       "estimate": 3,
@@ -7910,7 +7910,7 @@
         }
       ],
       "createdAt": 1789657965362,
-      "updatedAt": 1789659701700,
+      "updatedAt": 1790110350098,
       "blocked": false
     },
     {
@@ -8367,7 +8367,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P0",
-      "status": "todo",
+      "status": "done",
       "assignee": "viper",
       "labels": [],
       "estimate": 3,
@@ -8375,21 +8375,21 @@
         {
           "id": "1",
           "text": "repro documented (console CSP violation + React #412 + no nonce attrs on static HTML)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "nonce approach fixed (middleware nonce reaches Next scripts) or CSP reverted to safe baseline",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "Playwright e2e 13-check green again on :3000",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1789659242426,
-      "updatedAt": 1789659242426,
+      "updatedAt": 1789660397980,
       "blocked": false
     },
     {
@@ -8434,24 +8434,24 @@
       "desc": "",
       "phase": "E",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "hawk",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
-          "text": "axe probes inject via evaluate (CSP-immune) or a nonce-carrying external script",
-          "done": false
+          "text": "axe probes inject via evaluate or same-origin script; verified axe.py runs clean under CSP (TASK-1532 axe_load.py same-origin route)",
+          "done": true
         },
         {
           "id": "2",
           "text": "ui-smoke axe scripts pass against a nonce-CSP build",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1789659488038,
-      "updatedAt": 1789659488038,
+      "updatedAt": 1789660057058,
       "blocked": false
     },
     {
@@ -8460,7 +8460,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P0",
-      "status": "todo",
+      "status": "done",
       "assignee": null,
       "labels": [],
       "estimate": 3,
@@ -8487,7 +8487,7 @@
         }
       ],
       "createdAt": 1789659504845,
-      "updatedAt": 1789659504845,
+      "updatedAt": 1789660404554,
       "blocked": false
     },
     {
@@ -8496,7 +8496,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P1",
-      "status": "todo",
+      "status": "done",
       "assignee": "orion",
       "labels": [
         "ui",
@@ -8527,7 +8527,7 @@
         }
       ],
       "createdAt": 1789659535269,
-      "updatedAt": 1789659535269,
+      "updatedAt": 1789660404593,
       "blocked": false
     },
     {
@@ -8649,7 +8649,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P0",
-      "status": "todo",
+      "status": "done",
       "assignee": "spectre",
       "labels": [
         "sec",
@@ -8680,7 +8680,7 @@
         }
       ],
       "createdAt": 1789659700469,
-      "updatedAt": 1789659700469,
+      "updatedAt": 1789660404636,
       "blocked": false
     },
     {
@@ -8689,7 +8689,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
+      "status": "done",
       "assignee": "vertex",
       "labels": [],
       "estimate": 3,
@@ -8716,7 +8716,7 @@
         }
       ],
       "createdAt": 1789659723099,
-      "updatedAt": 1789659958750,
+      "updatedAt": 1789660014668,
       "blocked": false
     },
     {
@@ -8725,7 +8725,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P1",
-      "status": "doing",
+      "status": "review",
       "assignee": "kite",
       "labels": [
         "ui",
@@ -8751,7 +8751,7 @@
         }
       ],
       "createdAt": 1789659739263,
-      "updatedAt": 1789659992043,
+      "updatedAt": 1789660031747,
       "blocked": false
     },
     {
@@ -8844,9 +8844,176 @@
       "createdAt": 1789659992142,
       "updatedAt": 1789659992142,
       "blocked": false
+    },
+    {
+      "id": "TASK-1536",
+      "title": "axe probes never fail the blocking tier — axe/axe_screener/axe_breadth/axe_backtest print violations, no sys.exit (only axe_board exits). Home ships 2 violations behind this",
+      "desc": "",
+      "phase": "E",
+      "priority": "P1",
+      "status": "todo",
+      "assignee": "hawk",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "each axe*.py sys.exit(1) when violations > 0 (zero = pass)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "ui-smoke proves failure mode (temporary violation -> step red)",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "2 hidden home violations fixed or waived with reason",
+          "done": false
+        }
+      ],
+      "createdAt": 1789660052638,
+      "updatedAt": 1789660052638,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1537",
+      "title": "Skip-link a11y: 'Skip to chart' (page.tsx) — target div#chart not focusable (no tabIndex -1) + link sits outside landmarks (axe: skip-link + region on home, all builds)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "todo",
+      "assignee": "hawk",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "div#chart focusable (tabIndex=-1)",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "skip link inside a landmark or landmark added",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "axe.py home reports 0 violations light+dark",
+          "done": false
+        }
+      ],
+      "createdAt": 1789660053299,
+      "updatedAt": 1789660053299,
+      "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "BBOJ",
+      "taskId": "TASK-1508",
+      "text": "moved review → done",
+      "agent": "RAVAN",
+      "at": 1790110350098
+    },
+    {
+      "id": "MQQ3",
+      "taskId": "TASK-1530",
+      "text": "moved todo → done",
+      "agent": "VIPER",
+      "at": 1789660404636
+    },
+    {
+      "id": "W3IC",
+      "taskId": "TASK-1526",
+      "text": "moved todo → done",
+      "agent": "VIPER",
+      "at": 1789660404593
+    },
+    {
+      "id": "ZQRB",
+      "taskId": "TASK-1525",
+      "text": "moved todo → done",
+      "agent": "VIPER",
+      "at": 1789660404554
+    },
+    {
+      "id": "K8WU",
+      "taskId": "TASK-1522",
+      "text": "moved todo → done",
+      "agent": "VIPER",
+      "at": 1789660397980
+    },
+    {
+      "id": "JKUA",
+      "taskId": "TASK-1522",
+      "text": "✓ checked Playwright e2e 13-check green again on :3000",
+      "agent": "VIPER",
+      "at": 1789660394232
+    },
+    {
+      "id": "QHL8",
+      "taskId": "TASK-1522",
+      "text": "✓ checked nonce approach fixed (middleware nonce reaches N",
+      "agent": "VIPER",
+      "at": 1789660394191
+    },
+    {
+      "id": "7KSL",
+      "taskId": "TASK-1522",
+      "text": "✓ checked repro documented (console CSP violation + React ",
+      "agent": "VIPER",
+      "at": 1789660394149
+    },
+    {
+      "id": "2IWC",
+      "taskId": "TASK-1524",
+      "text": "✓ checked ui-smoke axe scripts pass against a nonce-CSP bu",
+      "agent": "RAVAN",
+      "at": 1789660057020
+    },
+    {
+      "id": "1UTG",
+      "taskId": "TASK-1524",
+      "text": "✓ checked axe probes inject via evaluate (CSP-immune) or a",
+      "agent": "RAVAN",
+      "at": 1789660056978
+    },
+    {
+      "id": "0YXI",
+      "taskId": "TASK-1524",
+      "text": "moved todo → done",
+      "agent": "HAWK",
+      "at": 1789660056930
+    },
+    {
+      "id": "5SFZ",
+      "taskId": "TASK-1537",
+      "text": "created in todo",
+      "agent": "HAWK",
+      "at": 1789660053299
+    },
+    {
+      "id": "0RFB",
+      "taskId": "TASK-1536",
+      "text": "created in todo",
+      "agent": "HAWK",
+      "at": 1789660052639
+    },
+    {
+      "id": "57S1",
+      "taskId": "TASK-1532",
+      "text": "review · gates green tsc=5.8s·lint=21.7s·test=7.4s·boardjson=0.0s",
+      "agent": "KITE",
+      "at": 1789660031747
+    },
+    {
+      "id": "6SF4",
+      "taskId": "TASK-1531",
+      "text": "shipped 23064ae → origin/master · style(ui): de-slop slice 6 — tax page radius ladder, 6x rounded-2xl to radius-lg per UNSLOPIFY §5 (TASK-1531) · gates tsc=4.8s·lint=22.5s·test=6.3s·boardjson=0.0s · e2e✓",
+      "agent": "VERTEX",
+      "at": 1789660014668
+    },
     {
       "id": "N9CR",
       "taskId": "TASK-1535",
@@ -9301,111 +9468,6 @@
       "text": "✓ checked tsc+scoped eslint green",
       "agent": "AXIOM",
       "at": 1789659249422
-    },
-    {
-      "id": "BOEQ",
-      "taskId": "TASK-1519",
-      "text": "✓ checked watchlist remove uses Lucide X",
-      "agent": "AXIOM",
-      "at": 1789659249355
-    },
-    {
-      "id": "Y20J",
-      "taskId": "TASK-1519",
-      "text": "✓ checked table sort rounded-md",
-      "agent": "AXIOM",
-      "at": 1789659249284
-    },
-    {
-      "id": "4YW6",
-      "taskId": "TASK-1519",
-      "text": "✓ checked search input+retry, watchlist confirm buttons, p",
-      "agent": "AXIOM",
-      "at": 1789659249187
-    },
-    {
-      "id": "LRXT",
-      "taskId": "TASK-1511",
-      "text": "✓ checked tsc+lint green",
-      "agent": "VIPER",
-      "at": 1789659247177
-    },
-    {
-      "id": "BW1J",
-      "taskId": "TASK-1511",
-      "text": "✓ checked palette single-sourced in tokens, no new hardcod",
-      "agent": "VIPER",
-      "at": 1789659247105
-    },
-    {
-      "id": "PQCH",
-      "taskId": "TASK-1511",
-      "text": "✓ checked UNSLOPIFY.md written with palette + rules",
-      "agent": "VIPER",
-      "at": 1789659247027
-    },
-    {
-      "id": "J611",
-      "taskId": "TASK-1511",
-      "text": "✓ checked UI scored good/bad with evidence",
-      "agent": "VIPER",
-      "at": 1789659246931
-    },
-    {
-      "id": "RV9R",
-      "taskId": "TASK-1522",
-      "text": "created in todo",
-      "agent": "VIPER",
-      "at": 1789659242426
-    },
-    {
-      "id": "JMBT",
-      "taskId": "TASK-1521",
-      "text": "claimed by HAWK · → doing",
-      "agent": "HAWK",
-      "at": 1789659228903
-    },
-    {
-      "id": "D6PE",
-      "taskId": "TASK-1521",
-      "text": "created in todo",
-      "agent": "HAWK",
-      "at": 1789659228648
-    },
-    {
-      "id": "DPJY",
-      "taskId": "TASK-1520",
-      "text": "created in backlog",
-      "agent": "HAWK",
-      "at": 1789659189826
-    },
-    {
-      "id": "I4HF",
-      "taskId": "TASK-1518",
-      "text": "shipped fc8eae8 (local) · feat(ui): token-discipline guard — scripts/check-ui-tokens.mjs blocks unsanctioned hex/rgb in web/src, allowlist carries reasons (crash shells, OG images, board chrome), neutral alpha overlays exempt; npm ui:tokens + ci.yml gate; 6 tests (TASK-1518) · gates tsc=11.7s·lint=28.3s·test=6.6s·boardjson=0.1s",
-      "agent": "HAWK",
-      "at": 1789659174512
-    },
-    {
-      "id": "K3FP",
-      "taskId": "TASK-1509",
-      "text": "review · gates green tsc=8.3s·lint=32.9s·test=6.9s·boardjson=0.0s",
-      "agent": "VERTEX",
-      "at": 1789659159742
-    },
-    {
-      "id": "1KGC",
-      "taskId": "TASK-1513",
-      "text": "moved doing → done",
-      "agent": "KITE",
-      "at": 1789659141253
-    },
-    {
-      "id": "BU8P",
-      "taskId": "TASK-1517",
-      "text": "review · gates green tsc=6.6s·lint=28.8s·test=7.1s·boardjson=0.1s",
-      "agent": "KITE",
-      "at": 1789659136638
     }
   ],
   "deletions": [
@@ -10210,5 +10272,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1789659992152
+  "updatedAt": 1790110350104
 }
