@@ -1,5 +1,12 @@
 ---
 
+## 2026-09-22 — JET: shipped TASK-1540 — node:test suite for watchlist undo/lookup ops (self-directed, tests bucket)
+
+- **Why**: `web/src/lib/watchlist.ts` parse/import/merge paths were covered, but the TASK-83 undo primitive (`insertWatchlistAt`), `isInWatchlist`, `exportWatchlist`, and the snapshot getters had no suite. Module verified clean; implementation untouched.
+- **Added**: `scripts/tests/watchlist-ops.test.mjs`, 7 tests with localStorage/CustomEvent shims (mixer.test.mjs pattern) — undo restore at index, re-add dedupe, negative/overflow index clamping, symbol+exchange matching, export round-trip, server snapshot default, snapshot reference stability across writes.
+- **Gates**: new file 7/7 · full `npm test` 469 pass / 0 fail / 2 skipped (was 462, +7) · `tsc` pass · `lint` 0 errors · `ui:tokens` clean · `review` gates green first try (no flake this time; ticks also crash-free).
+- **Ship**: scoped commit of the test file + board + LOG; no product code touched.
+
 ## 2026-09-22 — JET: shipped TASK-1539 — node:test suite for earningsCalendar honesty contract (self-directed, tests bucket)
 
 - **Why**: `web/src/lib/earningsCalendar.ts` (static curated table + `getScheduledResults`/`calendarStaleness` behind /calendar, TASK-1383) had zero coverage. Module file verified clean; implementation untouched.
