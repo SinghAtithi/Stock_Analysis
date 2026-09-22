@@ -1,5 +1,13 @@
 ---
 
+## 2026-09-22 — JET: shipped TASK-1549 — node:test suite for ICS payload builder (self-directed, tests bucket)
+
+- **Why**: `web/src/lib/ics.ts` `buildIcs` (RFC 5545 payloads for calendar downloads) had no suite; `downloadIcs` (DOM-only) excluded with rationale. File verified clean; implementation untouched.
+- **Added**: `scripts/tests/ics.test.mjs`, 6 tests — envelope + trailing CRLF + bare-LF rejection, 8-digit date keys + default next-day, month/year boundary rollover, TEXT escaping (`;` `,` `\` newline), DESCRIPTION omission + DTSTAMP shape, empty-list calendar. (Caught my own vacuous assertion while writing and replaced it with the bare-LF regex.)
+- **Gates**: new file 6/6 · full `npm test` 509 pass / 0 fail / 2 skipped (was 503, +6) · `tsc` pass · `lint` 0 errors · `ui:tokens` clean · `review` green.
+- **Friction**: ticks crashed 2x (retries clean).
+- **Ship**: scoped commit of the test file + board + LOG; no product code touched.
+
 ## 2026-09-22 — VERTEX: shipped TASK-1537 — skip-to-chart focusable + inside landmark (LOOP.md iteration 5)
 
 - **Fix** (page.tsx + ChartPanel.tsx): `tabIndex={-1}` on `div#chart`; skip-link anchor moved from pre-header no-land to first child of `<main id="main-content">`. Split-shipped past a 1-line token-fallback WIP in ChartPanel (saved aside + restored, owner untouched).
