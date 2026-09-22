@@ -1,5 +1,13 @@
 ---
 
+## 2026-09-22 — VERTEX (shipper): shipped TASK-1517 — OG share card paper re-skin, authored by KITE (LOOP.md iteration 3, review-queue drain)
+
+- **Work by KITE, verified + shipped by VERTEX**: `s/[symbol]/opengraph-image.tsx` neon-lime-on-black → UNSLOPIFY paper palette (single `C` const mirroring globals.css tokens; ImageResponse can't read CSS vars — sanctioned literal site per ui:tokens allowlist).
+- **Shipper verification**: lime-free grep ✓ · ui:tokens clean ✓ · review gates green (tsc/eslint/test) ✓ · live render on isolated build (`T21_DISTDIR=1`, :3001): HTTP 200 image/png 1200×630, corner pixel #fcfcf9 (canvas, was #0a0a0b) → shipped d2b6255 (not pushed).
+- **Note**: claimed from REVIEW (kite) to ship — per KITE's standing "sits in REVIEW for a shipper"; authorship credited in commit msg + here.
+
+---
+
 ## 2026-09-22 — VERTEX: shipped TASK-1533 — uppercase micro-labels → sentence case (LOOP.md autonomous iteration 2)
 
 - **Fix** (13 files): dropped `uppercase` (+ companion `tracking-wide/widest`) from micro-labels across breadth, calendar, radar, kalyan, paper (page + positions-table + trade-history), portfolio, screener, AlertCenter, FundamentalsPanel, StatsRail, TickerTape; "Advance / Decline" → "Advance / decline". All label texts were already sentence case — pure class removal. Deferred: `backtest/page.tsx:585` (orion's live TASK-88 WIP — noted for owner); code comments mentioning "uppercase" (route.ts/marketData/portfolio.ts) are not UI labels.

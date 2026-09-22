@@ -8197,8 +8197,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
-      "assignee": "kite",
+      "status": "done",
+      "assignee": "vertex",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -8219,7 +8219,7 @@
         }
       ],
       "createdAt": 1789658838823,
-      "updatedAt": 1789659136637,
+      "updatedAt": 1790112727074,
       "blocked": false
     },
     {
@@ -9130,7 +9130,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P3",
-      "status": "doing",
+      "status": "done",
       "assignee": "jet",
       "labels": [],
       "estimate": 3,
@@ -9138,11 +9138,42 @@
         {
           "id": "1",
           "text": "format.test.mjs covers Cr/L/K thresholds plus null/NaN em-dash and negative values",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "timeAgo covers just-now/minutes/hours/date plus falsy input",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "npm test green with no regressions",
+          "done": true
+        }
+      ],
+      "createdAt": 1790112593930,
+      "updatedAt": 1790112703064,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1546",
+      "title": "Test: node:test suite for compare pure helpers (slots, chart URLs, metric direction)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "doing",
+      "assignee": "jet",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "compare.test.mjs covers toSlot fallbacks, chartUrl encoding plus unknown-range fallback, metricValue guards",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "betterSide covers lower/higher/neutral plus ties and nulls, FUND_METRICS invariants",
           "done": false
         },
         {
@@ -9151,12 +9182,82 @@
           "done": false
         }
       ],
-      "createdAt": 1790112593930,
-      "updatedAt": 1790112593971,
+      "createdAt": 1790112733945,
+      "updatedAt": 1790112733989,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "5YRW",
+      "taskId": "TASK-1546",
+      "text": "claimed by JET · → doing",
+      "agent": "JET",
+      "at": 1790112733989
+    },
+    {
+      "id": "ECEP",
+      "taskId": "TASK-1546",
+      "text": "created in todo",
+      "agent": "JET",
+      "at": 1790112733945
+    },
+    {
+      "id": "OANZ",
+      "taskId": "TASK-1517",
+      "text": "shipped d2b6255 (local) · style(ui): OG share card re-skinned to paper palette (TASK-1517, by KITE) · gates tsc=1.9s·lint=8.9s·test=5.3s·boardjson=0.0s · e2e✓",
+      "agent": "VERTEX",
+      "at": 1790112727074
+    },
+    {
+      "id": "CNV9",
+      "taskId": "TASK-1517",
+      "text": "review · gates green tsc=2.1s·lint=10.9s·test=5.3s·boardjson=0.0s · e2e✓",
+      "agent": "VERTEX",
+      "at": 1790112707876
+    },
+    {
+      "id": "O9Y5",
+      "taskId": "TASK-1545",
+      "text": "shipped d4793a5 → origin/master · test(format): node:test suite for compact/time helpers (TASK-1545) · gates tsc=2.0s·lint=9.5s·test=5.4s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790112703064
+    },
+    {
+      "id": "NYOZ",
+      "taskId": "TASK-1545",
+      "text": "review · gates green tsc=1.9s·lint=10.1s·test=5.3s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790112675057
+    },
+    {
+      "id": "YWJM",
+      "taskId": "TASK-1545",
+      "text": "✓ checked npm test green with no regressions",
+      "agent": "RAVAN",
+      "at": 1790112657702
+    },
+    {
+      "id": "DDJ0",
+      "taskId": "TASK-1545",
+      "text": "✓ checked timeAgo covers just-now/minutes/hours/date plus ",
+      "agent": "RAVAN",
+      "at": 1790112652661
+    },
+    {
+      "id": "YNM9",
+      "taskId": "TASK-1517",
+      "text": "claimed by VERTEX · → doing",
+      "agent": "VERTEX",
+      "at": 1790112649962
+    },
+    {
+      "id": "4RA1",
+      "taskId": "TASK-1545",
+      "text": "✓ checked format.test.mjs covers Cr/L/K thresholds plus nu",
+      "agent": "RAVAN",
+      "at": 1790112647621
+    },
     {
       "id": "2TNR",
       "taskId": "TASK-1545",
@@ -9646,76 +9747,6 @@
       "text": "moved todo → done",
       "agent": "VIPER",
       "at": 1789660397980
-    },
-    {
-      "id": "JKUA",
-      "taskId": "TASK-1522",
-      "text": "✓ checked Playwright e2e 13-check green again on :3000",
-      "agent": "VIPER",
-      "at": 1789660394232
-    },
-    {
-      "id": "QHL8",
-      "taskId": "TASK-1522",
-      "text": "✓ checked nonce approach fixed (middleware nonce reaches N",
-      "agent": "VIPER",
-      "at": 1789660394191
-    },
-    {
-      "id": "7KSL",
-      "taskId": "TASK-1522",
-      "text": "✓ checked repro documented (console CSP violation + React ",
-      "agent": "VIPER",
-      "at": 1789660394149
-    },
-    {
-      "id": "2IWC",
-      "taskId": "TASK-1524",
-      "text": "✓ checked ui-smoke axe scripts pass against a nonce-CSP bu",
-      "agent": "RAVAN",
-      "at": 1789660057020
-    },
-    {
-      "id": "1UTG",
-      "taskId": "TASK-1524",
-      "text": "✓ checked axe probes inject via evaluate (CSP-immune) or a",
-      "agent": "RAVAN",
-      "at": 1789660056978
-    },
-    {
-      "id": "0YXI",
-      "taskId": "TASK-1524",
-      "text": "moved todo → done",
-      "agent": "HAWK",
-      "at": 1789660056930
-    },
-    {
-      "id": "5SFZ",
-      "taskId": "TASK-1537",
-      "text": "created in todo",
-      "agent": "HAWK",
-      "at": 1789660053299
-    },
-    {
-      "id": "0RFB",
-      "taskId": "TASK-1536",
-      "text": "created in todo",
-      "agent": "HAWK",
-      "at": 1789660052639
-    },
-    {
-      "id": "57S1",
-      "taskId": "TASK-1532",
-      "text": "review · gates green tsc=5.8s·lint=21.7s·test=7.4s·boardjson=0.0s",
-      "agent": "KITE",
-      "at": 1789660031747
-    },
-    {
-      "id": "6SF4",
-      "taskId": "TASK-1531",
-      "text": "shipped 23064ae → origin/master · style(ui): de-slop slice 6 — tax page radius ladder, 6x rounded-2xl to radius-lg per UNSLOPIFY §5 (TASK-1531) · gates tsc=4.8s·lint=22.5s·test=6.3s·boardjson=0.0s · e2e✓",
-      "agent": "VERTEX",
-      "at": 1789660014668
     }
   ],
   "deletions": [
@@ -10520,5 +10551,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1790112593974
+  "updatedAt": 1790112733991
 }
