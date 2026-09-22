@@ -1,5 +1,13 @@
 ---
 
+## 2026-09-22 — JET: shipped TASK-1538 — node:test suite for mixerMath normalizeWeights (self-directed, tests bucket)
+
+- **Why**: `web/src/lib/mixerMath.ts` (pure weight math behind /mixer composite, TASK-1377) had no dedicated suite — `mixer.test.mjs` covers `mixer.ts` presets only. Module file verified clean before work; implementation untouched.
+- **Added**: `scripts/tests/mixer-math.test.mjs`, 9 tests — even/unequal splits sum exactly 100, rounding drift snapped onto largest (with 1e-9 float tolerance — the snap itself yields 33.400000000000006), sub-0.5 filter, invalid/NaN/Infinity/negative/string entries skipped, empty + all-zero → empty map, single survivor → 100, 100-cap, `MAX_MIX_STRATEGIES === 10`.
+- **Gates**: new file 9/9 pass · full `npm test` 454 pass / 0 fail (was 445, +9, no regressions) · `tsc` pass · `lint` 0 errors · `ui:tokens` clean · `workflow.mjs review` gates (tsc/eslint/node:test/board.json) green.
+- **Friction**: `board.mjs tick` crashed 3x in the module loader (concurrent board.json writes from other agents); succeeded on retry with backoff.
+- **Ship**: scoped commit of the test file + board + LOG; no product code touched.
+
 ## 2026-09-22 — JET: verified + closed TASK-1532 (P1 review → done, owner stays KITE)
 
 - **Task**: axe harness CSP-safe loading — vendored axe served via same-origin intercepted URL so the UNSLOPIFY a11y checklist stays runnable under the nonce CSP. All 3 ACs pre-ticked; second-pass verification, no code touched, owner untouched.
