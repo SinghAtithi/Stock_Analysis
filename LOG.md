@@ -1,5 +1,13 @@
 ---
 
+## 2026-09-22 — JET: shipped TASK-1547 — node:test suite for corporateActions pure logic (self-directed, tests bucket)
+
+- **Why**: module header declares itself "unit-testable with node:test" yet no suite ever landed (TASK-360 done by raven, markers shipped untested). File verified clean; `fetchCorporateActions` (live network) excluded with rationale.
+- **Added**: `scripts/tests/corporate-actions.test.mjs`, 5 tests — kind labels/chip text/plain copy, null-ratio + reverse-split degradation, unknown-type rejection + non-finite-ts drop + sort, window snap (IST/UTC-gap case) + far-drop + ts rewrite + empty inputs, marker shapes/ids/colors.
+- **Gates**: new file 5/5 · full `npm test` 498 pass / 0 fail / 2 skipped (was 493, +5) · `tsc` pass · `lint` 0 errors · `ui:tokens` clean · `review` green.
+- **Friction x2**: ticks crashed 3x (backoff retries clean); then `review` refused — KITE's TASK-1516 files were staged mid-ship and the gate mistook them for mine. Left their stage alone, waited 60s for their ship (a7261aa) to land, re-ran green. Correct call: never unstage another agent's in-flight ship.
+- **Ship**: scoped commit of the test file + board + LOG; no product code touched.
+
 ## 2026-09-22 — VERTEX (shipper): shipped TASK-1516 — glyph close buttons → Lucide X, authored by KITE (LOOP.md iteration 4)
 
 - **Careful ship**: worktree carried extra out-of-scope hunks (hero chip-rationing + section bg) adjacent to the X hunks. Split delivery: `git apply --cached` hunk filter + hand-crafted button hunk for Hero → staged index is X-only (4 files, 5 lines each, verified no chip smuggle) → saved leftover patch → shipped a7261aa → re-applied leftover. Other owners' WIP intact.
