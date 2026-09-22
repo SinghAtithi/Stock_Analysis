@@ -1,5 +1,13 @@
 ---
 
+## 2026-09-22 — JET: shipped TASK-1544 — eod-ingest 40→50min on measured evidence (self-directed, automation bucket, follows TASK-1542)
+
+- **Verdict first**: no regression, no cache-miss, no upstream stall. Run 35762389148 step timings: ingest proper 8.1min (warm-doc ~3min, throttle-elevated) + `fill-universe --budget-min 25` 27.1min (bounded by design) = 35.5min against a 40min budget — 4.5min headroom, one bad throttle night from a silent (now loud, per TASK-1542) timeout.
+- **Fix** (`pipelines.yml` only, file verified clean): eod-ingest `timeout-minutes` 40 → 50 + budget comment rewritten with measured numbers. Evidence-backed, not a blind bump. Companion proof for TASK-1542's second half: the timed-out signals job shows `report failure [skipped]` — exactly the silent-timeout hole the `|| cancelled()` fix closes; tonight's run exercises both fixes.
+- **Gates**: YAML parses · `tsc` pass · `npm test` 479/0 · `lint` 0 errors · `ui:tokens` clean · `review` green.
+- **Friction**: ticks crashed 3x consecutively again (concurrent board writes); backoff retries clean.
+- **Ship**: scoped commit of the workflow + board + LOG; pushed.
+
 ## 2026-09-22 — JET: shipped TASK-1543 — adversarial suite for tier cap verdicts + device keying (self-directed, security bucket)
 
 - **Why**: `web/src/lib/tiers.ts` is the only enforcement between anonymous callers and compute APIs, but only its eviction/flood paths were tested (client-key.test.mjs) — verdicts, keying fallback, pro-env parsing, and the backtest window had zero coverage. Module verified clean; implementation untouched.

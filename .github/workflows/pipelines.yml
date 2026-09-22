@@ -8,8 +8,10 @@
 #   breadth-morning    02:30 UTC daily (08:00 IST) — FII/DII + prior-day breadth
 #
 # Runtime budget (documented per AC):
-#   eod-ingest   timeout 40min — ~3min with a warm DB cache (incremental
-#                top-up); a cache-miss full-history pull is the slow path.
+#   eod-ingest   timeout 50min — ingest proper is ~3min warm (~8min observed
+#                Sep 2026 under throttle) + fill-universe toward nifty500 is
+#                hard-bounded at --budget-min 25 (measured 27min incl.
+#                overhead 2026-09-22); 40min left only ~4.5min headroom.
 #   signals      timeout 30min — nifty500 fundamentals + analyst ingest,
 #                snapshots, alerts (~15min+ observed Sep 2026; the old
 #                ~2–3min figure predates the TASK-57 factor ingest).
@@ -41,7 +43,7 @@ jobs:
   eod-ingest:
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 13 * * 1-5'
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
