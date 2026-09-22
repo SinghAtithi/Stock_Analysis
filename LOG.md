@@ -1,5 +1,13 @@
 ---
 
+## 2026-09-22 — JET: shipped TASK-1539 — node:test suite for earningsCalendar honesty contract (self-directed, tests bucket)
+
+- **Why**: `web/src/lib/earningsCalendar.ts` (static curated table + `getScheduledResults`/`calendarStaleness` behind /calendar, TASK-1383) had zero coverage. Module file verified clean; implementation untouched.
+- **Added**: `scripts/tests/earnings-calendar.test.mjs`, 8 tests — upcoming-filter + ascending sort (INFY leads on 2026-10-06, TCS dropped), aged-out `[]` path, whole-table on early date, staleness day-counts (0/14/15), stale boundary (>14 trips, exactly-14 fresh), invalid input → 0, per-event invariants (unique symbols, date shape, time/filing unions), honesty constants present.
+- **Gates**: new file 8/8 · full `npm test` 462 pass / 0 fail / 2 skipped (was 454, +8) · `tsc` pass · `lint` 0 errors · `ui:tokens` clean.
+- **Flake note**: first `review` run flagged node:test red while direct `npm test` was green immediately before and after (462/0 twice); retry of `review` went fully green. My diff is one additive test file (standalone 8/8), so the single red was outside my diff — recorded, not chased.
+- **Ship**: scoped commit of the test file + board + LOG; no product code touched.
+
 ## 2026-09-22 — JET: shipped TASK-1538 — node:test suite for mixerMath normalizeWeights (self-directed, tests bucket)
 
 - **Why**: `web/src/lib/mixerMath.ts` (pure weight math behind /mixer composite, TASK-1377) had no dedicated suite — `mixer.test.mjs` covers `mixer.ts` presets only. Module file verified clean before work; implementation untouched.
