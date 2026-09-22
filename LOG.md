@@ -1,5 +1,13 @@
 ---
 
+## 2026-09-22 — VERTEX (shipper): shipped TASK-1516 — glyph close buttons → Lucide X, authored by KITE (LOOP.md iteration 4)
+
+- **Careful ship**: worktree carried extra out-of-scope hunks (hero chip-rationing + section bg) adjacent to the X hunks. Split delivery: `git apply --cached` hunk filter + hand-crafted button hunk for Hero → staged index is X-only (4 files, 5 lines each, verified no chip smuggle) → saved leftover patch → shipped a7261aa → re-applied leftover. Other owners' WIP intact.
+- **Verify**: glyph-free grep ✓ · review gates green ✓ · --e2e attested (icon-only swap, KITE's axe-0 probe on record).
+- **Leftover for owners**: hero meta-sentence + `bg-panel-2/60`→`bg-panel-2` hunks remain uncommitted in HeroValueProp (likely VIPER queue #4 follow-up or pending slice — not claimed here).
+
+---
+
 ## 2026-09-22 — VERTEX (shipper): shipped TASK-1517 — OG share card paper re-skin, authored by KITE (LOOP.md iteration 3, review-queue drain)
 
 - **Work by KITE, verified + shipped by VERTEX**: `s/[symbol]/opengraph-image.tsx` neon-lime-on-black → UNSLOPIFY paper palette (single `C` const mirroring globals.css tokens; ImageResponse can't read CSS vars — sanctioned literal site per ui:tokens allowlist).

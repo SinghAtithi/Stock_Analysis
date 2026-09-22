@@ -8166,8 +8166,8 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "review",
-      "assignee": "kite",
+      "status": "done",
+      "assignee": "vertex",
       "labels": [],
       "estimate": 3,
       "checklist": [
@@ -8188,7 +8188,7 @@
         }
       ],
       "createdAt": 1789658727919,
-      "updatedAt": 1789659089469,
+      "updatedAt": 1790112975852,
       "blocked": false
     },
     {
@@ -9161,7 +9161,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P3",
-      "status": "doing",
+      "status": "done",
       "assignee": "jet",
       "labels": [],
       "estimate": 3,
@@ -9169,25 +9169,152 @@
         {
           "id": "1",
           "text": "compare.test.mjs covers toSlot fallbacks, chartUrl encoding plus unknown-range fallback, metricValue guards",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "betterSide covers lower/higher/neutral plus ties and nulls, FUND_METRICS invariants",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "npm test green with no regressions",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1790112733945,
-      "updatedAt": 1790112733989,
+      "updatedAt": 1790112846626,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1547",
+      "title": "Test: node:test suite for corporateActions pure logic (normalize, snap, markers)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "doing",
+      "assignee": "jet",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "corporate-actions.test.mjs covers kind labels plus ratio text and unknown-type rejection",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "window snap keeps near candles, drops far ones, rewrites ts",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "marker shapes plus ids covered",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "npm test green with no regressions",
+          "done": false
+        }
+      ],
+      "createdAt": 1790112891078,
+      "updatedAt": 1790112959196,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "44DP",
+      "taskId": "TASK-1516",
+      "text": "shipped a7261aa (local) · style(ui): text-glyph close buttons to Lucide X in hero/presets/mixer/dialogs (TASK-1516, by KITE) · gates tsc=2.2s·lint=8.9s·test=6.4s·boardjson=0.0s · e2e✓",
+      "agent": "VERTEX",
+      "at": 1790112975852
+    },
+    {
+      "id": "YUFT",
+      "taskId": "TASK-1547",
+      "text": "✓ checked marker shapes plus ids covered",
+      "agent": "RAVAN",
+      "at": 1790112959197
+    },
+    {
+      "id": "WK2M",
+      "taskId": "TASK-1547",
+      "text": "✓ checked window snap keeps near candles, drops far ones, ",
+      "agent": "RAVAN",
+      "at": 1790112954154
+    },
+    {
+      "id": "HT96",
+      "taskId": "TASK-1547",
+      "text": "✓ checked corporate-actions.test.mjs covers kind labels pl",
+      "agent": "RAVAN",
+      "at": 1790112949113
+    },
+    {
+      "id": "X6TS",
+      "taskId": "TASK-1516",
+      "text": "review · gates green tsc=2.1s·lint=10.7s·test=5.7s·boardjson=0.0s · e2e✓",
+      "agent": "VERTEX",
+      "at": 1790112930494
+    },
+    {
+      "id": "P93T",
+      "taskId": "TASK-1516",
+      "text": "claimed by VERTEX · → doing",
+      "agent": "VERTEX",
+      "at": 1790112911873
+    },
+    {
+      "id": "S1AQ",
+      "taskId": "TASK-1547",
+      "text": "claimed by JET · → doing",
+      "agent": "JET",
+      "at": 1790112891120
+    },
+    {
+      "id": "G1M9",
+      "taskId": "TASK-1547",
+      "text": "created in todo",
+      "agent": "JET",
+      "at": 1790112891078
+    },
+    {
+      "id": "ZHTG",
+      "taskId": "TASK-1546",
+      "text": "shipped d89fee9 → origin/master · test(compare): node:test suite for pure slot/chart/metric helpers (TASK-1546) · gates tsc=1.9s·lint=8.9s·test=5.4s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790112846626
+    },
+    {
+      "id": "0XRR",
+      "taskId": "TASK-1546",
+      "text": "review · gates green tsc=1.9s·lint=9.1s·test=5.3s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790112819652
+    },
+    {
+      "id": "5LVH",
+      "taskId": "TASK-1546",
+      "text": "✓ checked npm test green with no regressions",
+      "agent": "RAVAN",
+      "at": 1790112803249
+    },
+    {
+      "id": "ZG4C",
+      "taskId": "TASK-1546",
+      "text": "✓ checked betterSide covers lower/higher/neutral plus ties",
+      "agent": "RAVAN",
+      "at": 1790112798210
+    },
+    {
+      "id": "RIF6",
+      "taskId": "TASK-1546",
+      "text": "✓ checked compare.test.mjs covers toSlot fallbacks, chartU",
+      "agent": "RAVAN",
+      "at": 1790112793170
+    },
     {
       "id": "5YRW",
       "taskId": "TASK-1546",
@@ -9656,97 +9783,6 @@
       "text": "claimed by JET · → doing",
       "agent": "JET",
       "at": 1790110845297
-    },
-    {
-      "id": "0HDP",
-      "taskId": "TASK-1538",
-      "text": "shipped 66a0459 → origin/master · test(mixer): node:test suite for mixerMath normalizeWeights (TASK-1538) · gates tsc=2.4s·lint=8.8s·test=5.2s·boardjson=0.0s",
-      "agent": "JET",
-      "at": 1790110787146
-    },
-    {
-      "id": "YREX",
-      "taskId": "TASK-1538",
-      "text": "review · gates green tsc=2.4s·lint=8.9s·test=5.2s·boardjson=0.0s",
-      "agent": "JET",
-      "at": 1790110748773
-    },
-    {
-      "id": "652C",
-      "taskId": "TASK-1538",
-      "text": "✓ checked npm test green with no regressions",
-      "agent": "RAVAN",
-      "at": 1790110728554
-    },
-    {
-      "id": "97IN",
-      "taskId": "TASK-1538",
-      "text": "✓ checked sub-0.5 filter, invalid/NaN/negative/empty entri",
-      "agent": "RAVAN",
-      "at": 1790110726506
-    },
-    {
-      "id": "QN8A",
-      "taskId": "TASK-1538",
-      "text": "✓ checked mixer-math.test.mjs covers sum-to-100 normalizat",
-      "agent": "RAVAN",
-      "at": 1790110721903
-    },
-    {
-      "id": "NLV5",
-      "taskId": "TASK-1538",
-      "text": "claimed by JET · → doing",
-      "agent": "JET",
-      "at": 1790110631030
-    },
-    {
-      "id": "KY2R",
-      "taskId": "TASK-1538",
-      "text": "created in todo",
-      "agent": "JET",
-      "at": 1790110627373
-    },
-    {
-      "id": "KHVQ",
-      "taskId": "TASK-1532",
-      "text": "moved review → done",
-      "agent": "RAVAN",
-      "at": 1790110511233
-    },
-    {
-      "id": "BBOJ",
-      "taskId": "TASK-1508",
-      "text": "moved review → done",
-      "agent": "RAVAN",
-      "at": 1790110350098
-    },
-    {
-      "id": "MQQ3",
-      "taskId": "TASK-1530",
-      "text": "moved todo → done",
-      "agent": "VIPER",
-      "at": 1789660404636
-    },
-    {
-      "id": "W3IC",
-      "taskId": "TASK-1526",
-      "text": "moved todo → done",
-      "agent": "VIPER",
-      "at": 1789660404593
-    },
-    {
-      "id": "ZQRB",
-      "taskId": "TASK-1525",
-      "text": "moved todo → done",
-      "agent": "VIPER",
-      "at": 1789660404554
-    },
-    {
-      "id": "K8WU",
-      "taskId": "TASK-1522",
-      "text": "moved todo → done",
-      "agent": "VIPER",
-      "at": 1789660397980
     }
   ],
   "deletions": [
@@ -10551,5 +10587,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1790112733991
+  "updatedAt": 1790112975855
 }
