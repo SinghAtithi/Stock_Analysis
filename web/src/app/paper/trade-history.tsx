@@ -46,7 +46,7 @@ function TradeRow({
       </span>
       <div className="flex flex-wrap items-center gap-2">
         <span
-          className={`rounded-full px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide ${
+          className={`rounded-full px-2 py-0.5 font-mono text-[10px] font-semibold ${
             trade.side === "buy"
               ? "bg-up-soft text-up"
               : "bg-down-soft text-down"
@@ -143,7 +143,7 @@ export default function TradeHistory({ trades, onSaveNote }: Props) {
     >
       <h2
         id="history-heading"
-        className="border-b border-line bg-panel-2 px-4 py-2.5 text-[11px] font-medium tracking-wide text-faint uppercase"
+        className="border-b border-line bg-panel-2 px-4 py-2.5 text-[11px] font-medium text-faint"
       >
         Trade history &amp; journal
       </h2>

@@ -333,7 +333,7 @@ export default function PaperPage() {
             { label: "Book P&L", value: fmtPct(bookPct), cls: pnlCls(bookPct) },
           ].map((s) => (
             <div key={s.label} className="bg-surface px-4 py-3">
-              <p className="text-[11px] font-medium tracking-wide text-faint uppercase">
+              <p className="text-[11px] font-medium text-faint">
                 {s.label}
               </p>
               <p className={`mt-1 font-mono text-lg font-semibold tabular-nums ${s.cls}`}>

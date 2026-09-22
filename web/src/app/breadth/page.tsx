@@ -197,7 +197,7 @@ export default function BreadthPage() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <section className="rounded-md border border-line bg-surface p-5 shadow-sm">
-            <p className="text-xs font-medium tracking-wide text-faint uppercase">India VIX</p>
+            <p className="text-xs font-medium text-faint">India VIX</p>
             {initial ? (
               <div className="mt-2"><Skeleton className="h-8 w-20" /></div>
             ) : (
@@ -210,7 +210,7 @@ export default function BreadthPage() {
           </section>
 
           <section className="rounded-md border border-line bg-surface p-5 shadow-sm">
-            <p className="text-xs font-medium tracking-wide text-faint uppercase">Advance / Decline</p>
+            <p className="text-xs font-medium text-faint">Advance / decline</p>
             {initial ? (
               <div className="mt-2"><Skeleton className="h-8 w-24" /></div>
             ) : (
@@ -238,7 +238,7 @@ export default function BreadthPage() {
           </section>
 
           <section className="rounded-md border border-line bg-surface p-5 shadow-sm">
-            <p className="text-xs font-medium tracking-wide text-faint uppercase">FII flows (₹ cr)</p>
+            <p className="text-xs font-medium text-faint">FII flows (₹ cr)</p>
             {initial ? (
               <div className="mt-2"><Skeleton className="h-8 w-28" /></div>
             ) : (
@@ -261,7 +261,7 @@ export default function BreadthPage() {
           </section>
 
           <section className="rounded-md border border-line bg-surface p-5 shadow-sm">
-            <p className="text-xs font-medium tracking-wide text-faint uppercase">DII flows (₹ cr)</p>
+            <p className="text-xs font-medium text-faint">DII flows (₹ cr)</p>
             {initial ? (
               <div className="mt-2"><Skeleton className="h-8 w-28" /></div>
             ) : (
@@ -290,7 +290,7 @@ export default function BreadthPage() {
         </div>
 
         <section className="rounded-md border border-line bg-surface p-5 shadow-sm">
-          <p className="text-xs font-medium tracking-wide text-faint uppercase">52-week highs / lows</p>
+          <p className="text-xs font-medium text-faint">52-week highs / lows</p>
           <div className="mt-3 flex flex-wrap items-baseline gap-6">
             {initial ? (
               <>

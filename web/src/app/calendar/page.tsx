@@ -264,7 +264,7 @@ export default function CalendarPage() {
               <>
                 <span>{meta.source} · as of {meta.asOf}</span>
                 {meta.stale && (
-                  <span className="rounded-full bg-panel-2 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wide text-faint">
+                  <span className="rounded-full bg-panel-2 px-1.5 py-0.5 font-mono text-[10px] text-faint">
                     stale
                   </span>
                 )}
@@ -335,9 +335,9 @@ export default function CalendarPage() {
         ) : (
           weeks.map(([key, list]) => (
             <section key={key} aria-label={weeks.length > 1 ? undefined : "Scheduled results"}>
-              <h2 className="mb-2 px-1 text-xs font-medium tracking-wide text-muted uppercase">{weekOf(list[0].date).label}</h2>
+              <h2 className="mb-2 px-1 text-xs font-medium text-muted">{weekOf(list[0].date).label}</h2>
               <div className="overflow-hidden rounded-lg border border-line bg-surface shadow-sm">
-                <div className="hidden grid-cols-[5.5rem_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_auto] gap-3 border-b border-line bg-panel-2 px-4 py-2 text-[11px] font-medium tracking-wide text-faint uppercase sm:grid">
+                <div className="hidden grid-cols-[5.5rem_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_auto] gap-3 border-b border-line bg-panel-2 px-4 py-2 text-[11px] font-medium text-faint sm:grid">
                   <span>Date</span>
                   <span>Symbol</span>
                   <span>Expected time</span>
@@ -367,7 +367,7 @@ export default function CalendarPage() {
                         </div>
                         <span className="col-start-2 row-start-2 text-xs text-muted sm:col-auto sm:row-auto">
                           {e.time}
-                          <span className="ml-1.5 rounded-full border border-line bg-panel-2 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wide text-faint">
+                          <span className="ml-1.5 rounded-full border border-line bg-panel-2 px-1.5 py-0.5 font-mono text-[10px] text-faint">
                             {e.filing}
                           </span>
                         </span>

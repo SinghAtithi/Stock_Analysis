@@ -169,7 +169,7 @@ export default function FundamentalsPanel({
             key={c.label}
             className="rounded-2xl border border-line bg-surface px-4 py-3 shadow-sm"
           >
-            <p className="text-[11px] font-medium tracking-wide text-faint uppercase">{c.label}</p>
+            <p className="text-[11px] font-medium text-faint">{c.label}</p>
             <p className="mt-1 font-mono text-[15px] font-medium tabular-nums text-paper">{c.value}</p>
           </div>
         ))}

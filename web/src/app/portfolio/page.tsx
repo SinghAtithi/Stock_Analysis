@@ -361,7 +361,7 @@ export default function PortfolioPage() {
                 <div className="mt-3 max-h-72 overflow-auto rounded-xl border border-line">
                   <table className="w-full border-collapse text-sm">
                     <thead>
-                      <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
+                      <tr className="border-b border-line text-left text-xs text-muted">
                         <th scope="col" className="px-3 py-2 font-medium">Symbol</th>
                         <th scope="col" className="px-3 py-2 text-right font-medium">Qty</th>
                         <th scope="col" className="px-3 py-2 text-right font-medium">Avg price</th>

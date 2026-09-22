@@ -181,7 +181,7 @@ export default function RadarPage() {
                   {meta.asOf ? ` · as of ${dateOf(new Date(meta.asOf).toISOString().slice(0, 10))}` : ""}
                 </span>
                 {meta.stale && (
-                  <span className="rounded-full bg-panel-2 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wide text-faint">
+                  <span className="rounded-full bg-panel-2 px-1.5 py-0.5 font-mono text-[10px] text-faint">
                     stale
                   </span>
                 )}
@@ -282,7 +282,7 @@ export default function RadarPage() {
                     </div>
                     <span className="font-mono text-xs tabular-nums text-faint">{g.items.length} event{g.items.length === 1 ? "" : "s"}</span>
                   </div>
-                  <div className="hidden grid-cols-[6.5rem_minmax(0,1fr)_minmax(0,1.1fr)_4.5rem_6.5rem_7rem_auto] gap-3 border-b border-line bg-surface px-4 py-2 text-[11px] font-medium tracking-wide text-faint uppercase sm:grid">
+                  <div className="hidden grid-cols-[6.5rem_minmax(0,1fr)_minmax(0,1.1fr)_4.5rem_6.5rem_7rem_auto] gap-3 border-b border-line bg-surface px-4 py-2 text-[11px] font-medium text-faint sm:grid">
                     <span>Date</span>
                     <span>Event</span>
                     <span>Counterparty</span>

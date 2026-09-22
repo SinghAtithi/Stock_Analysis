@@ -558,7 +558,7 @@ function BacktestEvidence({ strategy }: { strategy?: StrategyMeta }) {
   const stale = daysOld !== null && daysOld >= 7;
   return (
     <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 rounded-xl border border-line bg-surface px-3 py-2 text-xs shadow-sm">
-      <span className="font-medium tracking-wide text-faint uppercase">Backtest evidence</span>
+      <span className="font-medium text-faint">Backtest evidence</span>
       <span
         className={`font-mono tabular-nums ${stale ? "text-muted" : "text-faint"}`}
         title={ranOn ? `Run finished ${ranOn} IST${stale ? ` — ${daysOld}d ago` : ""}` : undefined}

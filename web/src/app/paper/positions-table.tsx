@@ -67,7 +67,7 @@ export default function PositionsTable({
       <h2 id="positions-heading" className="sr-only">
         Open positions
       </h2>
-      <div className="hidden grid-cols-[minmax(0,1.5fr)_4.5rem_6.5rem_7rem_5.5rem_9rem_auto] gap-3 border-b border-line bg-panel-2 px-4 py-2 text-[11px] font-medium tracking-wide text-faint uppercase sm:grid">
+      <div className="hidden grid-cols-[minmax(0,1.5fr)_4.5rem_6.5rem_7rem_5.5rem_9rem_auto] gap-3 border-b border-line bg-panel-2 px-4 py-2 text-[11px] font-medium text-faint sm:grid">
         <span>Position</span>
         <span className="text-right">Qty</span>
         <span className="text-right">Avg cost</span>

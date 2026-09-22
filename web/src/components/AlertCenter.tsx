@@ -737,7 +737,7 @@ function CreateAlertDialog({
             {sessionClosed ? "Last close: " : "Current: "}
             <span className="font-mono tabular-nums text-paper">{fmtINR(currentPrice)}</span>
             {sessionClosed && (
-              <span className="ml-1.5 rounded-full bg-panel-2 px-1.5 py-0.5 text-[10px] uppercase tracking-wide">
+              <span className="ml-1.5 rounded-full bg-panel-2 px-1.5 py-0.5 text-[10px]">
                 stale
               </span>
             )}

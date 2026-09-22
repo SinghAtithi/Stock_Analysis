@@ -28,7 +28,7 @@ export default function TickerTape({
       aria-hidden={clone || undefined}
       className={`flex w-max shrink-0 items-center gap-2 pr-2`}
     >
-      <span className="shrink-0 text-[10px] font-medium uppercase tracking-widest text-faint">
+      <span className="shrink-0 text-[10px] font-medium text-faint">
         Live
       </span>
       <div className="h-3 w-px shrink-0 bg-line-strong" aria-hidden />

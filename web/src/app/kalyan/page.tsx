@@ -96,12 +96,12 @@ export default function KalyanPage() {
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="rounded-xl border border-line bg-panel-2 p-3 ">
-                <p className="text-xs font-medium tracking-wide text-faint uppercase">Structure</p>
+                <p className="text-xs font-medium text-faint">Structure</p>
                 <p className="mt-1 text-sm font-medium">Price &gt; SMA50, SMA200 · <span className="text-up">Golden cross</span></p>
                 <p className="text-xs text-muted">SMA20 602.39 · SMA50 507.37 · SMA200 447.60</p>
               </div>
               <div className="rounded-xl border border-line bg-panel-2 p-3 ">
-                <p className="text-xs font-medium tracking-wide text-faint uppercase">Staleness</p>
+                <p className="text-xs font-medium text-faint">Staleness</p>
                 <p className="mt-1 text-sm font-medium">0 days · <span className="text-up">Fresh</span></p>
                 <p className="text-xs text-muted">Last candle 21 Aug 2026 (Moneycontrol) · 831 bars</p>
               </div>
