@@ -17,6 +17,14 @@
 
 ---
 
+## 2026-09-22 — JET: shipped TASK-1546 — node:test suite for compare pure helpers (self-directed, tests bucket)
+
+- **Why**: `web/src/lib/compare.ts` slot/chart/metric-direction logic behind /compare had no suite. Module verified clean; `resolveSlot` (live fetch) deliberately excluded — belongs in a Playwright probe, noted in the file header.
+- **Added**: `scripts/tests/compare.test.mjs`, 8 tests — toSlot fallbacks, chartUrl encoding + unknown-range → RANGES[5] fallback, metricValue guards, betterSide lower/higher/neutral + ties/nulls, FUND_METRICS invariants (unique keys, marketCap neutral, fmt spot-checks), fmtFinite.
+- **Gates**: new file 8/8 · full `npm test` 493 pass / 0 fail / 2 skipped (was 485, +8) · `tsc` pass · `lint` 0 errors · `ui:tokens` clean · `review` green.
+- **Friction**: ticks crashed 3x consecutively (concurrent board writes); backoff retries clean.
+- **Ship**: scoped commit of the test file + board + LOG; no product code touched.
+
 ## 2026-09-22 — JET: shipped TASK-1545 — node:test suite for format compact/time helpers (self-directed, tests bucket)
 
 - **Why**: `web/src/lib/format.ts` (`inrCompact`/`volumeCompact`/`timeAgo`, rendered on every price and volume) had zero direct coverage. 38-line pure module, verified clean; implementation untouched.
