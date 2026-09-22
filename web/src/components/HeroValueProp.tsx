@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { X } from "lucide-react";
 
 /* TASK-242: compact landing value prop — plain-English positioning, stat
    chips (NSE & BSE · 190 strategies · breadth + backtest) and three proof
@@ -72,9 +73,9 @@ export default function HeroValueProp() {
           type="button"
           onClick={dismiss}
           aria-label="Dismiss intro"
-          className="shrink-0 rounded-full border border-line bg-surface px-2 py-1 text-sm text-muted transition-colors hover:text-paper"
+          className="grid shrink-0 place-items-center rounded-full border border-line bg-surface p-1.5 text-muted transition-colors hover:text-paper"
         >
-          ✕
+          <X size={14} aria-hidden />
         </button>
       </div>
     </section>

@@ -9,6 +9,7 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
+import { X } from "lucide-react";
 import Search from "@/components/Search";
 // heavyweight (lightweight-charts + indicators): keep out of the initial bundle
 const ChartPanel = dynamic(() => import("@/components/ChartPanel"), { ssr: false });
@@ -753,7 +754,7 @@ export default function Home() {
       <Modal open={helpOpen} onClose={() => setHelpOpen(false)} label="Keyboard shortcuts">
         <div className="mb-4 flex items-center justify-between">
           <span className="text-sm font-semibold text-paper">Keyboard shortcuts</span>
-          <button onClick={() => setHelpOpen(false)} aria-label="Close help" className="rounded-full border border-line bg-surface px-2 py-1 text-sm text-muted hover:text-paper">✕</button>
+          <button onClick={() => setHelpOpen(false)} aria-label="Close help" className="grid place-items-center rounded-full border border-line bg-surface p-1.5 text-muted hover:text-paper"><X size={14} aria-hidden /></button>
         </div>
         <ul className="flex flex-col gap-2 text-sm">
           {[
@@ -777,7 +778,7 @@ export default function Home() {
       <Modal open={wlOpen} onClose={() => setWlOpen(false)} label="Watchlist" sheet panelClassName="lg:hidden">
         <div className="mb-4 flex items-center justify-between border-b border-line pb-3">
           <span className="text-sm font-semibold text-paper">Watchlist</span>
-          <button onClick={() => setWlOpen(false)} aria-label="Close watchlist" className="rounded-full border border-line bg-surface px-2 py-1 text-sm text-muted hover:text-paper">✕</button>
+          <button onClick={() => setWlOpen(false)} aria-label="Close watchlist" className="grid place-items-center rounded-full border border-line bg-surface p-1.5 text-muted hover:text-paper"><X size={14} aria-hidden /></button>
         </div>
         <Watchlist items={watchlist} selected={selected} onPick={pickFromSheet} onRemove={removeEntry} bare quotes={watchQuotes} />
       </Modal>

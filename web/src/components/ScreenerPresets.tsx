@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { X } from "lucide-react";
 import type { SortDir } from "@/components/DataTable";
 import {
   deleteScreenerPreset,
@@ -224,9 +225,9 @@ export default function ScreenerPresets({
                       undoTimerRef.current = window.setTimeout(() => setPendingDelete(null), 5000);
                     }}
                     aria-label={`Delete saved view ${p.name}`}
-                    className="shrink-0 rounded-full border border-line bg-panel-2 px-2 py-0.5 text-xs text-muted transition-colors hover:text-down"
+                    className="grid shrink-0 place-items-center rounded-full border border-line bg-panel-2 p-1 text-muted transition-colors hover:text-down"
                   >
-                    ✕
+                    <X size={12} aria-hidden />
                   </button>
                 </li>
               ))}
