@@ -10,7 +10,9 @@
 # Runtime budget (documented per AC):
 #   eod-ingest   timeout 40min — ~3min with a warm DB cache (incremental
 #                top-up); a cache-miss full-history pull is the slow path.
-#   signals      timeout 15min — registry run over nifty50 (~2–3min warm).
+#   signals      timeout 30min — nifty500 fundamentals + analyst ingest,
+#                snapshots, alerts (~15min+ observed Sep 2026; the old
+#                ~2–3min figure predates the TASK-57 factor ingest).
 #   breadth      timeout 10min — VIX/FII-DII/breadth collection (~1–2min).
 #
 # Fresh-checkout safe: db/data/ is gitignored, ingest runs migrations on an
@@ -63,7 +65,7 @@ jobs:
         run: node scripts/fill-universe.mjs --universe nifty500 --max 20 --budget-min 25
 
       - name: report failure
-        if: failure()
+        if: failure() || cancelled()
         env:
           GH_TOKEN: ${{ github.token }}
         run: ./scripts/tests/.fail-issue.sh "eod-ingest" "${{ github.run_id }}"
@@ -76,7 +78,7 @@ jobs:
       github.event_name == 'workflow_dispatch' ||
       (github.event.schedule == '30 13 * * 1-5' && needs.eod-ingest.result == 'success')
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
@@ -122,7 +124,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: report failure
-        if: failure()
+        if: failure() || cancelled()
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.run_id }}
@@ -163,7 +165,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: report failure
-        if: failure()
+        if: failure() || cancelled()
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.run_id }}
@@ -191,7 +193,7 @@ jobs:
         run: node --experimental-strip-types scripts/ingest-breadth.mjs --days 5
 
       - name: report failure
-        if: failure()
+        if: failure() || cancelled()
         env:
           GH_TOKEN: ${{ github.token }}
         run: ./scripts/tests/.fail-issue.sh "breadth" "${{ github.run_id }}"
