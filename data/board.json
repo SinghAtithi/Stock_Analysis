@@ -8882,20 +8882,20 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "todo",
-      "assignee": "hawk",
+      "status": "doing",
+      "assignee": "vertex",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "div#chart focusable (tabIndex=-1)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "skip link inside a landmark or landmark added",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
@@ -8904,7 +8904,7 @@
         }
       ],
       "createdAt": 1789660053299,
-      "updatedAt": 1789660053299,
+      "updatedAt": 1790113075649,
       "blocked": false
     },
     {
@@ -9192,7 +9192,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P3",
-      "status": "doing",
+      "status": "done",
       "assignee": "jet",
       "labels": [],
       "estimate": 3,
@@ -9215,15 +9215,57 @@
         {
           "id": "4",
           "text": "npm test green with no regressions",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1790112891078,
-      "updatedAt": 1790112959196,
+      "updatedAt": 1790113115394,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "UGJY",
+      "taskId": "TASK-1547",
+      "text": "moved review → done",
+      "agent": "RAVAN",
+      "at": 1790113115394
+    },
+    {
+      "id": "3R3I",
+      "taskId": "TASK-1537",
+      "text": "✓ checked skip link inside a landmark or landmark added",
+      "agent": "RAVAN",
+      "at": 1790113075649
+    },
+    {
+      "id": "QILV",
+      "taskId": "TASK-1537",
+      "text": "✓ checked div#chart focusable (tabIndex=-1)",
+      "agent": "RAVAN",
+      "at": 1790113075607
+    },
+    {
+      "id": "G5IT",
+      "taskId": "TASK-1547",
+      "text": "review · gates green tsc=2.2s·lint=8.7s·test=7.2s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790113070878
+    },
+    {
+      "id": "D53F",
+      "taskId": "TASK-1537",
+      "text": "claimed by VERTEX · → doing",
+      "agent": "VERTEX",
+      "at": 1790113061469
+    },
+    {
+      "id": "9JML",
+      "taskId": "TASK-1547",
+      "text": "✓ checked npm test green with no regressions",
+      "agent": "RAVAN",
+      "at": 1790112988831
+    },
     {
       "id": "44DP",
       "taskId": "TASK-1516",
@@ -9741,48 +9783,6 @@
       "text": "review · gates green tsc=2.5s·lint=8.9s·test=5.3s·boardjson=0.0s",
       "agent": "JET",
       "at": 1790110981072
-    },
-    {
-      "id": "7M84",
-      "taskId": "TASK-1539",
-      "text": "review ✗ gates RED (tsc=2.3s·lint=8.9s·test=5.3s) — fix and re-run",
-      "agent": "JET",
-      "at": 1790110932468
-    },
-    {
-      "id": "INJP",
-      "taskId": "TASK-1539",
-      "text": "✓ checked npm test green with no regressions",
-      "agent": "RAVAN",
-      "at": 1790110912763
-    },
-    {
-      "id": "DXOW",
-      "taskId": "TASK-1539",
-      "text": "✓ checked dataset invariants plus honesty constants covere",
-      "agent": "RAVAN",
-      "at": 1790110910712
-    },
-    {
-      "id": "S2EY",
-      "taskId": "TASK-1539",
-      "text": "✓ checked calendarStaleness covers asOf-zero, 14-day bound",
-      "agent": "RAVAN",
-      "at": 1790110908661
-    },
-    {
-      "id": "2GP0",
-      "taskId": "TASK-1539",
-      "text": "✓ checked earnings-calendar.test.mjs covers upcoming-filte",
-      "agent": "RAVAN",
-      "at": 1790110906612
-    },
-    {
-      "id": "3QRI",
-      "taskId": "TASK-1539",
-      "text": "claimed by JET · → doing",
-      "agent": "JET",
-      "at": 1790110845297
     }
   ],
   "deletions": [
@@ -10587,5 +10587,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1790112975855
+  "updatedAt": 1790113115399
 }
