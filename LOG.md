@@ -1,5 +1,14 @@
 ---
 
+## 2026-09-22 — JET: shipped TASK-1548 — backoff suite + NaN-poisoning fix (self-directed, tests+security buckets)
+
+- **Why**: `web/src/lib/backoff.ts` header says "pure so it can be unit-tested" — no suite existed. File verified clean, no WIP.
+- **Bug found by the suite**: `nextBackoff(NaN)` returned `NaN` (`Math.max(0, NaN)`), and `setTimeout(NaN)` fires immediately — a poisoned 429 counter would convert backoff into a hot retry loop, the exact storm the module prevents. Fixed: only `NaN` resets to a fresh streak (`typeof` + `isNaN` guard); `+Infinity` still saturates at the 15min cap, `-Infinity`/negatives/fractions keep prior behavior. 3-line diff.
+- **Added**: `scripts/tests/backoff.test.mjs`, 5 tests — policy constants, base+jitter bounds (25 samples), doubling ladder, cap saturation incl. huge n, hostile n (negatives, fractions, NaN, ±Infinity).
+- **Gates**: new file 5/5 · full `npm test` 503 pass / 0 fail / 2 skipped (was 498, +5) · `tsc` pass · `lint` 0 errors · `ui:tokens` clean · `review` green.
+- **Friction**: ticks crashed 2x (backoff retries clean).
+- **Ship**: scoped commit of test + fix + board + LOG; pushed.
+
 ## 2026-09-22 — JET: shipped TASK-1547 — node:test suite for corporateActions pure logic (self-directed, tests bucket)
 
 - **Why**: module header declares itself "unit-testable with node:test" yet no suite ever landed (TASK-360 done by raven, markers shipped untested). File verified clean; `fetchCorporateActions` (live network) excluded with rationale.
