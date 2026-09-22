@@ -15,3 +15,5 @@ with sync_playwright() as p:
     res = pg.evaluate("""async () => { const r = await window.axe.run(document); return { v: r.violations.length, ids: [...new Set(r.violations.map(x => x.id))] }; }""")
     print("screener axe:", res)
     b.close()
+    # TASK-1536: blocking tier — fail loudly on violations so ui-smoke goes red.
+    sys.exit(1 if res["v"] else 0)

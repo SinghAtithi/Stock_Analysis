@@ -25,3 +25,5 @@ with sync_playwright() as p:
     for v in res["violations"]:
         print("  ", v)
     b.close()
+    # TASK-1536: blocking tier — fail loudly on violations so ui-smoke goes red.
+    sys.exit(1 if res["violations"] else 0)

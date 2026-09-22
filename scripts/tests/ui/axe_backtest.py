@@ -19,3 +19,5 @@ with sync_playwright() as p:
     }""")
     print("axe:", res)
     b.close()
+    # TASK-1536: blocking tier parity — fail loudly on violations so ui-smoke goes red.
+    sys.exit(1 if res["v"] else 0)
