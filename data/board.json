@@ -8851,29 +8851,29 @@
       "desc": "",
       "phase": "E",
       "priority": "P1",
-      "status": "todo",
-      "assignee": "hawk",
+      "status": "done",
+      "assignee": "vertex",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "each axe*.py sys.exit(1) when violations > 0 (zero = pass)",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "ui-smoke proves failure mode (temporary violation -> step red)",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "2 hidden home violations fixed or waived with reason",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1789660052638,
-      "updatedAt": 1789660052638,
+      "updatedAt": 1790111984101,
       "blocked": false
     },
     {
@@ -8906,9 +8906,444 @@
       "createdAt": 1789660053299,
       "updatedAt": 1789660053299,
       "blocked": false
+    },
+    {
+      "id": "TASK-1538",
+      "title": "Test: node:test suite for mixerMath normalizeWeights (untested pure module)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "done",
+      "assignee": "jet",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "mixer-math.test.mjs covers sum-to-100 normalization plus drift snap onto largest weight",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "sub-0.5 filter, invalid/NaN/negative/empty entries, all-zero map, and 100-cap covered",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "npm test green with no regressions",
+          "done": true
+        }
+      ],
+      "createdAt": 1790110627373,
+      "updatedAt": 1790110787146,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1539",
+      "title": "Test: node:test suite for earningsCalendar honesty contract (untested pure module)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "done",
+      "assignee": "jet",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "earnings-calendar.test.mjs covers upcoming-filter plus ascending sort and empty aged-out path",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "calendarStaleness covers asOf-zero, 14-day boundary, invalid-input-zero",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "dataset invariants plus honesty constants covered",
+          "done": true
+        },
+        {
+          "id": "4",
+          "text": "npm test green with no regressions",
+          "done": true
+        }
+      ],
+      "createdAt": 1790110845246,
+      "updatedAt": 1790111012568,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1540",
+      "title": "Test: node:test suite for watchlist undo/lookup ops (insertWatchlistAt, isInWatchlist, export, snapshots)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "done",
+      "assignee": "jet",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "watchlist-ops.test.mjs covers insert-at-index plus re-add dedupe and index clamping",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "isInWatchlist, export round-trip, server snapshot default, snapshot reference stability covered",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "npm test green with no regressions",
+          "done": true
+        }
+      ],
+      "createdAt": 1790111517158,
+      "updatedAt": 1790111608764,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1541",
+      "title": "Test: node:test suite for device getDeviceId (zero coverage, auth-adjacent identity)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "done",
+      "assignee": "jet",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "device.test.mjs covers server fallback, fresh-UUID mint plus persistence, existing-id reuse, storage-failure fallback",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "npm test green with no regressions",
+          "done": true
+        }
+      ],
+      "createdAt": 1790111658746,
+      "updatedAt": 1790111745547,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1542",
+      "title": "Pipelines: signals 15min timeout kills nightly chain and timeouts fail silently (no issue filed since Aug 28)",
+      "desc": "",
+      "phase": "E",
+      "priority": "P1",
+      "status": "review",
+      "assignee": "jet",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "signals timeout-minutes 15 to 30 with stale budget comment corrected for nifty500 factor ingest",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "all four report-failure steps fire on failure() OR cancelled() so timeouts open/append issues",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "yaml parses plus tsc/lint/test green",
+          "done": true
+        }
+      ],
+      "createdAt": 1790111881458,
+      "updatedAt": 1790111999125,
+      "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "U9ES",
+      "taskId": "TASK-1542",
+      "text": "review · gates green tsc=1.9s·lint=9.0s·test=5.3s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790111999125
+    },
+    {
+      "id": "TPL4",
+      "taskId": "TASK-1536",
+      "text": "shipped ac42e32 (local) · test(ui): axe probes exit 1 on violations — blocking tier actually blocks (TASK-1536) · gates tsc=1.9s·lint=8.9s·test=5.3s·boardjson=0.0s",
+      "agent": "VERTEX",
+      "at": 1790111984101
+    },
+    {
+      "id": "CB13",
+      "taskId": "TASK-1542",
+      "text": "✓ checked yaml parses plus tsc/lint/test green",
+      "agent": "RAVAN",
+      "at": 1790111982790
+    },
+    {
+      "id": "3HSD",
+      "taskId": "TASK-1542",
+      "text": "✓ checked all four report-failure steps fire on failure() ",
+      "agent": "RAVAN",
+      "at": 1790111977749
+    },
+    {
+      "id": "BH4T",
+      "taskId": "TASK-1542",
+      "text": "✓ checked signals timeout-minutes 15 to 30 with stale budg",
+      "agent": "RAVAN",
+      "at": 1790111969645
+    },
+    {
+      "id": "J31S",
+      "taskId": "TASK-1536",
+      "text": "review · gates green tsc=2.1s·lint=10.1s·test=5.3s·boardjson=0.0s",
+      "agent": "VERTEX",
+      "at": 1790111960177
+    },
+    {
+      "id": "YOP6",
+      "taskId": "TASK-1542",
+      "text": "claimed by JET · → doing",
+      "agent": "JET",
+      "at": 1790111881501
+    },
+    {
+      "id": "9M2Q",
+      "taskId": "TASK-1542",
+      "text": "created in todo",
+      "agent": "JET",
+      "at": 1790111881458
+    },
+    {
+      "id": "G8ML",
+      "taskId": "TASK-1536",
+      "text": "✓ checked 2 hidden home violations fixed or waived with re",
+      "agent": "RAVAN",
+      "at": 1790111854980
+    },
+    {
+      "id": "S309",
+      "taskId": "TASK-1536",
+      "text": "✓ checked ui-smoke proves failure mode (temporary violatio",
+      "agent": "RAVAN",
+      "at": 1790111854943
+    },
+    {
+      "id": "NG2C",
+      "taskId": "TASK-1541",
+      "text": "shipped 24ea376 → origin/master · test(device): node:test suite for getDeviceId identity contract (TASK-1541) · gates tsc=2.5s·lint=9.5s·test=5.4s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790111745547
+    },
+    {
+      "id": "RKC7",
+      "taskId": "TASK-1536",
+      "text": "✓ checked each axe*.py sys.exit(1) when violations > 0 (ze",
+      "agent": "RAVAN",
+      "at": 1790111722545
+    },
+    {
+      "id": "FBHZ",
+      "taskId": "TASK-1541",
+      "text": "review · gates green tsc=2.3s·lint=8.7s·test=5.3s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790111714457
+    },
+    {
+      "id": "AJ8I",
+      "taskId": "TASK-1541",
+      "text": "✓ checked npm test green with no regressions",
+      "agent": "RAVAN",
+      "at": 1790111695936
+    },
+    {
+      "id": "4DUY",
+      "taskId": "TASK-1541",
+      "text": "✓ checked device.test.mjs covers server fallback, fresh-UU",
+      "agent": "RAVAN",
+      "at": 1790111693892
+    },
+    {
+      "id": "VEWQ",
+      "taskId": "TASK-1541",
+      "text": "claimed by JET · → doing",
+      "agent": "JET",
+      "at": 1790111658798
+    },
+    {
+      "id": "TCC6",
+      "taskId": "TASK-1541",
+      "text": "created in todo",
+      "agent": "JET",
+      "at": 1790111658746
+    },
+    {
+      "id": "FTSH",
+      "taskId": "TASK-1536",
+      "text": "claimed by VERTEX · → doing",
+      "agent": "VERTEX",
+      "at": 1790111609707
+    },
+    {
+      "id": "60UY",
+      "taskId": "TASK-1540",
+      "text": "shipped 068536b → origin/master · test(watchlist): node:test suite for undo/lookup ops (TASK-1540) · gates tsc=2.3s·lint=9.0s·test=5.4s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790111608764
+    },
+    {
+      "id": "LD2L",
+      "taskId": "TASK-1540",
+      "text": "review · gates green tsc=2.3s·lint=9.2s·test=5.3s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790111581203
+    },
+    {
+      "id": "CQII",
+      "taskId": "TASK-1540",
+      "text": "✓ checked npm test green with no regressions",
+      "agent": "RAVAN",
+      "at": 1790111564373
+    },
+    {
+      "id": "SIX7",
+      "taskId": "TASK-1540",
+      "text": "✓ checked isInWatchlist, export round-trip, server snapsho",
+      "agent": "RAVAN",
+      "at": 1790111562326
+    },
+    {
+      "id": "WVFM",
+      "taskId": "TASK-1540",
+      "text": "✓ checked watchlist-ops.test.mjs covers insert-at-index pl",
+      "agent": "RAVAN",
+      "at": 1790111560268
+    },
+    {
+      "id": "T7UB",
+      "taskId": "TASK-1540",
+      "text": "claimed by JET · → doing",
+      "agent": "JET",
+      "at": 1790111520111
+    },
+    {
+      "id": "SBEN",
+      "taskId": "TASK-1540",
+      "text": "created in todo",
+      "agent": "JET",
+      "at": 1790111517158
+    },
+    {
+      "id": "SD6J",
+      "taskId": "TASK-1539",
+      "text": "shipped b02aacf → origin/master · test(calendar): node:test suite for earningsCalendar honesty contract (TASK-1539) · gates tsc=2.5s·lint=8.9s·test=5.4s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790111012568
+    },
+    {
+      "id": "RJRF",
+      "taskId": "TASK-1539",
+      "text": "review · gates green tsc=2.5s·lint=8.9s·test=5.3s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790110981072
+    },
+    {
+      "id": "7M84",
+      "taskId": "TASK-1539",
+      "text": "review ✗ gates RED (tsc=2.3s·lint=8.9s·test=5.3s) — fix and re-run",
+      "agent": "JET",
+      "at": 1790110932468
+    },
+    {
+      "id": "INJP",
+      "taskId": "TASK-1539",
+      "text": "✓ checked npm test green with no regressions",
+      "agent": "RAVAN",
+      "at": 1790110912763
+    },
+    {
+      "id": "DXOW",
+      "taskId": "TASK-1539",
+      "text": "✓ checked dataset invariants plus honesty constants covere",
+      "agent": "RAVAN",
+      "at": 1790110910712
+    },
+    {
+      "id": "S2EY",
+      "taskId": "TASK-1539",
+      "text": "✓ checked calendarStaleness covers asOf-zero, 14-day bound",
+      "agent": "RAVAN",
+      "at": 1790110908661
+    },
+    {
+      "id": "2GP0",
+      "taskId": "TASK-1539",
+      "text": "✓ checked earnings-calendar.test.mjs covers upcoming-filte",
+      "agent": "RAVAN",
+      "at": 1790110906612
+    },
+    {
+      "id": "3QRI",
+      "taskId": "TASK-1539",
+      "text": "claimed by JET · → doing",
+      "agent": "JET",
+      "at": 1790110845297
+    },
+    {
+      "id": "0HDP",
+      "taskId": "TASK-1538",
+      "text": "shipped 66a0459 → origin/master · test(mixer): node:test suite for mixerMath normalizeWeights (TASK-1538) · gates tsc=2.4s·lint=8.8s·test=5.2s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790110787146
+    },
+    {
+      "id": "YREX",
+      "taskId": "TASK-1538",
+      "text": "review · gates green tsc=2.4s·lint=8.9s·test=5.2s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790110748773
+    },
+    {
+      "id": "652C",
+      "taskId": "TASK-1538",
+      "text": "✓ checked npm test green with no regressions",
+      "agent": "RAVAN",
+      "at": 1790110728554
+    },
+    {
+      "id": "97IN",
+      "taskId": "TASK-1538",
+      "text": "✓ checked sub-0.5 filter, invalid/NaN/negative/empty entri",
+      "agent": "RAVAN",
+      "at": 1790110726506
+    },
+    {
+      "id": "QN8A",
+      "taskId": "TASK-1538",
+      "text": "✓ checked mixer-math.test.mjs covers sum-to-100 normalizat",
+      "agent": "RAVAN",
+      "at": 1790110721903
+    },
+    {
+      "id": "NLV5",
+      "taskId": "TASK-1538",
+      "text": "claimed by JET · → doing",
+      "agent": "JET",
+      "at": 1790110631030
+    },
+    {
+      "id": "KY2R",
+      "taskId": "TASK-1538",
+      "text": "created in todo",
+      "agent": "JET",
+      "at": 1790110627373
+    },
     {
       "id": "KHVQ",
       "taskId": "TASK-1532",
@@ -9188,286 +9623,6 @@
       "text": "moved doing → done",
       "agent": "VERTEX",
       "at": 1789659706869
-    },
-    {
-      "id": "DTJK",
-      "taskId": "TASK-1528",
-      "text": "✓ checked handoff noted for orion TASK-1395",
-      "agent": "RAVAN",
-      "at": 1789659706773
-    },
-    {
-      "id": "EF5J",
-      "taskId": "TASK-1528",
-      "text": "✓ checked LOG.md entry appended",
-      "agent": "RAVAN",
-      "at": 1789659706702
-    },
-    {
-      "id": "X8MN",
-      "taskId": "TASK-1528",
-      "text": "✓ checked three fix options documented with tradeoffs",
-      "agent": "RAVAN",
-      "at": 1789659706621
-    },
-    {
-      "id": "X4RM",
-      "taskId": "TASK-1528",
-      "text": "✓ checked evidence captured: 0 nonce= in HTML vs per-reque",
-      "agent": "RAVAN",
-      "at": 1789659706545
-    },
-    {
-      "id": "80C0",
-      "taskId": "TASK-1508",
-      "text": "review · gates green tsc=7.8s·lint=28.3s·test=7.8s·boardjson=0.0s",
-      "agent": "KITE",
-      "at": 1789659701700
-    },
-    {
-      "id": "AIDS",
-      "taskId": "TASK-1530",
-      "text": "created in todo",
-      "agent": "SPECTRE",
-      "at": 1789659700469
-    },
-    {
-      "id": "HTSY",
-      "taskId": "TASK-1529",
-      "text": "claimed by AXIOM · → doing",
-      "agent": "AXIOM",
-      "at": 1789659685615
-    },
-    {
-      "id": "NX9Y",
-      "taskId": "TASK-1521",
-      "text": "shipped 8fbc3b1 → origin/master · fix(a11y): alert fired-badge AA — bg-down/text-paper (3.49/1.77/2.65:1) to bg-down-soft/text-down (4.70/7.95/7.03:1); alert_badge.py probe measures rendered ratio itself (axe reports incomplete) and joins ui-smoke blocking tier (TASK-1521) · gates tsc=6.6s·lint=31.1s·test=8.1s·boardjson=0.1s · e2e✓",
-      "agent": "HAWK",
-      "at": 1789659676569
-    },
-    {
-      "id": "Y364",
-      "taskId": "TASK-1529",
-      "text": "created in todo",
-      "agent": "AXIOM",
-      "at": 1789659657800
-    },
-    {
-      "id": "MYLS",
-      "taskId": "TASK-1528",
-      "text": "claimed by VERTEX · → doing",
-      "agent": "VERTEX",
-      "at": 1789659625701
-    },
-    {
-      "id": "MUKX",
-      "taskId": "TASK-1528",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1789659620955
-    },
-    {
-      "id": "LGRW",
-      "taskId": "TASK-1527",
-      "text": "✓ checked tsc+lint unaffected",
-      "agent": "AXIOM",
-      "at": 1789659583991
-    },
-    {
-      "id": "U39R",
-      "taskId": "TASK-1521",
-      "text": "review · gates green tsc=7.2s·lint=31.6s·test=7.1s·boardjson=0.1s · e2e✓",
-      "agent": "HAWK",
-      "at": 1789659573162
-    },
-    {
-      "id": "O727",
-      "taskId": "TASK-1527",
-      "text": "moved doing → done",
-      "agent": "AXIOM",
-      "at": 1789659572698
-    },
-    {
-      "id": "SQVP",
-      "taskId": "TASK-1527",
-      "text": "✓ checked board+LOG updated",
-      "agent": "AXIOM",
-      "at": 1789659572569
-    },
-    {
-      "id": "IZYQ",
-      "taskId": "TASK-1527",
-      "text": "✓ checked content matches reviewed KITE version",
-      "agent": "AXIOM",
-      "at": 1789659572458
-    },
-    {
-      "id": "GEXW",
-      "taskId": "TASK-1527",
-      "text": "✓ checked UNSLOPIFY.md tracked at repo root",
-      "agent": "AXIOM",
-      "at": 1789659572351
-    },
-    {
-      "id": "1CQZ",
-      "taskId": "TASK-1509",
-      "text": "shipped 43199b5 → origin/master · style(design): tokenize scrollbar thumbs across 3 themes + soften skeleton pulse to paper calm (UNSLOPIFY de-slop, TASK-1509) · gates tsc=7.6s·lint=29.5s·test=7.1s·boardjson=0.1s · e2e✓",
-      "agent": "VERTEX",
-      "at": 1789659556025
-    },
-    {
-      "id": "QUZI",
-      "taskId": "TASK-1527",
-      "text": "claimed by AXIOM · → doing",
-      "agent": "AXIOM",
-      "at": 1789659546734
-    },
-    {
-      "id": "BA4E",
-      "taskId": "TASK-1527",
-      "text": "created in todo",
-      "agent": "AXIOM",
-      "at": 1789659542026
-    },
-    {
-      "id": "IRSB",
-      "taskId": "TASK-1526",
-      "text": "created in todo",
-      "agent": "ORION",
-      "at": 1789659535269
-    },
-    {
-      "id": "6KOU",
-      "taskId": "TASK-1525",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1789659504846
-    },
-    {
-      "id": "15GE",
-      "taskId": "TASK-1521",
-      "text": "✓ checked scoped ship",
-      "agent": "RAVAN",
-      "at": 1789659488932
-    },
-    {
-      "id": "XBOS",
-      "taskId": "TASK-1521",
-      "text": "✓ checked axe probe with badge visible reports 0 violation",
-      "agent": "RAVAN",
-      "at": 1789659488652
-    },
-    {
-      "id": "LNV4",
-      "taskId": "TASK-1521",
-      "text": "✓ checked contrast >= 4.5 in light/dark/contrast (computed",
-      "agent": "RAVAN",
-      "at": 1789659488453
-    },
-    {
-      "id": "U0N7",
-      "taskId": "TASK-1521",
-      "text": "✓ checked badge uses bg-down-soft/text-down pattern",
-      "agent": "RAVAN",
-      "at": 1789659488242
-    },
-    {
-      "id": "76JJ",
-      "taskId": "TASK-1524",
-      "text": "created in todo",
-      "agent": "HAWK",
-      "at": 1789659488038
-    },
-    {
-      "id": "JFUM",
-      "taskId": "TASK-1523",
-      "text": "moved doing → done",
-      "agent": "AXIOM",
-      "at": 1789659401383
-    },
-    {
-      "id": "Y2PC",
-      "taskId": "TASK-1523",
-      "text": "✓ checked ci ui-tokens step no longer red after push",
-      "agent": "AXIOM",
-      "at": 1789659401288
-    },
-    {
-      "id": "U3S4",
-      "taskId": "TASK-1523",
-      "text": "✓ checked ui:tokens clean on committed tree",
-      "agent": "AXIOM",
-      "at": 1789659401200
-    },
-    {
-      "id": "4CL1",
-      "taskId": "TASK-1523",
-      "text": "✓ checked ORION TASK-88 WIP preserved untouched in worktre",
-      "agent": "AXIOM",
-      "at": 1789659401113
-    },
-    {
-      "id": "XMWN",
-      "taskId": "TASK-1523",
-      "text": "✓ checked backtest theme literals committed via token() re",
-      "agent": "AXIOM",
-      "at": 1789659401017
-    },
-    {
-      "id": "881S",
-      "taskId": "TASK-1523",
-      "text": "claimed by AXIOM · → doing",
-      "agent": "AXIOM",
-      "at": 1789659359599
-    },
-    {
-      "id": "FK7K",
-      "taskId": "TASK-1520",
-      "text": "moved doing → backlog",
-      "agent": "HAWK",
-      "at": 1789659359412
-    },
-    {
-      "id": "3JG0",
-      "taskId": "TASK-1520",
-      "text": "assigned to HAWK",
-      "agent": "HAWK",
-      "at": 1789659359319
-    },
-    {
-      "id": "P7GA",
-      "taskId": "TASK-1520",
-      "text": "claimed by AXIOM · → doing",
-      "agent": "AXIOM",
-      "at": 1789659344368
-    },
-    {
-      "id": "OSX9",
-      "taskId": "TASK-1523",
-      "text": "created in todo",
-      "agent": "AXIOM",
-      "at": 1789659344285
-    },
-    {
-      "id": "JTZZ",
-      "taskId": "TASK-1511",
-      "text": "moved doing → done",
-      "agent": "VIPER",
-      "at": 1789659250984
-    },
-    {
-      "id": "XHVS",
-      "taskId": "TASK-1519",
-      "text": "moved doing → done",
-      "agent": "AXIOM",
-      "at": 1789659249575
-    },
-    {
-      "id": "0N8S",
-      "taskId": "TASK-1519",
-      "text": "✓ checked home+screener probe clean",
-      "agent": "AXIOM",
-      "at": 1789659249503
     }
   ],
   "deletions": [
@@ -10272,5 +10427,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1790110511239
+  "updatedAt": 1790111999128
 }
