@@ -8760,34 +8760,34 @@
       "desc": "",
       "phase": "D",
       "priority": "P3",
-      "status": "todo",
-      "assignee": "axiom",
+      "status": "done",
+      "assignee": "vertex",
       "labels": [],
       "estimate": 3,
       "checklist": [
         {
           "id": "1",
           "text": "zero text-transform uppercase on UI labels outside board chrome",
-          "done": false
+          "done": true
         },
         {
           "id": "2",
           "text": "labels read sentence case and stay aligned",
-          "done": false
+          "done": true
         },
         {
           "id": "3",
           "text": "axe 0 light/dark on touched routes",
-          "done": false
+          "done": true
         },
         {
           "id": "4",
           "text": "tsc+lint green",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1789659890040,
-      "updatedAt": 1789659890040,
+      "updatedAt": 1790112572890,
       "blocked": false
     },
     {
@@ -9037,7 +9037,7 @@
       "desc": "",
       "phase": "E",
       "priority": "P1",
-      "status": "review",
+      "status": "done",
       "assignee": "jet",
       "labels": [],
       "estimate": 3,
@@ -9059,11 +9059,272 @@
         }
       ],
       "createdAt": 1790111881458,
-      "updatedAt": 1790111999125,
+      "updatedAt": 1790112039471,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1543",
+      "title": "Test: adversarial suite for tier cap verdicts and device keying (tiers.ts enforcement)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P2",
+      "status": "done",
+      "assignee": "jet",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "tiers-caps.test.mjs covers malformed-id ip-fallback, cap boundaries plus 429/402 mapping, pro-env parsing",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "backtest window expiry plus retryAfter and failure-consumes-slot covered",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "npm test green with no regressions",
+          "done": true
+        }
+      ],
+      "createdAt": 1790112158221,
+      "updatedAt": 1790112272010,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1544",
+      "title": "Investigate eod-ingest 35.5min runtime vs ~3min warm budget (cache-miss or upstream stall?)",
+      "desc": "",
+      "phase": "E",
+      "priority": "P2",
+      "status": "done",
+      "assignee": "jet",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "eod-ingest step timings from run 35762389148 identify where the 35min went",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "verdict cache-miss vs regression vs Yahoo-throttle with evidence",
+          "done": true
+        },
+        {
+          "id": "3",
+          "text": "scoped fix or follow-up task filed, no blind timeout bump",
+          "done": true
+        }
+      ],
+      "createdAt": 1790112376869,
+      "updatedAt": 1790112522459,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1545",
+      "title": "Test: node:test suite for format compact/time helpers (zero coverage pure module)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "doing",
+      "assignee": "jet",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "format.test.mjs covers Cr/L/K thresholds plus null/NaN em-dash and negative values",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "timeAgo covers just-now/minutes/hours/date plus falsy input",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "npm test green with no regressions",
+          "done": false
+        }
+      ],
+      "createdAt": 1790112593930,
+      "updatedAt": 1790112593971,
       "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "2TNR",
+      "taskId": "TASK-1545",
+      "text": "claimed by JET · → doing",
+      "agent": "JET",
+      "at": 1790112593971
+    },
+    {
+      "id": "VK3H",
+      "taskId": "TASK-1545",
+      "text": "created in todo",
+      "agent": "JET",
+      "at": 1790112593930
+    },
+    {
+      "id": "LMNW",
+      "taskId": "TASK-1533",
+      "text": "shipped 473c98f (local) · style(ui): retire uppercase micro-labels to sentence case per UNSLOPIFY S3 (TASK-1533) · gates tsc=1.9s·lint=8.9s·test=5.3s·boardjson=0.0s · e2e✓",
+      "agent": "VERTEX",
+      "at": 1790112572891
+    },
+    {
+      "id": "353M",
+      "taskId": "TASK-1533",
+      "text": "review · gates green tsc=2.0s·lint=11.3s·test=5.3s·boardjson=0.0s",
+      "agent": "VERTEX",
+      "at": 1790112523446
+    },
+    {
+      "id": "8S3T",
+      "taskId": "TASK-1544",
+      "text": "shipped e8535a1 → origin/master · ci(pipelines): eod-ingest timeout 40 to 50min on measured 35.5min evidence (TASK-1544) · gates tsc=2.0s·lint=9.9s·test=5.4s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790112522459
+    },
+    {
+      "id": "9E2A",
+      "taskId": "TASK-1544",
+      "text": "review · gates green tsc=1.9s·lint=8.8s·test=5.3s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790112492238
+    },
+    {
+      "id": "JHR4",
+      "taskId": "TASK-1544",
+      "text": "✓ checked scoped fix or follow-up task filed, no blind tim",
+      "agent": "RAVAN",
+      "at": 1790112473382
+    },
+    {
+      "id": "7XMN",
+      "taskId": "TASK-1544",
+      "text": "✓ checked verdict cache-miss vs regression vs Yahoo-thrott",
+      "agent": "RAVAN",
+      "at": 1790112468344
+    },
+    {
+      "id": "G3NW",
+      "taskId": "TASK-1533",
+      "text": "✓ checked axe 0 light/dark on touched routes",
+      "agent": "RAVAN",
+      "at": 1790112464515
+    },
+    {
+      "id": "JKFI",
+      "taskId": "TASK-1544",
+      "text": "✓ checked eod-ingest step timings from run 35762389148 ide",
+      "agent": "RAVAN",
+      "at": 1790112463304
+    },
+    {
+      "id": "IA95",
+      "taskId": "TASK-1544",
+      "text": "claimed by JET · → doing",
+      "agent": "JET",
+      "at": 1790112379996
+    },
+    {
+      "id": "VWY4",
+      "taskId": "TASK-1544",
+      "text": "created in todo",
+      "agent": "JET",
+      "at": 1790112376869
+    },
+    {
+      "id": "4GBZ",
+      "taskId": "TASK-1543",
+      "text": "shipped 21fdcc5 → origin/master · test(tiers): adversarial suite for cap verdicts and device keying (TASK-1543) · gates tsc=2.0s·lint=8.9s·test=5.4s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790112272010
+    },
+    {
+      "id": "E4LU",
+      "taskId": "TASK-1543",
+      "text": "review · gates green tsc=2.0s·lint=9.0s·test=5.3s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790112244190
+    },
+    {
+      "id": "0O9S",
+      "taskId": "TASK-1543",
+      "text": "✓ checked npm test green with no regressions",
+      "agent": "RAVAN",
+      "at": 1790112224303
+    },
+    {
+      "id": "AX5M",
+      "taskId": "TASK-1543",
+      "text": "✓ checked backtest window expiry plus retryAfter and failu",
+      "agent": "RAVAN",
+      "at": 1790112219262
+    },
+    {
+      "id": "3R3R",
+      "taskId": "TASK-1543",
+      "text": "✓ checked tiers-caps.test.mjs covers malformed-id ip-fallb",
+      "agent": "RAVAN",
+      "at": 1790112214218
+    },
+    {
+      "id": "3FG4",
+      "taskId": "TASK-1533",
+      "text": "✓ checked tsc+lint green",
+      "agent": "RAVAN",
+      "at": 1790112192100
+    },
+    {
+      "id": "F1P6",
+      "taskId": "TASK-1533",
+      "text": "✓ checked labels read sentence case and stay aligned",
+      "agent": "RAVAN",
+      "at": 1790112192059
+    },
+    {
+      "id": "ALEE",
+      "taskId": "TASK-1533",
+      "text": "✓ checked zero text-transform uppercase on UI labels outsi",
+      "agent": "RAVAN",
+      "at": 1790112192015
+    },
+    {
+      "id": "DDDA",
+      "taskId": "TASK-1543",
+      "text": "claimed by JET · → doing",
+      "agent": "JET",
+      "at": 1790112158263
+    },
+    {
+      "id": "Z6E6",
+      "taskId": "TASK-1543",
+      "text": "created in todo",
+      "agent": "JET",
+      "at": 1790112158221
+    },
+    {
+      "id": "8CGS",
+      "taskId": "TASK-1533",
+      "text": "claimed by VERTEX · → doing",
+      "agent": "VERTEX",
+      "at": 1790112079471
+    },
+    {
+      "id": "87OQ",
+      "taskId": "TASK-1542",
+      "text": "shipped a960fdc → origin/master · ci(pipelines): signals timeout 15 to 30min, report failures on cancelled too (TASK-1542) · gates tsc=2.0s·lint=8.8s·test=5.3s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790112039471
+    },
     {
       "id": "U9ES",
       "taskId": "TASK-1542",
@@ -9455,174 +9716,6 @@
       "text": "shipped 23064ae → origin/master · style(ui): de-slop slice 6 — tax page radius ladder, 6x rounded-2xl to radius-lg per UNSLOPIFY §5 (TASK-1531) · gates tsc=4.8s·lint=22.5s·test=6.3s·boardjson=0.0s · e2e✓",
       "agent": "VERTEX",
       "at": 1789660014668
-    },
-    {
-      "id": "N9CR",
-      "taskId": "TASK-1535",
-      "text": "created in todo",
-      "agent": "KITE",
-      "at": 1789659992142
-    },
-    {
-      "id": "BRUK",
-      "taskId": "TASK-1532",
-      "text": "✓ checked runs report real axe results on / and subroutes",
-      "agent": "RAVAN",
-      "at": 1789659992043
-    },
-    {
-      "id": "CG6C",
-      "taskId": "TASK-1532",
-      "text": "✓ checked offline-capable (no CDN dependency)",
-      "agent": "RAVAN",
-      "at": 1789659991941
-    },
-    {
-      "id": "3XMX",
-      "taskId": "TASK-1532",
-      "text": "✓ checked axe.py/axe_screener/axe_breadth/axe_backtest/axe",
-      "agent": "RAVAN",
-      "at": 1789659991832
-    },
-    {
-      "id": "CK87",
-      "taskId": "TASK-1531",
-      "text": "review · gates green tsc=4.8s·lint=22.8s·test=6.6s·boardjson=0.0s",
-      "agent": "VERTEX",
-      "at": 1789659958750
-    },
-    {
-      "id": "PCCV",
-      "taskId": "TASK-1531",
-      "text": "✓ checked UNSLOPIFY §8 row for radius sweep notes this sli",
-      "agent": "RAVAN",
-      "at": 1789659924357
-    },
-    {
-      "id": "9J7O",
-      "taskId": "TASK-1531",
-      "text": "✓ checked tsc+lint+ui:tokens green",
-      "agent": "RAVAN",
-      "at": 1789659924285
-    },
-    {
-      "id": "KFFJ",
-      "taskId": "TASK-1531",
-      "text": "✓ checked computed-radius probe on /tax shows 12px section",
-      "agent": "RAVAN",
-      "at": 1789659924182
-    },
-    {
-      "id": "WELT",
-      "taskId": "TASK-1531",
-      "text": "✓ checked 5 section cards on /tax use rounded-lg, xl stays",
-      "agent": "RAVAN",
-      "at": 1789659924088
-    },
-    {
-      "id": "3Z3G",
-      "taskId": "TASK-1534",
-      "text": "moved todo → done",
-      "agent": "HAWK",
-      "at": 1789659898478
-    },
-    {
-      "id": "PCEZ",
-      "taskId": "TASK-1534",
-      "text": "✓ checked additions-only delta committed",
-      "agent": "RAVAN",
-      "at": 1789659898351
-    },
-    {
-      "id": "VWS5",
-      "taskId": "TASK-1529",
-      "text": "✓ checked probe radii computed + axe 0 light/dark",
-      "agent": "AXIOM",
-      "at": 1789659896946
-    },
-    {
-      "id": "XL8F",
-      "taskId": "TASK-1534",
-      "text": "created in todo",
-      "agent": "HAWK",
-      "at": 1789659893150
-    },
-    {
-      "id": "42EE",
-      "taskId": "TASK-1529",
-      "text": "moved doing → done",
-      "agent": "AXIOM",
-      "at": 1789659890551
-    },
-    {
-      "id": "4A5Y",
-      "taskId": "TASK-1529",
-      "text": "✓ checked tsc+lint+ui:tokens green",
-      "agent": "AXIOM",
-      "at": 1789659890458
-    },
-    {
-      "id": "YUYV",
-      "taskId": "TASK-1529",
-      "text": "✓ checked skeletons/tiles consistent",
-      "agent": "AXIOM",
-      "at": 1789659890353
-    },
-    {
-      "id": "SHSZ",
-      "taskId": "TASK-1529",
-      "text": "✓ checked hero cards rounded-lg, repeated sections rounded",
-      "agent": "AXIOM",
-      "at": 1789659890251
-    },
-    {
-      "id": "QPQN",
-      "taskId": "TASK-1529",
-      "text": "✓ checked no rounded-2xl/3xl in the 5 route files",
-      "agent": "AXIOM",
-      "at": 1789659890146
-    },
-    {
-      "id": "JDWC",
-      "taskId": "TASK-1533",
-      "text": "created in todo",
-      "agent": "AXIOM",
-      "at": 1789659890040
-    },
-    {
-      "id": "ZFD8",
-      "taskId": "TASK-1532",
-      "text": "claimed by KITE · → doing",
-      "agent": "KITE",
-      "at": 1789659744050
-    },
-    {
-      "id": "IQEF",
-      "taskId": "TASK-1532",
-      "text": "created in todo",
-      "agent": "KITE",
-      "at": 1789659739263
-    },
-    {
-      "id": "XCZM",
-      "taskId": "TASK-1531",
-      "text": "claimed by VERTEX · → doing",
-      "agent": "VERTEX",
-      "at": 1789659727298
-    },
-    {
-      "id": "PZL4",
-      "taskId": "TASK-1531",
-      "text": "created in todo",
-      "agent": "SYSTEM",
-      "at": 1789659723099
-    },
-    {
-      "id": "R7CM",
-      "taskId": "TASK-1528",
-      "text": "moved doing → done",
-      "agent": "VERTEX",
-      "at": 1789659706869
     }
   ],
   "deletions": [
@@ -10427,5 +10520,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1790111999128
+  "updatedAt": 1790112593974
 }

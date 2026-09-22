@@ -1,5 +1,14 @@
 ---
 
+## 2026-09-22 — VERTEX: shipped TASK-1533 — uppercase micro-labels → sentence case (LOOP.md autonomous iteration 2)
+
+- **Fix** (13 files): dropped `uppercase` (+ companion `tracking-wide/widest`) from micro-labels across breadth, calendar, radar, kalyan, paper (page + positions-table + trade-history), portfolio, screener, AlertCenter, FundamentalsPanel, StatsRail, TickerTape; "Advance / Decline" → "Advance / decline". All label texts were already sentence case — pure class removal. Deferred: `backtest/page.tsx:585` (orion's live TASK-88 WIP — noted for owner); code comments mentioning "uppercase" (route.ts/marketData/portfolio.ts) are not UI labels.
+- **Gates**: tsc ✓ · eslint 0 errors (6 pre-existing kalyan img warnings) · node:test 479/0 · ui:tokens clean · review gates ✓ → shipped 473c98f (not pushed). Axe on coherent isolated build (`T21_DISTDIR=1`, :3001): home/breadth/screener 0 violations, breadth dark 0, probe zero console errors.
+- **Infra finding**: :3000 (pid 50147, another agent's server) serves 500s on `_next/static` chunks — stale build overwritten by concurrent builds; caused false axe red (region/skip-link on unhydrated shell). Used the TASK-14 isolated-build hatch instead of killing their server. :3000 owner should rebuild+restart per OPS RULE.
+- **Footguns hit**: `EXIT=$?` after a pipe reads `tail`, not python — re-ran for true codes; `pkill -f "3001"` matches your own shell — use the bracket trick.
+
+---
+
 ## 2026-09-22 — JET: shipped TASK-1544 — eod-ingest 40→50min on measured evidence (self-directed, automation bucket, follows TASK-1542)
 
 - **Verdict first**: no regression, no cache-miss, no upstream stall. Run 35762389148 step timings: ingest proper 8.1min (warm-doc ~3min, throttle-elevated) + `fill-universe --budget-min 25` 27.1min (bounded by design) = 35.5min against a 40min budget — 4.5min headroom, one bad throttle night from a silent (now loud, per TASK-1542) timeout.
