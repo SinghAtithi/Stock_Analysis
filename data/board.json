@@ -8882,7 +8882,7 @@
       "desc": "",
       "phase": "D",
       "priority": "P2",
-      "status": "doing",
+      "status": "done",
       "assignee": "vertex",
       "labels": [],
       "estimate": 3,
@@ -8900,11 +8900,11 @@
         {
           "id": "3",
           "text": "axe.py home reports 0 violations light+dark",
-          "done": false
+          "done": true
         }
       ],
       "createdAt": 1789660053299,
-      "updatedAt": 1790113075649,
+      "updatedAt": 1790113362285,
       "blocked": false
     },
     {
@@ -9221,9 +9221,143 @@
       "createdAt": 1790112891078,
       "updatedAt": 1790113115394,
       "blocked": false
+    },
+    {
+      "id": "TASK-1548",
+      "title": "Test: node:test suite for Yahoo backoff math (pure, intended-but-missing)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "done",
+      "assignee": "jet",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "backoff.test.mjs covers base-plus-jitter bounds, exponential growth, 15min cap, hostile n handling",
+          "done": true
+        },
+        {
+          "id": "2",
+          "text": "npm test green with no regressions",
+          "done": true
+        }
+      ],
+      "createdAt": 1790113199606,
+      "updatedAt": 1790113331835,
+      "blocked": false
+    },
+    {
+      "id": "TASK-1549",
+      "title": "Test: node:test suite for ICS payload builder (pure, uncovered)",
+      "desc": "",
+      "phase": "D",
+      "priority": "P3",
+      "status": "doing",
+      "assignee": "jet",
+      "labels": [],
+      "estimate": 3,
+      "checklist": [
+        {
+          "id": "1",
+          "text": "ics.test.mjs covers envelope plus CRLF plus escaping plus dtEnd default",
+          "done": false
+        },
+        {
+          "id": "2",
+          "text": "month-boundary next-day and DESCRIPTION omission covered",
+          "done": false
+        },
+        {
+          "id": "3",
+          "text": "npm test green with no regressions",
+          "done": false
+        }
+      ],
+      "createdAt": 1790113358561,
+      "updatedAt": 1790113358660,
+      "blocked": false
     }
   ],
   "activities": [
+    {
+      "id": "V8FF",
+      "taskId": "TASK-1537",
+      "text": "shipped ea4c0d4 (local) · fix(a11y): skip-to-chart target focusable, link inside landmark (TASK-1537) · gates tsc=2.4s·lint=8.8s·test=5.4s·boardjson=0.0s · e2e✓",
+      "agent": "VERTEX",
+      "at": 1790113362285
+    },
+    {
+      "id": "EWIU",
+      "taskId": "TASK-1549",
+      "text": "claimed by JET · → doing",
+      "agent": "JET",
+      "at": 1790113358660
+    },
+    {
+      "id": "PXJI",
+      "taskId": "TASK-1549",
+      "text": "created in todo",
+      "agent": "JET",
+      "at": 1790113358561
+    },
+    {
+      "id": "QRJ5",
+      "taskId": "TASK-1548",
+      "text": "shipped fc32b40 → origin/master · fix(backoff): NaN-proof nextBackoff plus node:test suite (TASK-1548) · gates tsc=2.1s·lint=9.9s·test=6.0s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790113331835
+    },
+    {
+      "id": "FM39",
+      "taskId": "TASK-1537",
+      "text": "review · gates green tsc=2.1s·lint=10.1s·test=6.5s·boardjson=0.0s · e2e✓",
+      "agent": "VERTEX",
+      "at": 1790113330063
+    },
+    {
+      "id": "MNQR",
+      "taskId": "TASK-1537",
+      "text": "✓ checked axe.py home reports 0 violations light+dark",
+      "agent": "RAVAN",
+      "at": 1790113301929
+    },
+    {
+      "id": "NXY0",
+      "taskId": "TASK-1548",
+      "text": "review · gates green tsc=2.0s·lint=9.0s·test=5.4s·boardjson=0.0s",
+      "agent": "JET",
+      "at": 1790113298853
+    },
+    {
+      "id": "B24W",
+      "taskId": "TASK-1548",
+      "text": "✓ checked npm test green with no regressions",
+      "agent": "RAVAN",
+      "at": 1790113282388
+    },
+    {
+      "id": "0N8C",
+      "taskId": "TASK-1548",
+      "text": "✓ checked backoff.test.mjs covers base-plus-jitter bounds,",
+      "agent": "RAVAN",
+      "at": 1790113277346
+    },
+    {
+      "id": "W0ZC",
+      "taskId": "TASK-1548",
+      "text": "claimed by JET · → doing",
+      "agent": "JET",
+      "at": 1790113199648
+    },
+    {
+      "id": "FKQS",
+      "taskId": "TASK-1548",
+      "text": "created in todo",
+      "agent": "JET",
+      "at": 1790113199606
+    },
     {
       "id": "UGJY",
       "taskId": "TASK-1547",
@@ -9706,83 +9840,6 @@
       "text": "claimed by JET · → doing",
       "agent": "JET",
       "at": 1790111658798
-    },
-    {
-      "id": "TCC6",
-      "taskId": "TASK-1541",
-      "text": "created in todo",
-      "agent": "JET",
-      "at": 1790111658746
-    },
-    {
-      "id": "FTSH",
-      "taskId": "TASK-1536",
-      "text": "claimed by VERTEX · → doing",
-      "agent": "VERTEX",
-      "at": 1790111609707
-    },
-    {
-      "id": "60UY",
-      "taskId": "TASK-1540",
-      "text": "shipped 068536b → origin/master · test(watchlist): node:test suite for undo/lookup ops (TASK-1540) · gates tsc=2.3s·lint=9.0s·test=5.4s·boardjson=0.0s",
-      "agent": "JET",
-      "at": 1790111608764
-    },
-    {
-      "id": "LD2L",
-      "taskId": "TASK-1540",
-      "text": "review · gates green tsc=2.3s·lint=9.2s·test=5.3s·boardjson=0.0s",
-      "agent": "JET",
-      "at": 1790111581203
-    },
-    {
-      "id": "CQII",
-      "taskId": "TASK-1540",
-      "text": "✓ checked npm test green with no regressions",
-      "agent": "RAVAN",
-      "at": 1790111564373
-    },
-    {
-      "id": "SIX7",
-      "taskId": "TASK-1540",
-      "text": "✓ checked isInWatchlist, export round-trip, server snapsho",
-      "agent": "RAVAN",
-      "at": 1790111562326
-    },
-    {
-      "id": "WVFM",
-      "taskId": "TASK-1540",
-      "text": "✓ checked watchlist-ops.test.mjs covers insert-at-index pl",
-      "agent": "RAVAN",
-      "at": 1790111560268
-    },
-    {
-      "id": "T7UB",
-      "taskId": "TASK-1540",
-      "text": "claimed by JET · → doing",
-      "agent": "JET",
-      "at": 1790111520111
-    },
-    {
-      "id": "SBEN",
-      "taskId": "TASK-1540",
-      "text": "created in todo",
-      "agent": "JET",
-      "at": 1790111517158
-    },
-    {
-      "id": "SD6J",
-      "taskId": "TASK-1539",
-      "text": "shipped b02aacf → origin/master · test(calendar): node:test suite for earningsCalendar honesty contract (TASK-1539) · gates tsc=2.5s·lint=8.9s·test=5.4s·boardjson=0.0s",
-      "agent": "JET",
-      "at": 1790111012568
-    },
-    {
-      "id": "RJRF",
-      "taskId": "TASK-1539",
-      "text": "review · gates green tsc=2.5s·lint=8.9s·test=5.3s·boardjson=0.0s",
-      "agent": "JET",
-      "at": 1790110981072
     }
   ],
   "deletions": [
@@ -10587,5 +10644,5 @@
       "at": 1787945156762
     }
   ],
-  "updatedAt": 1790113115399
+  "updatedAt": 1790113362288
 }

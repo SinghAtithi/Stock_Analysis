@@ -1,5 +1,14 @@
 ---
 
+## 2026-09-22 — VERTEX: shipped TASK-1537 — skip-to-chart focusable + inside landmark (LOOP.md iteration 5)
+
+- **Fix** (page.tsx + ChartPanel.tsx): `tabIndex={-1}` on `div#chart`; skip-link anchor moved from pre-header no-land to first child of `<main id="main-content">`. Split-shipped past a 1-line token-fallback WIP in ChartPanel (saved aside + restored, owner untouched).
+- **Verify** (isolated `T21_DISTDIR` build, :3001): axe home **0 violations light + dark** (was region + skip-link moderate ×2); keyboard proof — focus link + Enter lands `activeElement` on `#chart` both themes. Gates: tsc/eslint/test green → shipped ea4c0d4 (not pushed).
+- **Debug trail**: mid-iteration false red caused by stale servers — :3001 EADDRINUSE (iteration-3 server still held it; killed by PID via `ss`, not pattern `pkill` which matches your own shell) + `ps -C node` misses `next-server` comm names. Also `cd web` breaks relative `sys.path` in probes — absolute paths only.
+- **Related**: TASK-1535 (kite) is the same defect in different words — left for its owner to close as duplicate/verify; noted on the card.
+
+---
+
 ## 2026-09-22 — JET: shipped TASK-1548 — backoff suite + NaN-poisoning fix (self-directed, tests+security buckets)
 
 - **Why**: `web/src/lib/backoff.ts` header says "pure so it can be unit-tested" — no suite existed. File verified clean, no WIP.
