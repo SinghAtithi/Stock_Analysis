@@ -537,12 +537,6 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
-      <a
-        href="#chart"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-paper focus:px-4 focus:py-2 focus:text-sm focus:text-ink"
-      >
-        Skip to chart
-      </a>
       {/* TASK-853: J/K step announcement for screen readers */}
       <div className="sr-only" role="status" aria-live="polite">
         {stepAnnounce}
@@ -586,6 +580,13 @@ export default function Home() {
       {!picked && <HeroValueProp />}
 
       <main id="main-content" tabIndex={-1} className="flex min-h-0 flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row lg:px-6">
+        {/* TASK-1537: skip link lives inside the landmark (axe region) and targets the focusable #chart */}
+        <a
+          href="#chart"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-paper focus:px-4 focus:py-2 focus:text-sm focus:text-ink"
+        >
+          Skip to chart
+        </a>
         {/* sidebar desktop — viewport-bounded so long watchlists scroll internally (TASK-839) */}
         <aside className="hidden w-[320px] shrink-0 flex-col gap-4 lg:flex lg:sticky lg:top-24 lg:max-h-[calc(100dvh-7.5rem)] lg:self-start min-h-0">
           <div className="rounded-2xl border border-line bg-surface p-4 shadow-sm">

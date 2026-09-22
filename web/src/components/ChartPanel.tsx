@@ -500,6 +500,7 @@ export default function ChartPanel({
 
       <div
         id="chart"
+        tabIndex={-1}
         className="relative min-h-[320px] flex-1 overflow-hidden rounded-xl border border-line bg-surface"
       >
         <div
