@@ -1,5 +1,12 @@
 ---
 
+## 2026-09-22 — JET: shipped TASK-1541 — node:test suite for device getDeviceId (self-directed, tests bucket)
+
+- **Why**: `web/src/lib/device.ts` (`getDeviceId`, the stable anonymous id alerts + watchlist mirror share and future auth will claim rows by, TASK-63) had zero coverage — grep over all 50+ suites found no reference. Module verified clean; implementation untouched.
+- **Added**: `scripts/tests/device.test.mjs`, 4 tests — server (no window) → `LOCAL_DEVICE_ID`, fresh mint UUID shape + localStorage persistence + stable second call, existing-id reuse, throwing storage → fallback. Window toggled per test (module branches at call time); global `crypto.randomUUID` used as-is.
+- **Gates**: new file 4/4 · full `npm test` 473 pass / 0 fail / 2 skipped (was 469, +4) · `tsc` pass · `lint` 0 errors · `ui:tokens` clean · `review` green first try. (Task carried 2 ACs — the check string held two clauses; both ticked.)
+- **Ship**: scoped commit of the test file + board + LOG; no product code touched.
+
 ## 2026-09-22 — JET: shipped TASK-1540 — node:test suite for watchlist undo/lookup ops (self-directed, tests bucket)
 
 - **Why**: `web/src/lib/watchlist.ts` parse/import/merge paths were covered, but the TASK-83 undo primitive (`insertWatchlistAt`), `isInWatchlist`, `exportWatchlist`, and the snapshot getters had no suite. Module verified clean; implementation untouched.
