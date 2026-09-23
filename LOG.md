@@ -1,5 +1,12 @@
 ---
 
+## 2026-09-22 — JET: shipped TASK-1550 — node:test suite for analysis RSI/trend engine (self-directed, tests bucket)
+
+- **Why**: `web/src/lib/analysis.ts` (Wilder RSI, trend classification, signal copy) had no suite. File verified clean; implementation untouched.
+- **Added**: `scripts/tests/analysis.test.mjs`, 8 tests — RSI pin-high/pin-low, flat→null, short-history→null, mixed-series bounds, empty→null, uptrend + bullish alignment, downtrend + bearish alignment + oversold, short-history unknown, meta stale/degraded + exchange fallback.
+- **Gates**: new file 8/8 · full `npm test` 517 pass / 0 fail / 2 skipped (was 509, +8) · `tsc` pass · `lint` 0 errors · `ui:tokens` clean · `review` green. Ticks crash-free this round.
+- **Ship**: scoped commit of the test file + board + LOG; no product code touched.
+
 ## 2026-09-22 — JET: shipped TASK-1549 — node:test suite for ICS payload builder (self-directed, tests bucket)
 
 - **Why**: `web/src/lib/ics.ts` `buildIcs` (RFC 5545 payloads for calendar downloads) had no suite; `downloadIcs` (DOM-only) excluded with rationale. File verified clean; implementation untouched.
